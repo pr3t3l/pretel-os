@@ -1,0 +1,36 @@
+# Environment files — never commit real secrets
+.env
+.env.*
+!.env.*.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Runtime / local-only state
+/fallback-journal/
+/transcripts/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editor cruft
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code local state (keep settings.local.json machine-local)
+.claude/settings.local.json
