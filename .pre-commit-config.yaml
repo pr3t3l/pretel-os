@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: token-budget
+        name: Token budget enforcement
+        entry: python3 infra/hooks/token_budget.py
+        language: system
+        files: '(identity\.md|buckets/.*/README\.md|buckets/.*/projects/.*/README\.md|skills/.*\.md)$'
+        pass_filenames: true
+
+      - id: scout-safety
+        name: Scout bucket safety check
+        entry: python3 infra/hooks/scout_safety.py
+        language: system
+        files: 'buckets/scout/'
+        pass_filenames: true
+
+      - id: env-scan
+        name: Environment and secret scan
+        entry: python3 infra/hooks/env_scan.py
+        language: system
+        types: [text]
+        pass_filenames: true

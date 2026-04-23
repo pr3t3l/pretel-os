@@ -1,0 +1,9 @@
+# Scout bucket denylist patterns — OPERATOR MAINTAINED
+# Each entry is a case-insensitive regex.
+# Add employer-specific terms here. These patterns block commits
+# touching any file under buckets/scout/.
+#
+# Example patterns (replace with real ones):
+patterns:
+  - "EXAMPLE_CONFIDENTIAL_TERM"
+  - "EXAMPLE_INTERNAL_PROJECT"
