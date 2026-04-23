@@ -283,27 +283,48 @@ Nothing interesting lives only in a chat. If something mattered, it's in a doc. 
 Update this section each time you end a significant work session.
 
 ```
-Last session: 2026-04-19
-Last task completed: Foundation audit pass 3 + plan.md + tasks.md + SESSION_RESTORE.md authored
-Last task in progress: None — ready for Phase 0 commit
-Next task to execute: tasks.md → P0.T1.1 (create pr3t3l/pretel-os repo)
+Last session: 2026-04-20
+Last task completed: P0.T4.4 — Phase 0 foundation pushed to origin (tag foundation-v1.0 visible on GitHub)
+Last task in progress: None — Phase 0 closed
+Next task to execute: tasks.md → PM1.T1.1 (decide pre-commit hook framework; recommendation already on record: pre-commit Python framework)
 
-Foundation docs state:
-  CONSTITUTION.md v4 (340 lines)
-  PROJECT_FOUNDATION.md v3 (624 lines)
-  DATA_MODEL.md v3 (1,322 lines, 21 tables)
-  INTEGRATIONS.md v2 (809 lines)
-  LESSONS_LEARNED.md v1 (644 lines, 10 seed lessons)
+Phase 0 execution notes (this session, Claude Opus 4.7):
+  - P0.T1.1 (create GitHub repo) executed manually by operator before this session; verified via git ls-remote (repo exists, was empty).
+  - P0.T1.2 (clone empty repo) was NOT executed as a clone. Working dir C:\Users\prett\Pretel-OS already contained Claude Code state (.claude/) so `git clone` into it would have failed. Deviation: `git init -b main` + `git remote add origin` were used instead. Net effect identical to the task's Done-When — repo tracks origin/main, commits and tags pushed cleanly. Flag for awareness, no action needed.
+  - P0.T1.3 .gitignore includes one addition beyond the task's minimum list: `.claude/settings.local.json` (Claude Code local-only state). This is operator-machine state, not project content. If the operator later wants it tracked, revert that one line.
+  - P0.T3 cross-reference sweep found two stale CONSTITUTION rule numbers and fixed them:
+      docs/PROJECT_FOUNDATION.md §6 Doc Registry: `CONSTITUTION §6.28` → `§6.33` (matches rule 33 "deleted during monthly hygiene").
+      docs/LESSONS_LEARNED.md §10 Development checklist: `CONSTITUTION §6.29` → `§6.34` (matches rule 34 "Git commits atomic per task").
+    These were fixed by verbatim content match to the canonical rule; no semantic guessing. Bundled into the foundation-v1.0 commit.
+  - P0.T4.2 commit message used the exact body from tasks.md P0.T4.2. SHA: 98342714df523542665afbf8ae083442bcadba29.
+  - P0.T4.3 tag `foundation-v1.0` created and pushed.
+  - P0.T4.4 `git push origin main` and `git push origin foundation-v1.0` both succeeded; ls-remote confirms both refs on GitHub.
+
+Foundation docs state (as of commit foundation-v1.0):
+  CONSTITUTION.md v4        — root
+  PROJECT_FOUNDATION.md v3  — docs/  (1 stale ref fixed this session)
+  DATA_MODEL.md v3          — docs/
+  INTEGRATIONS.md v2        — docs/
+  LESSONS_LEARNED.md v1     — docs/  (1 stale ref fixed this session)
 
 Planning docs state:
-  plan.md v1 (603 lines)
-  tasks.md v1 (1,101 lines)
-  SESSION_RESTORE.md v1 (this file)
+  plan.md v1                — root
+  tasks.md v1               — root
+  SESSION_RESTORE.md v1     — root (this file)
+
+Audit trail:
+  docs/audits/CHANGELOG_AUDIT_PASS_3.md
+  docs/audits/README.md (index for audits/)
+  docs/audits/prompts/AUDIT_PROMPT_GPT.md
+  docs/audits/prompts/AUDIT_PROMPT_GEMINI.md
+
+Repo hygiene:
+  .gitignore, README.md, LICENSE at root.
 
 Infrastructure state:
-  Vivobook: still WSL — Module 1 not started
-  GitHub repos: pr3t3l/sdd-system (has SDD templates), pr3t3l/openclaw-config (has lessons YAML)
-  pretel-os repo: does NOT exist yet — this is task P0.T1.1
+  Vivobook: still WSL — Module 1 not started.
+  GitHub repos: pr3t3l/sdd-system (has SDD templates), pr3t3l/openclaw-config (has lessons YAML), pr3t3l/pretel-os (NEW — Phase 0 committed and tagged).
+  Local working dir: C:\Users\prett\Pretel-OS (Windows, not Ubuntu). Plan.md suggests the canonical working dir is ~/dev/pretel-os on the Asus Rock; operator should re-clone there when moving to module work on Linux.
 ```
 
 ---

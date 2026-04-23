@@ -1,0 +1,15 @@
+# Timeout configuration for all external calls
+# Source of truth: INTEGRATIONS §1.4
+# Phase-1 defaults — tune after 30 days of routing_logs data
+
+haiku_classification_ms: 3000
+opus_reasoning_ms: 60000
+sonnet_reflection_ms: 30000
+openai_embedding_single_ms: 5000
+openai_embedding_batch_ms: 15000
+n8n_webhook_async_ms: 10000
+n8n_webhook_sync_ms: 120000
+supabase_query_ms: 5000
+telegram_bot_api_ms: 10000
+cloudflare_tunnel_upstream_ms: 30000
+litellm_second_opinion_ms: 15000
