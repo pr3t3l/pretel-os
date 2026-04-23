@@ -274,7 +274,7 @@ Reused component from the prior stack. Acts as a unified gateway in front of mul
 ### 4.3 Authentication
 
 - Environment variable: `LITELLM_API_KEY`
-- Format: `sk-litellm-local` (operator-set, local-only; not shared externally)
+- Format: `<your-litellm-api-key>` (operator-set, local-only; not shared externally)
 - Config file: `~/.litellm/config.yaml` maps model aliases to upstream providers and passes through the real API keys.
 
 ### 4.4 Models exposed via LiteLLM
@@ -758,17 +758,17 @@ Complete `.env.pretel_os` template (committed to repo as `.env.pretel_os.example
 
 ```bash
 # Anthropic
-ANTHROPIC_API_KEY=sk-ant-api03-XXXXXXXXXXXXXXXXXXXXXXXX
-ANTHROPIC_API_KEY_ROUTER=sk-ant-api03-XXXXXXXXXXXXXXXXXXXXXXXX   # optional: separate key for classification
-ANTHROPIC_API_KEY_REFLECTION=sk-ant-api03-XXXXXXXXXXXXXXXXXXXXXXXX   # optional: separate key for reflection
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
+ANTHROPIC_API_KEY_ROUTER=<your-anthropic-api-key>   # optional: separate key for classification
+ANTHROPIC_API_KEY_REFLECTION=<your-anthropic-api-key>   # optional: separate key for reflection
 
 # OpenAI
-OPENAI_API_KEY=sk-proj-XXXXXXXXXXXXXXXXXXXXXXXX
+OPENAI_API_KEY=<your-openai-api-key>
 OPENAI_EMBEDDING_MODEL=text-embedding-3-large
 
 # LiteLLM proxy (local)
 LITELLM_URL=http://127.0.0.1:4000
-LITELLM_API_KEY=sk-litellm-local
+LITELLM_API_KEY=<your-litellm-api-key>
 
 # Postgres
 DATABASE_URL=postgresql://pretel_os:XXXXXXXX@127.0.0.1:5432/pretel_os
@@ -779,7 +779,7 @@ N8N_URL=http://127.0.0.1:5678
 N8N_API_KEY=XXXXXXXXXXXXXXXXXXXXXXXX
 
 # Telegram
-TELEGRAM_BOT_TOKEN=12345:XXXXXXXXXXXXXXXXXXXXXXXX
+TELEGRAM_BOT_TOKEN=<your-telegram-bot-token>
 TELEGRAM_OPERATOR_CHAT_ID=XXXXXXXXX
 
 # Supabase (Phase 4+; empty in Phase 1-3)
