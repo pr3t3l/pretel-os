@@ -488,7 +488,8 @@ CREATE TYPE llm_purpose AS ENUM (
     'client_reasoning',    -- main Opus/Sonnet response (when reported by client)
     'reflection',          -- Reflection worker
     'dream_engine',        -- Nightly consolidation LLM calls (summarization, merge proposals)
-    'morning_intel'        -- Morning Intelligence generation
+    'morning_intel',       -- Morning Intelligence generation
+    'second_opinion'       -- Operator-invoked cross-model validation via LiteLLM (see PROJECT_FOUNDATION §2.5)
 );
 
 CREATE TABLE llm_calls (

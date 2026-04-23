@@ -151,6 +151,9 @@ The MCP server exposes exactly these tool categories. Listed here as the authori
 - `deprecate_skill(name, reason)`
 - `list_modules(project)` — returns module index without loading content
 
+**Validation:**
+- `request_second_opinion(context, problem_summary, original_proposal, model='second_opinion_default')` — operator-invoked cross-model validation via LiteLLM. Returns structured agreement/disagreement, key risks, missing assumptions, and recommended next step. Logs to `usage_logs` (tool invocation) and `llm_calls` with `purpose='second_opinion'`. See `INTEGRATIONS §4.5` for routing and timeout.
+
 **Execution wrappers (per `CONSTITUTION §7.37`):**
 - `run_forge_pipeline(product_url)` — webhook to n8n
 - `run_finance_analysis(month, year)` — subprocess
@@ -518,6 +521,7 @@ The following ideas came out of Gemini Strategic Review 2026-04-18 but were not 
 
 | Idea summary | Category | Effort | Origin |
 |-------------|----------|:------:|--------|
+| `request_second_opinion` — manual cross-model validation tool. MCP tool `request_second_opinion(context, problem_summary, original_proposal, model='second_opinion_default')`. Operator-invoked only, no Router involvement. Routes through LiteLLM to a configured secondary-model alias. Returns structured response: `{status, model_used, agreement_level, key_risks, missing_assumptions, recommended_next_step, degraded_reason}`. Logs to `usage_logs` + `llm_calls` with `purpose='second_opinion'`. Timeout 15,000 ms. Degraded mode: if LiteLLM fails after 3 retries, returns `{status:'degraded', degraded_reason:'litellm_unavailable'}`. On implementation, register via `register_tool()`. Phase 3+ deferred scope: Reflection worker may suggest second-opinion review when transcript patterns indicate repetition — suggestion only, never auto-invoke. Requires empirical calibration after 30+ days of `routing_logs` data. | tool | hours | Operator observation: multi-model validation pattern from OpenClaw |
 | Context-switching sandbox: `suspend_context(bucket, project, notes)` + `/resume` commands for mental-offload during interruptions | workflow | hours | Gemini USE-CASE-002 |
 | Academic research ingestion: n8n webhook accepting PDFs, parsing via vision model, chunking into L4 lessons tagged `master_ia` | skill | days | Gemini USE-CASE-003 |
 | Automated transaction categorization: `log_transaction(amount, description)` routes to active properties/projects using Haiku + writes to `financial_ledger` | skill | days | Gemini USE-CASE-004 |

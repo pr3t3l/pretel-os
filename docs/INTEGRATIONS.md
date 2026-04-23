@@ -78,6 +78,7 @@ Source of truth: `infra/timeouts.yaml`. Values below are the Phase-1 defaults; t
 | Supabase query | 5,000 ms | Phase 4+ only |
 | Telegram Bot API call | 10,000 ms | |
 | Cloudflare Tunnel upstream | 30,000 ms | Upstream to local MCP server |
+| LiteLLM second opinion | 15,000 ms | Operator-invoked validation; fast enough to stay tactical |
 
 ---
 
@@ -293,6 +294,7 @@ LiteLLM stays for:
 - Forge pipeline (existing n8n workflow, unchanged)
 - Future workflows that need multi-provider fallback
 - Operator's ad-hoc testing via `curl`
+- `request_second_opinion` MCP tool — operator-invoked cross-model validation. Uses LiteLLM alias `second_opinion_default` (configured in `~/.litellm/config.yaml` to route to a fixed secondary model, e.g. `gemini-2.5-flash` or `gpt-4.1-mini`). The alias is stable — changing the upstream model does not change the tool contract. Timeout: 15,000 ms (declared in `infra/timeouts.yaml`). Degraded mode: if LiteLLM fails after 3 retries with exponential backoff, the tool returns `{status: 'degraded', analysis: null, degraded_reason: 'litellm_unavailable'}` — no silent failure, no fallback to a direct provider call in Phase 1.
 
 ### 4.6 Health check
 
