@@ -1,0 +1,15 @@
+[Unit]
+Description=pretel-os MCP Server
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pretel/dev/pretel-os
+Environment=PYTHONPATH=/home/pretel/dev/pretel-os/src
+EnvironmentFile=/home/pretel/.env.pretel_os
+ExecStart=/home/pretel/.venvs/pretel-os/bin/python -m mcp_server.main
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
