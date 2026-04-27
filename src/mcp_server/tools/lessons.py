@@ -95,6 +95,11 @@ async def save_lesson(
         pool = db_mod.get_pool()
 
         # Pre-save duplicate check — only when we have an embedding.
+        # `dup_check_clean` is the auto-approval gate: only True when detection
+        # actually ran AND returned zero candidates. Fail-closed when detection
+        # was skipped (no embedding) or errored — we cannot promote a row to
+        # `active` without verifying it isn't a duplicate.
+        dup_check_clean = False
         if embedding is not None:
             try:
                 async with pool.connection(timeout=5.0) as conn:
@@ -102,7 +107,7 @@ async def save_lesson(
                         await cur.execute(
                             """
                             SELECT id, title, similarity
-                            FROM find_duplicate_lesson(%s, %s::vector, %s, %s)
+                            FROM find_duplicate_lesson(%s::text, %s::vector(3072), %s::text, %s::real)
                             """,
                             (content, vector_literal(embedding), bucket, _AUTO_APPROVE_DUP_THRESHOLD),
                         )
@@ -110,6 +115,9 @@ async def save_lesson(
             except Exception as exc:
                 log.warning("find_duplicate_lesson failed: %s", exc)
                 dup_rows = []
+            else:
+                if not dup_rows:
+                    dup_check_clean = True
 
             if dup_rows:
                 await log_usage(
@@ -130,7 +138,8 @@ async def save_lesson(
                 }
 
         auto_approved = _auto_approval_eligible(
-            title=title, content=content, next_time=next_time, duplicate_hit=False
+            title=title, content=content, next_time=next_time,
+            duplicate_hit=not dup_check_clean,
         )
 
         metadata = {"severity": severity} if severity else {}
