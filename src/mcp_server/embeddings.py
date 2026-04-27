@@ -42,6 +42,6 @@ async def embed(text: str) -> Optional[list[float]]:
     try:
         resp = await client.embeddings.create(model=cfg.openai_embedding_model, input=text)
         return list(resp.data[0].embedding)
-    except Exception as exc:
-        log.warning("embedding call failed: %s", exc)
+    except Exception:
+        log.exception("embedding call failed")
         return None

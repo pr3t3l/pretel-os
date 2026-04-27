@@ -282,7 +282,11 @@ async def search_lessons(
             return degraded("embedding_unavailable", results=[])
 
         status_filter = ("active",) if not include_archived else ("active", "archived")
-        params: list[Any] = [list(status_filter)]
+        q_vec = vector_literal(q_emb)
+
+        # Bind order MUST match SQL placeholder order: SELECT vec, WHERE status,
+        # [WHERE bucket], [WHERE tags], ORDER BY vec, LIMIT.
+        params: list[Any] = [q_vec, list(status_filter)]
         where_parts = ["status = ANY(%s)", "deleted_at IS NULL", "embedding IS NOT NULL"]
         if bucket:
             where_parts.append("bucket = %s")
@@ -292,8 +296,7 @@ async def search_lessons(
             params.append(tags)
 
         limit_val = max(1, min(int(limit), 50))
-        params.append(vector_literal(q_emb))
-        params.append(limit_val)
+        params.extend([q_vec, limit_val])
 
         sql = f"""
             SELECT id, title, next_time, bucket, tags,
@@ -303,14 +306,12 @@ async def search_lessons(
             ORDER BY embedding <=> %s::vector
             LIMIT %s
         """
-        # The vector literal appears twice (SELECT + ORDER BY), so append once more.
-        params_final = params[:-2] + [vector_literal(q_emb)] + params[-2:]
 
         pool = db_mod.get_pool()
         try:
             async with pool.connection(timeout=5.0) as conn:
                 async with conn.cursor() as cur:
-                    await cur.execute(sql, params_final)
+                    await cur.execute(sql, params)
                     rows = await cur.fetchall()
         except Exception as exc:
             log.exception("search_lessons failed")
