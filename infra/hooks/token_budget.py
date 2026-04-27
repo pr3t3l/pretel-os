@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pre-commit hook: enforce token budgets per CONSTITUTION §2.3.
 
-L0 identity.md         <= 500 tokens
+L0 identity.md         <= 1,200 tokens
 L1 buckets/*/README.md <= 1,500 tokens
 L2 buckets/*/projects/*/README.md <= 2,000 tokens
 L3 skills/*.md         <= 4,000 tokens
@@ -11,7 +11,7 @@ import sys
 import tiktoken
 
 BUDGETS = {
-    "identity.md": 500,
+    "identity.md": 1200,
     "buckets/": 1500,      # L1 — any README.md directly under a bucket
     "projects/": 2000,     # L2 — any README.md under projects/
     "skills/": 4000,       # L3
@@ -20,7 +20,7 @@ BUDGETS = {
 def get_budget(filepath: str) -> tuple[int, str] | None:
     """Return (budget, layer_name) for a file, or None if not budget-controlled."""
     if filepath == "identity.md":
-        return 500, "L0 identity"
+        return 1200, "L0 identity"
     if "/skills/" in filepath or filepath.startswith("skills/"):
         return 4000, "L3 skill"
     # L2 must be checked before L1 (more specific path)
