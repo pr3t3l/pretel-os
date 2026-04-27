@@ -7,6 +7,10 @@ before any routing logic runs.
 
 Auth failures also log to routing_logs when the DB is healthy; when not,
 the audit line is silently skipped (degraded mode per CONSTITUTION §8.43).
+
+TEMPORARY OPEN MODE: requests that omit the X-Pretel-Auth header are
+allowed through. Only requests that send the header must validate it.
+TODO: Replace with OAuth per Claude.ai connector requirements.
 """
 from __future__ import annotations
 
@@ -42,11 +46,18 @@ class PretelAuthMiddleware:
             await self.app(scope, receive, send)
             return
 
-        provided = b""
+        # TODO: Replace with OAuth per Claude.ai connector requirements.
+        # TEMPORARY OPEN MODE: a missing header passes through; only a
+        # header that is present must validate.
+        provided: bytes | None = None
         for raw_name, raw_value in scope.get("headers", []):
             if raw_name == AUTH_HEADER_NAME_BYTES:
                 provided = raw_value
                 break
+
+        if provided is None:
+            await self.app(scope, receive, send)
+            return
 
         if not hmac.compare_digest(provided, self._secret_bytes):
             client = scope.get("client") or ("?", 0)
