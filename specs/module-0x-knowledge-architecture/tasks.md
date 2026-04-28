@@ -53,7 +53,7 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 - [ ] M0X.A.4.2 — Include `previous_guidance` and `previous_rationale` columns for rollback
 - [ ] M0X.A.4.3 — Include `superseded_by uuid REFERENCES best_practices(id)` self-ref FK
 - [ ] M0X.A.4.4 — Include `derived_from_lessons uuid[] DEFAULT '{}'`
-- [ ] M0X.A.4.5 — Add HNSW index on embedding (partial WHERE active)
+- [ ] M0X.A.4.5 — SKIP HNSW index per ADR-024 (DECISIONS.md). Add commented-out CREATE INDEX with rationale.
 - [ ] M0X.A.4.6 — Add 5 more indexes per spec §5.5
 - [ ] M0X.A.4.7 — Add CHECK on domain (4 values) and source (3 values)
 - [ ] M0X.A.4.8 — Apply on scratch DB, verify with `\d+ best_practices`
@@ -123,7 +123,7 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 - [ ] M0X.C.2.1 — Create `src/mcp_server/tools/decisions.py`
 - [ ] M0X.C.2.2 — Implement `decision_record(bucket, project, title, context, decision, consequences, scope, applicable_buckets?, decided_by, severity?, adr_number?, derived_from_lessons?, tags?, alternatives?)` — generates embedding, returns `{id, adr_number}`
-- [ ] M0X.C.2.3 — Implement `decision_search(query, bucket?, scope?, status?, top_k=5)` — semantic search via HNSW + filter
+- [ ] M0X.C.2.3 — Implement `decision_search(query, bucket?, scope?, status?, top_k=5)` — semantic search via sequential scan with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
 - [ ] M0X.C.2.4 — Implement `decision_supersede(old_id, new_decision_payload)` — atomically marks old superseded, inserts new with link
 - [ ] M0X.C.2.5 — Add degraded-mode wrapper
 - [ ] M0X.C.2.6 — Register in MCP server
@@ -152,7 +152,7 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 - [ ] M0X.C.5.2 — Implement `best_practice_record(title, guidance, domain, scope='global', rationale?, applicable_buckets?, tags?, source='operator', derived_from_lessons?)`
   - [ ] M0X.C.5.2a — On UPDATE path: copy current `guidance`/`rationale` into `previous_guidance`/`previous_rationale` BEFORE overwrite (single-step rollback)
   - [ ] M0X.C.5.2b — On INSERT and UPDATE: generate embedding via OpenAI text-embedding-3-large; on API failure, queue to `pending_embeddings` and write row without embedding
-- [ ] M0X.C.5.3 — Implement `best_practice_search(query, scope?, domain?, top_k=5)` — HNSW similarity + filters
+- [ ] M0X.C.5.3 — Implement `best_practice_search(query, scope?, domain?, top_k=5)` — sequential-scan vector similarity with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
 - [ ] M0X.C.5.4 — Implement `best_practice_deactivate(id, reason)` — sets active=false, records reason in metadata
 - [ ] M0X.C.5.5 — Implement `best_practice_rollback(id)` — restores previous_guidance → guidance, previous_rationale → rationale; returns error if previous_* are NULL
 - [ ] M0X.C.5.6 — Add degraded-mode wrapper to all

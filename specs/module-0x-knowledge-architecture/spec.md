@@ -32,7 +32,7 @@ Module 0.X is the prerequisite for Phase B (Layer Loader). Phase B has to know w
    - `tasks` — pending and in-progress work items (no embedding)
    - `operator_preferences` — operator-controlled facts (UNIQUE on category+key+scope)
    - `router_feedback` — explicit feedback loop signals
-   - `best_practices` — reusable PROCESS guidance (prose, not code) — distinct from `patterns` which is CODE-only (resolves OQ-6)
+   - `best_practices` — reusable PROCESS guidance (prose, not code) — distinct from `patterns` which is CODE-only (resolves OQ-6). HNSW index deferred per ADR-024.
 2. **Amendments to existing tables**:
    - `decisions` (DATA_MODEL §5.2): add `scope`, `applicable_buckets`, `decided_by`, `tags`, `severity`, `adr_number`, `derived_from_lessons` columns. Existing `bucket`, `project`, `client_id`, `title`, `context`, `decision`, `consequences`, `alternatives`, `status`, `superseded_by_id`, `embedding`, `created_at` stay.
 3. **One new workspace file**: `SOUL.md` (template + L0 loader integration)
@@ -197,9 +197,13 @@ CREATE TABLE best_practices (
   updated_at           timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_best_practices_embedding_hnsw
-  ON best_practices USING hnsw (embedding vector_cosine_ops)
-  WHERE active;
+-- HNSW index deferred per ADR-024 (DECISIONS.md):
+-- pgvector 0.6.0 limits HNSW to 2000 dims; embedding is vector(3072).
+-- At current scale (<5K vectors) sequential scan is sufficient (10-50ms).
+-- Re-add when pgvector >= 0.7 or volume crosses ~50K threshold.
+-- CREATE INDEX idx_best_practices_embedding_hnsw
+--   ON best_practices USING hnsw (embedding vector_cosine_ops)
+--   WHERE active;
 CREATE INDEX idx_best_practices_scope ON best_practices(scope) WHERE active;
 CREATE INDEX idx_best_practices_applicable_buckets ON best_practices USING gin(applicable_buckets);
 CREATE INDEX idx_best_practices_tags ON best_practices USING gin(tags);
@@ -298,7 +302,7 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 
 1. Should `decisions` have `severity` like lessons?
 2. **RESOLVED 2026-04-28** (alongside OQ-6): YES, `derived_from_lessons uuid[]` included in §5.5 schema for reflection worker provenance.
-3. Embedding model: same 3072-dim or smaller for HNSW capability?
+3. **RESOLVED 2026-04-28** (by ADR-024 in DECISIONS.md): Keep `text-embedding-3-large` at 3,072 dimensions per CONSTITUTION §2.5 invariant. HNSW indexes deferred until pgvector ≥ 0.7 or vector volume crosses ~50K threshold. Sequential scan with `ORDER BY embedding <=> query LIMIT k` is acceptable at current scale (<5K vectors, 10-50ms latency).
 4. `operator_preferences` value: text or jsonb for arrays?
 5. Token budget for `decisions` in L1 — measure typical length × count
 6. (OQ-6) **RESOLVED 2026-04-28**: New `best_practices` table created (see §5.5). Rationale: `patterns.code TEXT NOT NULL` is incompatible with prose guidance; L2 and L4 want different result shapes; `patterns` is Phase-2 with zero production data so "avoid disruption" argument did not hold. ADR-023 (to be written in implementation).
