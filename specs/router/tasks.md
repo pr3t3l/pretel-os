@@ -50,10 +50,10 @@ Tasks within a phase can usually be done in order, but where parallelism exists 
 
 ### A.4 — LiteLLM client
 
-- [ ] **A.4.1** Implement `src/mcp_server/router/litellm_client.py` — thin wrapper around the OpenAI SDK pointing at `http://127.0.0.1:4000`. Reads `LITELLM_API_KEY` from env. Single function `chat_json(model_alias, system, user, timeout_ms, max_tokens) -> dict`.
+- [x] **A.4.1** Implement `src/mcp_server/router/litellm_client.py` — thin wrapper around the OpenAI SDK pointing at `http://127.0.0.1:4000`. Reads `LITELLM_API_KEY` from env. Single function `chat_json(model_alias, system, user, timeout_ms, max_tokens) -> dict`.
   - Done when: a manual smoke call against `classifier_default` returns a JSON response with `ping → pong` style content.
 
-- [ ] **A.4.2** Add a 1-retry policy in `litellm_client.py` for transport errors (connection refused, 5xx). No retry on parse errors.
+- [x] **A.4.2** Add a 1-retry policy in `litellm_client.py` for transport errors (connection refused, 5xx). No retry on parse errors.
   - Done when: unit test with mocked failing-then-succeeding transport returns success on second attempt; with persistently failing transport raises `ClassifierTransportError`.
 
 ### A.5 — Classifier integration
