@@ -310,6 +310,23 @@ Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
       (pending: tag module-4-phase-a-complete on e59b943)
 
 
+Last session: 2026-04-28 (continuation)
+Last task completed: M0.X SDD trinity complete (commits 8a6cf7d, ff81538, c4b4649, edf3b66)
+  - 8a6cf7d: M0X.T1 spec.md revised, OQ-6 + OQ-2 resolved (best_practices new table)
+  - ff81538: M0X.T2 plan.md (5 phases A-E, gates, dependencies)
+  - c4b4649: M0X.T3 tasks.md (141 atomic tasks)
+  - edf3b66: top-level tasks.md close-out (M0X.T1/T2/T3 marked [x])
+Next task: M0X.T4 implementation, starting with M0X.PRE.1-5 (pre-flight)
+  then M0X.A.1.x (migration 0024 tasks table)
+M0.X scope: 4 new tables (tasks, operator_preferences, router_feedback,
+  best_practices) + decisions amendment + SOUL.md + 17 MCP tools
+Lessons captured this session: 0 (operator deferred 1 push-policy decision
+  to be persisted via decision_record once that tool exists post-Phase C)
+Tags: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete (pending: module-4-phase-a-complete on e59b943,
+  module-0x-complete after Phase E)
+
+
 
 ## 14. Last-known state snapshot
 
