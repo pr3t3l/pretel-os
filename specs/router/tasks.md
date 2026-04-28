@@ -56,6 +56,18 @@ Tasks within a phase can usually be done in order, but where parallelism exists 
 - [x] **A.4.2** Add a 1-retry policy in `litellm_client.py` for transport errors (connection refused, 5xx). No retry on parse errors.
   - Done when: unit test with mocked failing-then-succeeding transport returns success on second attempt; with persistently failing transport raises `ClassifierTransportError`.
 
+- [x] **A.4.3 — Truncation detection, telemetry, and defensive JSON parsing**
+    - [x] Add `ClassifierTruncatedError` and `ClassifierContentFilterError` to `exceptions.py` with telemetry kwarg
+    - [x] Add `telemetry` kwarg to existing 5 exception classes (backward compatible default None)
+    - [x] Add `ChatJsonTelemetry` dataclass to `litellm_client.py`
+    - [x] Refactor `chat_json` to return tuple `(dict, telemetry)` with finish_reason classification, defensive token extraction, markdown fence stripping
+    - [x] Raise `ClassifierTruncatedError` on `finish_reason='length'` with `truncation_cause` derived from reasoning vs visible tokens
+    - [x] Raise `ClassifierContentFilterError` on `'content_filter'`
+    - [x] Raise `ClassifierTransportError` on unexpected finish_reason values (e.g. Gemini RECITATION)
+    - [x] Update 3 existing tests to expect tuple return
+    - [x] Add 6 new mocked tests covering truncation, content filter, unknown finish_reason, markdown fences, and LiteLLM bug #18896
+    - [x] Add 1 integration test against live `classifier_default` (Haiku 4.5)
+
 ### A.5 — Classifier integration
 
 - [ ] **A.5.1** Implement `src/mcp_server/router/classifier.py::classify(message, l0_content, session_excerpt)` — assembles the input, calls `litellm_client.chat_json('classifier_default', ...)`, parses response, validates against schema. → M4.T2.2
