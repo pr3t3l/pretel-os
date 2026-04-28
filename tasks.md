@@ -777,7 +777,7 @@ Phase A exit gate: PASSED.
 
 ## Module 0.X: Knowledge Architecture
 
-**Status:** Spec drafted (commit e466796), plan and tasks pending.
+**Status:** SDD trinity complete (spec 8a6cf7d, plan ff81538, tasks c4b4649). Implementation pending at M0X.T4.
 
 Splits the single `lessons` table into typed knowledge stores. **Important deduplication note**: the original draft proposed `decisions` and `best_practices` as new tables, but `decisions` already exists in DATA_MODEL §5.2 and `patterns` (§5.1) + `gotchas` (§5.3) cover similar ground. Revised scope:
 
@@ -793,9 +793,9 @@ Splits the single `lessons` table into typed knowledge stores. **Important dedup
 **New workspace file:**
 - `SOUL.md` at repo root — agent voice/personality, loaded into L0
 
-- [ ] M0X.T1 — Revise spec.md based on dedupe finding (decisions/patterns exist)
-- [ ] M0X.T2 — Write plan.md (phases, gates, dependencies)
-- [ ] M0X.T3 — Write tasks.md (atomic tasks)
+- [x] M0X.T1 — Revise spec.md based on dedupe finding (decisions/patterns exist) [commit 8a6cf7d]
+- [x] M0X.T2 — Write plan.md (phases, gates, dependencies) [commit ff81538]
+- [x] M0X.T3 — Write tasks.md (atomic tasks) [commit pending — this commit]
 - [ ] M0X.T4 — Implementation (after spec/plan/tasks reviewed)
 
 (M0X subtasks expanded after T1-T3 complete.)
