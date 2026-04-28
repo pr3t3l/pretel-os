@@ -39,11 +39,11 @@ Goal: All foundation artifacts live in the `pr3t3l/pretel-os` repo, tagged `foun
 
 ### P0.T1 — Create the repo
 
-- [ ] **P0.T1.1** Create private GitHub repo `pr3t3l/pretel-os` via GitHub web UI.
+- [x] **P0.T1.1** Create private GitHub repo `pr3t3l/pretel-os` via GitHub web UI.
   - Done when: `https://github.com/pr3t3l/pretel-os` returns a 200 and shows an empty repo.
-- [ ] **P0.T1.2** Clone the empty repo locally to the working directory of choice (suggest `~/dev/pretel-os` on Asus Rock).
+- [x] **P0.T1.2** Clone the empty repo locally to the working directory of choice (suggest `~/dev/pretel-os` on Asus Rock).
   - Done when: `git status` inside the clone returns "nothing to commit."
-- [ ] **P0.T1.3** Initialize basic repo hygiene files.
+- [x] **P0.T1.3** Initialize basic repo hygiene files.
   - Create `.gitignore` with at minimum: `.env`, `.env.*`, `!.env.*.example`, `__pycache__/`, `*.pyc`, `.venv/`, `node_modules/`, `*.log`, `/fallback-journal/`, `/transcripts/`.
   - Create `README.md` with a 5-line description pointing to `CONSTITUTION.md`, `plan.md`, `tasks.md`, `docs/`, `SESSION_RESTORE.md`.
   - Create `LICENSE` file — operator's choice (suggest "All rights reserved" for personal repo, or MIT if you ever plan to share skills publicly).
@@ -51,39 +51,39 @@ Goal: All foundation artifacts live in the `pr3t3l/pretel-os` repo, tagged `foun
 
 ### P0.T2 — Populate foundation docs
 
-- [ ] **P0.T2.1** Copy `CONSTITUTION.md` to repo root.
+- [x] **P0.T2.1** Copy `CONSTITUTION.md` to repo root.
   - Done when: `git status` shows `CONSTITUTION.md` as new file.
-- [ ] **P0.T2.2** Copy `plan.md` to repo root.
+- [x] **P0.T2.2** Copy `plan.md` to repo root.
   - Done when: `git status` shows `plan.md` as new file.
-- [ ] **P0.T2.3** Copy `tasks.md` (this file) to repo root.
+- [x] **P0.T2.3** Copy `tasks.md` (this file) to repo root.
   - Done when: `git status` shows `tasks.md` as new file.
-- [ ] **P0.T2.4** Copy `SESSION_RESTORE.md` to repo root.
+- [x] **P0.T2.4** Copy `SESSION_RESTORE.md` to repo root.
   - Done when: `git status` shows `SESSION_RESTORE.md` as new file.
-- [ ] **P0.T2.5** Create `docs/` directory and move the 4 content foundation docs there.
+- [x] **P0.T2.5** Create `docs/` directory and move the 4 content foundation docs there.
   - `docs/PROJECT_FOUNDATION.md`
   - `docs/DATA_MODEL.md`
   - `docs/INTEGRATIONS.md`
   - `docs/LESSONS_LEARNED.md`
   - Done when: `ls docs/` shows all 4 files.
-- [ ] **P0.T2.6** Copy `CHANGELOG_AUDIT_PASS_3.md` to `docs/audits/CHANGELOG_AUDIT_PASS_3.md` and create `docs/audits/README.md` pointing to it.
+- [x] **P0.T2.6** Copy `CHANGELOG_AUDIT_PASS_3.md` to `docs/audits/CHANGELOG_AUDIT_PASS_3.md` and create `docs/audits/README.md` pointing to it.
   - Done when: `docs/audits/` has both files.
-- [ ] **P0.T2.7** Copy `AUDIT_PROMPT_GPT.md` and `AUDIT_PROMPT_GEMINI.md` to `docs/audits/prompts/`.
+- [x] **P0.T2.7** Copy `AUDIT_PROMPT_GPT.md` and `AUDIT_PROMPT_GEMINI.md` to `docs/audits/prompts/`.
   - Done when: `docs/audits/prompts/` has both files.
 
 ### P0.T3 — Verify cross-references survive the move
 
-- [ ] **P0.T3.1** Grep for `DATA_MODEL §` in all files under the repo. Verify every reference still resolves to a real section.
+- [x] **P0.T3.1** Grep for `DATA_MODEL §` in all files under the repo. Verify every reference still resolves to a real section.
   - Done when: `grep -r "DATA_MODEL §" .` output is fully reviewed; any broken references fixed.
-- [ ] **P0.T3.2** Grep for `CONSTITUTION §` similarly.
+- [x] **P0.T3.2** Grep for `CONSTITUTION §` similarly.
   - Done when: `grep -r "CONSTITUTION §" .` output is fully reviewed; any broken references fixed.
-- [ ] **P0.T3.3** Grep for `INTEGRATIONS §`, `PROJECT_FOUNDATION §`, `LESSONS_LEARNED §` similarly.
+- [x] **P0.T3.3** Grep for `INTEGRATIONS §`, `PROJECT_FOUNDATION §`, `LESSONS_LEARNED §` similarly.
   - Done when: all references fully reviewed.
 
 ### P0.T4 — First commit + tag
 
-- [ ] **P0.T4.1** Stage all foundation files: `git add -A`.
+- [x] **P0.T4.1** Stage all foundation files: `git add -A`.
   - Done when: `git status` shows all expected files staged.
-- [ ] **P0.T4.2** Commit with message from the CHANGELOG.
+- [x] **P0.T4.2** Commit with message from the CHANGELOG.
   - Suggested message body (copy from CHANGELOG section "Commit foundation al repo"):
     ```
     feat: foundation v1.0 — SDD documents for pretel-os personal cognitive OS
@@ -101,10 +101,10 @@ Goal: All foundation artifacts live in the `pr3t3l/pretel-os` repo, tagged `foun
     Co-audited with: GPT-5.4, Gemini 3.1 Pro, Claude Opus 4.7
     ```
   - Done when: `git log -1` shows the commit with this message.
-- [ ] **P0.T4.3** Tag the commit as `foundation-v1.0`.
+- [x] **P0.T4.3** Tag the commit as `foundation-v1.0`.
   - Command: `git tag -a foundation-v1.0 -m "Foundation v1.0 — audit-hardened SDD foundation"`
   - Done when: `git tag -l foundation-v1.0` returns the tag.
-- [ ] **P0.T4.4** Push branch and tags to origin.
+- [x] **P0.T4.4** Push branch and tags to origin.
   - Commands: `git push origin main && git push origin foundation-v1.0`
   - Done when: tag visible on GitHub under "Releases" or "Tags."
 
@@ -118,22 +118,22 @@ Goal: Repo has a working skeleton before any module work begins.
 
 ### PM1.T1 — Add pre-commit hooks
 
-- [ ] **PM1.T1.1** Decide hook framework: native git `.git/hooks/pre-commit` shell script or the `pre-commit` Python framework.
+- [x] **PM1.T1.1** Decide hook framework: native git `.git/hooks/pre-commit` shell script or the `pre-commit` Python framework.
   - Recommendation: use the `pre-commit` framework — it handles multi-hook composition, easier to add hooks later, shareable if you ever open-source.
   - Done when: decision noted here (strikethrough the unused option).
-- [ ] **PM1.T1.2** Create `.pre-commit-config.yaml` at repo root with three hooks:
+- [x] **PM1.T1.2** Create `.pre-commit-config.yaml` at repo root with three hooks:
   - `pre-commit-token-budget` — scans `identity.md`, `buckets/*/README.md`, `buckets/*/projects/*/README.md`, `skills/*.md` against budgets per CONSTITUTION §2.3.
   - `pre-commit-scout-safety` — scans any file under `buckets/scout/` against `scout_denylist` patterns loaded from a local YAML mirror of the DB table.
   - `pre-commit-env-scan` — blocks commits of files matching `*.env*` (except `*.env.*.example`) or containing `sk-ant-` / `sk-proj-` / `sk-litellm-` patterns outside example files.
   - Done when: `.pre-commit-config.yaml` committed.
-- [ ] **PM1.T1.3** Write each hook script under `infra/hooks/`:
+- [x] **PM1.T1.3** Write each hook script under `infra/hooks/`:
   - `infra/hooks/token_budget.py` — uses `tiktoken` with `cl100k_base` encoding.
   - `infra/hooks/scout_safety.py` — reads patterns from `infra/hooks/scout_denylist.yaml` (this file is mirror of DB, operator-maintained, not committed if it contains sensitive patterns — use example file for repo).
   - `infra/hooks/env_scan.py` — regex-based scanner.
   - Done when: all three scripts exist, executable, and run successfully on a dummy commit.
-- [ ] **PM1.T1.4** Install hooks locally via `pre-commit install`.
+- [x] **PM1.T1.4** Install hooks locally via `pre-commit install`.
   - Done when: `.git/hooks/pre-commit` exists as a link/copy from pre-commit framework.
-- [ ] **PM1.T1.5** Test each hook with a deliberately bad file.
+- [x] **PM1.T1.5** Test each hook with a deliberately bad file.
   - Create `test-file.md` with a synthetic secret → env_scan blocks commit → remove file → commit succeeds.
   - Create `buckets/scout/test.md` with a denylist pattern → scout_safety blocks → remove → commit succeeds.
   - Create `identity.md` that exceeds 500 tokens → token_budget blocks → trim → commit succeeds.
@@ -141,14 +141,14 @@ Goal: Repo has a working skeleton before any module work begins.
 
 ### PM1.T2 — Add CI for the same hooks
 
-- [ ] **PM1.T2.1** Create `.github/workflows/pre-commit.yml` that runs pre-commit on every PR.
+- [x] **PM1.T2.1** Create `.github/workflows/pre-commit.yml` that runs pre-commit on every PR.
   - Done when: file committed and a test PR triggers the workflow.
-- [ ] **PM1.T2.2** Add `.github/workflows/markdown-lint.yml` (optional but useful) — catches broken links and inconsistent heading levels.
+- [x] **PM1.T2.2** Add `.github/workflows/markdown-lint.yml` (optional but useful) — catches broken links and inconsistent heading levels.
   - Done when: workflow passes on current repo state.
 
 ### PM1.T3 — Create the skeleton directory structure
 
-- [ ] **PM1.T3.1** Create placeholder directories with `.gitkeep` files (git does not track empty directories):
+- [x] **PM1.T3.1** Create placeholder directories with `.gitkeep` files (git does not track empty directories):
   - `specs/.gitkeep`
   - `identity.md` (placeholder — will be populated in Module 3)
   - `AGENTS.md` (placeholder — will be populated in Module 3)
@@ -166,17 +166,17 @@ Goal: Repo has a working skeleton before any module work begins.
   - `exports/.gitkeep`
   - `.env.pretel_os.example` (copy from INTEGRATIONS §13 template)
   - Done when: `tree -L 2` matches the target structure in `plan.md §3`.
-- [ ] **PM1.T3.2** Create `infra/timeouts.yaml` with all values from INTEGRATIONS §1.4 table.
+- [x] **PM1.T3.2** Create `infra/timeouts.yaml` with all values from INTEGRATIONS §1.4 table.
   - Done when: file committed, every timeout named in INTEGRATIONS is present as a key.
-- [ ] **PM1.T3.3** Commit skeleton with message "chore: repo skeleton per plan.md §3".
+- [x] **PM1.T3.3** Commit skeleton with message "chore: repo skeleton per plan.md §3".
   - Done when: commit on main.
 
 ### PM1.T4 — Copy SDD templates
 
-- [ ] **PM1.T4.1** Copy the 10 SDD templates from `pr3t3l/sdd-system` into `templates/`.
+- [x] **PM1.T4.1** Copy the 10 SDD templates from `pr3t3l/sdd-system` into `templates/`.
   - Command: `git clone --depth 1 https://github.com/pr3t3l/sdd-system /tmp/sdd && cp /tmp/sdd/templates/* templates/ && rm -rf /tmp/sdd`.
   - Done when: `templates/` has the 10 template files (spec.md, plan.md, tasks.md templates + any others).
-- [ ] **PM1.T4.2** Commit templates with message "chore: import SDD templates from pr3t3l/sdd-system".
+- [x] **PM1.T4.2** Commit templates with message "chore: import SDD templates from pr3t3l/sdd-system".
   - Done when: commit on main.
 
 **Exit pre-Module 1** — all of PM1.T1 through PM1.T4 checked. Repo is now ready for module work.
@@ -191,12 +191,12 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
 
 ### M1.T1 — Write the module spec
 
-- [ ] **M1.T1.1** Create `specs/infra_migration/spec.md` from `templates/spec.md`.
+- [x] **M1.T1.1** Create `specs/infra_migration/spec.md` from `templates/spec.md`.
   - Fill: What (new OS + service migration), Why (stability + systemd-ready), Inputs (existing WSL state + service configs), Outputs (new Ubuntu install + verified services), Constraints (no data loss, no Forge regression), Failure modes (hardware failure, config drift, credential loss).
   - Done when: spec.md complete, reviewed by a self-check "would another LLM understand this in a new chat?".
-- [ ] **M1.T1.2** Create `specs/infra_migration/plan.md` with phases: Phase A (backup + inventory), Phase B (OS install), Phase C (core services reinstall), Phase D (application migration), Phase E (verification + cutover).
+- [x] **M1.T1.2** Create `specs/infra_migration/plan.md` with phases: Phase A (backup + inventory), Phase B (OS install), Phase C (core services reinstall), Phase D (application migration), Phase E (verification + cutover).
   - Done when: plan.md has all 5 phases with gates.
-- [ ] **M1.T1.3** Create `specs/infra_migration/tasks.md` from `templates/tasks.md` — the per-module atomic task list. This file (the top-level `tasks.md`) only mirrors high-level M1 tasks; deep atomic detail lives in `specs/infra_migration/tasks.md`.
+- [x] **M1.T1.3** Create `specs/infra_migration/tasks.md` from `templates/tasks.md` — the per-module atomic task list. This file (the top-level `tasks.md`) only mirrors high-level M1 tasks; deep atomic detail lives in `specs/infra_migration/tasks.md`.
   - Done when: module tasks.md exists with all tasks from M1.T2 through M1.T10 expanded.
 
 ### M1.T2 — Pre-migration backup (no cuts yet)
@@ -227,68 +227,68 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
 
 ### M1.T3 — Hardware preparation
 
-- [ ] **M1.T3.1** Verify Vivobook has Ubuntu 24.04 Desktop ISO on bootable USB.
+- [x] **M1.T3.1** Verify Vivobook has Ubuntu 24.04 Desktop ISO on bootable USB.
   - Download ISO from ubuntu.com, verify SHA256 against official, flash to USB via Rufus (Windows) or `dd` (Linux).
   - Done when: boot into USB successfully (BIOS → F2/Del, boot order USB).
-- [ ] **M1.T3.2** Decide disk layout.
+- [x] **M1.T3.2** Decide disk layout.
   - Recommendation: single LUKS-encrypted root + /home partition. Encrypt at rest — required for INTEGRATIONS §1.3 credential storage policy.
   - Decision noted in `runbooks/module_1_infra_migration.md`.
-- [ ] **M1.T3.3** Note down ALL BIOS settings and current network config before wiping.
+- [x] **M1.T3.3** Note down ALL BIOS settings and current network config before wiping.
   - Screenshot BIOS screens (phone camera), document IP/DNS settings, any Wi-Fi network credentials.
   - Done when: documentation exists and is stored with backups (not on Vivobook).
 
 ### M1.T4 — OS install
 
-- [ ] **M1.T4.1** Boot Vivobook from Ubuntu USB, run installer with full disk encryption.
+- [x] **M1.T4.1** Boot Vivobook from Ubuntu USB, run installer with full disk encryption.
   - Create operator user `operator` (or chosen name), set strong password (stored in password manager).
   - Done when: Ubuntu desktop boots to login screen.
-- [ ] **M1.T4.2** First-boot basics: `sudo apt update && sudo apt upgrade -y && sudo apt install -y curl wget git vim build-essential tmux htop net-tools`.
+- [x] **M1.T4.2** First-boot basics: `sudo apt update && sudo apt upgrade -y && sudo apt install -y curl wget git vim build-essential tmux htop net-tools`.
   - Done when: all packages installed without error.
-- [ ] **M1.T4.3** Disable automatic sleep/suspend (this is a server now).
+- [x] **M1.T4.3** Disable automatic sleep/suspend (this is a server now).
   - Command: `sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target`.
   - Also: Settings → Power → Screen Blank: Never, Automatic Suspend: Off.
   - Done when: `systemctl status sleep.target` shows "masked."
-- [ ] **M1.T4.4** Configure `operator` user for auto-login (so unattended reboot works).
+- [x] **M1.T4.4** Configure `operator` user for auto-login (so unattended reboot works).
   - Edit `/etc/gdm3/custom.conf` → `AutomaticLoginEnable = true`, `AutomaticLogin = operator`.
   - Done when: reboot test — server comes back up to a logged-in session.
-- [ ] **M1.T4.5** Set timezone and NTP.
+- [x] **M1.T4.5** Set timezone and NTP.
   - Command: `sudo timedatectl set-timezone America/New_York && sudo timedatectl set-ntp true`.
   - Done when: `timedatectl status` shows correct timezone and NTP synchronized.
 
 ### M1.T5 — Reinstall Tailscale
 
-- [ ] **M1.T5.1** Install Tailscale.
+- [x] **M1.T5.1** Install Tailscale.
   - Command: `curl -fsSL https://tailscale.com/install.sh | sh`.
   - Done when: `tailscale --version` returns a version.
-- [ ] **M1.T5.2** Authenticate Tailscale.
+- [x] **M1.T5.2** Authenticate Tailscale.
   - Command: `sudo tailscale up`.
   - Follow browser prompt, authenticate with operator's Google account.
   - Done when: `tailscale status` shows the Vivobook online and reachable from the Asus Rock.
-- [ ] **M1.T5.3** Confirm the tailnet IP is stable (should be `100.80.39.23` or the node's prior IP; may change — that's OK, update references in INTEGRATIONS if so).
+- [x] **M1.T5.3** Confirm the tailnet IP is stable (should be `100.80.39.23` or the node's prior IP; may change — that's OK, update references in INTEGRATIONS if so).
   - Command: `tailscale ip -4`.
   - Done when: IP noted, INTEGRATIONS updated if needed (commit amendment).
 
 ### M1.T6 — Install Docker
 
-- [ ] **M1.T6.1** Install Docker Engine per official Ubuntu instructions.
+- [x] **M1.T6.1** Install Docker Engine per official Ubuntu instructions.
   - Follow `https://docs.docker.com/engine/install/ubuntu/` exactly. Don't use the apt-version — it's outdated.
   - Done when: `docker --version` and `docker compose version` return versions.
-- [ ] **M1.T6.2** Add `operator` user to `docker` group so you don't need `sudo` for docker commands.
+- [x] **M1.T6.2** Add `operator` user to `docker` group so you don't need `sudo` for docker commands.
   - Command: `sudo usermod -aG docker operator && newgrp docker`.
   - Done when: `docker ps` works without sudo.
-- [ ] **M1.T6.3** Enable Docker to start at boot.
+- [x] **M1.T6.3** Enable Docker to start at boot.
   - Command: `sudo systemctl enable docker`.
   - Done when: `systemctl status docker` shows "enabled."
 
 ### M1.T7 — Reinstall Postgres 16 + pgvector
 
-- [ ] **M1.T7.1** Install Postgres 16.
+- [x] **M1.T7.1** Install Postgres 16.
   - Command: `sudo apt install -y postgresql-16 postgresql-contrib-16`.
   - Done when: `sudo systemctl status postgresql` shows active.
-- [ ] **M1.T7.2** Install pgvector extension.
+- [x] **M1.T7.2** Install pgvector extension.
   - Command: `sudo apt install -y postgresql-16-pgvector`.
   - Done when: `sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS vector;" test_db` succeeds (create `test_db` first).
-- [ ] **M1.T7.3** Configure Postgres for local access.
+- [x] **M1.T7.3** Configure Postgres for local access.
   - Edit `/etc/postgresql/16/main/postgresql.conf`: `listen_addresses = 'localhost'` (no remote access — MCP server connects via localhost).
   - Edit `/etc/postgresql/16/main/pg_hba.conf`: set `local all operator md5` for operator user connections.
   - Restart: `sudo systemctl restart postgresql`.
@@ -299,24 +299,24 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
 
 ### M1.T8 — Reinstall LiteLLM proxy
 
-- [ ] **M1.T8.1** Install LiteLLM in a Python venv.
+- [x] **M1.T8.1** Install LiteLLM in a Python venv.
   - Command: `python3 -m venv ~/.venvs/litellm && ~/.venvs/litellm/bin/pip install litellm[proxy]`.
   - Done when: `~/.venvs/litellm/bin/litellm --version` returns a version.
 - [ ] **M1.T8.2** Restore `~/.litellm/config.yaml` from backup.
   - Done when: file in place, keys visible (but still encrypted in backup tarball is OK — keys go in `~/.env` per INTEGRATIONS).
-- [ ] **M1.T8.3** Create systemd user unit for LiteLLM.
+- [x] **M1.T8.3** Create systemd user unit for LiteLLM.
   - Path: `~/.config/systemd/user/litellm.service`.
   - Content: ExecStart that activates venv and runs `litellm --config ~/.litellm/config.yaml --port 4000`.
   - EnvironmentFile pointing to `~/.env.litellm`.
   - Done when: `systemctl --user daemon-reload && systemctl --user start litellm` succeeds, `curl -f http://127.0.0.1:4000/health` returns success.
-- [ ] **M1.T8.4** Enable LiteLLM to start at boot.
+- [x] **M1.T8.4** Enable LiteLLM to start at boot.
   - Command: `systemctl --user enable litellm && sudo loginctl enable-linger operator`.
   - `enable-linger` allows user services to run without login.
   - Done when: reboot test — LiteLLM auto-starts.
 
 ### M1.T9 — Reinstall n8n in Docker
 
-- [ ] **M1.T9.1** Create `/home/operator/n8n/docker-compose.yml` with the same image version currently running.
+- [x] **M1.T9.1** Create `/home/operator/n8n/docker-compose.yml` with the same image version currently running.
   - Check version before reinstall: `docker inspect <n8n-image>` on WSL for exact tag.
   - Volume mount for persistent data: `./n8n_data:/home/node/.n8n`.
   - EnvironmentFile or inline: `N8N_BASIC_AUTH_USER`, `N8N_BASIC_AUTH_PASSWORD`, connection to Postgres `n8n` database.
@@ -330,29 +330,29 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
 
 ### M1.T10 — Reinstall Cloudflare Tunnel
 
-- [ ] **M1.T10.1** Install `cloudflared` via apt package.
+- [x] **M1.T10.1** Install `cloudflared` via apt package.
   - Follow official Cloudflare Ubuntu instructions.
   - Done when: `cloudflared --version` works.
 - [ ] **M1.T10.2** Restore `/etc/cloudflared/` from backup, including the credentials JSON.
   - Set `/etc/cloudflared/<UUID>.json` permissions to 0600.
   - Done when: `/etc/cloudflared/config.yml` and credentials JSON in place.
-- [ ] **M1.T10.3** Install cloudflared as systemd service.
+- [x] **M1.T10.3** Install cloudflared as systemd service.
   - Command: `sudo cloudflared service install`.
   - Note: MCP server isn't running yet, so the tunnel currently has nothing to tunnel to. That's fine — the ingress rules stay configured.
   - Done when: `sudo systemctl status cloudflared` shows active.
-- [ ] **M1.T10.4** Verify tunnel comes online (the Cloudflare side).
+- [x] **M1.T10.4** Verify tunnel comes online (the Cloudflare side).
   - Check Cloudflare dashboard → Zero Trust → Networks → Tunnels → your tunnel shows "HEALTHY" status.
   - Done when: dashboard shows green.
 
 ### M1.T11 — Backup discipline test
 
-- [ ] **M1.T11.1** Create `infra/backup/pg_backup.sh` from DATA_MODEL §10.1 script.
+- [x] **M1.T11.1** Create `infra/backup/pg_backup.sh` from DATA_MODEL §10.1 script.
   - Edit to use correct paths and `pretel_os` DB name placeholder (actual DB created in Module 2; for now the script can target `n8n` DB as a test).
   - Done when: script exists, is executable.
-- [ ] **M1.T11.2** Create systemd timer for daily backup at 02:00.
+- [x] **M1.T11.2** Create systemd timer for daily backup at 02:00.
   - `infra/systemd/pretel-os-backup.timer` and `infra/systemd/pretel-os-backup.service`.
   - Done when: `systemctl --user list-timers` shows the timer scheduled.
-- [ ] **M1.T11.3** Run backup manually once. Verify encrypted output file in local backup dir.
+- [x] **M1.T11.3** Run backup manually once. Verify encrypted output file in local backup dir.
   - Command: `~/pretel-os/infra/backup/pg_backup.sh`.
   - Done when: `.dump.gpg` file exists, non-zero size, plaintext dump was deleted per script.
 - [ ] **M1.T11.4** Do a restore drill to a scratch database.
@@ -362,16 +362,16 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
 
 ### M1.T12 — Exit gate verification
 
-- [ ] **M1.T12.1** Create `runbooks/module_1_infra_migration.md` if not already.
+- [x] **M1.T12.1** Create `runbooks/module_1_infra_migration.md` if not already.
   - Contents: full step-by-step of what was done, credential rotation notes (if any rotated during migration), any deviations from plan.
   - Done when: runbook exists, covers every task in M1.
-- [ ] **M1.T12.2** Verify exit gate per `plan.md §6 Module 1`:
+- [x] **M1.T12.2** Verify exit gate per `plan.md §6 Module 1`:
   - [ ] Vivobook boots directly into Ubuntu 24.04 Desktop (WSL retired).
   - [ ] All prior services operational on the new OS (checked via per-service health checks).
   - [ ] Forge pipeline runs end-to-end on new setup.
   - [ ] Backup script tested with verified restore drill.
   - [ ] `runbooks/module_1_infra_migration.md` exists.
-- [ ] **M1.T12.3** Commit Module 1 artifacts with message "feat(M1): infra migration complete — Ubuntu 24.04, WSL retired".
+- [x] **M1.T12.3** Commit Module 1 artifacts with message "feat(M1): infra migration complete — Ubuntu 24.04, WSL retired".
   - Done when: commit on main.
 - [ ] **M1.T12.4** Tag as `module-1-complete` (optional but helpful for resumption).
   - Done when: tag exists.
@@ -388,50 +388,50 @@ Authority: `docs/DATA_MODEL.md` (the authoritative schema), `docs/PROJECT_FOUNDA
 
 ### M2.T1 — Write the module spec
 
-- [ ] **M2.T1.1** Create `specs/data_layer/spec.md` from template.
+- [x] **M2.T1.1** Create `specs/data_layer/spec.md` from template.
   - Done when: spec.md complete.
-- [ ] **M2.T1.2** Create `specs/data_layer/plan.md` with phases: Phase A (DB creation), Phase B (table migrations 1-16), Phase C (Phase-2 tables 17-21), Phase D (functions + triggers + views), Phase E (partitions + seeds), Phase F (verification).
+- [x] **M2.T1.2** Create `specs/data_layer/plan.md` with phases: Phase A (DB creation), Phase B (table migrations 1-16), Phase C (Phase-2 tables 17-21), Phase D (functions + triggers + views), Phase E (partitions + seeds), Phase F (verification).
   - Done when: plan.md complete.
-- [ ] **M2.T1.3** Create `specs/data_layer/tasks.md` with atomic tasks (mirrors M2.T2 through M2.T10).
+- [x] **M2.T1.3** Create `specs/data_layer/tasks.md` with atomic tasks (mirrors M2.T2 through M2.T10).
   - Done when: tasks.md complete.
 
 ### M2.T2 — Create the pretel_os database and user
 
-- [ ] **M2.T2.1** Create dedicated DB user for pretel-os.
+- [x] **M2.T2.1** Create dedicated DB user for pretel-os.
   - Command: `sudo -u postgres createuser --pwprompt pretel_os` (strong password stored in `.env.pretel_os`).
   - Done when: user exists.
-- [ ] **M2.T2.2** Create the `pretel_os` database owned by this user.
+- [x] **M2.T2.2** Create the `pretel_os` database owned by this user.
   - Command: `sudo -u postgres createdb -O pretel_os pretel_os`.
   - Done when: `psql -U pretel_os -d pretel_os -c 'SELECT 1;'` works.
-- [ ] **M2.T2.3** Update `.env.pretel_os` with the connection string.
+- [x] **M2.T2.3** Update `.env.pretel_os` with the connection string.
   - `DATABASE_URL=postgresql://pretel_os:<password>@127.0.0.1:5432/pretel_os`.
   - Done when: `.env.pretel_os` has correct string, file mode 0600.
 
 ### M2.T3 — Write migration 0001: extensions
 
-- [ ] **M2.T3.1** Create `migrations/0001_extensions.sql` with `CREATE EXTENSION IF NOT EXISTS vector;`, `CREATE EXTENSION IF NOT EXISTS pg_trgm;`, `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";` (for `gen_random_uuid()` if not included by default — usually is in PG16).
+- [x] **M2.T3.1** Create `migrations/0001_extensions.sql` with `CREATE EXTENSION IF NOT EXISTS vector;`, `CREATE EXTENSION IF NOT EXISTS pg_trgm;`, `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";` (for `gen_random_uuid()` if not included by default — usually is in PG16).
   - Done when: file exists, runs cleanly against the empty DB.
 
 ### M2.T4 — Write migrations 0002-0017 (Phase-1 tables)
 
 Map each migration file to the DATA_MODEL section. Each migration runs independently; each is idempotent via `CREATE TABLE IF NOT EXISTS`. Each creates the table AND its indexes.
 
-- [ ] **M2.T4.1** Migration `0002_lessons.sql` — per DATA_MODEL §2.1 including `lesson_status` enum, `lessons` table, all indexes (bucket+status partial, applicable_buckets GIN, project, tags GIN, related_tools GIN, category, utility_score, title trgm), HNSW vector index (partial status='active').
-- [ ] **M2.T4.2** Migration `0003_tools_catalog.sql` — per DATA_MODEL §2.2 including `catalog_kind` enum, `tools_catalog` table, indexes (kind, buckets GIN, utility partial, client_id partial), HNSW (partial non-deprecated non-archived).
-- [ ] **M2.T4.3** Migration `0004_projects_indexed.sql` — per DATA_MODEL §2.3.
-- [ ] **M2.T4.4** Migration `0005_project_state.sql` — per DATA_MODEL §2.4 including `related_lessons UUID[]` column and related indexes.
-- [ ] **M2.T4.5** Migration `0006_project_versions.sql` — per DATA_MODEL §2.5.
-- [ ] **M2.T4.6** Migration `0007_skill_versions.sql` — per DATA_MODEL §2.6.
-- [ ] **M2.T4.7** Migration `0008_conversations_indexed.sql` — per DATA_MODEL §3.1.
-- [ ] **M2.T4.8** Migration `0009_conversation_sessions.sql` — per DATA_MODEL §4.6.
-- [ ] **M2.T4.9** Migration `0010_cross_pollination_queue.sql` — per DATA_MODEL §3.2 (includes `confidence_score`, `impact_score` columns).
-- [ ] **M2.T4.10** Migration `0011_routing_logs_partitioned.sql` — per DATA_MODEL §4.1, with `PARTITION BY RANGE (created_at)` and explicit monthly partition for current month + next month.
-- [ ] **M2.T4.11** Migration `0012_usage_logs_partitioned.sql` — per DATA_MODEL §4.2, partitioned.
-- [ ] **M2.T4.12** Migration `0013_llm_calls_partitioned.sql` — per DATA_MODEL §4.3, partitioned.
-- [ ] **M2.T4.13** Migration `0014_pending_embeddings.sql` — per DATA_MODEL §4.4.
-- [ ] **M2.T4.14** Migration `0015_reflection_pending.sql` — per DATA_MODEL §4.5.
-- [ ] **M2.T4.15** Migration `0016_scout_denylist.sql` — per DATA_MODEL §6.7.
-- [ ] **M2.T4.16** Migration `0017_control_registry.sql` — per DATA_MODEL §5.6.
+- [x] **M2.T4.1** Migration `0002_lessons.sql` — per DATA_MODEL §2.1 including `lesson_status` enum, `lessons` table, all indexes (bucket+status partial, applicable_buckets GIN, project, tags GIN, related_tools GIN, category, utility_score, title trgm), HNSW vector index (partial status='active').
+- [x] **M2.T4.2** Migration `0003_tools_catalog.sql` — per DATA_MODEL §2.2 including `catalog_kind` enum, `tools_catalog` table, indexes (kind, buckets GIN, utility partial, client_id partial), HNSW (partial non-deprecated non-archived).
+- [x] **M2.T4.3** Migration `0004_projects_indexed.sql` — per DATA_MODEL §2.3.
+- [x] **M2.T4.4** Migration `0005_project_state.sql` — per DATA_MODEL §2.4 including `related_lessons UUID[]` column and related indexes.
+- [x] **M2.T4.5** Migration `0006_project_versions.sql` — per DATA_MODEL §2.5.
+- [x] **M2.T4.6** Migration `0007_skill_versions.sql` — per DATA_MODEL §2.6.
+- [x] **M2.T4.7** Migration `0008_conversations_indexed.sql` — per DATA_MODEL §3.1.
+- [x] **M2.T4.8** Migration `0009_conversation_sessions.sql` — per DATA_MODEL §4.6.
+- [x] **M2.T4.9** Migration `0010_cross_pollination_queue.sql` — per DATA_MODEL §3.2 (includes `confidence_score`, `impact_score` columns).
+- [x] **M2.T4.10** Migration `0011_routing_logs_partitioned.sql` — per DATA_MODEL §4.1, with `PARTITION BY RANGE (created_at)` and explicit monthly partition for current month + next month.
+- [x] **M2.T4.11** Migration `0012_usage_logs_partitioned.sql` — per DATA_MODEL §4.2, partitioned.
+- [x] **M2.T4.12** Migration `0013_llm_calls_partitioned.sql` — per DATA_MODEL §4.3, partitioned.
+- [x] **M2.T4.13** Migration `0014_pending_embeddings.sql` — per DATA_MODEL §4.4.
+- [x] **M2.T4.14** Migration `0015_reflection_pending.sql` — per DATA_MODEL §4.5.
+- [x] **M2.T4.15** Migration `0016_scout_denylist.sql` — per DATA_MODEL §6.7.
+- [x] **M2.T4.16** Migration `0017_control_registry.sql` — per DATA_MODEL §5.6.
 
 Each task above is done when:
 - SQL file exists, reviewed against DATA_MODEL section.
@@ -440,12 +440,12 @@ Each task above is done when:
 
 ### M2.T5 — Write migration 0018: Phase-2 tables
 
-- [ ] **M2.T5.1** `0018_phase2_tables.sql` — creates `patterns`, `decisions`, `gotchas`, `contacts`, `ideas` per DATA_MODEL §5.1-5.5. Bundle into one migration because they're deferred-deployment Phase-2 tables.
+- [x] **M2.T5.1** `0018_phase2_tables.sql` — creates `patterns`, `decisions`, `gotchas`, `contacts`, `ideas` per DATA_MODEL §5.1-5.5. Bundle into one migration because they're deferred-deployment Phase-2 tables.
   - Done when: migration runs, all 5 tables exist.
 
 ### M2.T6 — Write migration 0019: functions and triggers
 
-- [ ] **M2.T6.1** `0019_functions_triggers.sql` contains:
+- [x] **M2.T6.1** `0019_functions_triggers.sql` contains:
   - `set_updated_at()` trigger function per DATA_MODEL §6.1.
   - `auto_index_on_insert()` trigger per DATA_MODEL §6.2 (writes to `pending_embeddings`).
   - `find_duplicate_lesson()` function per DATA_MODEL §6.3.
@@ -459,12 +459,12 @@ Each task above is done when:
 
 ### M2.T7 — Write migration 0020: Scout safety trigger
 
-- [ ] **M2.T7.1** `0020_scout_safety_trigger.sql` — creates `scout_safety_check()` function and `trg_scout_safety_lessons` trigger per DATA_MODEL §6.7.
+- [x] **M2.T7.1** `0020_scout_safety_trigger.sql` — creates `scout_safety_check()` function and `trg_scout_safety_lessons` trigger per DATA_MODEL §6.7.
   - Done when: trigger fires correctly on test insert (insert a fake Scout-tagged lesson with a known denylist term → trigger raises exception → remove term → insert succeeds).
 
 ### M2.T8 — Write migration 0021: views
 
-- [ ] **M2.T8.1** `0021_views.sql` — all views from DATA_MODEL §7:
+- [x] **M2.T8.1** `0021_views.sql` — all views from DATA_MODEL §7:
   - `v_tool_utility_leaderboard`
   - `v_lessons_pending_review_count`
   - `v_crosspoll_inbox`
@@ -474,35 +474,35 @@ Each task above is done when:
 
 ### M2.T9 — Write migrations 0022-0023: seeds
 
-- [ ] **M2.T9.1** `0022_seed_tools_catalog.sql` — empty for now. The 10 skills get registered in Module 7, not here. This migration exists as a placeholder so Module 7 can append to it or add a new migration.
+- [x] **M2.T9.1** `0022_seed_tools_catalog.sql` — empty for now. The 10 skills get registered in Module 7, not here. This migration exists as a placeholder so Module 7 can append to it or add a new migration.
   - Done when: file exists with only a comment explaining its role.
-- [ ] **M2.T9.2** `0023_seed_control_registry.sql` — inserts the 6 seed controls per DATA_MODEL §5.6 example comments.
+- [x] **M2.T9.2** `0023_seed_control_registry.sql` — inserts the 6 seed controls per DATA_MODEL §5.6 example comments.
   - Values: scout_audit (90d), restore_drill (90d), key_rotation_anthropic (180d), key_rotation_openai (180d), pricing_verification (90d), uptime_review (30d).
   - Done when: migration runs, `SELECT control_name, cadence_days FROM control_registry` returns 6 rows.
 
 ### M2.T10 — Migration runner + schema_migrations table
 
-- [ ] **M2.T10.1** Create `migrations/0000_schema_migrations.sql` for the tracking table per DATA_MODEL §9.2.
+- [x] **M2.T10.1** Create `migrations/0000_schema_migrations.sql` for the tracking table per DATA_MODEL §9.2.
   - Done when: table created.
-- [ ] **M2.T10.2** Create `infra/db/migrate.py` — a simple Python runner that reads migrations in order, applies only unapplied ones (checks `schema_migrations`), records checksums.
+- [x] **M2.T10.2** Create `infra/db/migrate.py` — a simple Python runner that reads migrations in order, applies only unapplied ones (checks `schema_migrations`), records checksums.
   - Done when: script works, runs all 23 migrations, `SELECT * FROM schema_migrations` shows 23 rows.
-- [ ] **M2.T10.3** Document migration procedure in `runbooks/migrations.md`:
+- [x] **M2.T10.3** Document migration procedure in `runbooks/migrations.md`:
   - How to add a new migration (numbering convention, forward-only rule).
   - How to rollback (inverse migration, never editing applied ones).
   - Done when: runbook exists.
 
 ### M2.T11 — Populate scout_denylist
 
-- [ ] **M2.T11.1** Operator authors denylist patterns locally — patterns specific to Scout Motors vocabulary that must never appear in the Scout bucket.
+- [x] **M2.T11.1** Operator authors denylist patterns locally — patterns specific to Scout Motors vocabulary that must never appear in the Scout bucket.
   - Example patterns: specific supplier names, product codenames, internal cost codes, proprietary specs.
   - Store as YAML file in `infra/provisioning/scout_denylist_seed.yaml` (operator-private; NOT committed to repo — add to `.gitignore`).
   - Done when: YAML file has ≥ 10 patterns.
-- [ ] **M2.T11.2** Script at `infra/db/load_scout_denylist.py` reads YAML, inserts to DB.
+- [x] **M2.T11.2** Script at `infra/db/load_scout_denylist.py` reads YAML, inserts to DB.
   - Done when: `SELECT count(*) FROM scout_denylist` returns correct count.
 
 ### M2.T12 — Health check script
 
-- [ ] **M2.T12.1** Create `infra/db/health_check.py` that verifies:
+- [x] **M2.T12.1** Create `infra/db/health_check.py` that verifies:
   - All 21 tables exist.
   - All expected functions and triggers exist.
   - All expected indexes exist.
@@ -514,9 +514,9 @@ Each task above is done when:
 
 ### M2.T13 — Exit gate verification
 
-- [ ] **M2.T13.1** Run `infra/db/health_check.py` — all checks pass.
-- [ ] **M2.T13.2** Update `runbooks/module_2_data_layer.md` with DB admin procedures (connect, backup, restore, add column, reindex).
-- [ ] **M2.T13.3** Commit with message "feat(M2): data layer complete — 21 tables, partitions, scout_denylist seeded".
+- [x] **M2.T13.1** Run `infra/db/health_check.py` — all checks pass.
+- [x] **M2.T13.2** Update `runbooks/module_2_data_layer.md` with DB admin procedures (connect, backup, restore, add column, reindex).
+- [x] **M2.T13.3** Commit with message "feat(M2): data layer complete — 21 tables, partitions, scout_denylist seeded".
 - [ ] **M2.T13.4** Tag `module-2-complete`.
 
 **Exit Module 2.**
@@ -531,13 +531,13 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 3`, `docs/INTEGRATIONS.md §11
 
 ### M3.T1 — Write the module spec
 
-- [ ] **M3.T1.1** `specs/mcp_server_v0/spec.md` — per template.
-- [ ] **M3.T1.2** `specs/mcp_server_v0/plan.md` — phases: A scaffolding, B tool impl, C auth, D deploy, E client connect, F verification.
-- [ ] **M3.T1.3** `specs/mcp_server_v0/tasks.md` — detailed atomic list.
+- [x] **M3.T1.1** `specs/mcp_server_v0/spec.md` — per template.
+- [x] **M3.T1.2** `specs/mcp_server_v0/plan.md` — phases: A scaffolding, B tool impl, C auth, D deploy, E client connect, F verification.
+- [x] **M3.T1.3** `specs/mcp_server_v0/tasks.md` — detailed atomic list.
 
 ### M3.T2 — Scaffold the MCP server codebase
 
-- [ ] **M3.T2.1** Create `src/mcp_server/` directory with Python package structure:
+- [x] **M3.T2.1** Create `src/mcp_server/` directory with Python package structure:
   - `__init__.py`
   - `main.py` — FastMCP app entry point.
   - `auth.py` — X-Pretel-Auth middleware.
@@ -545,28 +545,28 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 3`, `docs/INTEGRATIONS.md §11
   - `db.py` — Postgres connection pool, lazy init.
   - `config.py` — reads env vars.
   - Done when: directory structure exists.
-- [ ] **M3.T2.2** Create `src/mcp_server/requirements.txt` with pinned versions:
+- [x] **M3.T2.2** Create `src/mcp_server/requirements.txt` with pinned versions:
   - `fastmcp==<current-pinned-version>`
   - `psycopg[pool,binary]==3.2.*`
   - `anthropic==<current>`
   - `openai==<current>`
   - `python-dotenv`
   - Done when: file exists with pins.
-- [ ] **M3.T2.3** Create venv and install deps.
+- [x] **M3.T2.3** Create venv and install deps.
   - Command: `python3 -m venv /home/operator/.venvs/pretel-os && /home/operator/.venvs/pretel-os/bin/pip install -r requirements.txt`.
   - Done when: `pip list` shows all deps installed.
 
 ### M3.T3 — Implement auth middleware
 
-- [ ] **M3.T3.1** `auth.py` implements FastMCP middleware that reads `X-Pretel-Auth` header and compares to `MCP_SHARED_SECRET` using `hmac.compare_digest`.
+- [x] **M3.T3.1** `auth.py` implements FastMCP middleware that reads `X-Pretel-Auth` header and compares to `MCP_SHARED_SECRET` using `hmac.compare_digest`.
   - 401 on mismatch. Logs auth_failed to `routing_logs` (only request_id + reason).
   - Done when: unit test passes for valid + invalid secrets + missing header.
-- [ ] **M3.T3.2** Integrate middleware into FastMCP app in `main.py`.
+- [x] **M3.T3.2** Integrate middleware into FastMCP app in `main.py`.
   - Done when: starting server without header → any request returns 401.
 
 ### M3.T4 — Implement lazy DB initialization
 
-- [ ] **M3.T4.1** `db.py` exposes `get_pool()` and `is_healthy()`.
+- [x] **M3.T4.1** `db.py` exposes `get_pool()` and `is_healthy()`.
   - `get_pool()` returns psycopg connection pool, initialized on first call.
   - Background task refreshes `_db_healthy` global every 30s via SELECT 1.
   - On startup, DB is NOT required — `main.py` starts regardless.
@@ -576,13 +576,13 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 3`, `docs/INTEGRATIONS.md §11
 
 For each tool: code, unit tests, register with FastMCP, document in docstring (used by `tool_search`).
 
-- [ ] **M3.T5.1** `get_context(message: str, session_id: str | None = None)` — stub version for M3. Returns just L0 (reads `identity.md` from disk). Full Router lives in M4. Logs to `routing_logs`.
-- [ ] **M3.T5.2** `search_lessons(query: str, bucket: str | None = None, tags: list | None = None, limit: int = 5, include_archived: bool = False)` — embeds query, filter-first + HNSW search.
-- [ ] **M3.T5.3** `save_lesson(title, content, bucket, tags, category, severity: str | None = None, applicable_buckets: list | None = None, related_tools: list | None = None)` — inserts with `status='pending_review'`. Pre-save dedup via `find_duplicate_lesson()`. Auto-approval per CONSTITUTION §5.2 rule 13.
-- [ ] **M3.T5.4** `register_skill(name, description_short, description_full, applicable_buckets, skill_file_path)` — inserts to `tools_catalog`, appends line to L0 `identity.md`.
-- [ ] **M3.T5.5** `register_tool(name, description_short, description_full, applicable_buckets)` — similar to register_skill but for `kind='tool'`.
-- [ ] **M3.T5.6** `load_skill(name)` — reads the markdown at `skill_file_path` from tools_catalog row, returns content.
-- [ ] **M3.T5.7** `tool_search(query)` — returns tool definitions (signature, docs) matching query. Per CONSTITUTION §9 rule 38.
+- [x] **M3.T5.1** `get_context(message: str, session_id: str | None = None)` — stub version for M3. Returns just L0 (reads `identity.md` from disk). Full Router lives in M4. Logs to `routing_logs`.
+- [x] **M3.T5.2** `search_lessons(query: str, bucket: str | None = None, tags: list | None = None, limit: int = 5, include_archived: bool = False)` — embeds query, filter-first + HNSW search.
+- [x] **M3.T5.3** `save_lesson(title, content, bucket, tags, category, severity: str | None = None, applicable_buckets: list | None = None, related_tools: list | None = None)` — inserts with `status='pending_review'`. Pre-save dedup via `find_duplicate_lesson()`. Auto-approval per CONSTITUTION §5.2 rule 13.
+- [x] **M3.T5.4** `register_skill(name, description_short, description_full, applicable_buckets, skill_file_path)` — inserts to `tools_catalog`, appends line to L0 `identity.md`.
+- [x] **M3.T5.5** `register_tool(name, description_short, description_full, applicable_buckets)` — similar to register_skill but for `kind='tool'`.
+- [x] **M3.T5.6** `load_skill(name)` — reads the markdown at `skill_file_path` from tools_catalog row, returns content.
+- [x] **M3.T5.7** `tool_search(query)` — returns tool definitions (signature, docs) matching query. Per CONSTITUTION §9 rule 38.
 
 Each tool done when:
 - Code passes unit test against a test DB.
@@ -592,29 +592,29 @@ Each tool done when:
 
 ### M3.T6 — Health endpoint
 
-- [ ] **M3.T6.1** Add `GET /health` route returning `{"status": "ok", "db_healthy": <bool>}`.
+- [x] **M3.T6.1** Add `GET /health` route returning `{"status": "ok", "db_healthy": <bool>}`.
   - Per CONSTITUTION §8.43(a), always returns 200 when MCP server is up, even if DB is down.
   - Done when: `curl http://localhost:8787/health` returns JSON.
 
 ### M3.T7 — systemd unit
 
-- [ ] **M3.T7.1** Create `infra/systemd/pretel-os-mcp.service`:
+- [x] **M3.T7.1** Create `infra/systemd/pretel-os-mcp.service`:
   - User service on operator user.
   - EnvironmentFile=/home/operator/.env.pretel_os.
   - ExecStart=/home/operator/.venvs/pretel-os/bin/python -m mcp_server.main.
   - Restart=on-failure, RestartSec=5s.
   - Done when: unit file exists.
-- [ ] **M3.T7.2** Install and start.
+- [x] **M3.T7.2** Install and start.
   - `systemctl --user daemon-reload && systemctl --user enable --now pretel-os-mcp`.
   - Done when: `systemctl --user status pretel-os-mcp` shows active (running).
-- [ ] **M3.T7.3** Verify auto-start at boot — `sudo loginctl enable-linger operator` ensures user services run without login.
+- [x] **M3.T7.3** Verify auto-start at boot — `sudo loginctl enable-linger operator` ensures user services run without login.
   - Done when: reboot, service comes back up.
 
 ### M3.T8 — Cloudflare Tunnel ingress
 
-- [ ] **M3.T8.1** Update `/etc/cloudflared/config.yml` ingress to route `mcp.alfredopretelvargas.com` → `http://localhost:8787`.
+- [x] **M3.T8.1** Update `/etc/cloudflared/config.yml` ingress to route `mcp.alfredopretelvargas.com` → `http://localhost:8787`.
   - Done when: `sudo systemctl restart cloudflared` and `dig mcp.alfredopretelvargas.com` resolves.
-- [ ] **M3.T8.2** Verify DNS CNAME in IONOS points `mcp` subdomain to `<tunnel-UUID>.cfargotunnel.com`.
+- [x] **M3.T8.2** Verify DNS CNAME in IONOS points `mcp` subdomain to `<tunnel-UUID>.cfargotunnel.com`.
   - Done when: `curl -f https://mcp.alfredopretelvargas.com/health` returns 200 from ANY machine (not just operator's).
 
 ### M3.T9 — UptimeRobot monitoring
@@ -629,7 +629,7 @@ Each tool done when:
 
 ### M3.T10 — Write identity.md (L0 content)
 
-- [ ] **M3.T10.1** Author `identity.md` at repo root per `plan.md §7.6`:
+- [x] **M3.T10.1** Author `identity.md` at repo root per `plan.md §7.6`:
   - Operator identity (name, location, timezone, languages).
   - Bucket names + 1-line descriptions.
   - Tool catalog entries (1-line each for the 6 tools registered above — the `register_skill`/`register_tool` tools will append to this file automatically as more are added).
@@ -638,7 +638,7 @@ Each tool done when:
 
 ### M3.T11 — Write AGENTS.md
 
-- [ ] **M3.T11.1** Author `AGENTS.md` per `plan.md §7.6`:
+- [x] **M3.T11.1** Author `AGENTS.md` per `plan.md §7.6`:
   - Reading order for LLMs coming into the repo.
   - Inline the 9 agent rules from CONSTITUTION §9.
   - Directory map (copy from `plan.md §3`).
@@ -646,27 +646,27 @@ Each tool done when:
 
 ### M3.T12 — Client connection tests
 
-- [ ] **M3.T12.1** Configure Claude.ai connector:
+- [x] **M3.T12.1** Configure Claude.ai connector:
   - Settings → Connectors → Add custom MCP.
   - URL: `https://mcp.alfredopretelvargas.com`.
   - Custom headers: `X-Pretel-Auth: <value from .env>`.
   - Done when: Claude.ai shows "Connected" for this connector.
-- [ ] **M3.T12.2** Test `get_context` from Claude.ai.
+- [x] **M3.T12.2** Test `get_context` from Claude.ai.
   - Ask: "what's my current state per pretel-os?"
   - Expected: response grounded in identity.md content.
   - Done when: response is sensible.
-- [ ] **M3.T12.3** Configure Claude Code `~/.config/claude/mcp.json` with same URL + header.
+- [x] **M3.T12.3** Configure Claude Code `~/.config/claude/mcp.json` with same URL + header.
   - Done when: `claude` CLI shows pretel-os tools available.
-- [ ] **M3.T12.4** Test a tool via Claude Code.
+- [x] **M3.T12.4** Test a tool via Claude Code.
   - Command: `claude "save a test lesson: 'pretel-os MCP is alive' with tag test"`.
   - Verify via psql: `SELECT title FROM lessons WHERE 'test' = ANY(tags)`.
   - Done when: lesson saved with `status='pending_review'`.
 
 ### M3.T13 — Exit gate verification
 
-- [ ] **M3.T13.1** Run all smoke tests: save_lesson, search_lessons, get_context all succeed.
-- [ ] **M3.T13.2** Write `runbooks/module_3_mcp_server.md` — deploy procedure, restart, rollback.
-- [ ] **M3.T13.3** Commit + tag `module-3-complete`.
+- [x] **M3.T13.1** Run all smoke tests: save_lesson, search_lessons, get_context all succeed.
+- [x] **M3.T13.2** Write `runbooks/module_3_mcp_server.md` — deploy procedure, restart, rollback.
+- [x] **M3.T13.3** Commit + tag `module-3-complete`.
 
 **Exit Module 3.**
 

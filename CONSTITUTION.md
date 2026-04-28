@@ -43,7 +43,7 @@ The system exposes exactly five context layers. No layer may be added, split, me
 
 | Layer | Name | Source | Contents | Budget | Load rule |
 |-------|------|--------|----------|-------:|-----------|
-| L0 | Identity | Git (`identity.md`) | Operator identity, bucket names, tool catalog names, meta-rules | 500 tok | Always |
+| L0 | Identity | Git (`identity.md`) | Operator identity, bucket names, tool catalog names, meta-rules | 1,200 tok | Always |
 | L1 | Bucket | Git (`buckets/{bucket}/README.md` + sub-bucket files when present) | Bucket purpose, project index (recent + sub-bucket pointers), bucket rules | 1,500 tok | When bucket classified |
 | L2 | Project | Git (`buckets/{bucket}/projects/{project}/`) | Project README + state +, for multi-module projects, the specific module file | 2,000 tok | When project classified |
 | L3 | Skill / Procedural | Git (`skills/{skill}.md`) | Full methodology of a reusable skill | 4,000 tok | On-demand, when skill classified |
@@ -206,7 +206,7 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
                   + manual_boost
     ```
     Recomputed nightly by the Dream Engine (§2.6). The Router uses utility score + semantic similarity to rank recommendations. Ties break toward higher cross-bucket reach (favor reusable tools).
-19. **Tools are surfaced by name in L0 and by detail via MCP.** L0 holds only tool names and one-line descriptions (fits in the 500 tok budget). When a tool is needed, the agent calls `load_skill(name)` to retrieve full procedural memory (L3). This prevents L0 bloat as the catalog grows.
+19. **Tools are surfaced by name in L0 and by detail via MCP.** L0 holds only tool names and one-line descriptions (fits in the 1,200 tok budget). When a tool is needed, the agent calls `load_skill(name)` to retrieve full procedural memory (L3). This prevents L0 bloat as the catalog grows.
 
 ### 5.4 Cross-pollination
 
@@ -269,7 +269,7 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
 
     **Write-time token budget enforcement.** A pre-commit hook at `infra/hooks/pre-commit-token-budget.sh` counts tokens (via `tiktoken` with the `cl100k_base` encoding for ballpark parity with Claude tokenization) on every modified markdown file and blocks the commit if any layer exceeds its budget:
 
-    - L0 `identity.md` > 500 tokens → commit blocked
+    - L0 `identity.md` > 1,200 tokens → commit blocked
     - L1 `buckets/{b}/README.md` > 1,500 tokens → commit blocked (signals time to sub-bucket per §2.3)
     - L2 `buckets/{b}/projects/{p}/README.md` > 2,000 tokens → commit blocked (signals time to split into modules)
     - L3 `skills/*.md` > 4,000 tokens → commit blocked (signals time to split the skill)
