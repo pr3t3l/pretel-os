@@ -95,8 +95,10 @@ they slip through.
 
 ### A.6 — Tests
 
-- [ ] **A.6.1** Write `tests/router/test_classifier.py` happy-path tests against all 10 examples in `classification_examples.md`. Use the live LiteLLM proxy (integration test, not mocked). → M4.T2.2
+- [x] **A.6.1** Write `tests/router/test_classifier.py` happy-path tests against all 10 examples in `classification_examples.md`. Use the live LiteLLM proxy (integration test, not mocked). → M4.T2.2
   - Done when: `pytest tests/router/test_classifier.py::test_examples -v` passes 10/10.
+  - Implemented as `tests/router/test_classifier_eval.py` with `@pytest.mark.eval`. Run via `pytest -m eval`. Report persisted to `tests/router/eval_results/eval_<UTC>.json`. Thresholds: bucket ≥ 0.80, complexity ≥ 0.70, schema_violations = 0.
+  - Cost per run: ~$0.003 against Claude Haiku 4.5.
 
 - [ ] **A.6.2** Write `tests/router/test_classifier.py` failure-mode tests: timeout (mocked), transport error (mocked), malformed JSON (mocked), schema-invalid response (mocked).
   - Done when: each failure mode raises the correct typed exception per A.1.2.

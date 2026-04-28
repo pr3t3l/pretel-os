@@ -34,10 +34,10 @@ What's the street address of the Goose Creek rental?
 
 ---
 
-### Example 2: personal — structured calendar task
+### Example 2: personal — calendar add command
 
 **Bucket coverage:** personal
-**Complexity coverage:** MEDIUM
+**Complexity coverage:** LOW
 **Language:** English
 
 **Input:**
@@ -49,10 +49,10 @@ Add an event to my calendar for my daughter's kindergarten open house next Tuesd
 **Expected output:**
 
 ```json
-{"bucket": "personal", "project": null, "skill": null, "complexity": "MEDIUM", "needs_lessons": false, "confidence": 0.9}
+{"bucket": "personal", "project": null, "skill": null, "complexity": "LOW", "needs_lessons": false, "confidence": 0.9}
 ```
 
-**Reasoning:** "daughter" + "kindergarten" anchors personal bucket; structured calendar action with explicit time and date → MEDIUM; needs_lessons false because the action is mechanical and prior lessons add no value.
+**Reasoning:** "daughter" + "kindergarten" anchors personal bucket; per `classify.txt` LOW rubric ("trivial commands"), a single-step calendar add with explicit time and date is a trivial mechanical command rather than a structured workflow → LOW; needs_lessons false because LOW.
 
 ---
 
@@ -100,10 +100,10 @@ lista las tasks sin completar del Module 4
 
 ---
 
-### Example 5: business — structured task append
+### Example 5: business — task append command
 
 **Bucket coverage:** business
-**Complexity coverage:** MEDIUM
+**Complexity coverage:** LOW
 **Language:** English + Spanish mixed
 
 **Input:**
@@ -115,10 +115,10 @@ agrega una nueva task M5.T2.1 en tasks.md para el Telegram bot scaffold
 **Expected output:**
 
 ```json
-{"bucket": "business", "project": null, "skill": null, "complexity": "MEDIUM", "needs_lessons": false, "confidence": 0.9}
+{"bucket": "business", "project": null, "skill": null, "complexity": "LOW", "needs_lessons": false, "confidence": 0.9}
 ```
 
-**Reasoning:** "tasks.md" + "Telegram bot scaffold" anchors business bucket (pretel-os Module 5); structured edit following the tasks.md format → MEDIUM; needs_lessons false because the action is a mechanical file edit.
+**Reasoning:** "tasks.md" + "Telegram bot scaffold" anchors business bucket (pretel-os Module 5); per `classify.txt` LOW rubric ("trivial commands"), append-one-row to tasks.md is a single-step mechanical command rather than a multi-step workflow → LOW; needs_lessons false because LOW.
 
 ---
 
@@ -213,7 +213,7 @@ Help me think through whether to push back on a new MTM standard a vendor is pro
 ### Example 10: ambiguous — bare opinion request
 
 **Bucket coverage:** ambiguous
-**Complexity coverage:** MEDIUM
+**Complexity coverage:** LOW
 **Language:** Spanish
 
 **Input:**
@@ -225,7 +225,7 @@ qué piensas de esto?
 **Expected output:**
 
 ```json
-{"bucket": null, "project": null, "skill": null, "complexity": "MEDIUM", "needs_lessons": false, "confidence": 0.3}
+{"bucket": null, "project": null, "skill": null, "complexity": "LOW", "needs_lessons": false, "confidence": 0.3}
 ```
 
-**Reasoning:** sin contexto previo el message no aporta signal de bucket; complexity es MEDIUM por defecto (request de opinión sobre algo no especificado); needs_lessons false porque bucket=null.
+**Reasoning:** sin contexto previo el message no aporta signal de bucket; per la rúbrica LOW de `classify.txt` ("short confirmations" / mensajes cortos sin scope), un standalone "qué piensas de esto?" sin objeto referenciado es trivial → LOW; needs_lessons false porque LOW y bucket=null.

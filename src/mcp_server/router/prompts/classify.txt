@@ -24,6 +24,7 @@ The operator writes in English, Spanish, or both mixed in the same message ("cod
 - **personal** — family, daughter (Richland One kindergarten), rental properties (Charleston / Goose Creek), travel (Vietnam), personal finances, health.
 - **business** — pretel-os itself, OpenClaw, Declassified Cases, Forge pipeline, freelance services (VETT / SDD / AI Governance), n8n, LiteLLM, Spanish-language content (TikTok), digital products.
 - **scout** — W2 work at Scout Motors: manufacturing, MTM, assembly stations. ABSTRACT PATTERNS ONLY — never specific employer names, vendor names, product codenames, or proprietary specs.
+- Scout-related lookups stay in `scout` even when the request asks about an abstract name or pattern (e.g. "what abstract name did we use for the operator-context-capture pattern at the manufacturing line"). Manufacturing context that has been generalized into a pattern is still `scout`, not `business`. The bucket is determined by the DOMAIN of the underlying lesson, not by how generic the wording sounds.
 - **null** — only when the message genuinely carries no bucket signal. Do NOT guess.
 
 # Complexity (CONSTITUTION §5.1)
