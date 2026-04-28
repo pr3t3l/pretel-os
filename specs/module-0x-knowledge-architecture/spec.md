@@ -153,7 +153,7 @@ Atomic update via `INSERT ... ON CONFLICT (category, key, scope) DO UPDATE`. No 
 ```sql
 CREATE TABLE router_feedback (
   id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  request_id          uuid REFERENCES routing_logs(request_id) ON DELETE SET NULL,
+  request_id          text,                                      -- soft reference to routing_logs.request_id (no FK)
   feedback_type       text NOT NULL
                       CHECK (feedback_type IN ('missing_context','wrong_bucket','wrong_complexity','irrelevant_lessons','too_much_context','low_quality_response')),
   operator_note       text,
@@ -164,6 +164,8 @@ CREATE TABLE router_feedback (
   applied_at          timestamptz,
   created_at          timestamptz NOT NULL DEFAULT now()
 );
+
+**Soft reference rationale (added 2026-04-28 during M0X.A.3):** `request_id` is `text` (not `uuid`) to match the actual type of `routing_logs.request_id`, which was declared `text` in Module 2 to accommodate non-UUID identifiers from some MCP clients. PostgreSQL FK targets require a UNIQUE or PRIMARY KEY constraint, but `routing_logs` is partitioned by `created_at` and any unique constraint on a partitioned table must include the partition key — so the only legal hard FK would be a compound `(request_id, created_at)` reference, which adds noise to every `router_feedback` insert for marginal value. Since `ON DELETE SET NULL` already accepted orphans after retention purge, the FK was always semantically soft. We make this explicit by removing the FK constraint and accepting referential integrity as best-effort. Record-time validation can be added at the MCP tool layer (`router_feedback_record`) if needed.
 
 CREATE INDEX idx_router_feedback_status ON router_feedback(status);
 CREATE INDEX idx_router_feedback_request ON router_feedback(request_id);
