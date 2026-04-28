@@ -203,6 +203,7 @@ These decisions are load-bearing. Changing them breaks other decisions. Do not s
 - **MCP Router as single gateway** — moving routing to clients breaks portability promise. See `CONSTITUTION §2.2`, `LESSONS_LEARNED LL-ARCH-001`.
 - **Git/DB strict boundary** — dual-homing is forbidden. See `CONSTITUTION §2.4`, `LESSONS_LEARNED LL-ARCH-003`.
 - **MCP_SHARED_SECRET required from Phase 1** — Option A was chosen explicitly over Tailscale-only. See `INTEGRATIONS §11.1`.
+- **Router classifier calls LiteLLM aliases, not Anthropic / OpenAI directly.** The classifier (and `second_opinion`) hit `classifier_default` / `second_opinion_default` on the LiteLLM proxy. Swapping the underlying model is a config change in `~/.litellm/config.yaml`, not a code change. Do not hardwire `model="claude-..."` or `model="gpt-..."` in Router code.
 
 If you think one of these needs reconsideration, it requires a **constitutional amendment** — a full ADR with the specific failure mode documented. Not a casual suggestion mid-chat.
 
@@ -282,10 +283,11 @@ Next task: M4.T1.1
 Tailscale IP: 100.94.235.92
 Cloudflare Tunnel: pretel-os HEALTHY, mcp.alfredopretelvargas.com
 MCP server: 7 tools, open auth (TODO OAuth)
-Postgres: password rotated
-n8n: password rotated
+LiteLLM: 2 healthy endpoints (classifier_default, second_opinion_default), both on gemini-2.5-flash
+Postgres: password rotated (no longer pretel_os_temp_2026)
+n8n: password rotated (no longer changeme_replace_this)
 Commits on main: 14
-Tags: foundation-v1.0, module-3-complete
+Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
 ```
 
 ---
