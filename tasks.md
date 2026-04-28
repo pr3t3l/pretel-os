@@ -686,14 +686,19 @@ Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 
 ### M4.T2 — Classification prompt engineering
 
-- [ ] **M4.T2.1** Author Haiku classification prompt in `src/mcp_server/router/prompts/classify.txt`.
+- [ ] **M4.T2.1** Author provider-agnostic classification prompt in `src/mcp_server/router/prompts/classify.txt`.
   - Input: user message + current L0 + current session context.
   - Output: JSON with `bucket`, `project`, `skill`, `complexity` (LOW/MEDIUM/HIGH), `needs_lessons` (bool), `confidence` (0.0-1.0).
-  - Done when: prompt exists, 10 test examples in `tests/router/classification_examples.md` all classified correctly.
-- [ ] **M4.T2.2** Implement `classifier.py` — calls Haiku via Anthropic SDK, parses JSON response, handles parse errors with fallback rules.
-  - Done when: unit tests pass.
-- [ ] **M4.T2.3** Prompt caching — system prompt is static, cache it per INTEGRATIONS §2.6.
-  - Done when: second classification call shows `cache_read_tokens > 0` in llm_calls.
+  - Constraint: prompt must produce valid JSON across providers (Gemini, Claude, GPT, Kimi). Avoid provider-specific syntax.
+  - Done when: prompt exists, 10 test examples in `tests/router/classification_examples.md` all classified correctly using `classifier_default`.
+- [ ] **M4.T2.2** Implement `classifier.py` — calls LiteLLM proxy via OpenAI-compatible client (`openai.OpenAI(base_url='http://127.0.0.1:4000', api_key=$LITELLM_API_KEY)`), targets `model='classifier_default'`, parses JSON response, handles parse errors with fallback rules.
+  - Logs every call to `llm_calls` with `purpose='classification'`, `model=<concrete-model-from-response>`, `input_tokens`, `output_tokens`, `cost_usd`, `latency_ms`, `request_id`.
+  - Done when: unit tests pass; integration test classifies one real message and writes one row to `llm_calls`.
+- [ ] **M4.T2.3** Telemetry-first cost discipline. Per ADR-020, no in-code caching layer in Module 4.
+  - Keep classifier prompt under 2k tokens.
+  - Provider-automatic caching (OpenAI, xAI, Kimi, DeepSeek) applies transparently when LiteLLM routes there.
+  - Anthropic explicit `cache_control` activated per-alias in `~/.litellm/config.yaml` only when monthly classification cost > $5 (queryable via `SELECT model, sum(cost_usd) FROM llm_calls WHERE purpose='classification' AND created_at > now() - interval '30 days' GROUP BY model`).
+  - Done when: dashboard query returns per-model spend with non-null rows.
 
 ### M4.T3 — Layer loader
 
@@ -724,9 +729,10 @@ Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 
 - [ ] **M4.T6.1** `fallback_classifier.py` — pure Python, no LLM.
   - Keyword + regex matching against bucket names, project names from L0.
-  - Returns conservative classification (e.g., `complexity=LOW` when uncertain).
-  - Triggered when Haiku unreachable or over rate limit.
-  - Done when: tests pass with Haiku mocked as failing.
+  - Returns conservative classification (e.g., `complexity=LOW` or `MEDIUM` when uncertain, never `HIGH`).
+  - Triggered when LiteLLM proxy unreachable, the call to `classifier_default` times out, or the response cannot be parsed.
+  - Sets `classification_mode='fallback_rules'`, `confidence=0.4`.
+  - Done when: tests pass with LiteLLM mocked as failing AND with response-parse failure cases.
 
 ### M4.T7 — Client-reported user satisfaction
 
@@ -747,7 +753,7 @@ Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 ### M4.T9 — Exit gate
 
 - [ ] **M4.T9.1** Verify gate from `plan.md §6 Module 4`.
-- [ ] **M4.T9.2** `runbooks/module_4_router.md` — debugging classifications, Haiku outage handling.
+- [ ] **M4.T9.2** `runbooks/module_4_router.md` — debugging classifications, LiteLLM/`classifier_default` outage handling, switching providers via config.yaml.
 - [ ] **M4.T9.3** Commit + tag `module-4-complete`.
 
 **Exit Module 4.**

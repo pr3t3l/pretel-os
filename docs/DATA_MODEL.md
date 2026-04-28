@@ -413,7 +413,7 @@ CREATE TABLE routing_logs (
     client_origin            TEXT NOT NULL,
     message_excerpt          TEXT NOT NULL,                    -- first ~200 chars, for pattern discovery
     classification           JSONB NOT NULL,                   -- {bucket, project, skill, complexity, needs_lessons}
-    classification_mode      TEXT NOT NULL DEFAULT 'haiku',    -- 'haiku' | 'fallback_rules'
+    classification_mode      TEXT NOT NULL DEFAULT 'llm',      -- 'llm' (via LiteLLM alias classifier_default) | 'fallback_rules' (regex over L0)
     layers_loaded            TEXT[] NOT NULL,                  -- ['L0', 'L1', 'L2', 'L4']
     tokens_assembled_total   INTEGER NOT NULL,                 -- total context bundle returned to client
     tokens_per_layer         JSONB NOT NULL DEFAULT '{}',      -- {'L0': 480, 'L1': 1200, ...}
@@ -423,7 +423,7 @@ CREATE TABLE routing_logs (
     lessons_returned         INTEGER NOT NULL DEFAULT 0,
     tools_returned           INTEGER NOT NULL DEFAULT 0,
     source_conflicts         JSONB NOT NULL DEFAULT '[]',      -- [{topic, winning_source, losing_sources}] when source priority §2.7 engaged
-    user_satisfaction        SMALLINT,                          -- optional 1-5 feedback from client/operator; feeds Dream Engine's Haiku tuning
+    user_satisfaction        SMALLINT,                          -- optional 1-5 feedback from client/operator; feeds Dream Engine's classifier-quality tuning per llm_calls.model
     degraded_mode            BOOLEAN NOT NULL DEFAULT false,
     degraded_reason          TEXT,
     latency_ms               INTEGER NOT NULL,
@@ -482,7 +482,7 @@ Per-call audit of every LLM invocation in the system. Separates input/output tok
 
 ```sql
 CREATE TYPE llm_purpose AS ENUM (
-    'classification',      -- Router Haiku classify
+    'classification',      -- Router classify via LiteLLM alias classifier_default
     'embedding_write',     -- OpenAI embedding on insert
     'embedding_query',     -- OpenAI embedding on retrieval
     'client_reasoning',    -- main Opus/Sonnet response (when reported by client)
@@ -497,7 +497,7 @@ CREATE TABLE llm_calls (
     request_id        TEXT,                              -- joins to routing_logs when call happens mid-request; NULL for background workers
     purpose           llm_purpose NOT NULL,
     provider          TEXT NOT NULL,                     -- 'anthropic' | 'openai'
-    model             TEXT NOT NULL,                     -- 'claude-haiku-4-5-20251001' | 'text-embedding-3-large' | 'claude-opus-4-7' | ...
+    model             TEXT NOT NULL,                     -- concrete model behind the LiteLLM alias: 'gemini/gemini-2.5-flash' | 'claude-haiku-4-5-20251001' | 'text-embedding-3-large' | 'claude-opus-4-7' | ...
     input_tokens      INTEGER NOT NULL DEFAULT 0,
     output_tokens     INTEGER NOT NULL DEFAULT 0,
     cache_read_tokens INTEGER NOT NULL DEFAULT 0,        -- Anthropic prompt caching hits

@@ -112,7 +112,7 @@ Model-to-task mapping per `CONSTITUTION §4.8`:
 | Task | Model | Rationale |
 |------|-------|-----------|
 | Client-side reasoning (what the operator sees) | Claude Opus 4.7 | Best available general reasoning |
-| Router classification (bucket/project/skill/complexity) | Claude Haiku 4.5 | ~$0.0001 per call, fast |
+| Router classification (bucket/project/skill/complexity) | LiteLLM alias `classifier_default` (currently Gemini 2.5 Flash) | Operator-tunable via config.yaml; ~$0.00003 per call at current alias, fast |
 | Reflection worker (transcript analysis, lesson proposal) | Claude Sonnet 4.6 | Balance cost/quality |
 | Embeddings (writes and queries) | OpenAI `text-embedding-3-large` | Industry standard, portable |
 | Morning intelligence synthesis | Existing n8n configuration | Unchanged |
@@ -190,7 +190,7 @@ Everything else from the OpenClaw era is discarded.
 
 Breakdown estimate at steady state (phase 3):
 
-- Haiku classification (Router): ~$2–5
+- Router classification (`classifier_default` via LiteLLM): ~$1–3
 - Embedding writes + queries: ~$1–2
 - Reflection worker (Sonnet): ~$5–10
 - Client-side Opus reasoning: ~$10–20 (operator usage, variable)
@@ -253,11 +253,11 @@ FastMCP server with the minimum tool set to be useful: `get_context`, `search_le
 
 ### Module 4: `router`
 
-The Router per `CONSTITUTION §2.2`: classifier using Haiku 4.5, layer loaders L0–L4, RAG activation logic, token budget enforcement, logging to `routing_logs`. Exposed as the `get_context` tool in the MCP server.
+The Router per `CONSTITUTION §2.2`: classifier via LiteLLM alias `classifier_default` (per ADR-020), layer loaders L0–L4, RAG activation logic, token budget enforcement, logging to `routing_logs` + `llm_calls`. Exposed as the `get_context` tool in the MCP server.
 
 **Blocks:** 5, 6.
 **Estimated duration:** 1 week.
-**Done when:** For a test suite of 20 sample messages across buckets, the Router correctly classifies bucket/project/skill with > 90% accuracy, respects every layer budget, and logs each decision. Cost per classification is measured and under $0.0002.
+**Done when:** For a test suite of 20 sample messages across buckets, the Router correctly classifies bucket/project/skill with > 90% accuracy, respects every layer budget, and logs each decision. Cost per classification is measured and recorded in `llm_calls.cost_usd`.
 
 ### Module 5: `telegram_bot`
 
@@ -485,9 +485,9 @@ Each decision in Architecture Decision Record (ADR) format: Context → Decision
 
 ### ADR-017: Degraded mode for MCP dependency failures
 
-**Context.** The MCP server is the single gateway (ADR-002). A naive implementation would make every dependency outage a full system outage. Postgres unreachable → no context. OpenAI down → no embeddings. Haiku down → no classification. Unacceptable.
+**Context.** The MCP server is the single gateway (ADR-002). A naive implementation would make every dependency outage a full system outage. Postgres unreachable → no context. OpenAI down → no embeddings. Classifier LLM down → no classification. Unacceptable.
 
-**Decision.** Degraded mode is a first-class operating state per `CONSTITUTION §8.43`. Git-only mode serves L0–L3 without the DB. Embedding writes queue to `pending_embeddings` when OpenAI is down. Haiku classification falls back to keyword/regex rules. Morning Intelligence skips with logged incident. Every degraded response carries an explicit flag so the agent surfaces reduced functionality instead of pretending everything works.
+**Decision.** Degraded mode is a first-class operating state per `CONSTITUTION §8.43`. Git-only mode serves L0–L3 without the DB. Embedding writes queue to `pending_embeddings` when OpenAI is down. Classifier LLM (via LiteLLM `classifier_default`) falls back to keyword/regex rules. Morning Intelligence skips with logged incident. Every degraded response carries an explicit flag so the agent surfaces reduced functionality instead of pretending everything works.
 
 **Consequences.** System stays usable during partial outages. Failure modes are enumerable and testable. Cost of implementation is one additional code path per external dependency — acceptable.
 
@@ -513,6 +513,25 @@ Each decision in Architecture Decision Record (ADR) format: Context → Decision
 
 **Date.** 2026-04-18.
 
+### ADR-020: Router and Second Opinion route through LiteLLM proxy aliases
+
+**Context.** ADR-002 (MCP server as single gateway) and the original wording of `CONSTITUTION §2.2` and `§4 rule 8` mandated Haiku 4.5 for Router classification, called via the Anthropic SDK directly. INTEGRATIONS §4.5 reinforced "pretel-os calls Anthropic directly, not through LiteLLM" for Router and Reflection. At end-of-session 2026-04-26 the operator decided to route Router classification and `request_second_opinion` through the existing LiteLLM proxy instead of direct Anthropic SDK calls. Reflection worker alias remains TBD until Module 6 spec.
+
+**Decision.** All MCP-server LLM calls used by the Router and the `request_second_opinion` tool go through LiteLLM proxy aliases:
+- `classifier_default` for Router classification.
+- `second_opinion_default` for the second-opinion tool.
+
+The alias-to-model mapping lives in `~/.litellm/config.yaml` and is operator-tunable (today both point to `gemini/gemini-2.5-flash`). The task-to-alias mapping is immutable without amendment. Reflection worker's alias is deferred to Module 6 spec.
+
+**Consequences.**
+1. The operator can A/B between providers (Anthropic, OpenAI, Gemini, Kimi K2, etc.) by editing `~/.litellm/config.yaml` + `systemctl --user restart litellm`. No code changes.
+2. Provider-specific prompt caching becomes a per-alias optimization, not a code-path concern. Deferred until classification cost exceeds $5/month.
+3. `routing_logs.classification_mode` becomes provider-agnostic (`'llm' | 'fallback_rules'`). The concrete model lives in `llm_calls.model`, joinable via `request_id`.
+4. INTEGRATIONS §4.5 prior wording is reversed for Router and `request_second_opinion` paths.
+5. Telemetry stays unified in `llm_calls` regardless of which provider is currently behind each alias.
+
+**Date.** 2026-04-27.
+
 ---
 
 ## 5.2 Ideas backlog (seeded to `ideas` table during Module 8)
@@ -536,7 +555,7 @@ The following ideas came out of Gemini Strategic Review 2026-04-18 but were not 
 | Automated failover environment: Ansible/docker-compose script to provision pretel-os on Asus Rock or VPS in <15 min | workflow | days | Gemini RISK-002 |
 
 **Deferred-with-rationale (not seeded as ideas, rejected):**
-- Local quantized Haiku router (Gemini OPPORTUNITY-002) — rejected: API cost is $2–5/month; maintaining a local model adds complexity that outweighs savings at current volume.
+- Local quantized router model (Gemini OPPORTUNITY-002) — rejected: API cost via LiteLLM is $1–3/month at current alias; maintaining a local model adds complexity that outweighs savings at current volume.
 - Ollama 8B local DLP for Scout (Gemini challenge 1) — rejected: regex denylist + MCP filter + DB trigger is sufficient defense in depth. Running an 8B model 24/7 for every insert is over-engineering.
 - Redis for queues (Gemini challenge 2) — rejected: `pending_embeddings` + `reflection_pending` as DB-native partitioned tables plus `pg_notify` for wake-up is simpler and sufficient at operator volume.
 

@@ -67,7 +67,7 @@ Source of truth: `infra/timeouts.yaml`. Values below are the Phase-1 defaults; t
 
 | Call | Timeout | Rationale |
 |------|--------:|-----------|
-| Haiku 4.5 classification | 3,000 ms | Classifications are short; anything slower is a signal |
+| Router classification (`classifier_default` via LiteLLM) | 3,000 ms | Classifications are short; anything slower is a signal |
 | Opus 4.7 reasoning | 60,000 ms | Operator-facing; longer waits surface through client UI |
 | Sonnet 4.6 reflection | 30,000 ms | Background; timeout hits fallback queue |
 | OpenAI embedding (single) | 5,000 ms | Fast endpoint, should rarely timeout |
@@ -86,11 +86,12 @@ Source of truth: `infra/timeouts.yaml`. Values below are the Phase-1 defaults; t
 
 ### 2.1 Purpose
 
-Three distinct uses, three distinct models:
+Two distinct uses (per ADR-020 — Router and Second Opinion route via LiteLLM, not directly):
 
-- **Router classification** (Haiku 4.5) — per `CONSTITUTION §4.8`
-- **Reflection worker** (Sonnet 4.6) — per `CONSTITUTION §2.6`
+- **Reflection worker** (Sonnet 4.6 via the alias to be defined in Module 6 spec) — per `CONSTITUTION §2.6`
 - **Client-side reasoning** (Opus 4.7) — not called by pretel-os directly; the client (Claude.ai, Claude Code) handles this. pretel-os only assembles context.
+
+Router classification and `request_second_opinion` no longer call Anthropic directly; they route through LiteLLM proxy. See §4.5.
 
 ### 2.2 Endpoint
 
@@ -111,23 +112,24 @@ Three distinct uses, three distinct models:
 
 | Model ID | Role | Typical input | Typical output |
 |----------|------|--------------:|---------------:|
-| `claude-haiku-4-5-20251001` | Router classifier | ~1,000 tok | ~100 tok |
-| `claude-sonnet-4-6-20250929` | Reflection worker | ~4,000 tok | ~800 tok |
+| `claude-sonnet-4-6-20250929` | Reflection worker (when implemented in Module 6) | ~4,000 tok | ~800 tok |
 
-Note: Opus 4.7 calls happen client-side (Claude.ai / Claude Code charges the operator's subscription), not through pretel-os's API key.
+Notes:
+- Opus 4.7 calls happen client-side (Claude.ai / Claude Code charges the operator's subscription), not through pretel-os's API key.
+- Router classifier no longer uses Anthropic directly. Routes through LiteLLM proxy alias `classifier_default` per ADR-020. The concrete model behind the alias is operator-tunable.
 
 ### 2.5 Rate limits
 
-At Tier 1 (minimum $5 deposit, current operator tier):
+At Tier 1 (minimum $5 deposit, current operator tier) — relevant only when the LiteLLM aliases (`classifier_default`, `second_opinion_default`, future `reflection_default`) point to Anthropic models:
 
-| Limit | Haiku 4.5 | Sonnet 4.6 |
-|-------|----------:|-----------:|
-| Requests per minute | 50 | 50 |
-| Input tokens per minute | ~50,000 | ~30,000 |
-| Output tokens per minute | ~8,000 | ~8,000 |
-| Monthly spend cap | $100 | $100 (shared) |
+| Limit | Sonnet 4.6 (Reflection, when used) |
+|-------|-----------:|
+| Requests per minute | 50 |
+| Input tokens per minute | ~30,000 |
+| Output tokens per minute | ~8,000 |
+| Monthly spend cap | $100 |
 
-For pretel-os Phase 1–3 projected volume (~3,000 classifications/month, ~200 reflections/month), Tier 1 is comfortable. Tier advancement is automatic on cumulative spend.
+Router classifier rate limits depend on the provider currently routed by `classifier_default` (today: Gemini 2.5 Flash via Google API). For pretel-os Phase 1–3 projected volume (~3,000 classifications/month, ~200 reflections/month), all tested providers' Tier-1 limits are comfortable.
 
 ### 2.6 Pricing
 
@@ -136,8 +138,9 @@ For pretel-os Phase 1–3 projected volume (~3,000 classifications/month, ~200 r
 | Haiku 4.5 | $1.00 | $5.00 | $0.10 (est. 90% discount) |
 | Sonnet 4.6 | $3.00 | $15.00 | $0.30 |
 | Opus 4.7 (client-side) | ~$5.00 | ~$25.00 | ~$0.50 |
+| Gemini 2.5 Flash (currently behind `classifier_default` and `second_opinion_default`) | $0.075 | $0.30 | n/a (cache mín 32k tok) |
 
-Prompt caching is ~90% off cached input tokens with a TTL. The Router's classifier prompt is constant and ideal for caching; expect effective Haiku cost closer to $0.30/MTok input after caching warms up.
+Prompt caching strategy is provider-specific: Anthropic uses explicit `cache_control` breakpoints (~90% off, 5 min TTL); OpenAI/xAI/Kimi cache automatically (~50% off); Gemini requires 32k+ tokens for context caching. Per ADR-020, no in-code caching layer in Phase 1. Activate provider-specific caching per-alias when monthly classification cost exceeds $5/month.
 
 ### 2.7 Retry policy
 
@@ -159,23 +162,18 @@ def retry_delay(attempt):
 ### 2.8 Degraded mode
 
 Per `CONSTITUTION §8.43`:
-- **Haiku down** → Router falls back to rule-based classifier (keyword + regex match over bucket/project names from L0). Returns with `classification_mode=fallback_rules`. Confidence is lower; L4 RAG fires more conservatively.
-- **Sonnet down** → Reflection worker queues its pending work to DB (`reflection_pending` table, not yet modeled — to be added in Phase 1.5 if needed). Next run picks up.
+- **LiteLLM unreachable for `classifier_default`** → Router falls back to rule-based classifier (keyword + regex match over bucket/project names from L0). Returns with `classification_mode='fallback_rules'`. Confidence is lower; L4 RAG fires more conservatively.
+- **Sonnet down (when Module 6 lands)** → Reflection worker queues its pending work to DB (`reflection_pending` table per `DATA_MODEL §4.5`). Next run picks up.
 
 ### 2.9 Health check
 
-Nightly via Dream Engine:
+Nightly via Dream Engine, the LiteLLM proxy and each declared alias are pinged:
 
-```python
-response = anthropic_client.messages.create(
-    model="claude-haiku-4-5-20251001",
-    max_tokens=10,
-    messages=[{"role": "user", "content": "ping"}]
-)
-assert response.content[0].text.strip() != ""
+```bash
+curl -sf http://127.0.0.1:4000/health -H "Authorization: Bearer $LITELLM_API_KEY" | jq '.healthy_count'
 ```
 
-Failure writes a `gotcha` entry and sends a Telegram alert.
+Expected: positive integer matching the number of declared aliases. Anthropic-direct health check is no longer in the critical path for the Router. Failure writes a `gotcha` entry and sends a Telegram alert.
 
 ---
 
@@ -279,22 +277,30 @@ Reused component from the prior stack. Acts as a unified gateway in front of mul
 
 ### 4.4 Models exposed via LiteLLM
 
-The Forge pipeline expects these aliases (maintained for compatibility):
+**Forge pipeline aliases (maintained for compatibility):**
 - `opus` → routes to Anthropic `claude-opus-4-7-*`
 - `sonnet` → routes to Anthropic `claude-sonnet-4-6-20250929`
 - `haiku` → routes to Anthropic `claude-haiku-4-5-20251001`
 - `gpt-5` → routes to OpenAI `gpt-5.4`
 - `gemini` → routes to Google `gemini-3.1-pro`
 
+**pretel-os MCP-server aliases (per ADR-020) — operator-tunable:**
+- `classifier_default` → currently `gemini/gemini-2.5-flash`. Used by the Router for classification.
+- `second_opinion_default` → currently `gemini/gemini-2.5-flash`. Used by `request_second_opinion` MCP tool.
+- Future: `reflection_default` to be added when Module 6 spec lands.
+
 ### 4.5 Role in pretel-os
 
-For the MCP server's own LLM calls (Router classification, Reflection worker), pretel-os calls Anthropic directly, **not** through LiteLLM. Reason: direct calls give cleaner error handling, direct usage metrics via the Anthropic API's usage object, and one less hop on the critical path.
+Per ADR-020, **all MCP-server LLM calls used by the Router and the `request_second_opinion` tool route through the LiteLLM proxy**, not via direct Anthropic SDK calls. This reverses the prior wording. Reasons: (a) the operator can A/B between providers (Anthropic, OpenAI, Gemini, Kimi K2, etc.) without code changes — only `~/.litellm/config.yaml` + restart; (b) telemetry stays unified in `llm_calls` regardless of provider; (c) LiteLLM handles retries, timeouts, and provider-specific quirks behind a stable alias contract.
 
-LiteLLM stays for:
-- Forge pipeline (existing n8n workflow, unchanged)
-- Future workflows that need multi-provider fallback
-- Operator's ad-hoc testing via `curl`
-- `request_second_opinion` MCP tool — operator-invoked cross-model validation. Uses LiteLLM alias `second_opinion_default` (configured in `~/.litellm/config.yaml` to route to a fixed secondary model, e.g. `gemini-2.5-flash` or `gpt-4.1-mini`). The alias is stable — changing the upstream model does not change the tool contract. Timeout: 15,000 ms (declared in `infra/timeouts.yaml`). Degraded mode: if LiteLLM fails after 3 retries with exponential backoff, the tool returns `{status: 'degraded', analysis: null, degraded_reason: 'litellm_unavailable'}` — no silent failure, no fallback to a direct provider call in Phase 1.
+**Routes through LiteLLM proxy:**
+- **Router classification** — alias `classifier_default`. Timeout: 3,000 ms. Degraded mode: rule-based fallback (per CONSTITUTION §8.43).
+- **`request_second_opinion` MCP tool** — alias `second_opinion_default`. Operator-invoked cross-model validation. Timeout: 15,000 ms. Degraded mode: returns `{status: 'degraded', analysis: null, degraded_reason: 'litellm_unavailable'}` after 3 retries with exponential backoff — no silent failure, no fallback to a direct provider call.
+- **Reflection worker** (Module 6) — alias TBD in Module 6 spec.
+- **Forge pipeline** (existing n8n workflow, unchanged) — uses `opus`, `sonnet`, `haiku`, `gpt-5`, `gemini` aliases per §4.4.
+- **Operator's ad-hoc testing** via `curl`.
+
+The alias-to-model mapping lives in `~/.litellm/config.yaml`; the task-to-alias mapping for `classifier_default` and `second_opinion_default` is immutable without constitutional amendment (CONSTITUTION §4 rule 8).
 
 ### 4.6 Health check
 
@@ -793,7 +799,7 @@ MCP_SERVER_HOST=0.0.0.0
 MCP_LOG_LEVEL=INFO
 
 # Timeouts (milliseconds)
-TIMEOUT_HAIKU_MS=3000
+TIMEOUT_CLASSIFIER_MS=3000
 TIMEOUT_OPUS_MS=60000
 TIMEOUT_SONNET_MS=30000
 TIMEOUT_OPENAI_EMBEDDING_MS=5000

@@ -365,17 +365,17 @@ These are one-page summaries. Full specs live at `specs/{module}/spec.md` (writt
 
 **Done when:**
 - Router code in `src/mcp_server/router/` implements the 6 responsibilities per CONSTITUTION §2.2
-- Haiku 4.5 classification returns `{bucket, project, skill, complexity, needs_lessons}` for test inputs, per CONSTITUTION §5.1 rule 11
+- Classification via LiteLLM alias `classifier_default` returns `{bucket, project, skill, complexity, needs_lessons}` for test inputs, per CONSTITUTION §5.1 rule 11
 - Layer loader respects budgets per CONSTITUTION §2.3 (write-time hook already enforces budgets on commits, but read-time summarization fallback exists)
 - Source priority resolution implemented per CONSTITUTION §2.7 (both immutable invariants and ordered regime)
 - `routing_logs` populated on every call with all telemetry fields (source_conflicts, over_budget_layers, rag_expected vs rag_executed, etc.)
-- Fallback to rule-based classifier when Haiku is unreachable; sets `classification_mode='fallback_rules'`
+- Fallback to rule-based classifier when LiteLLM is unreachable; sets `classification_mode='fallback_rules'`
 - Smoke tests: query about a known bucket returns that bucket's L1 + relevant L2 + L4 lessons. Query about unknown topic returns L0 + L1 only.
 - Per-turn latency under 2 seconds for HIGH complexity (budget target)
-- A runbook at `runbooks/module_4_router.md` covers Haiku outages, classification debugging, and budget overruns
+- A runbook at `runbooks/module_4_router.md` covers LiteLLM/classifier outages, classification debugging, and budget overruns
 
 **Risk notes:**
-- Haiku classification prompt quality drives everything. Invest disproportionate time on this prompt. Keep iteration examples in `tests/router/classification_examples.md`.
+- Classifier prompt quality drives everything (provider-agnostic — must work across Gemini/Claude/GPT/Kimi). Invest disproportionate time on this prompt. Keep iteration examples in `tests/router/classification_examples.md`.
 - Cache warm-up for Anthropic prompt caching takes a few calls; first-turn latency will be higher than steady-state.
 - Budget enforcement at read-time might conflict with write-time hook. Verify: the only read-time summarization should be for entities that slipped through hook (existing before hook was installed).
 
@@ -539,7 +539,7 @@ Risks that span multiple modules. Per-module risks are in each module's spec.
 | Anthropic price increase ≥ 50% | Low | Medium | `llm_calls` daily cost tracking. Budget alert in Morning Intelligence when daily spend > $1.00. | Operator review |
 | OpenAI embeddings model deprecated | Low | High | Migration template in DATA_MODEL §11.5. Constitutional amendment process. Full reindex would cost under $5 at current corpus size. | Future migration |
 | Foundation docs drift as implementation reveals gaps | High | Medium | Every module spec can propose CONSTITUTION amendments in its spec.md §6 (constitutional_impact). Amendment process is defined but infrequent. | Per-module |
-| Context engineering errors (Router classification quality) | Medium | Medium | Module 4 spec mandates test examples with expected classifications. Iteratively tune Haiku prompt. | Module 4 |
+| Context engineering errors (Router classification quality) | Medium | Medium | Module 4 spec mandates test examples with expected classifications. Iteratively tune classifier prompt; A/B test across LiteLLM aliases when needed. | Module 4 |
 | Scout compliance violation via agent-generated content | Low | Critical | Defense in depth: pre-commit hook + MCP tool filter + DB trigger per `scout_denylist`. | Continuous |
 | Lesson corpus bloat over time | Medium | Low | Dream Engine archive + dedup rules. Review utility_score distribution quarterly. | Post-Phase 3 |
 | Operator burnout / project abandonment | Medium | Critical | This plan and tasks.md designed for stateless resumption. Any chat can pick up. SESSION_RESTORE.md makes re-entry cheap. | Operator |

@@ -1,7 +1,7 @@
 # CONSTITUTION — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-18 (v3)
+**Last updated:** 2026-04-27 (v4)
 **Owner:** Alfredo Pretel Vargas
 
 This document contains the immutable rules of pretel-os. Every module, agent, skill, and human operator must respect these rules without exception. Rules in this document only change through an explicit decision-log entry in `PROJECT_FOUNDATION.md §Decisions`, never silently.
@@ -28,7 +28,7 @@ All clients (Claude.ai, Claude Code, Claude mobile, future agents) reach pretel-
 
 The Router is a component **inside the MCP server**. No other system — no client, no background worker, no skill — performs context assembly. The Router has exactly these responsibilities:
 
-1. **Classify** every incoming turn into `{bucket, project, skill, complexity, needs_lessons}` using Haiku 4.5.
+1. **Classify** every incoming turn into `{bucket, project, skill, complexity, needs_lessons}` via LiteLLM proxy alias `classifier_default` (per ADR-020).
 2. **Load layers L0–L4** per §2.3, loading only what classification demands.
 3. **Decide RAG activation**: whether to run lesson retrieval, tool-catalog retrieval, and project retrieval for this turn.
 4. **Enforce token budgets** per §2.3 before returning context to the client.
@@ -154,7 +154,7 @@ If *any* source contradicts an immutable invariant, the invariant wins silently 
 
 6. **L0 is always loaded. L1–L4 are loaded only when classification demands them.** The Router never loads layers reflexively.
 7. **Layers respect their budgets** per §2.3. Over-budget content is summarized before serving; the Router never silently truncates.
-8. **Classification runs on Haiku 4.5, never on Opus.** Reasoning runs on the client-side model (Opus 4.7 or equivalent). Reflection runs on Sonnet 4.6. Model-to-task mapping is immutable without amendment.
+8. **Classification runs through LiteLLM proxy alias `classifier_default`, never on the client-side reasoning model.** Reasoning runs on the client-side model (Opus 4.7 or equivalent). Reflection runs on a Sonnet-class model; the LiteLLM alias used by the Reflection worker is defined in Module 6 spec. Second opinion runs through LiteLLM proxy alias `second_opinion_default`. The alias-to-model mapping lives in `~/.litellm/config.yaml` and is operator-tunable. The task-to-alias mapping for `classifier_default` and `second_opinion_default` is immutable without amendment; the Reflection alias becomes immutable when Module 6 lands. See ADR-020.
 9. **Embeddings model is `text-embedding-3-large`.** Writes and queries use the same model. Per §2.5.
 10. **Monthly API budget is explicit and tracked.** Phase 0–3 target: under $30/month combined (Anthropic + OpenAI). Overruns trigger an immediate audit and a lesson.
 11. **Cloud spend is revenue-gated.** Migration from local Postgres/n8n to managed cloud services only after the associated product (Forge, Declassified, freelance) generates revenue covering the new spend with a 3x margin.
@@ -301,7 +301,7 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
     (c) **Per-integration degraded behavior:**
     - **Postgres unreachable**: Router operates in `git-only` mode. L0, L1, L2, L3 continue to serve from the git repo. L4 (lessons) returns an explicit "retrieval unavailable" marker instead of silent empty results. Tool-catalog returns only the L0-embedded names. State mutations (`save_lesson`, `snapshot_project`, `update_project_state`) return `{status: 'degraded', journal_id: ...}` with the write persisted to the fallback journal per (b).
     - **OpenAI embeddings API unreachable**: writes that need new embeddings queue to `pending_embeddings` table; reads against existing embeddings continue normally. Dream Engine flushes the queue when the API returns.
-    - **Anthropic API for Haiku classification unreachable**: Router falls back to a rule-based classifier (keyword + regex match against bucket/project names in L0) and returns results with `classification_mode=fallback_rules` flag.
+    - **LiteLLM proxy unreachable for `classifier_default`**: Router falls back to a rule-based classifier (keyword + regex match against bucket/project names in L0) and returns results with `classification_mode='fallback_rules'` flag. Confidence drops to ~0.4; L4 RAG fires more conservatively (only when bucket+project both matched and complexity ≠ LOW).
     - **Sonnet unreachable (Reflection worker)**: pending reflection payloads queue to `reflection_pending` table per `DATA_MODEL §4.5`; retried by Dream Engine.
     - **n8n down**: Forge pipeline and Morning Intelligence are skipped with logged incidents. Router and core retrieval continue normally.
     - **Telegram bot down**: outbound notifications queue in memory (bounded 100 most recent); operator uses Claude.ai web as fallback interface.
