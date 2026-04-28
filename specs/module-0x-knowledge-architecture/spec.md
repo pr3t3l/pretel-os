@@ -28,10 +28,11 @@ Module 0.X is the prerequisite for Phase B (Layer Loader). Phase B has to know w
 
 ### 3.1 In scope
 
-1. **Three new tables**:
+1. **Four new tables**:
    - `tasks` — pending and in-progress work items (no embedding)
    - `operator_preferences` — operator-controlled facts (UNIQUE on category+key+scope)
    - `router_feedback` — explicit feedback loop signals
+   - `best_practices` — reusable PROCESS guidance (prose, not code) — distinct from `patterns` which is CODE-only (resolves OQ-6)
 2. **Amendments to existing tables**:
    - `decisions` (DATA_MODEL §5.2): add `scope`, `applicable_buckets`, `decided_by`, `tags`, `severity`, `adr_number`, `derived_from_lessons` columns. Existing `bucket`, `project`, `client_id`, `title`, `context`, `decision`, `consequences`, `alternatives`, `status`, `superseded_by_id`, `embedding`, `created_at` stay.
 3. **One new workspace file**: `SOUL.md` (template + L0 loader integration)
@@ -169,7 +170,57 @@ CREATE INDEX idx_router_feedback_request ON router_feedback(request_id);
 CREATE INDEX idx_router_feedback_type ON router_feedback(feedback_type) WHERE status = 'pending';
 ```
 
-### 5.5 `SOUL.md` workspace file
+### 5.5 `best_practices`
+
+Reusable PROCESS guidance — narrative rules that apply across code (e.g., "always require integration test before merging", "never hardcode model strings, use LiteLLM aliases"). Distinct from `patterns` (DATA_MODEL §5.1) which holds CODE snippets and templates.
+
+```sql
+CREATE TABLE best_practices (
+  id                   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  title                text NOT NULL,
+  guidance             text NOT NULL,                              -- "always X when Y", prose
+  rationale            text,                                       -- why this works
+  domain               text NOT NULL                               -- categorization
+                       CHECK (domain IN ('process','convention','workflow','communication')),
+  scope                text NOT NULL DEFAULT 'global',             -- 'global' | 'bucket:<name>' | 'project:<bucket>/<name>'
+  applicable_buckets   text[] NOT NULL DEFAULT '{}',
+  tags                 text[] NOT NULL DEFAULT '{}',
+  active               boolean NOT NULL DEFAULT true,
+  source               text NOT NULL
+                       CHECK (source IN ('operator','derived_from_lessons','migration')),
+  derived_from_lessons uuid[] DEFAULT '{}',                        -- provenance (resolves OQ-2)
+  previous_guidance    text,                                       -- single-step rollback (mirrors patterns.previous_content)
+  previous_rationale   text,                                       -- single-step rollback companion
+  superseded_by        uuid REFERENCES best_practices(id),         -- explicit replacement chain (mirrors decisions.superseded_by_id)
+  embedding            vector(3072),
+  created_at           timestamptz NOT NULL DEFAULT now(),
+  updated_at           timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_best_practices_embedding_hnsw
+  ON best_practices USING hnsw (embedding vector_cosine_ops)
+  WHERE active;
+CREATE INDEX idx_best_practices_scope ON best_practices(scope) WHERE active;
+CREATE INDEX idx_best_practices_applicable_buckets ON best_practices USING gin(applicable_buckets);
+CREATE INDEX idx_best_practices_tags ON best_practices USING gin(tags);
+CREATE INDEX idx_best_practices_domain ON best_practices(domain) WHERE active;
+CREATE INDEX idx_best_practices_superseded ON best_practices(superseded_by) WHERE superseded_by IS NOT NULL;
+```
+
+**Difference from `patterns` (§5.1) — why a separate table:**
+
+| Concern | `patterns` | `best_practices` |
+|---|---|---|
+| Primary content field | `code` (executable snippet) | `guidance` (prose) |
+| Required `language` column | yes (python/sql/etc.) | not applicable |
+| Versioning | full version int + previous_content | single-step rollback (previous_guidance + previous_rationale) |
+| Supersession chain | none | explicit `superseded_by` |
+| Lesson provenance | none | `derived_from_lessons` for reflection worker promotion path |
+| L4 retrieval shape | code blob in result | guidance + rationale paragraph |
+
+Update semantics: every `best_practice_record` UPDATE copies current `guidance`/`rationale` into `previous_guidance`/`previous_rationale` BEFORE overwriting. A rollback tool restores from the previous_* fields. This is single-step only (no full version history) per §10 non-goals.
+
+### 5.6 `SOUL.md` workspace file
 
 Flat file at `~/dev/pretel-os/SOUL.md`, committed to git. Loaded into L0 alongside `IDENTITY.md`, `CONSTITUTION.md`, `AGENTS.md`. Template content mirrors operator's stated `userPreferences`.
 
@@ -183,10 +234,9 @@ Note: Claude.ai web/app does NOT load `SOUL.md` — Anthropic uses operator's us
 | Decisions (existing, amended) | `decision_record`, `decision_search`, `decision_supersede` — point at the existing `decisions` table with the new columns from §5.2 |
 | Preferences | `preference_set`, `preference_get`, `preference_list`, `preference_unset` |
 | Router feedback | `router_feedback_record`, `router_feedback_review` |
+| Best practices | `best_practice_record`, `best_practice_search`, `best_practice_deactivate` |
 
-Best-practice tooling deferred pending OQ-6 resolution (§12).
-
-Total: 13 tools.
+Total: 16 tools.
 
 ## 7. Migration plan
 
@@ -212,14 +262,11 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 |---|---|---|
 | L0 | `CONSTITUTION.md` + `IDENTITY.md` + `AGENTS.md` + `SOUL.md` (full) + `operator_preferences WHERE scope='global' AND active` | All |
 | L1 | `decisions WHERE bucket=current OR current=ANY(applicable_buckets) AND status='active'` (summaries, ranked by recency) + `operator_preferences WHERE scope LIKE 'bucket:<current>'` | Active only |
-| L2 | `decisions` and `best_practices WHERE scope='project:<current>'` (pending OQ-6 — may collapse into patterns table; see §12) | Active only |
+| L2 | `decisions WHERE bucket=current AND status='active'` and `best_practices WHERE scope='project:<current>'` and `patterns WHERE applicable_buckets @> ARRAY[current]` | Active only |
 | L3 | `tools_catalog WHERE kind='skill'` (existing, no change) | Classifier-filtered |
-| L4 | `lessons` (existing) + `best_practices WHERE domain matches OR bucket-applicable` (pending OQ-6 — may collapse into patterns table; see §12) | classifier `needs_lessons=true` only |
+| L4 | `lessons` (existing) + `best_practices WHERE domain matches OR applicable_buckets contains current` | classifier `needs_lessons=true` only |
 
 `tasks` and `router_feedback` are NOT loaded into context bundle — they're operational tables.
-
-**Note on best_practices in this contract:** the L2 and L4 rows reference a `best_practices` table that is currently OQ-6 (open question — may be a new table, may be an extension of existing `patterns` per DATA_MODEL §5.1). The contract is written assuming a separate table; if OQ-6 resolves to "extend patterns", revise §8 to reference `patterns` filtered by `category='best_practice'` or similar. M0X.T1 (spec revision) is the gate to resolve this before plan.md is written.
-
 ## 9. Failure modes
 
 - DB unavailable: fall back to journal at `~/.pretel-os/journal/{tool}.jsonl` (existing pattern)
@@ -250,11 +297,11 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 ## 12. Open questions (resolve in planning)
 
 1. Should `decisions` have `severity` like lessons?
-2. Should `best_practices` track `derived_from_lessons uuid[]`?
+2. **RESOLVED 2026-04-28** (alongside OQ-6): YES, `derived_from_lessons uuid[]` included in §5.5 schema for reflection worker provenance.
 3. Embedding model: same 3072-dim or smaller for HNSW capability?
 4. `operator_preferences` value: text or jsonb for arrays?
 5. Token budget for `decisions` in L1 — measure typical length × count
-6. (OQ-6) Whether to add a new `best_practices` table for PROCESS guidance, or extend `patterns` (§5.1, currently CODE-focused). Pending review.
+6. (OQ-6) **RESOLVED 2026-04-28**: New `best_practices` table created (see §5.5). Rationale: `patterns.code TEXT NOT NULL` is incompatible with prose guidance; L2 and L4 want different result shapes; `patterns` is Phase-2 with zero production data so "avoid disruption" argument did not hold. ADR-023 (to be written in implementation).
 
 ## Appendix A — Why not just add columns to `lessons`?
 
