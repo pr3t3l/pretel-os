@@ -37,15 +37,15 @@ Tasks within a phase can usually be done in order, but where parallelism exists 
 
 ### A.2 — Prompt authoring
 
-- [ ] **A.2.1** Author `src/mcp_server/router/prompts/classify.txt` v1 — system prompt that instructs the model to emit JSON matching `spec.md §5.1`. Include bucket list, complexity rubric, and 3 in-prompt examples (one per complexity level). → M4.T2.1
+- [x] **A.2.1** Author `src/mcp_server/router/prompts/classify.txt` v1 — system prompt that instructs the model to emit JSON matching `spec.md §5.1`. Include bucket list, complexity rubric, and 3 in-prompt examples (one per complexity level). → M4.T2.1
   - Done when: file exists, ≤ 1,800 tokens, contains explicit JSON schema, contains 3 examples.
 
-- [ ] **A.2.2** Validate the prompt loads under 2k tokens via `tiktoken`. → M4.T2.1
+- [x] **A.2.2** Validate the prompt loads under 2k tokens via `tiktoken`. → M4.T2.1
   - Done when: `python -c "import tiktoken; enc=tiktoken.get_encoding('cl100k_base'); print(len(enc.encode(open('src/mcp_server/router/prompts/classify.txt').read())))"` returns < 2000.
 
 ### A.3 — Test examples
 
-- [ ] **A.3.1** Create `tests/router/classification_examples.md` with 10 worked examples covering: 3 buckets × 3 complexity levels + 1 ambiguous edge case. Each example shows input message + expected JSON output.  → M4.T2.1
+- [x] **A.3.1** Create `tests/router/classification_examples.md` with 10 worked examples covering: 3 buckets × 3 complexity levels + 1 ambiguous edge case. Each example shows input message + expected JSON output.  → M4.T2.1
   - Done when: file has 10 example sections, each with `**Input:**` and `**Expected output:**` blocks, and the schema in every expected output is valid against `spec.md §5.1`.
 
 ### A.4 — LiteLLM client
