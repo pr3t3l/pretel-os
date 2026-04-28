@@ -678,6 +678,21 @@ Goal: Intelligent classifier + layer assembler replacing the stub `get_context`.
 
 Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 
+### M4 Phase A — Classifier (COMPLETE 2026-04-28)
+
+All Phase A deliverables shipped. Commits a4f976b → e59b943. 19 unit tests + 8 classifier tests + 1 integration + 1 live eval. Eval clears bucket 1.0, complexity 0.8, schema_violations 0 against Haiku 4.5 via classifier_default alias.
+
+- [x] A.1.1 Router package skeleton + typed exceptions (commit 5a08c67)
+- [x] A.2 + A.3.1 Classifier prompt v1 + 10 examples (commit f3ce9b3)
+- [x] A.4 LiteLLM client wrapper + retry policy (commit 7eea3ab)
+- [x] A.4.3 Truncation detection + telemetry + provider-agnostic chat_json (commit a4f976b)
+- [x] A.4.4 Deferred to Phase F (observational task, commit 4964a7d)
+- [x] A.5.1 + A.5.2 classifier.py with strict schema validation (commit 4a85fd9)
+- [x] A.5.3 request_id parameter passthrough (commit 8b5bf71)
+- [x] A.6.1 Live classifier eval against 10 worked examples (commit e59b943)
+
+Phase A exit gate: PASSED.
+
 ### M4.T1 — Spec
 
 - [x] **M4.T1.1** `specs/router/spec.md`.
@@ -757,6 +772,33 @@ Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 - [ ] **M4.T9.3** Commit + tag `module-4-complete`.
 
 **Exit Module 4.**
+
+---
+
+## Module 0.X: Knowledge Architecture
+
+**Status:** Spec drafted (commit e466796), plan and tasks pending.
+
+Splits the single `lessons` table into typed knowledge stores. **Important deduplication note**: the original draft proposed `decisions` and `best_practices` as new tables, but `decisions` already exists in DATA_MODEL §5.2 and `patterns` (§5.1) + `gotchas` (§5.3) cover similar ground. Revised scope:
+
+**Genuinely new tables:**
+- `tasks` — pending TODOs and deferred work items (no embedding, structured query only)
+- `operator_preferences` — operator-controlled facts and overrides (UNIQUE on category+key+scope, atomic upsert)
+- `router_feedback` — explicit feedback loop for Router improvement
+
+**Amendments to existing tables:**
+- `decisions` (§5.2) — add `scope`, `applicable_buckets`, `decided_by`, `tags`, `severity`, `adr_number`, `derived_from_lessons` columns
+- Decide whether to add `best_practices` table or extend `patterns` (§5.1) — pending revision of spec
+
+**New workspace file:**
+- `SOUL.md` at repo root — agent voice/personality, loaded into L0
+
+- [ ] M0X.T1 — Revise spec.md based on dedupe finding (decisions/patterns exist)
+- [ ] M0X.T2 — Write plan.md (phases, gates, dependencies)
+- [ ] M0X.T3 — Write tasks.md (atomic tasks)
+- [ ] M0X.T4 — Implementation (after spec/plan/tasks reviewed)
+
+(M0X subtasks expanded after T1-T3 complete.)
 
 ---
 

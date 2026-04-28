@@ -466,6 +466,41 @@ Ten lessons already learned during the four-document foundation cycle of pretel-
 
 ---
 
+### LL-M4-PHASE-A-001 — Integration tests catch what mock fidelity cannot
+
+**Severity:** critical
+**Captured:** 2026-04-28 during M4.A.4.3 review.
+
+**Problem:** In `_build_telemetry`, the local variable `provider_metadata` was computed correctly (~991 chars from `response.model_dump()`) but never passed to `ChatJsonTelemetry(...)` constructor. The dataclass field had `default_factory=dict`, so the constructor used `{}` silently. Six mocked unit tests asserted shape (`isinstance(telemetry, ChatJsonTelemetry)`) and individual numeric fields, but no test asserted `telemetry.provider_metadata` truthiness. Only the integration test against live LiteLLM proxy caught it.
+
+**Fix:** `provider_metadata=provider_metadata,` added to constructor call.
+
+**Lesson:** Mock-shape tests that don't assert content for every field that should be populated leave gaps. Integration tests against real upstreams catch bugs that mock fidelity cannot. CONSTITUTION rule "always require at least 1 integration test running real handlers through full dispatcher loop with schema validation" is now empirically validated, not just a principle.
+
+### LL-M4-PHASE-A-002 — Verbal acknowledgment is not persistence
+
+**Severity:** moderate
+**Captured:** 2026-04-28 mid-session by operator.
+
+**Problem:** During session, deferred items were repeatedly noted with phrases like "I'll keep this in mind" or "registered as technical debt". Operator observed that this pattern fails ~40% of the time: conversation moves on, context window churns, item never gets recorded anywhere durable.
+
+**Fix:** Any deferred item, future-task, or technical-debt note must be persisted immediately to the appropriate MCP table (`save_lesson` for now, `task_create` after M0.X). Verbal acknowledgment alone is forbidden.
+
+**Lesson:** When discussion surfaces "we'll handle this later", the right tool call IS the acknowledgment. This is the seed for M0.X's typed knowledge store split.
+
+### LL-M4-PHASE-A-003 — LiteLLM exposes alias not concrete model
+
+**Severity:** moderate
+**Captured:** 2026-04-28 during A.6.1 eval.
+
+**Problem:** Eval JSON's `concrete_models_seen` field showed `["classifier_default"]` instead of `["claude-haiku-4-5-20251001"]`. LiteLLM proxy returns `response.model = "<alias>"` rather than the concrete provider model identifier. This means `routing_logs.provider_metadata` cannot distinguish primary from fallback when cascade fires.
+
+**Workaround for M4 Phase D:** Extract concrete model from `provider_metadata` jsonb dump (where LiteLLM does include `_response_ms` and provider-specific fields).
+
+**Lesson:** Provider-agnostic abstractions hide telemetry detail. Always query underlying metadata fields for true model identity.
+
+---
+
 ## 10. Pre-flight checklist (master)
 
 Run this before starting any module build. Every check references a lesson that justifies it.

@@ -10,6 +10,8 @@ Split the single `lessons` table into four typed knowledge stores plus one works
 
 Module 0.X is the prerequisite for Phase B (Layer Loader). Phase B has to know what tables/files to read for each layer L0–L4. Designing four new tables after Phase B ships forces re-work.
 
+**Important note from review (2026-04-28):** the `decisions` table already exists in DATA_MODEL §5.2 (project-scoped, ADR-style with embedding + status enum). The original spec proposed a new `decisions` table — that was wrong. M0.X amends the existing one. Similarly, `patterns` (§5.1) and `gotchas` (§5.3) already cover code-snippet best practices and anti-patterns. Whether a new `best_practices` table is needed for PROCESS guidance (vs CODE in patterns) is open question OQ-6.
+
 ## 2. Authority and references
 
 | Source | Relevance |
@@ -26,12 +28,16 @@ Module 0.X is the prerequisite for Phase B (Layer Loader). Phase B has to know w
 
 ### 3.1 In scope
 
-1. **Four new tables**: `tasks`, `decisions`, `best_practices`, `operator_preferences`
-2. **One new workspace file**: `SOUL.md` (template + L0 loader integration)
-3. **MCP tools** for each table (12+ tools total)
-4. **Layer loader contract** for Phase B consumption
-5. **Migration script** for the 4 misclassified `lessons` rows
-6. **`router_feedback` table + tools** — explicit feedback loop the operator requested
+1. **Three new tables**:
+   - `tasks` — pending and in-progress work items (no embedding)
+   - `operator_preferences` — operator-controlled facts (UNIQUE on category+key+scope)
+   - `router_feedback` — explicit feedback loop signals
+2. **Amendments to existing tables**:
+   - `decisions` (DATA_MODEL §5.2): add `scope`, `applicable_buckets`, `decided_by`, `tags`, `severity`, `adr_number`, `derived_from_lessons` columns. Existing `bucket`, `project`, `client_id`, `title`, `context`, `decision`, `consequences`, `alternatives`, `status`, `superseded_by_id`, `embedding`, `created_at` stay.
+3. **One new workspace file**: `SOUL.md` (template + L0 loader integration)
+4. **MCP tools** for each table (~13 tools total — see §6)
+5. **Layer loader contract** for Phase B consumption
+6. **Migration script** for the 4 misclassified `lessons` rows
 
 ### 3.2 Out of scope
 
@@ -97,71 +103,26 @@ CREATE INDEX idx_tasks_open_by_phase ON tasks(trigger_phase) WHERE status IN ('o
 CREATE INDEX idx_tasks_module ON tasks(module) WHERE module IS NOT NULL;
 ```
 
-### 5.2 `decisions`
+### 5.2 `decisions` table amendment
 
-```sql
-CREATE TABLE decisions (
-  id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  adr_number          integer UNIQUE,
-  title               text NOT NULL,
-  context             text NOT NULL,
-  decision            text NOT NULL,
-  consequences        text,
-  alternatives        text,
-  bucket              text NOT NULL,
-  applicable_buckets  text[] DEFAULT '{}',
-  scope               text NOT NULL
-                      CHECK (scope IN ('architectural','process','product','operational')),
-  supersedes          uuid REFERENCES decisions(id),
-  status              text NOT NULL DEFAULT 'active'
-                      CHECK (status IN ('active','superseded','reverted')),
-  decided_at          timestamptz NOT NULL DEFAULT now(),
-  decided_by          text NOT NULL,
-  tags                text[] DEFAULT '{}',
-  embedding           vector(3072),
-  metadata            jsonb DEFAULT '{}'::jsonb
-);
+The `decisions` table exists at DATA_MODEL §5.2. M0.X migration adds these columns:
 
-CREATE INDEX idx_decisions_bucket_status ON decisions(bucket, status);
-CREATE INDEX idx_decisions_applicable_buckets ON decisions USING GIN(applicable_buckets);
-CREATE INDEX idx_decisions_scope_status ON decisions(scope, status);
-CREATE INDEX idx_decisions_tags ON decisions USING GIN(tags);
-```
+- `scope text NOT NULL DEFAULT 'project' CHECK (scope IN ('architectural','process','product','operational'))` — distinguishes ADR-level from process-level decisions
+- `applicable_buckets text[] DEFAULT '{}'` — cross-bucket scope for decisions that affect more than one bucket
+- `decided_by text NOT NULL DEFAULT 'operator'` — provenance
+- `tags text[] DEFAULT '{}'` — for filtering
+- `severity text DEFAULT 'normal'` — distinguishes load-bearing decisions from process tweaks
+- `adr_number integer UNIQUE` — formal ADR numbering (NULL for non-formal)
+- `derived_from_lessons uuid[] DEFAULT '{}'` — provenance when a decision crystallized from one or more lessons
 
-Auto-approval: title + context + decision + decided_by present, no >0.92 similarity to existing active in same bucket+scope.
+Indexes added:
+- `CREATE INDEX idx_decisions_scope_status ON decisions(scope, status)`
+- `CREATE INDEX idx_decisions_applicable_buckets ON decisions USING GIN(applicable_buckets)`
+- `CREATE INDEX idx_decisions_tags ON decisions USING GIN(tags)`
 
-### 5.3 `best_practices`
+Migration writes (in order): ADR-020 (LiteLLM proxy gateway), ADR-021 (split lessons into typed stores — this M0.X), ADR-022 (SOUL.md voice file).
 
-```sql
-CREATE TABLE best_practices (
-  id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  title               text NOT NULL,
-  domain              text NOT NULL,
-  practice            text NOT NULL,
-  rationale           text,
-  example             text,
-  anti_example        text,
-  bucket              text NOT NULL,
-  applicable_buckets  text[] DEFAULT '{}',
-  active              boolean NOT NULL DEFAULT true,
-  superseded_by       uuid REFERENCES best_practices(id),
-  source              text NOT NULL
-                      CHECK (source IN ('operator','claude','reflection_worker','external_doc')),
-  source_url          text,
-  created_at          timestamptz NOT NULL DEFAULT now(),
-  updated_at          timestamptz NOT NULL DEFAULT now(),
-  embedding           vector(3072),
-  tags                text[] DEFAULT '{}',
-  metadata            jsonb DEFAULT '{}'::jsonb
-);
-
-CREATE INDEX idx_best_practices_domain_active ON best_practices(domain) WHERE active;
-CREATE INDEX idx_best_practices_bucket_active ON best_practices(bucket) WHERE active;
-CREATE INDEX idx_best_practices_applicable_buckets ON best_practices USING GIN(applicable_buckets);
-CREATE INDEX idx_best_practices_tags ON best_practices USING GIN(tags);
-```
-
-### 5.4 `operator_preferences`
+### 5.3 `operator_preferences`
 
 ```sql
 CREATE TABLE operator_preferences (
@@ -186,7 +147,7 @@ CREATE INDEX idx_preferences_category_active ON operator_preferences(category) W
 
 Atomic update via `INSERT ... ON CONFLICT (category, key, scope) DO UPDATE`. No vector search — direct lookup.
 
-### 5.5 `router_feedback`
+### 5.4 `router_feedback`
 
 ```sql
 CREATE TABLE router_feedback (
@@ -208,7 +169,7 @@ CREATE INDEX idx_router_feedback_request ON router_feedback(request_id);
 CREATE INDEX idx_router_feedback_type ON router_feedback(feedback_type) WHERE status = 'pending';
 ```
 
-### 5.6 `SOUL.md` workspace file
+### 5.5 `SOUL.md` workspace file
 
 Flat file at `~/dev/pretel-os/SOUL.md`, committed to git. Loaded into L0 alongside `IDENTITY.md`, `CONSTITUTION.md`, `AGENTS.md`. Template content mirrors operator's stated `userPreferences`.
 
@@ -219,12 +180,13 @@ Note: Claude.ai web/app does NOT load `SOUL.md` — Anthropic uses operator's us
 | Table | Tools |
 |---|---|
 | Tasks | `task_create`, `task_list`, `task_update`, `task_close`, `task_reopen` |
-| Decisions | `decision_record`, `decision_search`, `decision_supersede` |
-| Best practices | `best_practice_record`, `best_practice_search`, `best_practice_archive` |
+| Decisions (existing, amended) | `decision_record`, `decision_search`, `decision_supersede` — point at the existing `decisions` table with the new columns from §5.2 |
 | Preferences | `preference_set`, `preference_get`, `preference_list`, `preference_unset` |
 | Router feedback | `router_feedback_record`, `router_feedback_review` |
 
-Total: 17 tools.
+Best-practice tooling deferred pending OQ-6 resolution (§12).
+
+Total: 13 tools.
 
 ## 7. Migration plan
 
@@ -250,11 +212,13 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 |---|---|---|
 | L0 | `CONSTITUTION.md` + `IDENTITY.md` + `AGENTS.md` + `SOUL.md` (full) + `operator_preferences WHERE scope='global' AND active` | All |
 | L1 | `decisions WHERE bucket=current OR current=ANY(applicable_buckets) AND status='active'` (summaries, ranked by recency) + `operator_preferences WHERE scope LIKE 'bucket:<current>'` | Active only |
-| L2 | `decisions` and `best_practices WHERE scope='project:<current>'` | Active only |
+| L2 | `decisions` and `best_practices WHERE scope='project:<current>'` (pending OQ-6 — may collapse into patterns table; see §12) | Active only |
 | L3 | `tools_catalog WHERE kind='skill'` (existing, no change) | Classifier-filtered |
-| L4 | `lessons` (existing) + `best_practices WHERE domain matches OR bucket-applicable` | classifier `needs_lessons=true` only |
+| L4 | `lessons` (existing) + `best_practices WHERE domain matches OR bucket-applicable` (pending OQ-6 — may collapse into patterns table; see §12) | classifier `needs_lessons=true` only |
 
 `tasks` and `router_feedback` are NOT loaded into context bundle — they're operational tables.
+
+**Note on best_practices in this contract:** the L2 and L4 rows reference a `best_practices` table that is currently OQ-6 (open question — may be a new table, may be an extension of existing `patterns` per DATA_MODEL §5.1). The contract is written assuming a separate table; if OQ-6 resolves to "extend patterns", revise §8 to reference `patterns` filtered by `category='best_practice'` or similar. M0X.T1 (spec revision) is the gate to resolve this before plan.md is written.
 
 ## 9. Failure modes
 
@@ -276,7 +240,7 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 
 - Migration applies cleanly on fresh DB and production
 - New tables queryable sub-100ms on representative load
-- 17 MCP tools registered and callable
+- 13 MCP tools registered and callable
 - 4 misclassified rows visible in proper tables, originals superseded
 - `SOUL.md` committed, ADR-022 records provenance
 - Phase B planner reads §8 and produces task list without questions back
@@ -290,6 +254,7 @@ Idempotent: each step gates on `IF NOT EXISTS`.
 3. Embedding model: same 3072-dim or smaller for HNSW capability?
 4. `operator_preferences` value: text or jsonb for arrays?
 5. Token budget for `decisions` in L1 — measure typical length × count
+6. (OQ-6) Whether to add a new `best_practices` table for PROCESS guidance, or extend `patterns` (§5.1, currently CODE-focused). Pending review.
 
 ## Appendix A — Why not just add columns to `lessons`?
 

@@ -68,9 +68,16 @@ This document does not contain estimates in time units. Time-to-complete is neve
 
 ### 2.3 Where we are in the plan
 
-**Phase:** 0 (foundation)
-**Next module:** Module 1 — `infra_migration`
-**Current top-of-stack task:** Commit foundation to the repo and tag `foundation-v1.0`
+- ✅ Phase 0 Foundation
+- ✅ Phase 1 Bootstrap (Modules 1, 2, 3)
+- 🔄 Phase 2 Intelligence — Module 4 Router IN PROGRESS:
+  - ✅ M4 Phase A Classifier (complete 2026-04-28)
+  - 🆕 Module 0.X Knowledge Architecture (spec drafted, plan/tasks pending) — must close before M4 Phase B
+  - ⏸️ M4 Phase B Layer Loader (blocked on M0.X)
+  - ⏸️ M4 Phase C-F (blocked)
+- ⏸️ Module 5 telegram_bot
+- ⏸️ Module 6 reflection_worker
+- ⏸️ Phase 3 Knowledge loading (Modules 7, 8)
 
 ---
 
@@ -378,6 +385,24 @@ These are one-page summaries. Full specs live at `specs/{module}/spec.md` (writt
 - Classifier prompt quality drives everything (provider-agnostic — must work across Gemini/Claude/GPT/Kimi). Invest disproportionate time on this prompt. Keep iteration examples in `tests/router/classification_examples.md`.
 - Cache warm-up for Anthropic prompt caching takes a few calls; first-turn latency will be higher than steady-state.
 - Budget enforcement at read-time might conflict with write-time hook. Verify: the only read-time summarization should be for entities that slipped through hook (existing before hook was installed).
+
+**Phase A status (2026-04-28):** COMPLETE. Classifier ships with truncation detection, telemetry capture, schema validation, and a live eval suite. See specs/router/ and tests/router/eval_results/.
+
+**Inserted dependency:** Module 0.X Knowledge Architecture must close before Phase B starts. Phase B's layer loader needs to know which tables feed which layer; that mapping is established in M0.X.
+
+### Module 0.X: `knowledge_architecture`
+
+**Position:** Inserted between M4 Phase A and M4 Phase B. Same Phase 2 (Intelligence).
+
+**Why insertion:** During M4 Phase A.6.1 review, the operator caught that the `lessons` table was being used as a catch-all for tasks, decisions, best practices, and personality preferences. Each has different mutability and load semantics. Splitting now (before Phase B specifies what to load into L0–L4) is cheaper than splitting later.
+
+**Scope:** New `tasks`, `operator_preferences`, `router_feedback` tables. Amendment of existing `decisions` table to add scope/cross-bucket/tags/severity columns. New `SOUL.md` workspace file. ~12 new MCP tools. Migration of 4 misclassified `lessons` rows.
+
+**Out of scope:** Reflection worker (M6), Phase B layer loader, replacement of `lessons`.
+
+**Spec:** `specs/module-0x-knowledge-architecture/spec.md` (commit e466796 draft, revision in progress).
+
+**Exit gate:** Migration applies cleanly, all new MCP tools registered and callable, mypy --strict clean, integration tests for every tool, the 4 misclassified lessons visible in their proper tables with originals marked superseded.
 
 ### Module 5: `telegram_bot`
 

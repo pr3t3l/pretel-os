@@ -17,13 +17,13 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 3 complete, Module 4 next.
+**Phase:** Module 4 Phase A complete, Module 0.X (Knowledge Architecture) next.
 
-**What is done:** Foundation committed, pre-commit hooks, Ubuntu 24.04 dual-boot, Postgres 16 + pgvector 0.6.0, Docker + n8n, LiteLLM, Tailscale (100.94.235.92), Cloudflare Tunnel (`pretel-os` HEALTHY), MCP server v0 with 7 tools on port 8787, Claude.ai connector live, 21 DB tables, `identity.md` with active-observer L0, `AGENTS.md`.
+**What is done:** Foundation, Modules 1–3, Module 4 Phase A (Router classifier — 19 unit tests + 1 live eval against Haiku 4.5 cleared all thresholds: bucket 1.0, complexity 0.8, schema_violations 0). LiteLLM cascade Anthropic+OpenAI configured. ChatJsonTelemetry captures truncation, cache hits, reasoning tokens, finish_reason classification with provider-agnostic edge case handling.
 
-**What is not done:** Router (M4), Telegram bot (M5), Reflection worker (M6), Skills migration (M7), Lessons migration (M8), OAuth on MCP, UptimeRobot.
+**What is not done:** Module 0.X (knowledge architecture: tasks/operator_preferences/router_feedback tables + SOUL.md), Module 4 Phase B (Layer Loader — depends on M0.X), Module 4 Phase C-F, Modules 5–8.
 
-**Top of stack:** `tasks.md → M4.T1.1`.
+**Top of stack:** Module 0.X SDD trinity (spec exists at commit e466796; needs revision then plan.md and tasks.md).
 
 ---
 
@@ -204,6 +204,7 @@ These decisions are load-bearing. Changing them breaks other decisions. Do not s
 - **Git/DB strict boundary** — dual-homing is forbidden. See `CONSTITUTION §2.4`, `LESSONS_LEARNED LL-ARCH-003`.
 - **MCP_SHARED_SECRET required from Phase 1** — Option A was chosen explicitly over Tailscale-only. See `INTEGRATIONS §11.1`.
 - **Router classifier calls LiteLLM aliases, not Anthropic / OpenAI directly.** The classifier (and `second_opinion`) hit `classifier_default` / `second_opinion_default` on the LiteLLM proxy. Swapping the underlying model is a config change in `~/.litellm/config.yaml`, not a code change. Do not hardwire `model="claude-..."` or `model="gpt-..."` in Router code.
+- **`decisions` and `patterns` already exist in DATA_MODEL §5.1 and §5.2.** Module 0.X must NOT propose new tables for these; instead it amends the existing schemas if needed and adds genuinely new tables only (`tasks`, `operator_preferences`, `router_feedback`).
 
 If you think one of these needs reconsideration, it requires a **constitutional amendment** — a full ADR with the specific failure mode documented. Not a casual suggestion mid-chat.
 
@@ -274,9 +275,8 @@ Nothing interesting lives only in a chat. If something mattered, it's in a doc. 
 
 ## 13. Last-known state snapshot
 
-Update this section each time you end a significant work session.
 
-```
+
 Last session: 2026-04-27
 Last task completed: Module 3 complete (tag module-3-complete, commit 5b39773)
 Next task: M4.T1.1
@@ -288,8 +288,47 @@ Postgres: password rotated (no longer pretel_os_temp_2026)
 n8n: password rotated (no longer changeme_replace_this)
 Commits on main: 14
 Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
-```
 
+
+Last session: 2026-04-28
+Last task completed: M4 Phase A complete (commits a4f976b through e59b943)
+  - a4f976b: A.4.3 truncation detection + telemetry
+  - 4964a7d: A.4.4 deferred to Phase F
+  - 4a85fd9: A.5.1 + A.5.2 classifier.py
+  - 8b5bf71: A.5.3 request_id parameter
+  - e466796: Module 0.X spec draft
+  - e59b943: A.6.1 live eval (bucket 1.0, complexity 0.8)
+Next task: Revise Module 0.X spec (deduplicate vs existing decisions/patterns
+            tables), then write plan.md and tasks.md following SDD trinity.
+LiteLLM aliases: classifier_default → claude-haiku-4-5-20251001 (primary),
+                  claude-sonnet-4-6-20250929 + gpt-4o-mini (fallbacks)
+                  second_opinion_default → claude-sonnet-4-6-20250929 (primary),
+                  claude-opus-4-7 + gpt-4o (fallbacks)
+Lessons captured this session: 7 (3 Phase A + 1 verbal-acknowledgment anti-pattern
+  + 3 deferred-todos: pyproject.toml, prompt-caching, LiteLLM concrete model)
+Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
+      (pending: tag module-4-phase-a-complete on e59b943)
+
+
+
+## 14. Last-known state snapshot
+
+Update this section each time you end a significant work session.
+
+```
+Last session: 2026-04-27
+Last task completed: M4.T1 complete (spec + plan + tasks committed)
+  - 3589673: M4.T1.1 spec.md
+  - 7ec4764: M4.T1.2 plan.md
+  - <hash>:  M4.T1.3 tasks.md
+  - <hash>:  parent tasks.md M4.T1.x checkboxes closed
+  - 50de55d: ADR-020 LiteLLM proxy amendment (constitutional)
+Next task: A.1.1 in specs/router/tasks.md — create src/mcp_server/router/
+            directory with __init__.py
+LiteLLM: 2 healthy endpoints (classifier_default, second_opinion_default), both on gemini-2.5-flash
+Lessons captured: f6cb027c (MCP cost model)
+Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
+```
 ---
 
 **End of SESSION_RESTORE.md.**

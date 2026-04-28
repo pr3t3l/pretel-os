@@ -259,6 +259,10 @@ The Router per `CONSTITUTION §2.2`: classifier via LiteLLM alias `classifier_de
 **Estimated duration:** 1 week.
 **Done when:** For a test suite of 20 sample messages across buckets, the Router correctly classifies bucket/project/skill with > 90% accuracy, respects every layer budget, and logs each decision. Cost per classification is measured and recorded in `llm_calls.cost_usd`.
 
+### Module 0.X: `knowledge_architecture`
+
+Inserted 2026-04-28 between Module 4 Phase A and Phase B. Splits `lessons` table into typed knowledge stores: `tasks`, `operator_preferences`, `router_feedback` (new) + amendments to `decisions` (existing). Adds `SOUL.md` voice file. ~12 new MCP tools. See specs/module-0x-knowledge-architecture/.
+
 ### Module 5: `telegram_bot`
 
 Replacement for OpenClaw's Telegram interface using `python-telegram-bot`. Commands: `/start`, `/review_pending`, `/cross_poll_review`, `/morning_brief`, `/save`, `/reflect`. Voice-message input via Whisper for hands-free capture. Runs as a systemd service on the Vivobook.
@@ -531,6 +535,12 @@ The alias-to-model mapping lives in `~/.litellm/config.yaml` and is operator-tun
 5. Telemetry stays unified in `llm_calls` regardless of which provider is currently behind each alias.
 
 **Date.** 2026-04-27.
+
+---
+
+### ADR-021: Split `lessons` into typed knowledge stores
+
+**Date:** 2026-04-28. Context: M4 Phase A.6.1 surfaced that lessons table is being used as catch-all for tasks/decisions/best practices/preferences. Decision: introduce `tasks`, `operator_preferences`, `router_feedback` tables (new) and amend existing `decisions` (DATA_MODEL §5.2). Add `SOUL.md` workspace file. Migration moves 4 misclassified lessons rows. Full spec at specs/module-0x-knowledge-architecture/spec.md.
 
 ---
 
