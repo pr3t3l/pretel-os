@@ -138,3 +138,59 @@ Read contract is preserved: any `SELECT next_due_at FROM control_registry` retur
    Update `~/.env.pretel_os` with the new password.
 2. Upgrade pgvector and re-enable HNSW indexes (or add IVFFlat) when vector volume warrants it.
 3. Dream Engine (future module) creates next month's partitions on the 25th of each month via `CREATE TABLE … PARTITION OF …`.
+
+---
+
+## Operator setup gaps (discovered during M0.X pre-flight, 2026-04-28)
+
+These 3 gaps were not documented at Module 2 close-out and surfaced when M0.X pre-flight tried to use the DB non-interactively + create scratch test DBs. Future operator setups (fresh machine, environment rebuild, new collaborator) must address these BEFORE running migrations beyond 0023.
+
+### Gap 1 — `~/.pgpass` for non-interactive psql access
+
+Required because every CI script, migration runner, health check, and MCP tool that uses `psql` non-interactively will block on a password prompt without this.
+
+```bash
+# Format: hostname:port:database:username:password
+echo "localhost:5432:*:pretel_os:<password>" >> ~/.pgpass
+chmod 0600 ~/.pgpass
+```
+
+The password is the one set in Module 1 when `pretel_os` role was created (rotated from `pretel_os_temp_2026`; current value lives in `~/.env.pretel_os` as `PRETEL_OS_DB_PASSWORD` or equivalent).
+
+Verify with: `psql -h localhost -U pretel_os -d pretel_os -c "\dt"` — should connect without prompt.
+
+### Gap 2 — `CREATEDB` privilege on pretel_os role
+
+Required because Phase A and any future migration test pattern uses scratch databases (`CREATE DATABASE pretel_os_scratch` per the SDD test-on-scratch rule).
+
+```bash
+sudo -u postgres psql -c "ALTER ROLE pretel_os CREATEDB;"
+sudo -u postgres psql -c "\du pretel_os"   # verify "Create DB" appears in attributes
+```
+
+This grant is permanent and survives Postgres restarts. Run once per fresh setup.
+
+### Gap 3 — Pre-load extensions into `template1`
+
+Required because pgvector 0.6.0 (the version in Ubuntu 24.04 noble repos) is NOT marked as a "trusted" extension — installing `vector` requires superuser privilege. Pre-loading extensions into `template1` causes any new DB (created by any role) to inherit them automatically.
+
+```bash
+sudo -u postgres psql -d template1 -c "CREATE EXTENSION IF NOT EXISTS vector;"
+sudo -u postgres psql -d template1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+sudo -u postgres psql -d template1 -c "CREATE EXTENSION IF NOT EXISTS btree_gin;"
+sudo -u postgres psql -d template1 -c "\dx"   # verify all 3 listed
+```
+
+This is a server-wide change. In a single-purpose pretel-os host this is acceptable; in a multi-tenant Postgres host, prefer Gap 3 alternative below.
+
+**Alternative (deferred):** upgrade pgvector to ≥ 0.7.0 (which marks the extension as trusted, eliminating Gap 3 entirely). Ubuntu 24.04 noble currently ships 0.6.0; revisit when noble updates or when the PostgreSQL Apt PPA is acceptable as an additional repo. See ADR-024 (DECISIONS.md) for the related HNSW dimension limitation that motivated investigating this.
+
+### Verification
+
+After all 3 gaps are addressed, this should succeed end-to-end with no prompts and no errors:
+
+```bash
+psql -h localhost -U pretel_os -d postgres -c "CREATE DATABASE pretel_os_scratch;"
+psql -h localhost -U pretel_os -d pretel_os_scratch -c "\dx"   # vector + pg_trgm + btree_gin
+psql -h localhost -U pretel_os -d postgres -c "DROP DATABASE pretel_os_scratch;"
+```
