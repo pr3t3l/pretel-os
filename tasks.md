@@ -373,7 +373,7 @@ Authority: `docs/PROJECT_FOUNDATION.md §4 Module 1`, `docs/INTEGRATIONS.md`.
   - [ ] `runbooks/module_1_infra_migration.md` exists.
 - [x] **M1.T12.3** Commit Module 1 artifacts with message "feat(M1): infra migration complete — Ubuntu 24.04, WSL retired".
   - Done when: commit on main.
-- [ ] **M1.T12.4** Tag as `module-1-complete` (optional but helpful for resumption).
+- [x] **M1.T12.4** Tag as `module-1-complete` (optional but helpful for resumption).
   - Done when: tag exists.
 
 **Exit Module 1** — all of M1.T1 through M1.T12 checked.
@@ -517,7 +517,7 @@ Each task above is done when:
 - [x] **M2.T13.1** Run `infra/db/health_check.py` — all checks pass.
 - [x] **M2.T13.2** Update `runbooks/module_2_data_layer.md` with DB admin procedures (connect, backup, restore, add column, reindex).
 - [x] **M2.T13.3** Commit with message "feat(M2): data layer complete — 21 tables, partitions, scout_denylist seeded".
-- [ ] **M2.T13.4** Tag `module-2-complete`.
+- [x] **M2.T13.4** Tag `module-2-complete`.
 
 **Exit Module 2.**
 
