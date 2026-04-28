@@ -29,10 +29,10 @@ Tasks within a phase can usually be done in order, but where parallelism exists 
 
 ### A.1 — Skeleton
 
-- [ ] **A.1.1** Create directory `src/mcp_server/router/` and `src/mcp_server/router/prompts/`.
+- [x] **A.1.1** Create directory `src/mcp_server/router/` and `src/mcp_server/router/prompts/`.
   - Done when: both directories exist with `__init__.py` files (empty is fine for `prompts/`).
 
-- [ ] **A.1.2** Create `src/mcp_server/router/exceptions.py` with the four typed exceptions: `ClassifierTimeout`, `ClassifierTransportError`, `ClassifierParseError`, `ClassifierSchemaError`. All inherit from a base `ClassifierError`.
+- [x] **A.1.2** Create `src/mcp_server/router/exceptions.py` with the four typed exceptions: `ClassifierTimeout`, `ClassifierTransportError`, `ClassifierParseError`, `ClassifierSchemaError`. All inherit from a base `ClassifierError`.
   - Done when: `from src.mcp_server.router.exceptions import ClassifierTimeout` works in a Python REPL on the Vivobook.
 
 ### A.2 — Prompt authoring
