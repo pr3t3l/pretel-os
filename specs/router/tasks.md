@@ -89,8 +89,9 @@ they slip through.
   - Done when: unit test with hand-crafted invalid responses (wrong bucket name, missing field, wrong type) raises `ClassifierSchemaError` for each case.
   - Implemented inline with A.5.1 via `_validate_response` (single source of truth, runs on every classify call). v1 also enforces `project=null` and `skill=null` per spec.md §5.1.
 
-- [ ] **A.5.3** Add `request_id` parameter to `classify()` so it can be threaded through to telemetry later (Phase D). For now, it is just accepted and ignored.
+- [x] **A.5.3** Add `request_id` parameter to `classify()` so it can be threaded through to telemetry later (Phase D). For now, it is just accepted and ignored.
   - Done when: signature accepts `request_id: str | None = None` without breaking existing calls.
+  - Implemented inline with A.5.1; full Phase D telemetry threading happens when routing_logs writer ships.
 
 ### A.6 — Tests
 
