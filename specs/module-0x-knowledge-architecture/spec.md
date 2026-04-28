@@ -108,7 +108,7 @@ CREATE INDEX idx_tasks_module ON tasks(module) WHERE module IS NOT NULL;
 
 The `decisions` table exists at DATA_MODEL §5.2. M0.X migration adds these columns:
 
-- `scope text NOT NULL DEFAULT 'project' CHECK (scope IN ('architectural','process','product','operational'))` — distinguishes ADR-level from process-level decisions
+- `scope text NOT NULL DEFAULT 'operational' CHECK (scope IN ('architectural','process','product','operational'))` — distinguishes ADR-level from process-level decisions. Default 'operational' applies to legacy rows and inserts that don't explicitly set scope (catch-all for day-to-day decision-making). Formal ADRs MUST set scope='architectural' explicitly.
 - `applicable_buckets text[] DEFAULT '{}'` — cross-bucket scope for decisions that affect more than one bucket
 - `decided_by text NOT NULL DEFAULT 'operator'` — provenance
 - `tags text[] DEFAULT '{}'` — for filtering
