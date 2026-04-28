@@ -68,6 +68,17 @@ Tasks within a phase can usually be done in order, but where parallelism exists 
     - [x] Add 6 new mocked tests covering truncation, content filter, unknown finish_reason, markdown fences, and LiteLLM bug #18896
     - [x] Add 1 integration test against live `classifier_default` (Haiku 4.5)
 
+### F.x — Observational: classifier markdown-fence rate (deferred from A.4.4)
+
+After A.5+ ships and routing_logs accumulate ~1 week of real classifier
+calls, query `routing_logs` for the rate at which `provider_metadata`
+shows the model emitted markdown fences (defensive stripper kicked in).
+If rate < 5%, leave the prompt as-is. If rate > 20%, prompt-engineer
+the anti-fences instruction (move to top of prompt, all-caps, repeat).
+Note: classify.txt already has the instruction at the bottom; A.4.3
+integration test confirmed the stripper handles fences cleanly when
+they slip through.
+
 ### A.5 — Classifier integration
 
 - [ ] **A.5.1** Implement `src/mcp_server/router/classifier.py::classify(message, l0_content, session_excerpt)` — assembles the input, calls `litellm_client.chat_json('classifier_default', ...)`, parses response, validates against schema. → M4.T2.2
