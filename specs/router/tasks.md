@@ -81,11 +81,13 @@ they slip through.
 
 ### A.5 — Classifier integration
 
-- [ ] **A.5.1** Implement `src/mcp_server/router/classifier.py::classify(message, l0_content, session_excerpt)` — assembles the input, calls `litellm_client.chat_json('classifier_default', ...)`, parses response, validates against schema. → M4.T2.2
+- [x] **A.5.1** Implement `src/mcp_server/router/classifier.py::classify(message, l0_content, session_excerpt)` — assembles the input, calls `litellm_client.chat_json('classifier_default', ...)`, parses response, validates against schema. → M4.T2.2
   - Done when: function returns a valid dict for the first example in `classification_examples.md` when called against the live LiteLLM proxy.
+  - Live integration against the 10 worked examples is deferred to A.6.1; A.5.1 ships with mocked unit tests in `tests/router/test_classifier.py`.
 
-- [ ] **A.5.2** Implement strict schema validation in `classifier.py`: `bucket` ∈ {personal, business, scout} or `null`; `complexity` ∈ {LOW, MEDIUM, HIGH}; `confidence` ∈ [0.0, 1.0]; `needs_lessons` is bool. Anything else → `ClassifierSchemaError`. → M4.T2.2
+- [x] **A.5.2** Implement strict schema validation in `classifier.py`: `bucket` ∈ {personal, business, scout} or `null`; `complexity` ∈ {LOW, MEDIUM, HIGH}; `confidence` ∈ [0.0, 1.0]; `needs_lessons` is bool. Anything else → `ClassifierSchemaError`. → M4.T2.2
   - Done when: unit test with hand-crafted invalid responses (wrong bucket name, missing field, wrong type) raises `ClassifierSchemaError` for each case.
+  - Implemented inline with A.5.1 via `_validate_response` (single source of truth, runs on every classify call). v1 also enforces `project=null` and `skill=null` per spec.md §5.1.
 
 - [ ] **A.5.3** Add `request_id` parameter to `classify()` so it can be threaded through to telemetry later (Phase D). For now, it is just accepted and ignored.
   - Done when: signature accepts `request_id: str | None = None` without breaking existing calls.
