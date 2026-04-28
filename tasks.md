@@ -680,9 +680,9 @@ Authority: `docs/CONSTITUTION.md §2.2, §2.3, §2.7, §5`.
 
 ### M4.T1 — Spec
 
-- [ ] **M4.T1.1** `specs/router/spec.md`.
-- [ ] **M4.T1.2** `specs/router/plan.md` — phases: A classifier, B layer loader, C source priority, D telemetry, E fallback, F tuning.
-- [ ] **M4.T1.3** `specs/router/tasks.md`.
+- [x] **M4.T1.1** `specs/router/spec.md`.
+- [x] **M4.T1.2** `specs/router/plan.md` — phases: A classifier, B layer loader, C source priority, D telemetry, E fallback, F tuning.
+- [x] **M4.T1.3** `specs/router/tasks.md`.
 
 ### M4.T2 — Classification prompt engineering
 
