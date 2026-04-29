@@ -232,6 +232,8 @@ Flat file at `~/dev/pretel-os/SOUL.md`, committed to git. Loaded into L0 alongsi
 
 Note: Claude.ai web/app does NOT load `SOUL.md` — Anthropic uses operator's userPreferences for that surface. SOUL.md applies to Claude Code, Telegram bot via OpenClaw, and any MCP session caller that loads it.
 
+**Budget (clarified 2026-04-28 during M0X.B implementation):** SOUL.md is loaded into L0 alongside `identity.md`, `CONSTITUTION.md`, and `AGENTS.md`. Per CONSTITUTION §2.3, the explicit 1,200-token budget applies to `identity.md` only — `CONSTITUTION.md` (rules-of-the-road, ~7,500 tok) and `AGENTS.md` (meta-file, ~850 tok) load into L0 without per-file caps because they are infrastructure rather than budget-controlled context. SOUL.md follows the same pattern: it loads in L0 without a numerical cap, but is kept lean by convention (target ~150-200 tokens) so that L0 stays compact at runtime. The pre-commit token-budget hook (CONSTITUTION §7.36) enforces only the `identity.md` cap. Any future change to add a SOUL.md cap would require a constitutional amendment to §2.3.
+
 ## 6. MCP tools
 
 | Table | Tools |

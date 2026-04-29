@@ -61,10 +61,11 @@ Module 0.X ships in 5 phases. Each phase has its own gate. Phases run sequential
 - ADR-022 already inserted in Phase A migration; this phase just creates the markdown file referenced by it
 
 **Gate B:**
-- File exists at `~/dev/pretel-os/SOUL.md`
-- Content covers: communication style, language preference (Spanish/English), tooling preferences, deferral discipline (no verbal acknowledgment rule)
-- File is under L0 budget (must fit alongside CONSTITUTION + IDENTITY + AGENTS within 1,200 token total — measure with tiktoken cl100k_base)
-- Pre-commit token-budget hook (CONSTITUTION §7.36) passes on the L0 set
+- File `~/dev/pretel-os/SOUL.md` exists
+- Content covers: communication style, language preference (Spanish/English), deferral discipline (no verbal acknowledgment), tooling conventions
+- `identity.md` token count remains <= 1,200 (per CONSTITUTION §7.36 — unchanged by this phase)
+- SOUL.md kept lean by convention (~150-200 tokens; no enforced cap per CONSTITUTION §2.3 spec drift fix)
+- `AGENTS.md` updated to reference SOUL.md in the L0 read order
 
 ### Phase C: MCP tools — write & register
 

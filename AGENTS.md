@@ -6,10 +6,11 @@ Read this if you are an LLM entering this repository.
 
 1. `AGENTS.md` (this file)
 2. `identity.md` (operator identity, buckets, tools, invariants)
-3. `CONSTITUTION.md` (immutable rules)
-4. `plan.md §2, §5` (project state, phase gates)
-5. `tasks.md` — first unchecked `[ ]` is where you are
-6. `SESSION_RESTORE.md` (bridge between chats)
+3. `SOUL.md` (operator voice and behavior contract; how to address and work with operator)
+4. `CONSTITUTION.md` (immutable rules)
+5. `plan.md §2, §5` (project state, phase gates)
+6. `tasks.md` — first unchecked `[ ]` is where you are
+7. `SESSION_RESTORE.md` (bridge between chats)
 
 ## Agent rules (from CONSTITUTION §9)
 
@@ -27,7 +28,7 @@ Read this if you are an LLM entering this repository.
 
 Not everything lives in this repo. The Router assembles context from multiple sources:
 
-- **L0** — `identity.md` (this repo) — operator identity, purpose, invariants
+- **L0** — `identity.md` + `SOUL.md` (this repo) — operator identity (facts) and voice (behavior contract), purpose, invariants
 - **L1** — `buckets/*/README.md` (this repo) — bucket-level context per domain
 - **L2** — project state (DB: `projects_indexed`, `project_state`) — loaded by Router when a project is detected. No file to read here.
 - **L3** — `skills/*.md` (this repo) — procedural memory, reusable methodologies
@@ -43,7 +44,8 @@ pretel-os/
 ├── plan.md                  # Project-wide plan, phase gates
 ├── tasks.md                 # Atomic tasks (source of truth)
 ├── SESSION_RESTORE.md       # Bridge between chats
-├── identity.md              # L0 operator identity
+├── identity.md              # L0 operator identity (facts)
+├── SOUL.md                  # L0 operator voice (behavior contract)
 ├── AGENTS.md                # This file
 ├── docs/
 │   ├── PROJECT_FOUNDATION.md

@@ -95,14 +95,14 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 ## Phase B — SOUL.md
 
-- [ ] M0X.B.1 — Draft `SOUL.md` content covering: communication style, language preference, tooling preferences, deferral discipline, opinion-required convention
-- [ ] M0X.B.2 — Measure token count with `python -c "import tiktoken; enc=tiktoken.get_encoding('cl100k_base'); print(len(enc.encode(open('SOUL.md').read())))"`
-- [ ] M0X.B.3 — Measure combined L0 token count: CONSTITUTION + IDENTITY + AGENTS + SOUL — must be under 1,200
-- [ ] M0X.B.4 — If over budget, trim IDENTITY.md or SOUL.md (do NOT trim CONSTITUTION); re-measure
-- [ ] M0X.B.5 — Run pre-commit token-budget hook manually: `infra/hooks/pre-commit-token-budget.sh`
-- [ ] M0X.B.6 — Update AGENTS.md to add SOUL.md to the L0 read-order list
-- [ ] M0X.B.7 — Commit with message "M0X.B: SOUL.md added to L0, AGENTS.md updated"
-- [ ] M0X.B.8 — **Gate B passed**: file exists, L0 budget respected, hook clean
+- [x] M0X.B.1 — Draft `SOUL.md` content covering: communication style, language preference, tooling preferences, deferral discipline, opinion-required convention
+- [x] M0X.B.2 — Measure token count with `python -c "import tiktoken; enc=tiktoken.get_encoding('cl100k_base'); print(len(enc.encode(open('SOUL.md').read())))"`
+- [x] M0X.B.3 — Measure combined L0 token count: CONSTITUTION + IDENTITY + AGENTS + SOUL — must be under 1,200
+- [x] M0X.B.4 — If over budget, trim IDENTITY.md or SOUL.md (do NOT trim CONSTITUTION); re-measure
+- [x] M0X.B.5 — Run pre-commit token-budget hook manually: `infra/hooks/pre-commit-token-budget.sh`
+- [x] M0X.B.6 — Update AGENTS.md to add SOUL.md to the L0 read-order list
+- [x] M0X.B.7 — Commit with message "M0X.B: SOUL.md added to L0, AGENTS.md updated"
+- [x] M0X.B.8 — **Gate B passed**: file exists, L0 budget respected, hook clean
 
 ---
 

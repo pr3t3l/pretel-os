@@ -119,7 +119,7 @@ Operator's communication style and behavioral preferences (direct, actionable, S
 Add `SOUL.md` at repo root, loaded into L0 alongside CONSTITUTION/IDENTITY/AGENTS. Note: Claude.ai web/app does NOT load SOUL.md (Anthropic uses operator's userPreferences). SOUL.md applies to Claude Code, Telegram bot via OpenClaw, and any MCP session caller that loads it.
 
 ### Consequences
-- L0 budget remains 1,200 tokens combined; pre-commit hook enforces
+- Per CONSTITUTION §2.3, the 1,200-token L0 budget applies to `identity.md` specifically. SOUL.md follows the pattern of `AGENTS.md` and `CONSTITUTION.md`: loaded in L0 without per-file numerical cap, kept lean by convention (target ~150-200 tokens). Pre-commit hook (§7.36) enforces only the `identity.md` cap.
 - Operator voice persists across sessions and clients (except Anthropic web/app)
 - Future scope: sync between SOUL.md and Anthropic userPreferences (deferred)
 

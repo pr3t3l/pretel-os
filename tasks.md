@@ -43,7 +43,7 @@ Per-module detail: `specs/router/tasks.md`
 - [x] M0X.T2 plan.md (commit ff81538)
 - [x] M0X.T3 tasks.md (commit c4b4649)
 - [x] M0X.T4.A — Phase A schema migrations (closed; 7 migrations applied; commits db73a67 through bc4e5df)
-- [ ] M0X.T4.B — Phase B SOUL.md
+- [x] M0X.T4.B — Phase B SOUL.md (closed; commit pending)
 - [ ] M0X.T4.C — Phase C MCP tools (17 tools)
 - [ ] M0X.T4.D — Phase D tests
 - [ ] M0X.T4.E — Phase E docs + close-out + tag
