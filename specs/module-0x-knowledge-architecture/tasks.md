@@ -206,24 +206,24 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 ## Phase E — Layer loader contract + docs
 
-- [ ] M0X.E.1 — Create `specs/module-0x-knowledge-architecture/layer_loader_contract.md` — frozen mapping per spec §8 (L0–L4 sources and filters)
-- [ ] M0X.E.2 — Update `docs/DATA_MODEL.md`:
-  - [ ] M0X.E.2.1 — Add §5.7 `tasks` schema documentation
-  - [ ] M0X.E.2.2 — Add §5.8 `operator_preferences` schema documentation
-  - [ ] M0X.E.2.3 — Add §5.9 `router_feedback` schema documentation
-  - [ ] M0X.E.2.4 — Add §5.10 `best_practices` schema documentation
-  - [ ] M0X.E.2.5 — Amend §5.2 `decisions` to reflect 7 new columns
-  - [ ] M0X.E.2.6 — Update §1.2 table count: 21 → 25 tables
-- [ ] M0X.E.3 — Update `docs/INTEGRATIONS.md` MCP tool catalog: add 17 new tool entries
-- [ ] M0X.E.4 — Update `SESSION_RESTORE.md` §13: new last-known state snapshot with module-0x-complete
-- [ ] M0X.E.5 — Update `plan.md §6` Module 0.X entry: status "in progress" → "complete"
-- [ ] M0X.E.6 — Update top-level `tasks.md`: mark M0X.T1, T2, T3, T4 closed
-- [ ] M0X.E.7 — Verify spec.md §6 says "17 tools" not "16" (side-fix from plan.md)
-- [ ] M0X.E.8 — Commit with message "M0X.E: layer_loader_contract.md frozen, DATA_MODEL/INTEGRATIONS updated"
-- [ ] M0X.E.9 — Tag: `git tag module-0x-complete -m "Module 0.X: knowledge architecture complete"`
-- [ ] M0X.E.10 — Push: `git push origin main && git push origin module-0x-complete`
-- [ ] M0X.E.11 — **Gate E passed**: contract frozen, docs synced, tag created
-- [ ] M0X.E.12 — **Module 0.X COMPLETE** — Module 4 Phase B unblocked
+- [x] M0X.E.1 — Create `specs/module-0x-knowledge-architecture/layer_loader_contract.md` — frozen mapping per spec §8 (L0–L4 sources and filters) (commit `469e79e`; patched in `532581b` for bundle shape, severity SQL CASE, token method)
+- [x] M0X.E.2 — Update `docs/DATA_MODEL.md` (commit `5d35835`):
+  - [x] M0X.E.2.1 — Add §5.7 `tasks` schema documentation
+  - [x] M0X.E.2.2 — Add §5.8 `operator_preferences` schema documentation
+  - [x] M0X.E.2.3 — Add §5.9 `router_feedback` schema documentation
+  - [x] M0X.E.2.4 — Add §5.10 `best_practices` schema documentation
+  - [x] M0X.E.2.5 — Amend §5.2 `decisions` to reflect 7 new columns (now §5.2.1 amendment subsection)
+  - [x] M0X.E.2.6 — Update §1.2 table count: 21 → 25 tables (already done in Phase A doc reconciliation, commit `12b3d1f`)
+- [x] M0X.E.3 — Update `docs/INTEGRATIONS.md` MCP tool catalog: add 18 new tool entries (commit `714d1a9`; corrected count from 17 — `best_practice_rollback` shipped in Phase C)
+- [x] M0X.E.4 — Update `SESSION_RESTORE.md` §13: new last-known state snapshot with module-0x-complete (commit `93b1b43`)
+- [x] M0X.E.5 — Update `plan.md` Module 0.X entry: status "in progress" → "complete" (this commit; §2 + §7 updated. Original task referenced §6 but that section is the risk register — actual module status lives in §2)
+- [x] M0X.E.6 — Update top-level `tasks.md`: mark M0X.T1, T2, T3, T4 closed (this commit)
+- [x] M0X.E.7 — Verify spec.md §6 says "18 tools" (commit `9a94e93`; also added `decisions.project NOT NULL` clarification, closing task `80462622` via `task_close` MCP tool — dogfood)
+- [x] M0X.E.8 — Per-deliverable commits (operator's Phase E brief replaced single-mega-commit with one commit per deliverable; ~7 commits in this phase)
+- [ ] M0X.E.9 — Tag: `git tag -a module-0x-complete` (created locally during Gate E close-out; push pending operator approval)
+- [ ] M0X.E.10 — Push: `git push origin main && git push origin module-0x-complete` (gated on operator approval per Phase E brief §6)
+- [ ] M0X.E.11 — **Gate E passed**: contract frozen, docs synced, tag created locally (pending: operator approval to push)
+- [ ] M0X.E.12 — **Module 0.X COMPLETE** — Module 4 Phase B unblocked (final state achieved on push)
 
 ---
 

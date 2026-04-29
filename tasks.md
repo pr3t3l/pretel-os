@@ -46,7 +46,8 @@ Per-module detail: `specs/router/tasks.md`
 - [x] M0X.T4.B — Phase B SOUL.md (closed; commit pending)
 - [x] M0X.T4.C — Phase C MCP tools (18 tools — count corrected from 17 due to best_practice_rollback split)
 - [x] M0X.T4.D — Phase D tests (closed; 47 tests green, coverage ≥80% on all 5 M0.X tool files)
-- [ ] M0X.T4.E — Phase E docs + close-out + tag
+- [x] M0X.T4.E — Phase E docs + close-out + tag (commits `9cbc639`–`module-0x-complete` chain; layer_loader_contract.md frozen, DATA_MODEL/INTEGRATIONS/SESSION_RESTORE/spec drift fixes shipped; tag created locally, pending operator-approved push)
+- [x] **Module 0.X COMPLETE** — knowledge architecture shipped, M4 Phase B unblocked
 
 Per-module detail: `specs/module-0x-knowledge-architecture/tasks.md`
 

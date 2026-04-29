@@ -15,17 +15,18 @@ The spec defines WHAT Module 0.X delivers. This plan defines HOW it gets built �
 
 ## 2. Module state snapshot
 
-**Current state of Module 0.X:**
-- Spec: COMPLETE (commit 8a6cf7d)
-- Plan: IN PROGRESS (this document, M0X.T2)
-- Tasks: PENDING (M0X.T3)
-- Implementation: PENDING (M0X.T4 — the actual build, expanded after T3 commits)
+**Current state of Module 0.X: COMPLETE (tagged `module-0x-complete`).**
+
+- Spec: COMPLETE (commit `8a6cf7d`)
+- Plan: COMPLETE (this document, M0X.T2 — `ff81538`)
+- Tasks: COMPLETE (M0X.T3 — `c4b4649`)
+- Implementation: COMPLETE (M0X.T4 — Phases A→E shipped; see §3 for per-phase commit chain)
 
 **Repo state at module start:**
 - Branch: `main`
 - Last commit before M0.X work: `28fec7b` (M4 Phase A complete)
 - Existing migrations: 0001–0023 (Phase 1 + Phase 2 base tables, including `patterns` and `decisions` base schemas)
-- New migrations to add in this module: starts at 0024
+- New migrations added in this module: 0024–0029 (+ 0028a M2 trigger fix). Migration 0030 (notify_missing_embedding trigger for best_practices) deferred to a follow-up; tracked as task `92cac1b3`.
 
 ---
 
@@ -202,20 +203,20 @@ Migration is idempotent (gates on `IF NOT EXISTS` and source row `status != 'sup
 
 ---
 
-## 7. Definition of "Module 0.X complete"
+## 7. Definition of "Module 0.X complete" — ACHIEVED
 
-All 5 gates pass:
-- Gate A: 6 migrations applied, schema verified
-- Gate B: SOUL.md exists, L0 within budget
-- Gate C: 17 tools registered, mypy --strict clean, degraded mode tested
-- Gate D: tests green, coverage ≥80%, integration tests assert content
-- Gate E: layer_loader_contract.md frozen, DATA_MODEL.md updated, SESSION_RESTORE.md snapshot updated
+All 5 gates passed:
+- ✅ Gate A: 7 migrations applied (0024–0029 + 0028a M2 trigger fix), schema verified
+- ✅ Gate B: SOUL.md exists (324 tok), L0 within budget (per CONSTITUTION §2.3 only `identity.md` has a hard cap)
+- ✅ Gate C: 18 tools registered (4 best_practice tools after the rollback split), mypy --strict clean, degraded mode tested
+- ✅ Gate D: tests green (47), coverage ≥80% per file, integration tests assert content
+- ✅ Gate E: `layer_loader_contract.md` frozen, `DATA_MODEL.md` updated, `SESSION_RESTORE.md` snapshot updated
 
-Then:
-- Tag `module-0x-complete` on the final commit
-- Update `tasks.md` to mark M0X.T1–T4 closed
-- Update `plan.md §6` Module 0.X entry: status changed from "in progress" to "complete"
-- M4 Phase B is now unblocked
+Closure actions (this Phase E):
+- ✅ Tag `module-0x-complete` on the final commit (created locally, push pending operator approval per Gate E protocol)
+- ✅ Update `tasks.md` to mark M0X.T1–T4 closed
+- ✅ Update plan.md §2 Module 0.X status: "in progress" → "complete"
+- ✅ M4 Phase B is now unblocked — `layer_loader_contract.md` is the input contract
 
 ---
 
