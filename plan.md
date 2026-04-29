@@ -409,7 +409,7 @@ These are one-page summaries. Full specs live at `specs/{module}/spec.md` (writt
 
 **Phase A status (2026-04-28):** COMPLETE. 7 migrations applied to production (0024-0029 + 0028a Module 2 trigger fix). 5 ADRs seeded into `decisions`. 4 misclassified `lessons` rows archived with cross-table pointers. Schema audit at `migrations/audit/0029_post_state.md`. Spec drifts caught and corrected inline: §5.4 (request_id text vs uuid), §5.2 (scope DEFAULT 'operational'), §7 (status='archived' since lesson_status enum has no 'superseded'). Phase A close-out commit: `bc4e5df`.
 
-**Phase B-E status:** Pending. Phase B (SOUL.md) is next.
+**Phase B-E status:** Pending. T4.B (SOUL.md) is next, then T4.C (MCP tools), T4.D (tests), T4.E (close-out + tag). Per-module atomic detail at `specs/module-0x-knowledge-architecture/tasks.md`; root milestones at `tasks.md` (M0X.T4.B-E).
 
 **Exit gate:** Migration applies cleanly, all new MCP tools registered and callable, mypy --strict clean, integration tests for every tool, the 4 misclassified lessons visible in their proper tables with originals marked archived.
 

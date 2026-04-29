@@ -84,7 +84,9 @@ Where everything lives (paths relative to repo root):
 pretel-os/
 ├── CONSTITUTION.md                          # Immutable rules
 ├── plan.md                                  # Project-wide plan, phase gates
-├── tasks.md                                 # Atomic tasks (source of truth for "what next")
+├── tasks.md                                 # Milestone tracker (one line per phase)
+├── tasks.archive.md                         # Closed atomic detail (grep convenience + pre-rule snapshot)
+├── DECISIONS.md                             # ADR log (020+); legacy 001-019 in PROJECT_FOUNDATION §5
 ├── SESSION_RESTORE.md                       # This file
 ├── README.md                                # Repo entry point
 ├── identity.md                              # L0 operator identity (populated in Module 3)
@@ -92,7 +94,7 @@ pretel-os/
 │
 ├── docs/
 │   ├── PROJECT_FOUNDATION.md                # Vision, stack, roadmap, ADRs
-│   ├── DATA_MODEL.md                        # DB schema (21 tables)
+│   ├── DATA_MODEL.md                        # DB schema (25 tables)
 │   ├── INTEGRATIONS.md                      # External services (10 integrations)
 │   ├── LESSONS_LEARNED.md                   # Process doc for lessons
 │   └── audits/
@@ -112,6 +114,8 @@ pretel-os/
 ├── runbooks/                                # Per-module operational procedures
 └── .env.pretel_os.example                   # Credentials template
 ```
+
+**Tasks granularity:** root `tasks.md` carries milestone-level status (one line per phase). Atomic detail (one checkbox per migration index / function / test) lives in `specs/<module>/tasks.md`. See `runbooks/sdd_module_kickoff.md` for the rule.
 
 **Credentials** live at `/home/operator/.env.pretel_os` (mode 0600, NOT in the repo).
 
