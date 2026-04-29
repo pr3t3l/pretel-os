@@ -123,6 +123,8 @@ Indexes added:
 
 Migration writes (in order): ADR-020 (LiteLLM proxy gateway), ADR-021 (split lessons into typed stores — this M0.X), ADR-022 (SOUL.md voice file).
 
+**Note on `decisions.project` (NOT NULL):** Per Phase C smoke testing (task `80462622`), the existing `decisions.project` column is `NOT NULL` in the production DDL (and DATA_MODEL.md §5.2 confirms this). The Phase C operator brief described `project: Optional[str] = None` for `decision_record`'s parameter signature; the implemented tool deviated from the brief to match the actual schema (commit `df53b57`). Future readers of this spec should treat the production DDL (or `migrations/audit/0029_post_state.md`) as the source of truth for column nullability — the spec does not redocument the original 12 columns of `decisions`, so `project NOT NULL` was easy to miss.
+
 ### 5.3 `operator_preferences`
 
 ```sql
@@ -242,9 +244,9 @@ Note: Claude.ai web/app does NOT load `SOUL.md` — Anthropic uses operator's us
 | Decisions (existing, amended) | `decision_record`, `decision_search`, `decision_supersede` — point at the existing `decisions` table with the new columns from §5.2 |
 | Preferences | `preference_set`, `preference_get`, `preference_list`, `preference_unset` |
 | Router feedback | `router_feedback_record`, `router_feedback_review` |
-| Best practices | `best_practice_record`, `best_practice_search`, `best_practice_deactivate` |
+| Best practices | `best_practice_record`, `best_practice_search`, `best_practice_deactivate`, `best_practice_rollback` |
 
-Total: 16 tools.
+Total: 18 tools. (Phase C added `best_practice_rollback` to support single-step rollback of the previous_guidance/previous_rationale columns; original spec listed 16 + 1 = 17, and the rollback split brought it to 18.)
 
 ## 7. Migration plan
 
