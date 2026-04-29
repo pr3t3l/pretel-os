@@ -151,26 +151,26 @@ functions (consistent with B.2–B.6).
 
 ### B.8 — Cache + LISTEN/NOTIFY
 
-- [ ] **B.8.1** Author `migrations/0031_layer_cache_invalidation_triggers.sql`
+- [x] **B.8.1** Author `migrations/0031_layer_cache_invalidation_triggers.sql`
   with one shared `notify_cache_invalidate()` function emitting
   `pg_notify('layer_loader_cache', TG_TABLE_NAME || ':' || TG_OP)` on
   AFTER INSERT/UPDATE/DELETE for the four contract §6 tables. Idempotent
   (`DROP TRIGGER IF EXISTS`, `CREATE OR REPLACE FUNCTION`).
   - Done when: SQL parses; applies cleanly to both prod and test DBs.
 
-- [ ] **B.8.2** Apply migration to `pretel_os` and `pretel_os_test`.
+- [x] **B.8.2** Apply migration to `pretel_os` and `pretel_os_test`.
   - Done when: `psql -c "SELECT trigger_name FROM information_schema.triggers
     WHERE trigger_name LIKE 'trg_%cache_invalidate%'"` returns 4 rows on
     both DBs.
 
-- [ ] **B.8.3** Implement `src/mcp_server/router/_classifier_hash.py`
+- [x] **B.8.3** Implement `src/mcp_server/router/_classifier_hash.py`
   with `classifier_hash(signals: ClassifierSignals) -> str`. Uses
   `hashlib.sha256(json.dumps(asdict(signals), sort_keys=True).encode()).hexdigest()[:16]`.
   Pure function; no I/O.
   - Done when: deterministic across runs; identical signals → identical
     hash; different signals → different hash.
 
-- [ ] **B.8.4** Implement `src/mcp_server/router/cache.py` with
+- [x] **B.8.4** Implement `src/mcp_server/router/cache.py` with
   `LayerBundleCache` class: thread-safe dict cache keyed by
   `(bucket, project, classifier_hash)`, with `get`, `put`,
   `invalidate_all`, and `start_listener(conn) -> None` that spawns a
@@ -179,7 +179,7 @@ functions (consistent with B.2–B.6).
   - Done when: mypy clean; instantiation works; sequential put/get
     returns the stored bundle.
 
-- [ ] **B.8.5** Write `tests/router/test_cache.py` — unit tests for
+- [x] **B.8.5** Write `tests/router/test_cache.py` — unit tests for
   classifier_hash determinism + collision behavior, cache get/put/
   invalidate, plus ONE integration test that: starts the listener,
   inserts a row into one of the four trigger tables in a separate
