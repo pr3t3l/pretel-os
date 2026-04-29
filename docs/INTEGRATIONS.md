@@ -815,3 +815,216 @@ Loaded by systemd via:
 EnvironmentFile=/home/operator/.env.pretel_os
 ExecStart=/home/operator/pretel-os/venv/bin/python -m mcp_server
 ```
+
+---
+
+## 14. MCP tool catalog (Module 0.X)
+
+Eighteen MCP tools shipped by Module 0.X, registered via FastMCP `app.tool()` in `build_app()`. Source of truth: `src/mcp_server/tools/{tasks,preferences,router_feedback,decisions,best_practices}.py`.
+
+**Common return shapes — apply to every tool below unless noted:**
+
+- **Success:** `{status: 'ok', ...}` — exact shape per tool.
+- **Not found** (lookup tools, when `id` matches no row): `{status: 'ok', found: False}`.
+- **Degraded** (DB unhealthy per CONSTITUTION §8.43): mutations return `{status: 'degraded', journal_id: <ulid>}` and write the call to `~/pretel-os-data/fallback-journal/YYYYMMDD.jsonl`. Read-only tools (`*_list`, `*_search`, `*_get`) return `{status: 'degraded', results: []}` (or `{status: 'degraded', value: None}`) with no `journal_id`.
+- **Error** (transient or validation): `{status: 'error', error: '<message>'}`.
+
+### 14.1 Tasks (`tools/tasks.py`)
+
+Operational task tracker. No embedding — structured query only.
+
+#### `task_create`
+
+Create a task. Default `status='open'`; if `blocked_by` provided, `status='blocked'`.
+
+**Input:**
+- `title` (str, required)
+- `bucket` (str, required)
+- `source` (str, required) — `operator | claude | reflection_worker | migration`
+- `description`, `project`, `module`, `trigger_phase`, `github_issue_url` (str, optional)
+- `priority` (str, default `'normal'`) — `urgent | high | normal | low`
+- `estimated_minutes` (int, optional)
+- `blocked_by` (uuid str, optional)
+
+**Returns:** `{status: 'ok', id: uuid, status_value: 'open'|'blocked'}`.
+
+#### `task_list`
+
+List tasks ordered by `priority urgent→low` then `created_at DESC`.
+
+**Input:** `bucket`, `status`, `module`, `trigger_phase` (str, all optional filters); `limit` (int, default 50).
+
+**Returns:** `{status: 'ok', results: [{id, title, bucket, status, priority, ...}]}`.
+
+#### `task_update`
+
+Partial update. Rejects empty payload.
+
+**Input:** `id` (uuid str, required); any of `title, description, status, priority, blocked_by, trigger_phase, estimated_minutes, github_issue_url` (optional).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`. Empty payload → `{status: 'error', error: 'no fields to update'}`.
+
+#### `task_close`
+
+Set `status='done'`, `done_at=now()`. Optional `completion_note` is merged into `metadata.completion_note`.
+
+**Input:** `id` (uuid str, required); `completion_note` (str, optional).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`.
+
+#### `task_reopen`
+
+Set `status='open'`, clear `done_at`, append `{at, reason}` to `metadata.reopened_history` JSON array. `reason` is required for audit.
+
+**Input:** `id` (uuid str, required), `reason` (str, required).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`.
+
+### 14.2 Decisions (`tools/decisions.py`)
+
+Typed-decision capture (ADR-021). Embeds title + context + decision via OpenAI.
+
+#### `decision_record`
+
+Insert an active decision. On embedding failure, row is saved with `embedding=NULL` and the `notify_missing_embedding` trigger queues to `pending_embeddings`.
+
+**Input:**
+- `bucket`, `project`, `title`, `context`, `decision`, `consequences` (str, required)
+- `alternatives`, `client_id` (str/uuid, optional)
+- `scope` (str, default `'operational'`) — `architectural | process | product | operational`
+- `applicable_buckets` (list[str], optional)
+- `decided_by` (str, default `'operator'`)
+- `severity` (str, default `'normal'`) — `critical | normal | minor`
+- `adr_number` (int, optional, UNIQUE)
+- `derived_from_lessons` (list[uuid], optional)
+- `tags` (list[str], optional)
+
+**Returns:** `{status: 'ok', id: uuid, embedding_queued: bool}`.
+
+#### `decision_search`
+
+Vector-search active decisions (sequential scan per ADR-024). Filter-first then rank.
+
+**Input:** `query` (str, required); `bucket`, `scope`, `status` (str, optional); `top_k` (int, default 5).
+
+**Returns:** `{status: 'ok', results: [{id, title, decision, similarity, ...}]}`.
+
+#### `decision_supersede`
+
+Atomic supersession: marks `old_id` as `status='superseded'`, sets `superseded_by_id`, inserts a new active decision from `new_decision_payload`. Re-superseding an already-superseded decision returns an error.
+
+**Input:**
+- `old_id` (uuid str, required)
+- `new_decision_payload` (dict, required) — same shape as `decision_record` input; missing/unknown keys validated before any DB write.
+
+**Returns:** `{status: 'ok', old_id, new_id}` | `{status: 'ok', found: False}` (when `old_id` matches nothing) | `{status: 'error', error: 'already superseded' | 'missing/unknown keys: ...'}`.
+
+### 14.3 Preferences (`tools/preferences.py`)
+
+Operator-controlled facts. Atomic upsert via `UNIQUE(category, key, scope)`. No embedding.
+
+#### `preference_set`
+
+Set or upsert a preference.
+
+**Input:**
+- `category` (str, required) — `communication | tooling | workflow | identity | language | schedule`
+- `key` (str, required)
+- `value` (str, required)
+- `scope` (str, default `'global'`) — `global` or `bucket:<name>`
+- `source` (str, default `'operator_explicit'`) — `operator_explicit | inferred | migration`
+
+**Returns:** `{status: 'ok', id: uuid, action: 'inserted' | 'updated'}`.
+
+#### `preference_get`
+
+Direct lookup of a single preference.
+
+**Input:** `category`, `key` (str, required); `scope` (str, default `'global'`).
+
+**Returns:** `{status: 'ok', found: True, value: str, ...}` | `{status: 'ok', found: False}`.
+
+#### `preference_list`
+
+List preferences (by default, only `active=true`).
+
+**Input:** `category`, `scope` (str, optional filters); `active` (bool, default `True`); `limit` (int, default 100).
+
+**Returns:** `{status: 'ok', results: [{id, category, key, value, scope, ...}]}`.
+
+#### `preference_unset`
+
+Soft-delete: sets `active = false`. Value preserved for audit/reactivation.
+
+**Input:** `category`, `key` (str, required); `scope` (str, default `'global'`).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`.
+
+### 14.4 Router feedback (`tools/router_feedback.py`)
+
+Operator → Router feedback signals. Consumed by Module 6 reflection worker. No embedding.
+
+#### `router_feedback_record`
+
+Submit a feedback row in `pending` status.
+
+**Input:**
+- `feedback_type` (str, required) — `missing_context | wrong_bucket | wrong_complexity | irrelevant_lessons | too_much_context | low_quality_response`
+- `request_id` (str, optional) — soft reference to `routing_logs.request_id` (no FK)
+- `operator_note` (str, optional)
+- `proposed_correction` (dict/jsonb, optional)
+
+**Returns:** `{status: 'ok', id: uuid}`.
+
+#### `router_feedback_review`
+
+Move feedback through workflow `pending → reviewed | applied | dismissed`. Sets `applied_at` when status='applied'.
+
+**Input:** `id` (uuid str, required); `status` (str, required) — one of `reviewed | applied | dismissed`; `reviewed_by` (str, required).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`.
+
+### 14.5 Best practices (`tools/best_practices.py`)
+
+Process guidance (prose, not code). Embeds title + guidance + rationale.
+
+**Note:** As of `module-0x-complete` tag, this table has no `notify_missing_embedding` trigger. `best_practice_record` manually inserts to `pending_embeddings` with `ON CONFLICT DO NOTHING`. Migration 0030 (task `92cac1b3`) replaces this with a trigger.
+
+#### `best_practice_record`
+
+Insert a new best_practice OR update an existing one. UPDATE path copies current `guidance`/`rationale` into `previous_*` columns BEFORE overwriting (single-step rollback support).
+
+**Input:**
+- `title`, `guidance`, `domain` (str, required) — domain ∈ `process | convention | workflow | communication`
+- `rationale` (str, optional)
+- `scope` (str, default `'global'`)
+- `applicable_buckets`, `tags` (list[str], optional)
+- `source` (str, default `'operator'`) — `operator | derived_from_lessons | migration`
+- `derived_from_lessons` (list[uuid], optional)
+- `update_id` (uuid str, optional) — when present, switches to UPDATE mode for that row.
+
+**Returns:** `{status: 'ok', id: uuid, action: 'inserted' | 'updated', embedding_queued: bool}`.
+
+#### `best_practice_search`
+
+Vector-search active best_practices (sequential scan per ADR-024). Filter-first then rank.
+
+**Input:** `query` (str, required); `scope`, `domain`, `bucket` (str, optional); `top_k` (int, default 5).
+
+**Returns:** `{status: 'ok', results: [{id, title, guidance, similarity, ...}]}`.
+
+#### `best_practice_deactivate`
+
+Soft-delete: sets `active = false`. `reason` is logged to `usage_logs.metadata` (best_practices schema has no audit column for deactivation reasons).
+
+**Input:** `id` (uuid str, required), `reason` (str, required).
+
+**Returns:** `{status: 'ok', id: uuid, found: True}` | `{status: 'ok', found: False}`.
+
+#### `best_practice_rollback`
+
+Restore `previous_guidance`/`previous_rationale` into the live columns; NULL out `previous_*`. Single-step only — no chained history. Re-embeds inline so the row is immediately searchable against restored content.
+
+**Input:** `id` (uuid str, required).
+
+**Returns:** `{status: 'ok', id: uuid, action: 'rolled_back'}` | `{status: 'ok', found: False}` | `{status: 'error', error: 'no rollback available'}` when `previous_guidance IS NULL`.
