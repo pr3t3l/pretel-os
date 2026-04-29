@@ -34,3 +34,5 @@ Thumbs.db
 
 # Claude Code local state (keep settings.local.json machine-local)
 .claude/settings.local.json
+.coverage
+htmlcov/
