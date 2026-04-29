@@ -25,18 +25,23 @@ Completed atomic detail is archived to `tasks.archive.md` when a module phase cl
 
 - [x] Module 3 complete (tag `module-3-complete`)
 
-## Module 4 — router
+## Module 4 — router (COMPLETE 2026-04-29)
 
 - [x] M4.T1 SDD trinity (commits 3589673, 7ec4764, etc.)
-- [x] Phase A — Classifier (closed; live eval bucket 1.0, complexity 0.8)
-- [x] **Phase B — Layer Loader (closed 2026-04-29; commits d31c8d7..97a67d6; 103 fast + 3 slow tests, mypy clean across 16 router files)**
-- [ ] Phase C — Invariant violation detection (re-scoped per M4.C-rescope; source priority moved to consumer per contract §10)
-- [ ] Phase D — Telemetry & orchestrator
-- [ ] Phase E — Fallback classifier
-- [ ] Phase F — Tuning
+- [x] Phase A — Classifier (closed 2026-04-28; live eval bucket 1.0, complexity 0.8)
+- [x] Phase B — Layer Loader (closed 2026-04-29; commits d31c8d7..97a67d6; 103 fast + 3 slow tests, mypy clean across 16 router files)
+- [x] Phase C — Invariant violation detection (closed 2026-04-29; commits 51da98f, 1cf95f8, 0292247, 7b6f926; re-scoped per M4.C-rescope — source priority moved to consumer per contract §10; 12 tests, 6 invariant checks registered, Scout denylist deferred per Q3)
+- [x] Phase D + E — Telemetry, orchestrator, fallback classifier (closed 2026-04-29; commits c5e1f11..8bda98d; INSERT-early telemetry per Q2; `router.get_context()` async wires classify→assemble→detect→log; 19 tests in D.4: 8 telemetry + 5 fallback + 6 e2e at ~$0.018; 3 audit queries from spec §9.3 saved to `runbooks/router_audit_queries.sql`)
+- [x] M4.T9 — Module 4 exit (closed 2026-04-29 commit `bf3807e`; plan §10 gate verified 9/10 ✓ + 1 partial — bullet 8 latency provider-variance dependent; `runbooks/module_4_router.md` rewritten as consolidated module runbook; `runbooks/router_tuning.md` ships F.1.1 baseline + 5 tuning queries)
+- [ ] Phase F — Tuning (post-30-day, ongoing — no exit gate; queries shipped in `runbooks/router_tuning.md`)
 
-Per-module detail: `specs/router/tasks.md` (legacy pre-reconcile);
-Phase B atomic tracker shipped at `specs/router/phase_b_close.md`.
+Per-module detail: `specs/router/tasks.md` (full atomic tree, all M4 rows
+[x] except E.3.2 / D.6.2 phase-tag rows which are operator-driven).
+Architecture decision trackers: `specs/router/phase_b_close.md`,
+`phase_c_close.md`, `phase_d_close.md` (Q1-Q9 per phase).
+Tag candidates (operator-driven): `phase-b-complete` on 97a67d6,
+`phase-c-complete` on 7b6f926, `phase-e-complete` on c5e1f11,
+`phase-d-complete` on 8bda98d, `module-4-complete` on bf3807e.
 
 ## Module 0.X — knowledge_architecture
 

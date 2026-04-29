@@ -1194,3 +1194,102 @@ Source: `specs/module-0x-knowledge-architecture/tasks.md` (M0X.PRE.* + M0X.A.*)
 - Module 2 trigger bug fixed (notify_missing_embedding)
 
 **Atomic task count:** ~50 tasks (PRE.1-5 + A.1.1-A.7.6). Full detail in `specs/module-0x-knowledge-architecture/tasks.md` with [x] markers.
+
+---
+
+## Module 4 — Router (closed 2026-04-29)
+
+Source: `specs/router/tasks.md` + 3 phase decision trackers
+(`phase_b_close.md`, `phase_c_close.md`, `phase_d_close.md`).
+
+**Closure commits (chronological):**
+
+Phase A — Classifier (closed 2026-04-28):
+- a4f976b through e59b943 — full Phase A chain (19 unit tests + classifier
+  eval against Haiku 4.5 cleared bucket=1.0, complexity=0.8, schema_violations=0)
+- 28fec7b — Phase A doc close-out
+
+Phase B — Layer loader (closed 2026-04-29):
+- 83190af, f4aa9cb, 6195693 — B.1 + B.2 (types.py, _tokens.py, load_l0.py)
+- d84fb4c, af8f2ef, f04f38c — B.3 + B.4 + B.5 (load_l1, load_l2, load_l3)
+- 9fc5139 — B.6 (load_l4 vector search, filter-first per ADR-024)
+- d31c8d7 — B.7 (summarize_oversize helper + prompts/summarize.txt)
+- fd4dc4a — B.8 (LayerBundleCache + LISTEN/NOTIFY migration 0031)
+- 97a67d6 — B.9 (assemble_bundle orchestrator; closes Phase B)
+- dd38850, 6ebd251 — chore: Phase A eval result JSONs
+
+Phase C — Invariant detection (post-rescope, closed 2026-04-29):
+- 51da98f — C.1 InvariantViolation dataclass + invariants registry skeleton
+- 1cf95f8 — C.2 six invariant checks + mention-vs-instruction helper
+- 0292247 — C.3 + C.4 detector orchestrator + 12 tests + examples doc
+- 7b6f926 — C.5 gate + tasks.md cleanup + SESSION_RESTORE
+
+Phase D + E — Telemetry + orchestrator + fallback (closed 2026-04-29):
+- c5e1f11 — D.0 fallback_classifier + 7 tests (Phase E bundled per Q1)
+- b33fc15 — D.1 telemetry primitives (6 functions, INSERT-early per Q2)
+- afea9ff — D.2 router.py orchestrator + context_bundle_schema.json
+- a91ef61 — D.3 tools/context.py replacement + tools/report_satisfaction.py
+- 7c1f7af — D.4 19 tests (8 telemetry + 5 fallback integration + 6 e2e)
+- 210e22f — hot-fix: 2 false positives in invariant detector
+  (NEGATION_TOKENS gap on "does not"/"doesn't"/"is not";
+  `_LAYER_CEILINGS["L0"]` mis-scope per contract §7)
+- 8bda98d — D.5 Phase D + E gate + tasks.md cleanup + audit-query runbook
+
+Module 4 exit (M4.T9, closed 2026-04-29):
+- bf3807e — M4.T9 plan §10 gate verified + module_4_router.md rewritten +
+  router_tuning.md (F.1.1) shipped
+
+**Source code shipped (Module 4):**
+- `src/mcp_server/router/`: 22 modules
+  - Phase A: classifier.py, litellm_client.py, exceptions.py,
+    prompts/classify.txt
+  - Phase B: assemble.py, load_l0.py, load_l1.py, load_l2.py, load_l3.py,
+    load_l4.py, summarize.py, prompts/summarize.txt, cache.py,
+    _tokens.py, _classifier_hash.py, types.py
+  - Phase C: invariants.py, invariant_detector.py
+  - Phase D: telemetry.py, router.py
+  - Phase E: fallback_keywords.py, fallback_classifier.py
+- `src/mcp_server/tools/`: context.py (rewrite), report_satisfaction.py (new)
+- `tests/router/`: 12 test files (~44 tests; ~$0.018 cost on the e2e run)
+- `runbooks/`: module_4_router.md (rewritten consolidated), router_tuning.md
+  (new), router_audit_queries.sql (new)
+- 1 migration: `migrations/0031_layer_loader_cache_notify.sql`
+
+**Atomic task count:** ~70 tasks (M4.T1.1-M4.T9.3 + Phase A.x +
+Phase B.1.1-B.9.1 + Phase C.1.1-C.5.4 + Phase D.0.1-D.5.7).
+Full detail in `specs/router/tasks.md` with [x] markers.
+
+**Tag candidates (operator-driven, not yet created):**
+- `phase-b-complete` on `97a67d6`
+- `phase-c-complete` on `7b6f926`
+- `phase-e-complete` on `c5e1f11`
+- `phase-d-complete` on `8bda98d`
+- `module-4-complete` on `bf3807e`
+
+**Architectural decisions captured (Q1–Q9 across phases):**
+- `phase_b_close.md`: Q1 sync-conn + async-fn pattern, Q2 single
+  NOTIFY channel, Q3 cache key derivation, Q4 async-with-sync-conn
+- `phase_c_close.md`: Q1 InvariantViolation in types.py (not detector),
+  Q2 two registry signatures (per-block + per-bundle), Q3 Scout
+  denylist deferred (stub), Q4 severity mapping, Q5 ±50-char
+  mention-vs-instruction filter, Q6 JSON-serializable shape, Q7
+  dict-add registry convention
+- `phase_d_close.md`: Q1 Phase E bundled as D.0, Q2 INSERT-early
+  telemetry, Q3 ContextBundle is plain dict, Q4 async get_context
+  with sync conn, Q5 try/finally degraded handling, Q6 LLM telemetry
+  via classify return tuple (option b), Q7 recommend_tools direct
+  SQL, Q8 conversation_sessions excerpt deferred to Module 5, Q9
+  Phase A unchecked tasks covered by D.4
+
+**Known follow-ups (not blocking):**
+- LISTEN/NOTIFY listener wiring into MCP server lifespan (cache
+  works without it; lazy-init in tools/context.py)
+- `cost_usd` plumbing from LiteLLM proxy to llm_calls (LiteLLM
+  doesn't expose to SDK response; surfacing is Phase F work)
+- Per-turn HIGH-complexity latency tuning (P95 > 2s due to provider
+  variance; Phase F query in router_tuning.md §B.2 drives the
+  cascade-head decision)
+- Scout denylist canonical source (Q3, deferred via task_create
+  row `e5a540c5-6516-4e6b-8725-5c6de6f986e5`)
+- `client_origin` plumbing from FastMCP transport context (currently
+  hard-coded to `'unknown'` in tools/context.py)

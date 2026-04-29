@@ -6,7 +6,7 @@ Personal cognitive OS for Alfredo Pretel Vargas — a durable, always-on system 
 
 Module 0.X complete (tag `module-0x-complete`, 2026-04-29). Knowledge architecture shipped: 4 new tables (`tasks`, `operator_preferences`, `router_feedback`, `best_practices`) + `decisions` amended (+7 columns), 18 MCP tools, 47 tests, `layer_loader_contract.md` frozen.
 
-MCP server live at `mcp.alfredopretelvargas.com` — now serving 25 tools (7 from M3 + 18 from M0.X). M4 Phase A (Router classifier) complete on `e59b943`. Next: **M4 Phase B (Layer Loader)** — reads `specs/module-0x-knowledge-architecture/layer_loader_contract.md`.
+MCP server live at `mcp.alfredopretelvargas.com`. **Module 4 (Router) complete 2026-04-29** — classifier (Phase A), layer loader L0–L4 (Phase B), invariant detector (Phase C), telemetry + orchestrator + MCP wrappers (Phase D), fallback classifier (Phase E) all shipped. Tools served: 26 (7 from M3 + 18 from M0.X + `report_satisfaction` from M4 Phase D). Module-level runbook: `runbooks/module_4_router.md`. Tag candidate `module-4-complete` on `bf3807e`. Next: **Module 5 (Telegram bot)** — writes per-turn content to `conversation_sessions`, unblocks the Phase D Q8 session-excerpt deferral.
 
 ## Quick links
 

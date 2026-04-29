@@ -620,7 +620,7 @@ One directory per module in the `§4 Roadmap`, each containing `spec.md`, `plan.
 | `specs/infra_migration/` | Pending |
 | `specs/data_layer/` | Pending |
 | `specs/mcp_server_v0/` | Pending |
-| `specs/router/` | Pending |
+| `specs/router/` | Active — Module 4 complete 2026-04-29 (Phases A–E shipped; Phase F ongoing). Trinity + 3 phase decision trackers (`phase_b_close.md`, `phase_c_close.md`, `phase_d_close.md`) |
 | `specs/telegram_bot/` | Pending |
 | `specs/reflection_worker/` | Pending |
 | `specs/skills_migration/` | Pending |
