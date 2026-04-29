@@ -415,25 +415,50 @@ Tags: foundation-v1.0, module-1-complete, module-2-complete,
   26c7189, module-0x-complete after Phase E)
 
 
-
-## 14. Last-known state snapshot
-
-Update this section each time you end a significant work session.
-
-```
-Last session: 2026-04-27
-Last task completed: M4.T1 complete (spec + plan + tasks committed)
-  - 3589673: M4.T1.1 spec.md
-  - 7ec4764: M4.T1.2 plan.md
-  - <hash>:  M4.T1.3 tasks.md
-  - <hash>:  parent tasks.md M4.T1.x checkboxes closed
-  - 50de55d: ADR-020 LiteLLM proxy amendment (constitutional)
-Next task: A.1.1 in specs/router/tasks.md — create src/mcp_server/router/
-            directory with __init__.py
-LiteLLM: 2 healthy endpoints (classifier_default, second_opinion_default), both on gemini-2.5-flash
-Lessons captured: f6cb027c (MCP cost model)
-Tags: foundation-v1.0, module-1-complete, module-2-complete, module-3-complete
-```
+Last session: 2026-04-28 (M0.X Phase E close — Module 0.X COMPLETE)
+Status: knowledge architecture shipped, M4 Phase B unblocked.
+Last task completed: M0.X Phase E — docs synchronized, tag module-0x-complete
+  Phase E commit chain (see `git log 59127aa..module-0x-complete`):
+  - chore: .gitignore .coverage + htmlcov/
+  - M0X.E.1   layer_loader_contract.md NEW (Phase B input contract frozen)
+  - M0X.E.1.1 contract patch — bundle shape, severity SQL CASE, token method
+  - M0X.E.2   DATA_MODEL.md §5.7-5.10 full DDL + §5.2.1 decisions amendment
+  - M0X.E.3   INTEGRATIONS.md §14 — 18 tool entries
+  - M0X.E.4   SESSION_RESTORE.md §13 update + §14 cleanup (this commit)
+  - M0X.E.5   spec.md drift fixes (tool count 18, decisions.project NOT NULL note)
+  - M0X.E.6   plan.md status complete + tasks.md M0X.* closed
+  - M0X.E close-out + tag module-0x-complete
+M0.X scope shipped (Phases A→E):
+  - 4 new tables: tasks, operator_preferences, router_feedback, best_practices
+  - decisions amended (+7 columns: scope, applicable_buckets, decided_by,
+    tags, severity, adr_number, derived_from_lessons)
+  - 5 ADRs seeded (020-024)
+  - SOUL.md L0 voice file (324 tok)
+  - 18 MCP tools across 5 files (Phase C)
+  - 47 tests, coverage ≥80% per file (Phase D)
+  - layer_loader_contract.md frozen (Phase E) — Phase B reads this
+Open follow-up tasks (post-tag, all in `tasks` table):
+  - 92cac1b3 — migration 0030: notify_missing_embedding trigger for
+    best_practices (replaces the manual ON CONFLICT workaround in
+    best_practice_record). Estimated ~30 min total.
+  - 16d4056e — lessons.py mypy --strict alignment (lower priority)
+  - 80462622 — CLOSED in this Phase E (decisions.project NOT NULL doc drift)
+Known workarounds in production:
+  - best_practice_record manually inserts into pending_embeddings on
+    embedding failure (with ON CONFLICT (target_id, target_table) DO
+    NOTHING) because best_practices is not yet covered by the
+    notify_missing_embedding trigger from migration 0019. Migration 0030
+    replaces this with a trigger consistent with §6.2 patterns.
+Next module: M4 Phase B (Layer Loader) — reads
+  specs/module-0x-knowledge-architecture/layer_loader_contract.md and
+  produces its own spec/plan/tasks per runbooks/sdd_module_kickoff.md.
+  The contract is FROZEN as of module-0x-complete; deviations require ADR.
+Tags after this push:
+  foundation-v1.0, module-1-complete, module-2-complete, module-3-complete,
+  module-0x-complete
+  (still-pending intermediate tags not created — operator chose to skip
+   module-0x-phase-a/b/c/d intermediate tags in favor of the single
+   module-0x-complete tag covering A→E end-to-end)
 ---
 
 **End of SESSION_RESTORE.md.**
