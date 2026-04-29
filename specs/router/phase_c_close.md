@@ -486,6 +486,12 @@ embedding calls, no slow tests. All checks are regex / string / arithmetic.
   boundary regex per production false-positive rate` — track in
   Module 6 lessons review, not as a blocking task.
 
+**Gate verified:** 2026-04-29. plan.md §5.4 bullets (a)–(d) all pass.
+12 tests green in 0.06s. JSON shape Phase-D-compatible. mypy clean.
+
+**Deferred-todo task:** `e5a540c5-6516-4e6b-8725-5c6de6f986e5` — Scout
+denylist canonical source (Q3).
+
 ---
 
 ## 4. Doc registry

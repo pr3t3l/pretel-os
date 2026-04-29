@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 0.X complete + M4 Phase B complete. M4 Phase C (invariant violation detection — re-scoped) next.
+**Phase:** Module 0.X complete + M4 Phase B complete + M4 Phase C complete. M4 Phase D (telemetry) next.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -30,21 +30,22 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M0.X Phase E: `layer_loader_contract.md` frozen as M4 Phase B input contract. Tag `module-0x-complete` pushed. ADR-025 added registering the contract as architectural commitment.
 - M0X.0030: `notify_missing_embedding` trigger attached to `best_practices` (replaces the manual `pending_embeddings` INSERT workaround in `best_practice_record`). Closes the only known M0.X-era workaround in production.
 - M4 Phase B (Layer Loader): all 9 atomic groups shipped 2026-04-29. 5 sync loaders (L0..L4) per contract §3.1-§3.5, async `assemble_bundle` orchestrator wiring `embed()` + loaders + `summarize_oversize` + cache, in-memory `LayerBundleCache` with LISTEN/NOTIFY invalidation via migration 0031 trigger function. 103 fast + 3 slow tests, mypy clean across 16 router source files. Architecture decisions tracked in `specs/router/phase_b_close.md`. Tag candidate: `phase-b-complete` at commit `97a67d6`.
+- M4 Phase C (Invariant violation detection — post-rescope): `detect_invariant_violations(bundle)` scans every `ContextBlock` against 6 registered invariant checks (3 agent-rule, 1 git/DB boundary, 1 budget ceiling, 1 Scout stub). 12 tests, mypy clean. Scout denylist deferred (Q3). Architecture decisions in `specs/router/phase_c_close.md`.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- M4 Phase C — invariant violation detection (re-scoped per M4.C-rescope `2eb963e`; source priority moved to consumer per contract §10).
-- M4 Phase D-F, Modules 5-8.
+- M4 Phase D — Telemetry (next).
+- M4 Phase E-F, Modules 5-8.
 
-**Top of stack:** M4 Phase C (invariant violation detection). Per `plan.md §5` (post-reconcile): `detect_invariant_violations(bundle: LayerBundle) -> list[InvariantViolation]` scans every `ContextBlock` against a registry of invariant checks (Scout denylist, budget ceilings, git/DB boundary, CONSTITUTION §9 agent rules) and populates `routing_logs.source_conflicts`. NO topical conflict resolution — that moved to the consumer per contract §10.
+**Top of stack:** M4 Phase D (Telemetry). Per `plan.md §6`: every `get_context` call writes one `routing_logs` row plus zero or one `llm_calls` row, all joinable by `request_id`. Phase D consumes the `LayerBundle` from Phase B and the `list[InvariantViolation]` from Phase C and serializes the latter into `routing_logs.source_conflicts` (JSONB). The 3 audit queries from `spec.md §9.3` must execute cleanly against the resulting data. Phase C output (the `InvariantViolation` shape) is already verified Phase-D-compatible — `json.dumps([asdict(v) for v in violations])` round-trips without custom encoders.
 
-**Where to find M4 Phase C source-of-truth:**
-- Plan: `specs/router/plan.md §5` (post-reconcile — Phase C scope shrunk to invariant detection only)
-- Spec: `specs/router/spec.md §8.1` (invariant violation classes), `§8.2` (Router does NOT pre-resolve)
-- Frozen contract: `specs/module-0x-knowledge-architecture/layer_loader_contract.md §10` (rendering + conflict semantics)
-- Constraints: `DECISIONS.md` ADR-025 (contract frozen), `CONSTITUTION.md §9` (agent rules)
-- Phase B atomic tracker (reference for the post-reconcile loader signatures Phase C will consume): `specs/router/phase_b_close.md`
+**Where to find M4 Phase D source-of-truth:**
+- Plan: `specs/router/plan.md §6`
+- Spec: `specs/router/spec.md §9` (telemetry schema), `§9.3` (audit queries)
+- Phase C output shape: `src/mcp_server/router/types.py::InvariantViolation`
+- Phase C decisions tracker: `specs/router/phase_c_close.md`
+- Phase B atomic tracker (LayerBundle shape Phase D consumes): `specs/router/phase_b_close.md`
 
 ---
 
@@ -582,6 +583,23 @@ Next module: M4 Phase C — invariant violation detection only (per
 Tags unchanged: foundation-v1.0, module-1-complete, module-2-complete,
   module-3-complete, module-0x-complete. Tag candidate this session:
   phase-b-complete on 97a67d6 (operator-driven creation, not auto).
+
+
+Last session: 2026-04-29 (M4 Phase C close — invariant detector complete)
+Status: M4 Phase C shipped; 6 invariant checks registered (5 per-block
+  + 1 per-bundle); 12 tests green in 0.06s; mypy clean across 3 router
+  source files. Scout denylist deferred (Q3, stub returns []).
+Last task completed: C.5 gate verification + tasks.md cleanup.
+Commits pushed this session (Phase C chain):
+  - 51da98f C.1: InvariantViolation dataclass + invariants registry skeleton
+  - 1cf95f8 C.2: six invariant checks + mention-vs-instruction helper
+  - 0292247 C.3 + C.4: detector orchestrator + examples doc + 12 tests
+  - [this commit hash] C.5: gate + tasks.md cleanup + SESSION_RESTORE
+Phase C output: ~750 LoC code + tests across 4 new router files.
+  invariant_detector.py (42 LoC), invariants.py (~260 LoC),
+  test_invariant_detector.py (~260 LoC), invariant_examples.md (~183 LoC).
+Tags: phase-c-complete on [this commit hash] (operator-driven).
+Next: M4 Phase D — Telemetry.
 ---
 
 **End of SESSION_RESTORE.md.**

@@ -211,7 +211,13 @@ they slip through.
 
 ---
 
-## Phase C — Source priority resolution
+## Phase C — Invariant violation detection (post-rescope)
+
+> **Legacy C.x rows below are SUPERSEDED (2026-04-29) by
+> `specs/router/phase_c_close.md` per M4.C-rescope (commit
+> `2eb963e`). Scope reduced from source-priority resolution to
+> invariant-violation detection only. See phase_c_close.md for
+> ratified Q1–Q7 decisions and atomic C.1–C.5 tasks.**
 
 **Plan reference:** `plan.md §5`. Blocked by B. Blocking for D.
 
@@ -260,6 +266,14 @@ they slip through.
 
 - [ ] **C.6.2** Tag `phase-c-complete`.
   - Done when: tag exists.
+
+### Post-rescope status (phase_c_close.md)
+
+- [x] **C.1** Types + registry skeleton (commit `51da98f`)
+- [x] **C.2** Six invariant checks + mention helper (commit `1cf95f8`)
+- [x] **C.3** Detector orchestrator (commit `0292247`)
+- [x] **C.4** Examples doc + 12 tests + mypy clean (commit `0292247`)
+- [ ] **C.5** Phase C gate + tasks.md cleanup + deferred-todo + tag
 
 ---
 
