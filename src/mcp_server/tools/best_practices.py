@@ -7,12 +7,14 @@ update copies current values into previous_* before overwriting.
 
 HNSW DEFERRED per ADR-024. Sequential scan only.
 
-Embedding: this table does NOT have the notify_missing_embedding trigger
-attached (the trigger from migration 0019 only covers tables that existed
-at that time; best_practices was added in migration 0027). When embedding
-fails, the row is saved with embedding=NULL and `embedding_queued=True`
-in the response — but the row is NOT manually queued to pending_embeddings
-in this phase (Phase E will reconcile).
+Embedding: migration 0030 attached the notify_missing_embedding trigger
+(AFTER INSERT) to best_practices and added the matching branch to the
+shared trigger function, closing the gap left when this table was added
+in migration 0027 (after 0019's bulk attachment). When embed() returns
+None, INSERTs are auto-queued to pending_embeddings by the trigger and
+`embedding_queued=True` is returned. UPDATE-with-embed=None is a silent
+no-op for the queue (consistent with every other table); the embedding
+worker reconciles stale rows.
 
 Schema: docs/DATA_MODEL.md §5.10 (table created in migration 0027).
 Spec: specs/module-0x-knowledge-architecture/spec.md §5.5.
@@ -130,24 +132,8 @@ async def best_practice_record(
                         row = await cur.fetchone()
                         assert row is not None, "INSERT ... RETURNING produced no row"
                         bp_id = str(row[0])
-
-                        # best_practices has no notify_missing_embedding trigger
-                        # (migration 0019 predates the table). Manually queue when
-                        # embedding failed so caller's `embedding_queued=True` is
-                        # actually true. Tracked for trigger fix in a M0.X task.
-                        if embedding is None:
-                            await cur.execute(
-                                """
-                                INSERT INTO pending_embeddings
-                                    (target_table, target_id, source_text)
-                                VALUES ('best_practices', %s, %s)
-                                ON CONFLICT (target_table, target_id) DO UPDATE
-                                SET source_text = EXCLUDED.source_text,
-                                    attempts = 0,
-                                    last_error = NULL
-                                """,
-                                (bp_id, f"{title}\n\n{guidance}\n\n{rationale or ''}"),
-                            )
+                        # embedding=None: pending_embeddings row is queued
+                        # automatically by trg_best_practices_emb (migration 0030).
             except Exception as exc:
                 log.exception("best_practice_record insert failed")
                 await log_usage(
@@ -224,21 +210,10 @@ async def best_practice_record(
                         upd_row = await cur.fetchone()
                         assert upd_row is not None, "UPDATE ... RETURNING produced no row inside FOR UPDATE block"
                         bp_id = str(upd_row[0])
-
-                        # Same manual queue as INSERT path — no trigger.
-                        if embedding is None:
-                            await cur.execute(
-                                """
-                                INSERT INTO pending_embeddings
-                                    (target_table, target_id, source_text)
-                                VALUES ('best_practices', %s, %s)
-                                ON CONFLICT (target_table, target_id) DO UPDATE
-                                SET source_text = EXCLUDED.source_text,
-                                    attempts = 0,
-                                    last_error = NULL
-                                """,
-                                (bp_id, f"{title}\n\n{guidance}\n\n{rationale or ''}"),
-                            )
+                        # embedding=None on UPDATE is a silent no-op for the
+                        # pending_embeddings queue (trg_best_practices_emb is
+                        # AFTER INSERT only — same as every other table). The
+                        # embedding worker's reconciliation pass picks this up.
         except Exception as exc:
             log.exception("best_practice_record update failed")
             await log_usage(

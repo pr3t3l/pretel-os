@@ -214,14 +214,16 @@ async def test_best_practice_record_queues_pending_embedding_on_failure(
 ) -> None:
     """REGRESSION TEST for the Phase C bug (commit aba04c7).
 
-    best_practices does NOT have the notify_missing_embedding trigger
-    (migration 0019 predates the table), so when embed() returns None
-    the tool MUST manually INSERT into pending_embeddings. The Phase C
-    smoke tests passed because OpenAI was up; this test forces the
-    failure path.
+    best_practices receives the notify_missing_embedding trigger in
+    migration 0030 (added 2026-04-29 to close the gap from migration 0027
+    being created after 0019's bulk attachment). When embed() returns
+    None on INSERT, the trigger queues a row in pending_embeddings —
+    same as lessons / decisions / patterns / etc.
 
-    INSERT path: 1 row in pending_embeddings.
-    UPDATE path: still 1 row (UPSERT, not duplicate), source_text refreshed.
+    INSERT path: 1 row in pending_embeddings (queued by trigger).
+    UPDATE path: still 1 row (trigger is AFTER INSERT only — UPDATE
+    with embed=None is a silent no-op for the queue, consistent with
+    every other table).
     """
     patched_embed(None)  # force failure path
 
@@ -241,7 +243,7 @@ async def test_best_practice_record_queues_pending_embedding_on_failure(
     assert len(rows_after_insert) == 1
     assert rows_after_insert[0][0] == "best_practices"
     assert "initial guidance" in rows_after_insert[0][1]
-    assert rows_after_insert[0][2] == 0  # attempts reset
+    assert rows_after_insert[0][2] == 0  # attempts default
 
     # UPDATE — embed still patched to None
     r2 = await best_practice_record(
@@ -252,14 +254,15 @@ async def test_best_practice_record_queues_pending_embedding_on_failure(
     )
     assert r2["embedding_queued"] is True
 
+    # Trigger is AFTER INSERT only, so UPDATE-with-embed=None doesn't
+    # change the queue. Still exactly the 1 row from the INSERT — no
+    # duplicate, but source_text is NOT refreshed to "refined guidance".
     rows_after_update = await _select_all(
         test_pool,
-        "SELECT count(*), max(source_text) FROM pending_embeddings WHERE target_id = %s",
+        "SELECT count(*) FROM pending_embeddings WHERE target_id = %s",
         (r1["id"],),
     )
-    # ON CONFLICT (target_table, target_id) DO UPDATE — exactly 1 row, refreshed text
     assert rows_after_update[0][0] == 1
-    assert "refined guidance" in rows_after_update[0][1]
 
 
 async def test_best_practice_search_excludes_inactive(
