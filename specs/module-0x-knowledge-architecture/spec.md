@@ -254,7 +254,7 @@ Single migration `M0X_001_knowledge_split.sql`:
    - `d7f1e119` (LiteLLM concrete model) → `tasks` module='M4', trigger_phase='Phase D'
    - `89c11602` (pyproject.toml) → `tasks` module='M0.X', trigger_phase='before Module 5'
    - `3d98464b` (prompt caching) → `tasks` module='M4', trigger_phase='Phase F'
-3. Mark originals `status='superseded'` with metadata pointing to new rows
+3. Mark originals `status='archived'` with metadata pointing to new rows. Note: `lessons.status` is enum `lesson_status` which does not include `'superseded'` — `'archived'` is the closest semantic match ("out of active rotation, kept for reference"). The cross-table pointer lives in `metadata.superseded_to_table` + `metadata.superseded_to_id`; the enum status indicates retirement only. Idempotency gate uses `status IN ('active','pending_review')` (defensive: never re-migrate a row the operator manually archived for unrelated reasons).
 4. Insert ADR-021 into `decisions`: "Split lessons into typed stores"
 5. Insert ADR-022 into `decisions`: "SOUL.md voice file"
 6. Create initial `SOUL.md`
