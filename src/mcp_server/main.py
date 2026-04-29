@@ -35,6 +35,7 @@ from .tools.preferences import (
     preference_set,
     preference_unset,
 )
+from .tools.router_feedback import router_feedback_record, router_feedback_review
 from .tools.tasks import (
     task_close,
     task_create,
@@ -94,6 +95,10 @@ def build_app() -> FastMCP:
     app.tool(task_update)
     app.tool(task_close)
     app.tool(task_reopen)
+
+    # Module 0.X — router_feedback
+    app.tool(router_feedback_record)
+    app.tool(router_feedback_review)
 
     app.custom_route("/health", methods=["GET"])(health)
 
