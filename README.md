@@ -4,7 +4,9 @@ Personal cognitive OS for Alfredo Pretel Vargas — a durable, always-on system 
 
 ## Status
 
-Module 3 complete. MCP server live at `mcp.alfredopretelvargas.com` with 7 tools, connected to Claude.ai. Next: Module 4 (Router).
+Module 0.X complete (tag `module-0x-complete`, 2026-04-29). Knowledge architecture shipped: 4 new tables (`tasks`, `operator_preferences`, `router_feedback`, `best_practices`) + `decisions` amended (+7 columns), 18 MCP tools, 47 tests, `layer_loader_contract.md` frozen.
+
+MCP server live at `mcp.alfredopretelvargas.com` — now serving 25 tools (7 from M3 + 18 from M0.X). M4 Phase A (Router classifier) complete on `e59b943`. Next: **M4 Phase B (Layer Loader)** — reads `specs/module-0x-knowledge-architecture/layer_loader_contract.md`.
 
 ## Quick links
 

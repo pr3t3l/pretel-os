@@ -72,14 +72,14 @@ This document does not contain estimates in time units. Time-to-complete is neve
 - ✅ Phase 1 Bootstrap (Modules 1, 2, 3)
 - 🔄 Phase 2 Intelligence — Module 4 Router IN PROGRESS:
   - ✅ M4 Phase A Classifier (complete 2026-04-28)
-  - 🔄 Module 0.X Knowledge Architecture:
+  - ✅ Module 0.X Knowledge Architecture (tag `module-0x-complete`, 2026-04-29):
     - ✅ Phase A Schema migrations (7 migrations applied 2026-04-28: 0024-0029 + 0028a fix)
-    - ⏸️ Phase B SOUL.md
-    - ⏸️ Phase C MCP tools (17)
-    - ⏸️ Phase D Tests
-    - ⏸️ Phase E Layer loader contract + DATA_MODEL update
-  - ⏸️ M4 Phase B Layer Loader (blocked on M0.X)
-  - ⏸️ M4 Phase C-F (blocked)
+    - ✅ Phase B SOUL.md (commit `26c7189`, 324 tok)
+    - ✅ Phase C MCP tools (18 — `best_practice_rollback` added by C.5.5 split)
+    - ✅ Phase D Tests (commit `59127aa`, 47 tests, coverage ≥80% per file)
+    - ✅ Phase E Layer loader contract + docs (tag `module-0x-complete`)
+  - ⏸️ M4 Phase B Layer Loader (UNBLOCKED — reads `specs/module-0x-knowledge-architecture/layer_loader_contract.md`)
+  - ⏸️ M4 Phase C-F (blocked on Phase B)
 - ⏸️ Module 5 telegram_bot
 - ⏸️ Module 6 reflection_worker
 - ⏸️ Phase 3 Knowledge loading (Modules 7, 8)

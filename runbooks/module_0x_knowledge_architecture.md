@@ -835,6 +835,21 @@ Last reviewed:    2026-04-28
 | 2026-04-28 | `829686f` | M0X.C.5: implement best_practices.py — 4 tools |
 | 2026-04-28 | `aba04c7` | M0X.C.5b: queue pending_embeddings manually for best_practices |
 | 2026-04-28 | `b553fb0` | M0X.C close-out: 18 tools registered, mypy clean, degraded verified |
+| 2026-04-28 | `076279b` | M0X.D conftest gate fix: truncate gated on `patched_db` not `test_pool` |
+| 2026-04-28 | `9c08d2c` | M0X.D mypy.ini: per-module ignore_errors for transitive imports |
+| 2026-04-28 | `591d477` | M0X.D.2: integration tests — full MCP protocol round-trip + degraded mode |
+| 2026-04-28 | `6f07447` | M0X.D.3: migration 0029 idempotency test |
+| 2026-04-28 | `59127aa` | M0X.D close-out: 47 tests green, coverage ≥80% on all 5 M0.X tool files |
+| 2026-04-29 | `9cbc639` | chore: gitignore .coverage + htmlcov from pytest-cov runs |
+| 2026-04-29 | `469e79e` | M0X.E.1: layer_loader_contract.md frozen — Phase B input spec complete |
+| 2026-04-29 | `532581b` | M0X.E.1.1: contract patch — bundle shape, severity SQL CASE, token method (3 patches from operator review) |
+| 2026-04-29 | `5d35835` | M0X.E.2: DATA_MODEL.md §5.7-5.10 full DDL + §5.2.1 amendment |
+| 2026-04-29 | `714d1a9` | M0X.E.3: INTEGRATIONS.md §14 — 18 M0.X tool entries |
+| 2026-04-29 | `93b1b43` | M0X.E.4: SESSION_RESTORE.md §13 Module 0.X complete snapshot |
+| 2026-04-29 | `9a94e93` | M0X.E.5: spec.md drift fixes (tool count 18, decisions.project NOT NULL note) |
+| 2026-04-29 | `85188db` | M0X.E.6: plan.md status complete + tasks.md M0X.* closed |
+| 2026-04-29 | `49edc0c` | M0X.E.7: cross-ref consistency — fix two stale "17 tools" refs |
+| 2026-04-29 | (tag) | **`module-0x-complete`** — Module 0.X COMPLETE, M4 Phase B unblocked |
 
 ---
 
@@ -843,9 +858,11 @@ Last reviewed:    2026-04-28
 - **Spec:** `specs/module-0x-knowledge-architecture/spec.md`
 - **Plan:** `specs/module-0x-knowledge-architecture/plan.md`
 - **Atomic tasks:** `specs/module-0x-knowledge-architecture/tasks.md`
-- **ADRs:** `DECISIONS.md` (canonical) + `decisions` table (queryable)
+- **Layer loader contract (frozen):** `specs/module-0x-knowledge-architecture/layer_loader_contract.md` — input contract for M4 Phase B
+- **ADRs:** `DECISIONS.md` (canonical) + `decisions` table (queryable). M0.X-relevant ADRs: 020, 021, 022, 023, 024, 025
 - **Schema audit:** `migrations/audit/0029_post_state.md`
-- **DATA_MODEL stubs:** `docs/DATA_MODEL.md` §5.7-5.10 + §5.11 (decisions amendment)
+- **DATA_MODEL §5.7–§5.10:** `docs/DATA_MODEL.md` (full DDL for the 4 new tables); decisions amendment lives in §5.2.1 (folded in during Phase E — was §5.11 before close-out)
+- **MCP tool catalog:** `docs/INTEGRATIONS.md` §14 — 18 M0.X tools with input/return/degraded shapes
 - **Setup gaps:** `runbooks/module_2_data_layer.md`
 - **SDD trinity rule:** `runbooks/sdd_module_kickoff.md`
 - **Module 4 (consumer of M0.X tables):** `runbooks/module_4_router.md`

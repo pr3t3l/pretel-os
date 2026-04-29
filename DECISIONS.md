@@ -193,3 +193,50 @@ Until then, queries use sequential scan with `ORDER BY embedding <=> query LIMIT
 
 ### Derived from lessons
 None directly. This ADR exists because the original decision (2026-04-24) was made conversationally and never persisted — a textbook instance of LL-M4-PHASE-A-002 (verbal acknowledgment is not persistence). The 4-day gap between decision and capture exposed the failure mode that Module 0.X is designed to prevent.
+
+---
+
+## ADR-025 — Layer Loader Contract frozen at `module-0x-complete`
+
+- **Status:** active
+- **Scope:** architectural
+- **Bucket:** business
+- **Project:** pretel-os
+- **Date:** 2026-04-29
+- **Severity:** critical
+- **Decided by:** operator
+
+### Context
+Module 0.X delivered the schemas (`tasks`, `operator_preferences`, `router_feedback`, `best_practices`) and the amended `decisions` table that Module 4 Phase B (Layer Loader) will consume to assemble L0–L4 context bundles per CONSTITUTION §2.3. Phase B can only start once the input surface is stable: Phase B planners need a deterministic mapping from `(bucket, project, classifier_signals)` to "which tables, which filters, which orderings, which output shape, which token-counting method." Without that, Phase B keeps coming back to ask, and the whole point of separating M0.X from M4 collapses.
+
+### Decision
+Treat `specs/module-0x-knowledge-architecture/layer_loader_contract.md` as a frozen architectural commitment as of the `module-0x-complete` tag (commit `49edc0c`, 2026-04-29). The contract specifies, in §1–§11:
+
+- §1–§2 — purpose and runtime inputs
+- §3 — layer-by-layer source tables, SQL filters, and orderings (L0–L4)
+- §4 — tables explicitly NOT loaded into context
+- §5 — performance contract (sequential scan per ADR-024 until 50K rows or pgvector ≥ 0.7)
+- §6 — cache invalidation triggers (LISTEN/NOTIFY on `operator_preferences`, `decisions`, `best_practices`, `lessons`)
+- §7 — token budgets per layer (hard 1.2K identity.md per CONSTITUTION §2.3; soft 3K/5K/4K elsewhere)
+- §8 — observability requirements
+- §9 — frozen-interface clause: any new layer, removed table, filter shape change, or token-budget change requires a new ADR superseding this one
+- §10 — output bundle shape (`LayerBundle` typed dataclass with `LayerContent` / `ContextBlock` / `BundleMetadata`); L0 intra-layer ordering pinned (CONSTITUTION → IDENTITY → AGENTS → SOUL → preferences); conflict resolution deferred to consumer per CONSTITUTION §2.7
+- §11 — token counting method (`tiktoken.get_encoding("cl100k_base")`, aligned with `infra/hooks/token_budget.py`)
+
+The contract is the input spec for M4 Phase B. Phase B writes its own spec/plan/tasks against this contract (no further round-trip with M0.X authors).
+
+### Consequences
+- M4 Phase B is unblocked. Phase B planners read the contract, produce SDD trinity, ship.
+- Adding a new layer (L5), removing a table from a layer, changing a filter's shape, or changing a token budget requires a new ADR superseding this one. Adding new content sources within an existing layer (e.g., a new prefs scope variant) does not — Phase B can adapt at runtime per §9.
+- The token-budget arithmetic in §7 is anchored to `cl100k_base`. Future divergence between the contract and `infra/hooks/token_budget.py` requires an ADR, not a unilateral hook change.
+- Severity ordering for `decisions` is mandated DB-side via SQL `CASE` (`critical=0, normal=1, minor=2, ELSE 99`) per §3.2 — pull-then-sort-in-Python is non-conformant for testability and determinism.
+- The frozen output bundle shape (§10) means the consumer (Router/dispatcher) is the sole authority for prompt assembly; Phase B never pre-renders a single markdown blob.
+
+### Alternatives considered
+- **No formal contract — let Phase B planners derive intent from spec.md §8** → rejected: spec.md §8 is a sketch, not a contract, and authoring a new module against a sketch produces ambiguity (operator review of the contract draft caught three concrete gaps: missing output shape, missing tokenizer choice, ambiguous severity ordering). The contract makes those decisions explicit.
+- **Contract embedded inside spec.md §8 instead of a standalone file** → rejected: the contract is the durable interface that survives spec.md edits. A standalone file makes "supersede" unambiguous and lets Phase B reference a fixed artifact (`layer_loader_contract.md@module-0x-complete`) without grepping a long spec.
+- **Defer the freeze; let Phase B and M0.X co-evolve** → rejected: the whole reason M0.X was carved out was to give M4 a stable input surface. Co-evolution is the failure mode this avoids.
+
+### Derived from lessons
+- `LL-M0X-001` — Spec drift caught at scratch test time. Phase E's drift fixes (tool count 16 → 18, `decisions.project` NOT NULL clarification) are the same family. The contract is intentionally fully-specified to avoid being the source of similar drift downstream.
+- `LL-M4-PHASE-A-002` — Verbal acknowledgment is not persistence. The contract is a written, version-pinned artifact (`module-0x-complete` tag), not a verbal handoff.
