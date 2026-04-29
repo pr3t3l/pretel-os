@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 0.X Phase A + Phase B complete. Phase C (17 MCP tools) next.
+**Phase:** Module 0.X complete (tag `module-0x-complete`, commit `49edc0c`). M4 Phase B (Layer Loader) next.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -25,21 +25,24 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M0.X SDD trinity (spec/plan/tasks at `specs/module-0x-knowledge-architecture/`).
 - M0.X Phase A: 7 migrations applied to production (0024 tasks, 0025 operator_preferences, 0026 router_feedback, 0027 best_practices, 0028 decisions amendment, 0028a notify_missing_embedding fix, 0029 ADR seed + lessons split). 5 ADRs seeded (020-024). 4 misclassified lessons archived with cross-table pointers. Schema audit at `migrations/audit/0029_post_state.md`.
 - M0.X Phase B: `SOUL.md` shipped to L0 (operator voice contract). `AGENTS.md` updated with SOUL.md in read order. Spec drift #4 (L0 budget interpretation) fixed in same commit.
+- M0.X Phase C: 18 MCP tools across 5 files (tasks, operator_preferences, decisions, router_feedback, best_practices).
+- M0.X Phase D: 47 tests, coverage ≥80% per file.
+- M0.X Phase E: `layer_loader_contract.md` frozen as M4 Phase B input contract. Tag `module-0x-complete` pushed. ADR-025 added registering the contract as architectural commitment.
+- M0X.0030: `notify_missing_embedding` trigger attached to `best_practices` (replaces the manual `pending_embeddings` INSERT workaround in `best_practice_record`). Closes the only known M0.X-era workaround in production.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- M0.X Phase C (17 MCP tools), Phase D (tests), Phase E (docs + tag).
-- M4 Phase B (Layer Loader — blocked on M0.X close).
+- M4 Phase B (Layer Loader — unblocked, ready to start).
 - M4 Phase C-F, Modules 5-8.
 
-**Top of stack:** M0.X Phase C — 17 new MCP tools across 5 files. ~38 atomic tasks.
+**Top of stack:** M4 Phase B (Layer Loader). Input contract frozen at `specs/module-0x-knowledge-architecture/layer_loader_contract.md`. Router `spec.md` and `plan.md` reconciled with the contract on 2026-04-29 (commit `8ac5ff1`).
 
-**Where to find Phase C source-of-truth:**
-- Spec: `specs/module-0x-knowledge-architecture/spec.md` §5 (schemas) and §6 (MCP tool inventory)
-- Plan: `specs/module-0x-knowledge-architecture/plan.md` §3 Phase C (deliverables + Gate C)
-- Atomic tasks: `specs/module-0x-knowledge-architecture/tasks.md` Phase C section (~38 tasks: M0X.C.1.x through M0X.C.6.x)
-- Constraints: `DECISIONS.md` ADR-020 (LiteLLM aliases — applies to any chat completion call) and ADR-024 (HNSW deferred — best_practice_search uses sequential scan)
+**Where to find M4 Phase B source-of-truth:**
+- Frozen input contract: `specs/module-0x-knowledge-architecture/layer_loader_contract.md` (deviations require ADR)
+- Aligned spec: `specs/router/spec.md` §4.2 (ContextBundle / LayerBundle), §6.1 (dual-source layer table), §8.2 (Router does NOT pre-resolve conflicts)
+- Aligned plan: `specs/router/plan.md` §4.2 Phase B scope (DB-backed loaders + `assemble_bundle` orchestrator), §4.3-4.5 deliverables + done-when + risk notes (incl. Phase C re-scope note)
+- Constraints: `DECISIONS.md` ADR-020 (LiteLLM aliases for any chat completion), ADR-024 (HNSW deferred — sequential pgvector scan), ADR-025 (layer loader contract is frozen)
 
 ---
 
@@ -448,17 +451,14 @@ M0.X scope shipped (Phases A→E):
   - 47 tests, coverage ≥80% per file (Phase D)
   - layer_loader_contract.md frozen (Phase E) — Phase B reads this
 Open follow-up tasks (post-tag, all in `tasks` table):
-  - 92cac1b3 — migration 0030: notify_missing_embedding trigger for
-    best_practices (replaces the manual ON CONFLICT workaround in
-    best_practice_record). Estimated ~30 min total.
+  - 92cac1b3 — CLOSED 2026-04-29 by M0X.0030 (commit d18a43d).
   - 16d4056e — lessons.py mypy --strict alignment (lower priority)
   - 80462622 — CLOSED in this Phase E (decisions.project NOT NULL doc drift)
 Known workarounds in production:
-  - best_practice_record manually inserts into pending_embeddings on
-    embedding failure (with ON CONFLICT (target_id, target_table) DO
-    NOTHING) because best_practices is not yet covered by the
-    notify_missing_embedding trigger from migration 0019. Migration 0030
-    replaces this with a trigger consistent with §6.2 patterns.
+  - RESOLVED 2026-04-29 by migration 0030 (commit d18a43d): the manual
+    `INSERT INTO pending_embeddings` in best_practice_record's INSERT
+    and UPDATE paths has been removed. trg_best_practices_emb AFTER
+    INSERT now handles the queue, mirroring 0019's pattern verbatim.
 Next module: M4 Phase B (Layer Loader) — reads
   specs/module-0x-knowledge-architecture/layer_loader_contract.md and
   produces its own spec/plan/tasks per runbooks/sdd_module_kickoff.md.
@@ -469,6 +469,81 @@ Tags after this push:
   (still-pending intermediate tags not created — operator chose to skip
    module-0x-phase-a/b/c/d intermediate tags in favor of the single
    module-0x-complete tag covering A→E end-to-end)
+
+
+Last session: 2026-04-29 (M0.X close-out follow-ups + M4 Phase B prep)
+Status: M0.X workarounds eliminated; tools_catalog populated; Router
+  docs aligned with layer_loader_contract.md. M4 Phase B ready to start.
+Last task completed: M4.reconcile committed and pushed (commit 8ac5ff1).
+Three commits pushed this session, in order:
+  - d18a43d M0X.0030: best_practices embedding trigger — replaces manual
+            pending_embeddings INSERT workaround in best_practice_record.
+            Migration 0030 extends notify_missing_embedding() with a
+            best_practices branch + attaches trg_best_practices_emb AFTER
+            INSERT (mirrors 0019's pattern verbatim — UPDATE-with-embed=None
+            is now a silent no-op for the queue, same as every other table;
+            the embedding worker reconciles). Closed task 92cac1b3 via
+            task_close MCP tool. 47 Phase D tests still green.
+  - 2d07588 scripts: bootstrap_tools_catalog.py — interim seed until M4.
+            tools_catalog was empty in prod (0022 is intentionally a no-op
+            per its own comment: "Module 4 populates MCP tools"). The empty
+            catalog meant tool_search returned [] for every MCP-client
+            query. Script uses FastMCP introspection (app.list_tools()) so
+            name drift with main.py is auto-detected. Idempotent (ON
+            CONFLICT DO UPDATE). Seeded 25 rows on prod, all embedded
+            inline. Trade-off: re-embeds all 25 every run (~$0.005)
+            because register_tool always re-embeds. Documented in M4
+            replacement task.
+  - 8ac5ff1 M4.reconcile: align Router spec/plan with M0.X
+            layer_loader_contract.md. 6 surgical patches across spec.md
+            and plan.md: dual file+DB layer table, Router-no-pre-resolve
+            (conflict resolution moved to consumer per contract §10),
+            LayerBundle / LayerContent / ContextBlock as canonical types,
+            severity SQL CASE rule (contract §3.2), tiktoken cl100k_base
+            (contract §11), cache invalidation via LISTEN/NOTIFY (contract
+            §6). No code changes. Substantive verifications passed; 4
+            cosmetic regex checks failed due to brief-internal off-by-one
+            issues, not patch errors (patches applied byte-for-byte per
+            brief §3).
+Open follow-up tasks added this session (in `tasks` table):
+  M6:
+  - f9922063 — audit pending_embeddings staleness on UPDATE-with-embed-failure
+              across all tables (low priority, before reflection worker prod)
+  M4:
+  - 1502afac — replace scripts/bootstrap_tools_catalog.py with M4 canonical
+              solution (normal priority, during M4 implementation). Includes
+              fixes for the re-embed-on-every-run inefficiency.
+  - 58903216 — clean up legacy LayerPayload reference in plan.md §5
+              Phase C (low priority, when re-scoping Phase C)
+  Tool-family scaffolds (low priority, no module assigned — surfaced during
+   tools_catalog audit; these tables exist in DATA_MODEL but have no MCP tools):
+  - ff2118d0 pattern_*       — code snippets / templates
+  - 4d8b00e1 gotcha_*        — anti-patterns
+  - 0698a9dc contact_*       — CRM-lite
+  - cf623e61 idea_*          — promote-to-task
+  - a70f9417 conversation_*  — record / search / summarize
+  - 7beb2da0 project_*       — record / state-update / search
+Decisions worth surfacing (full reasoning in commit messages):
+  - 0030 mirrors 0019's AFTER INSERT verbatim (no UPDATE OF embedding).
+    The regression test's UPDATE-path "refined guidance" assertion was
+    manual-insert-specific and removed; count-1 no-duplicate assertion
+    stays.
+  - tools_catalog bootstrap chose Option B (versioned introspection-driven
+    script) over A (one-shot) and C (SQL migration). Option B detects
+    drift with main.py automatically; tracked for M4 replacement.
+  - M4.reconcile patches applied byte-for-byte despite 4 verification
+    grep mismatches; fixing the greps would have meant deviating from
+    brief's prescribed text.
+Next module: M4 Phase B (Layer Loader). Input contract:
+  specs/module-0x-knowledge-architecture/layer_loader_contract.md (FROZEN
+  per ADR-025). Router spec.md and plan.md now reflect the contract.
+  Phase B should produce its own atomic tasks per
+  runbooks/sdd_module_kickoff.md.
+Lessons captured this session: 0 new (no novel failure mode; 0030 was
+  documented gap-closure, bootstrap was prepared option, reconcile was
+  mechanical).
+Tags unchanged from prior session: foundation-v1.0, module-1-complete,
+  module-2-complete, module-3-complete, module-0x-complete.
 ---
 
 **End of SESSION_RESTORE.md.**
