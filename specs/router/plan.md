@@ -166,23 +166,28 @@ Five loader functions, one per layer, each respecting its budget per `spec.md §
 
 ---
 
-## 5. Phase C — Source priority resolution
+## 5. Phase C — Invariant violation detection
+
+> **Reconciled 2026-04-29 (M4.C-rescope):** Per `module-0x-knowledge-architecture/layer_loader_contract.md §10`, Phase B does NOT pre-resolve cross-layer conflicts; the consumer applies CONSTITUTION §2.7 source priority at render time. Phase C is therefore reduced to invariant-violation detection only. Source-priority resolution is no longer a Router responsibility.
 
 ### 5.1 Goal
 
-A `resolve_conflicts(layers: dict[str, LayerPayload]) -> ConflictReport` function that detects topical disagreements across loaded layers and applies the priority order from `spec.md §8`.
+A `detect_invariant_violations(bundle: LayerBundle) -> list[InvariantViolation]` function that scans an assembled `LayerBundle` for content that breaches the immutable invariant class (Scout denylist, budget ceilings, git/DB boundary, agent rules from CONSTITUTION §9) and populates `routing_logs.source_conflicts` with a structured entry per violation.
+
+This is a defense-in-depth check that no layer's content sneaks past CONSTITUTION's hard invariants — not a topical-conflict resolver.
 
 ### 5.2 Scope
 
 **In:**
-- `src/mcp_server/router/conflict_resolver.py` with:
-  - `detect_conflicts(layers)` — scans for topical overlap using a combination of keyword matching against a curated topic list + cosine similarity between layer chunks.
-  - `apply_priority(conflicts)` — applies `L2 > L3 > L4 > L1 > L0` for contextual; routes invariant violations to a separate handler.
-  - `enforce_invariants(layers)` — checks each layer's content against the immutable invariant class (Scout denylist, budget ceilings, git/DB boundary, agent rules from CONSTITUTION §9). Invariant violations override anything else.
-- `src/mcp_server/router/topics.py` — curated list of conflict-detection topics (e.g., `default-database`, `embeddings-model`, `bucket-classification`, `model-to-task`). Initially hand-curated from CONSTITUTION + ADRs; can grow.
-- Unit tests with synthetic conflicts: L4 lesson contradicts L1 bucket, L2 project state contradicts L3 skill, scout-denylist violation in any layer.
+- `src/mcp_server/router/invariant_detector.py` with:
+  - `detect_invariant_violations(bundle: LayerBundle) -> list[InvariantViolation]` — iterates every `ContextBlock` in every `LayerContent` in `bundle.layers`, runs each block through every registered invariant check.
+  - `InvariantViolation` frozen dataclass: `layer: str`, `source: str`, `invariant_id: str`, `evidence: str`, `severity: str`.
+- `src/mcp_server/router/invariants.py` — registry of invariant check callables keyed by `invariant_id`. Initial set seeded from CONSTITUTION + scout policy (scout-denylist match, budget-ceiling overrun, git/DB boundary breach, CONSTITUTION §9 agent-rule breach).
+- Unit tests with synthetic violations embedded across layers: scout-denylist string in an L4 lesson, budget-ceiling violation in an L1 bucket README, agent-rule breach in an L3 skill, clean bundle produces empty list.
 
 **Out:**
+- Source priority resolution across layers (consumer's job per contract §10).
+- Topical conflict detection between non-invariant content (deferred; reopen post-Module-4 only if telemetry shows operator confusion from contradictory layers).
 - The decision to *modify* a source when wrong (operator-only).
 - Cross-pollination flag writing (Reflection worker, Module 6).
 
@@ -190,22 +195,23 @@ A `resolve_conflicts(layers: dict[str, LayerPayload]) -> ConflictReport` functio
 
 | Path | Content |
 |---|---|
-| `src/mcp_server/router/conflict_resolver.py` | Detector + priority applier + invariant enforcer. |
-| `src/mcp_server/router/topics.py` | Topic catalog. |
-| `tests/router/test_conflict_resolver.py` | Synthetic conflict tests across 5+ topic types. |
-| `tests/router/conflict_examples.md` | Hand-written examples documenting expected resolutions. |
+| `src/mcp_server/router/invariant_detector.py` | Bundle scanner + `InvariantViolation` dataclass. |
+| `src/mcp_server/router/invariants.py` | Registry of invariant check callables. |
+| `tests/router/test_invariant_detector.py` | Synthetic violation tests across the 4 seeded invariant types + clean-bundle case. |
+| `tests/router/invariant_examples.md` | Hand-written examples documenting expected detections. |
 
 ### 5.4 Done when
 
-- For each topic in `topics.py`, the resolver correctly identifies a synthetic conflict and selects the higher-priority source per `spec.md §8.2`.
-- Invariant violations always win, regardless of which layer carries them.
-- `routing_logs.source_conflicts` JSONB receives a structured entry for every detected conflict.
-- `pytest tests/router/test_conflict_resolver.py -v` exits 0.
+- For each invariant in `invariants.py`, the detector correctly identifies a synthetic violation embedded in any layer of a `LayerBundle`.
+- A bundle with zero violations produces an empty list and no `source_conflicts` row.
+- `routing_logs.source_conflicts` JSONB receives a structured `InvariantViolation` entry per detected violation.
+- `pytest tests/router/test_invariant_detector.py -v` exits 0.
 
 ### 5.5 Risk notes
 
-- **False positives are worse than false negatives.** A noisy resolver that flags every paraphrase as a conflict drowns the operator. Mitigation: start with high precision (only flag clear contradictions); tune recall later as the topic catalog matures.
-- **Topic catalog seeds the system.** The initial catalog is small (~10 entries). Growth happens via lessons (operator notices a missed conflict, adds a topic). This is fine.
+- **False positives are worse than false negatives.** A noisy detector that flags benign mentions of denylist tokens (e.g., a lesson explaining *why* a token is denied) drowns the operator. Mitigation: invariant checks must distinguish content-as-mention from content-as-instruction; start with conservative rules and tune via lessons.
+- **Invariant registry seeds the system.** Initial registry is ~4 checks, one per major invariant class. Growth happens via lessons (operator notices a missed violation, adds a check). This is fine.
+- **Consumer owns priority resolution.** Phase C intentionally does NOT replace the priority logic that used to live here. If telemetry later shows the consumer is fumbling priority resolution at scale, file it as a Module 5+ task — do not re-expand Phase C.
 
 ---
 
