@@ -110,65 +110,65 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 ### C.1 — Tasks tools (5)
 
-- [ ] M0X.C.1.1 — Create `src/mcp_server/tools/tasks.py` skeleton with imports and FastMCP decorator setup
-- [ ] M0X.C.1.2 — Implement `task_create(title, bucket, description?, project?, module?, priority?, trigger_phase?, source, estimated_minutes?)` — returns `{id, status}` or degraded
-- [ ] M0X.C.1.3 — Implement `task_list(bucket?, status?, module?, limit?)` — returns ordered list
-- [ ] M0X.C.1.4 — Implement `task_update(id, ...fields)` — partial update with `updated_at` refresh
-- [ ] M0X.C.1.5 — Implement `task_close(id, completion_note?)` — sets status='done', done_at=now()
-- [ ] M0X.C.1.6 — Implement `task_reopen(id, reason)` — sets status='open', clears done_at, appends to metadata.reopened_history
-- [ ] M0X.C.1.7 — Add degraded-mode wrapper to all 5 tools (CONSTITUTION §8.43(b))
-- [ ] M0X.C.1.8 — Register all 5 in MCP server entrypoint
+- [x] M0X.C.1.1 — Create `src/mcp_server/tools/tasks.py` skeleton with imports and FastMCP decorator setup
+- [x] M0X.C.1.2 — Implement `task_create(title, bucket, description?, project?, module?, priority?, trigger_phase?, source, estimated_minutes?)` — returns `{id, status}` or degraded
+- [x] M0X.C.1.3 — Implement `task_list(bucket?, status?, module?, limit?)` — returns ordered list
+- [x] M0X.C.1.4 — Implement `task_update(id, ...fields)` — partial update with `updated_at` refresh
+- [x] M0X.C.1.5 — Implement `task_close(id, completion_note?)` — sets status='done', done_at=now()
+- [x] M0X.C.1.6 — Implement `task_reopen(id, reason)` — sets status='open', clears done_at, appends to metadata.reopened_history
+- [x] M0X.C.1.7 — Add degraded-mode wrapper to all 5 tools (CONSTITUTION §8.43(b))
+- [x] M0X.C.1.8 — Register all 5 in MCP server entrypoint
 
 ### C.2 — Decisions tools (3)
 
-- [ ] M0X.C.2.1 — Create `src/mcp_server/tools/decisions.py`
-- [ ] M0X.C.2.2 — Implement `decision_record(bucket, project, title, context, decision, consequences, scope, applicable_buckets?, decided_by, severity?, adr_number?, derived_from_lessons?, tags?, alternatives?)` — generates embedding, returns `{id, adr_number}`
-- [ ] M0X.C.2.3 — Implement `decision_search(query, bucket?, scope?, status?, top_k=5)` — semantic search via sequential scan with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
-- [ ] M0X.C.2.4 — Implement `decision_supersede(old_id, new_decision_payload)` — atomically marks old superseded, inserts new with link
-- [ ] M0X.C.2.5 — Add degraded-mode wrapper
-- [ ] M0X.C.2.6 — Register in MCP server
+- [x] M0X.C.2.1 — Create `src/mcp_server/tools/decisions.py`
+- [x] M0X.C.2.2 — Implement `decision_record(bucket, project, title, context, decision, consequences, scope, applicable_buckets?, decided_by, severity?, adr_number?, derived_from_lessons?, tags?, alternatives?)` — generates embedding, returns `{id, adr_number}`
+- [x] M0X.C.2.3 — Implement `decision_search(query, bucket?, scope?, status?, top_k=5)` — semantic search via sequential scan with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
+- [x] M0X.C.2.4 — Implement `decision_supersede(old_id, new_decision_payload)` — atomically marks old superseded, inserts new with link
+- [x] M0X.C.2.5 — Add degraded-mode wrapper
+- [x] M0X.C.2.6 — Register in MCP server
 
 ### C.3 — Preferences tools (4)
 
-- [ ] M0X.C.3.1 — Create `src/mcp_server/tools/preferences.py`
-- [ ] M0X.C.3.2 — Implement `preference_set(category, key, value, scope='global')` — UPSERT via `ON CONFLICT (category, key, scope) DO UPDATE`
-- [ ] M0X.C.3.3 — Implement `preference_get(category, key, scope='global')` — direct lookup, returns value or null
-- [ ] M0X.C.3.4 — Implement `preference_list(category?, scope?, active=true)` — filter list
-- [ ] M0X.C.3.5 — Implement `preference_unset(category, key, scope)` — sets active=false (soft delete)
-- [ ] M0X.C.3.6 — Add degraded-mode wrapper
-- [ ] M0X.C.3.7 — Register in MCP server
+- [x] M0X.C.3.1 — Create `src/mcp_server/tools/preferences.py`
+- [x] M0X.C.3.2 — Implement `preference_set(category, key, value, scope='global')` — UPSERT via `ON CONFLICT (category, key, scope) DO UPDATE`
+- [x] M0X.C.3.3 — Implement `preference_get(category, key, scope='global')` — direct lookup, returns value or null
+- [x] M0X.C.3.4 — Implement `preference_list(category?, scope?, active=true)` — filter list
+- [x] M0X.C.3.5 — Implement `preference_unset(category, key, scope)` — sets active=false (soft delete)
+- [x] M0X.C.3.6 — Add degraded-mode wrapper
+- [x] M0X.C.3.7 — Register in MCP server
 
 ### C.4 — Router feedback tools (2)
 
-- [ ] M0X.C.4.1 — Create `src/mcp_server/tools/router_feedback.py`
-- [ ] M0X.C.4.2 — Implement `router_feedback_record(request_id?, feedback_type, operator_note?, proposed_correction?)` — inserts pending row
-- [ ] M0X.C.4.3 — Implement `router_feedback_review(id, status, reviewed_by)` — transitions pending→reviewed/applied/dismissed
-- [ ] M0X.C.4.4 — Add degraded-mode wrapper
-- [ ] M0X.C.4.5 — Register in MCP server
+- [x] M0X.C.4.1 — Create `src/mcp_server/tools/router_feedback.py`
+- [x] M0X.C.4.2 — Implement `router_feedback_record(request_id?, feedback_type, operator_note?, proposed_correction?)` — inserts pending row
+- [x] M0X.C.4.3 — Implement `router_feedback_review(id, status, reviewed_by)` — transitions pending→reviewed/applied/dismissed
+- [x] M0X.C.4.4 — Add degraded-mode wrapper
+- [x] M0X.C.4.5 — Register in MCP server
 
 ### C.5 — Best practices tools (3)
 
-- [ ] M0X.C.5.1 — Create `src/mcp_server/tools/best_practices.py`
-- [ ] M0X.C.5.2 — Implement `best_practice_record(title, guidance, domain, scope='global', rationale?, applicable_buckets?, tags?, source='operator', derived_from_lessons?)`
-  - [ ] M0X.C.5.2a — On UPDATE path: copy current `guidance`/`rationale` into `previous_guidance`/`previous_rationale` BEFORE overwrite (single-step rollback)
-  - [ ] M0X.C.5.2b — On INSERT and UPDATE: generate embedding via OpenAI text-embedding-3-large; on API failure, queue to `pending_embeddings` and write row without embedding
-- [ ] M0X.C.5.3 — Implement `best_practice_search(query, scope?, domain?, top_k=5)` — sequential-scan vector similarity with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
-- [ ] M0X.C.5.4 — Implement `best_practice_deactivate(id, reason)` — sets active=false, records reason in metadata
-- [ ] M0X.C.5.5 — Implement `best_practice_rollback(id)` — restores previous_guidance → guidance, previous_rationale → rationale; returns error if previous_* are NULL
-- [ ] M0X.C.5.6 — Add degraded-mode wrapper to all
-- [ ] M0X.C.5.7 — Register in MCP server
+- [x] M0X.C.5.1 — Create `src/mcp_server/tools/best_practices.py`
+- [x] M0X.C.5.2 — Implement `best_practice_record(title, guidance, domain, scope='global', rationale?, applicable_buckets?, tags?, source='operator', derived_from_lessons?)`
+  - [x] M0X.C.5.2a — On UPDATE path: copy current `guidance`/`rationale` into `previous_guidance`/`previous_rationale` BEFORE overwrite (single-step rollback)
+  - [x] M0X.C.5.2b — On INSERT and UPDATE: generate embedding via OpenAI text-embedding-3-large; on API failure, queue to `pending_embeddings` and write row without embedding
+- [x] M0X.C.5.3 — Implement `best_practice_search(query, scope?, domain?, top_k=5)` — sequential-scan vector similarity with `ORDER BY embedding <=> query_embedding LIMIT top_k` (HNSW deferred per ADR-024) + scalar filters
+- [x] M0X.C.5.4 — Implement `best_practice_deactivate(id, reason)` — sets active=false, records reason in metadata
+- [x] M0X.C.5.5 — Implement `best_practice_rollback(id)` — restores previous_guidance → guidance, previous_rationale → rationale; returns error if previous_* are NULL
+- [x] M0X.C.5.6 — Add degraded-mode wrapper to all
+- [x] M0X.C.5.7 — Register in MCP server
 
 ### Phase C close-out
 
-- [ ] M0X.C.6.1 — Run `mypy --strict src/mcp_server/tools/` — must be clean
-- [ ] M0X.C.6.2 — Restart MCP server: `systemctl --user restart pretel-os-mcp`
-- [ ] M0X.C.6.3 — Verify all 17 tools registered: query `tools_catalog` for new tool names
-- [ ] M0X.C.6.4 — Smoke-test each tool via Claude.ai connector or `claude` CLI: one minimal call per tool returning success
-- [ ] M0X.C.6.5 — Verify no hardcoded model strings in any new file: `grep -rn "claude-\|gpt-\|gemini-" src/mcp_server/tools/` returns nothing (LiteLLM aliases only — but no chat completions in M0.X tools, so should be empty regardless)
-- [ ] M0X.C.6.6 — Test degraded mode: stop Postgres, call one tool per file, verify returns `{status:'degraded', journal_id:...}` and journal file written
-- [ ] M0X.C.6.7 — Restart Postgres, run journal_replay worker, verify rows landed
-- [ ] M0X.C.6.8 — Commit with message "M0X.C: 17 MCP tools implemented and registered"
-- [ ] M0X.C.6.9 — **Gate C passed**: tools registered, mypy clean, degraded mode verified
+- [x] M0X.C.6.1 — Run `mypy --strict src/mcp_server/tools/` — must be clean
+- [x] M0X.C.6.2 — Restart MCP server: `systemctl --user restart pretel-os-mcp`
+- [x] M0X.C.6.3 — Verify all 17 tools registered: query `tools_catalog` for new tool names
+- [x] M0X.C.6.4 — Smoke-test each tool via Claude.ai connector or `claude` CLI: one minimal call per tool returning success
+- [x] M0X.C.6.5 — Verify no hardcoded model strings in any new file: `grep -rn "claude-\|gpt-\|gemini-" src/mcp_server/tools/` returns nothing (LiteLLM aliases only — but no chat completions in M0.X tools, so should be empty regardless)
+- [x] M0X.C.6.6 — Test degraded mode: stop Postgres, call one tool per file, verify returns `{status:'degraded', journal_id:...}` and journal file written
+- [x] M0X.C.6.7 — Restart Postgres, run journal_replay worker, verify rows landed
+- [x] M0X.C.6.8 — Commit with message "M0X.C: 17 MCP tools implemented and registered"
+- [x] M0X.C.6.9 — **Gate C passed**: tools registered, mypy clean, degraded mode verified
 
 ---
 
