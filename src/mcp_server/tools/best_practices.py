@@ -130,6 +130,24 @@ async def best_practice_record(
                         row = await cur.fetchone()
                         assert row is not None, "INSERT ... RETURNING produced no row"
                         bp_id = str(row[0])
+
+                        # best_practices has no notify_missing_embedding trigger
+                        # (migration 0019 predates the table). Manually queue when
+                        # embedding failed so caller's `embedding_queued=True` is
+                        # actually true. Tracked for trigger fix in a M0.X task.
+                        if embedding is None:
+                            await cur.execute(
+                                """
+                                INSERT INTO pending_embeddings
+                                    (target_table, target_id, source_text)
+                                VALUES ('best_practices', %s, %s)
+                                ON CONFLICT (target_table, target_id) DO UPDATE
+                                SET source_text = EXCLUDED.source_text,
+                                    attempts = 0,
+                                    last_error = NULL
+                                """,
+                                (bp_id, f"{title}\n\n{guidance}\n\n{rationale or ''}"),
+                            )
             except Exception as exc:
                 log.exception("best_practice_record insert failed")
                 await log_usage(
@@ -206,6 +224,21 @@ async def best_practice_record(
                         upd_row = await cur.fetchone()
                         assert upd_row is not None, "UPDATE ... RETURNING produced no row inside FOR UPDATE block"
                         bp_id = str(upd_row[0])
+
+                        # Same manual queue as INSERT path — no trigger.
+                        if embedding is None:
+                            await cur.execute(
+                                """
+                                INSERT INTO pending_embeddings
+                                    (target_table, target_id, source_text)
+                                VALUES ('best_practices', %s, %s)
+                                ON CONFLICT (target_table, target_id) DO UPDATE
+                                SET source_text = EXCLUDED.source_text,
+                                    attempts = 0,
+                                    last_error = NULL
+                                """,
+                                (bp_id, f"{title}\n\n{guidance}\n\n{rationale or ''}"),
+                            )
         except Exception as exc:
             log.exception("best_practice_record update failed")
             await log_usage(
