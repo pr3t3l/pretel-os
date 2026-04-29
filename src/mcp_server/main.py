@@ -29,6 +29,12 @@ from .tools.catalog import load_skill, register_skill, register_tool, tool_searc
 from .tools.context import get_context
 from .tools.health import health
 from .tools.lessons import save_lesson, search_lessons
+from .tools.preferences import (
+    preference_get,
+    preference_list,
+    preference_set,
+    preference_unset,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -68,6 +74,12 @@ def build_app() -> FastMCP:
     app.tool(register_tool)
     app.tool(load_skill)
     app.tool(tool_search)
+
+    # Module 0.X — preferences
+    app.tool(preference_set)
+    app.tool(preference_get)
+    app.tool(preference_list)
+    app.tool(preference_unset)
 
     app.custom_route("/health", methods=["GET"])(health)
 
