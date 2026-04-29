@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 0.X complete + M4 Phase B complete + M4 Phase C complete. M4 Phase D (telemetry) next.
+**Phase:** Module 0.X + M4 Phases A–E complete. M4.T9.x (runbook + module exit gate + tag) next.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -31,21 +31,22 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M0X.0030: `notify_missing_embedding` trigger attached to `best_practices` (replaces the manual `pending_embeddings` INSERT workaround in `best_practice_record`). Closes the only known M0.X-era workaround in production.
 - M4 Phase B (Layer Loader): all 9 atomic groups shipped 2026-04-29. 5 sync loaders (L0..L4) per contract §3.1-§3.5, async `assemble_bundle` orchestrator wiring `embed()` + loaders + `summarize_oversize` + cache, in-memory `LayerBundleCache` with LISTEN/NOTIFY invalidation via migration 0031 trigger function. 103 fast + 3 slow tests, mypy clean across 16 router source files. Architecture decisions tracked in `specs/router/phase_b_close.md`. Tag candidate: `phase-b-complete` at commit `97a67d6`.
 - M4 Phase C (Invariant violation detection — post-rescope): `detect_invariant_violations(bundle)` scans every `ContextBlock` against 6 registered invariant checks (3 agent-rule, 1 git/DB boundary, 1 budget ceiling, 1 Scout stub). 12 tests, mypy clean. Scout denylist deferred (Q3). Architecture decisions in `specs/router/phase_c_close.md`.
+- M4 Phase D + E (Telemetry + orchestrator + fallback classifier): full pipeline shipped 2026-04-29. 6 atomic groups (D.0-D.5) per `specs/router/phase_d_close.md`. `router.get_context()` async orchestrator wires classify → assemble_bundle → detect_invariant_violations → telemetry, with try/finally degraded handling per spec §10. 6 telemetry functions (start_request + 5 log_*) write spec §9.1/§9.2 columns; INSERT-early per Q2. MCP tool wrappers `tools/context.py` (replaces Module-3 stub) + `tools/report_satisfaction.py`. 19 D.4 tests green: 8 telemetry + 5 fallback integration + 6 e2e (~$0.018 actual cost). 3 audit queries from spec §9.3 saved to `runbooks/router_audit_queries.sql`. Q5 Q-decisions captured in `phase_d_close.md`.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- M4 Phase D — Telemetry (next).
-- M4 Phase E-F, Modules 5-8.
+- M4.T9.x (runbook + module exit gate + `module-4-complete` tag).
+- M4 Phase F (post-exit tuning, ongoing — not gated).
+- Modules 5-8.
 
-**Top of stack:** M4 Phase D (Telemetry). Per `plan.md §6`: every `get_context` call writes one `routing_logs` row plus zero or one `llm_calls` row, all joinable by `request_id`. Phase D consumes the `LayerBundle` from Phase B and the `list[InvariantViolation]` from Phase C and serializes the latter into `routing_logs.source_conflicts` (JSONB). The 3 audit queries from `spec.md §9.3` must execute cleanly against the resulting data. Phase C output (the `InvariantViolation` shape) is already verified Phase-D-compatible — `json.dumps([asdict(v) for v in violations])` round-trips without custom encoders.
+**Top of stack:** M4.T9.x — Module 4 exit. Per `plan.md §10`: the Module 4 gate requires (a) the 6 router responsibilities implemented per CONSTITUTION §2.2, (b) classification per spec §5.1, (c) layer loader respects budgets per CONSTITUTION §2.3, (d) source-priority resolution per CONSTITUTION §2.7 (now consumer-side per contract §10), (e) `routing_logs` populated on every call, (f) fallback classifier on LiteLLM failure, (g) smoke tests, (h) per-turn latency under 2s for HIGH, (i) `runbooks/module_4_router.md` covers the 4 ops scenarios, (j) commit + tag `module-4-complete`. Phase D D.5 closes the technical gates A-E; M4.T9.x adds the runbook polish and the module tag.
 
-**Where to find M4 Phase D source-of-truth:**
-- Plan: `specs/router/plan.md §6`
-- Spec: `specs/router/spec.md §9` (telemetry schema), `§9.3` (audit queries)
-- Phase C output shape: `src/mcp_server/router/types.py::InvariantViolation`
-- Phase C decisions tracker: `specs/router/phase_c_close.md`
-- Phase B atomic tracker (LayerBundle shape Phase D consumes): `specs/router/phase_b_close.md`
+**Where to find M4.T9.x source-of-truth:**
+- Plan: `specs/router/plan.md §10` (Module 4 exit gate restatement)
+- Existing runbook: `runbooks/module_4_router.md` (audit queries already present + new `runbooks/router_audit_queries.sql` from D.5.2)
+- Phase D decisions tracker: `specs/router/phase_d_close.md`
+- All Phase A-E decision trackers: `phase_b_close.md`, `phase_c_close.md`, `phase_d_close.md`
 
 ---
 
@@ -600,6 +601,39 @@ Phase C output: ~750 LoC code + tests across 4 new router files.
   test_invariant_detector.py (~260 LoC), invariant_examples.md (~183 LoC).
 Tags: phase-c-complete on 7b6f926 (operator-driven).
 Next: M4 Phase D — Telemetry.
+
+
+Last session: 2026-04-29 (M4 Phase D + E close — orchestrator + telemetry complete)
+Status: M4 Phases D + E shipped end-to-end. Router pipeline integrated
+  through `router.get_context()` async orchestrator wiring classify ->
+  assemble_bundle -> detect_invariant_violations -> 6 telemetry writes
+  per spec §9. INSERT-early strategy per Q2 ensures partial rows
+  survive crashes. Fallback classifier (Phase E) bundled as D.0. MCP
+  tool wrappers replace the Module-3 stub; report_satisfaction
+  registered. 19 D.4 tests green; ~$0.018 actual cost on the e2e run.
+  3 audit queries from spec §9.3 saved to runbook + verified live.
+Last task completed: D.5 gate verification + tasks.md cleanup +
+  SESSION_RESTORE + audit-query runbook.
+Commits pushed this session (Phase D + E chain):
+  - c5e1f11 D.0: fallback_classifier + 7 tests (Phase E bundled)
+  - b33fc15 D.1: telemetry primitives (6 functions, INSERT-early)
+  - afea9ff D.2: router.py orchestrator + context_bundle_schema.json
+  - a91ef61 D.3: tools/context.py + tools/report_satisfaction.py
+  - 7c1f7af D.4: 19 tests (8 telemetry + 5 fallback + 6 e2e)
+  - 210e22f hot-fix: 2 false positives in invariant detector
+    (NEGATION_TOKENS gap + _LAYER_CEILINGS["L0"] mis-scope)
+  - 8bda98d D.5: gate + tasks.md cleanup + audit-query
+    runbook + SESSION_RESTORE
+Phase D + E output: ~1900 LoC across 7 new files + 1 modified main.py.
+  fallback_keywords.py (47), fallback_classifier.py (92),
+  test_fallback_classifier.py (58), telemetry.py (273), router.py (397),
+  context_bundle_schema.json (136), tools/context.py rewrite (243),
+  tools/report_satisfaction.py (112), test_telemetry.py (301),
+  test_fallback_integration.py (146), test_e2e.py (285),
+  router_audit_queries.sql (~85).
+Tags candidate this session (operator-driven): phase-e-complete on
+  c5e1f11, phase-d-complete on the D.5 close-out commit.
+Next: M4.T9.x — Module 4 exit gate (runbook + module-4-complete tag).
 ---
 
 **End of SESSION_RESTORE.md.**

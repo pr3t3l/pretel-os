@@ -628,6 +628,34 @@ returns `HIGH` (capped to `MEDIUM`); (d) 7/7 unit tests green in
 0.03s. mypy clean across `fallback_keywords.py` and
 `fallback_classifier.py`.
 
+**D.5.3 gate (Phase D) verified:** 2026-04-29. plan.md §6.4 bullets
+all pass:
+- (a) `get_context("help me debug my n8n batching")` returns valid
+  ContextBundle — verified by D.4.2 `test_n8n_debug_query` (commit
+  `7c1f7af`).
+- (b) `routing_logs` row written with all spec §9.1 columns —
+  verified by D.4.1 `test_log_*` family (commit `7c1f7af`); 8/8
+  green.
+- (c) `llm_calls` row written joinable on `request_id` — verified
+  by D.4.1 `test_log_classification_llm_mode_writes_llm_calls` and
+  D.4.2 `test_n8n_debug_query` post-call SELECT.
+- (d) all 3 audit queries from spec §9.3 execute cleanly — Q1
+  (classifier uptime) returns 3 rows (llm/haiku/fallback_rules);
+  Q2 (per-model cost+quality) returns 1 row with avg_satisfaction
+  4.5 from 2 score=4|5 entries; Q3 (RAG mismatch) returns 0 rows
+  which is the healthy state. Saved to
+  `runbooks/router_audit_queries.sql`.
+- (e) `report_satisfaction(request_id, 4)` updates the row —
+  verified during the D.5.1 warm-up: 2 score writes succeeded,
+  Q2's avg_satisfaction reflected the update.
+
+**D.5.4 gate (Phase E) — cross-reference:** D.0.4 already verified.
+
+**Tuning hot-fix in flight:** commit `210e22f` resolves the 2 false
+positives D.4 surfaced (NEGATION_TOKENS gap on "does not"/"doesn't"/
+"is not" + `_LAYER_CEILINGS["L0"]` mis-scope). Re-running e2e tests
+post-fix shows 0 violations across all 6 turns.
+
 **Suggested commit boundaries:**
 
 1. **D.0** — fallback_keywords.py + fallback_classifier.py + tests
