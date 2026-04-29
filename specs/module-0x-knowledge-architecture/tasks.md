@@ -162,7 +162,7 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 - [x] M0X.C.6.1 — Run `mypy --strict src/mcp_server/tools/` — must be clean
 - [x] M0X.C.6.2 — Restart MCP server: `systemctl --user restart pretel-os-mcp`
-- [x] M0X.C.6.3 — Verify all 17 tools registered: query `tools_catalog` for new tool names
+- [x] M0X.C.6.3 — Verify all 18 tools registered (`best_practice_rollback` added by C.5.5 split): query `tools_catalog` for new tool names
 - [x] M0X.C.6.4 — Smoke-test each tool via Claude.ai connector or `claude` CLI: one minimal call per tool returning success
 - [x] M0X.C.6.5 — Verify no hardcoded model strings in any new file: `grep -rn "claude-\|gpt-\|gemini-" src/mcp_server/tools/` returns nothing (LiteLLM aliases only — but no chat completions in M0.X tools, so should be empty regardless)
 - [x] M0X.C.6.6 — Test degraded mode: stop Postgres, call one tool per file, verify returns `{status:'degraded', journal_id:...}` and journal file written

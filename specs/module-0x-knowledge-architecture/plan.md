@@ -92,7 +92,7 @@ Module 0.X ships in 5 phases. Each phase has its own gate. Phases run sequential
 
 **Gate C:**
 - mypy --strict clean across all new files
-- All 17 tools registered in `tools_catalog` and discoverable via `tool_search`
+- All 18 tools registered (`best_practice_rollback` added by C.5.5 split) and discoverable via `tool_search`
 - Each tool callable via MCP protocol (verified by smoke test)
 - LiteLLM aliases used for any LLM calls (no hardcoded model strings — CONSTITUTION rule)
 - Degraded-mode tested: tools queue to fallback journal when DB stopped
