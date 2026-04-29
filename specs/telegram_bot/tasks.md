@@ -186,9 +186,13 @@ Covered by M5.T1 above.
   `Type=simple`, `Restart=on-failure`). Adds
   `pretel-os-mcp.service` to `After=` to ensure ordering.
 
-- [ ] **M5.B.8.1** `tests/telegram_bot/test_handlers.py` — ≥5 tests
-  (start, save parse, status mock, unauthorized rejection, /help
-  alias).
+- [x] **M5.B.8.1** `tests/telegram_bot/test_handlers.py` — 10 tests
+  (start welcome, /help alias, unauthorized rejection, /save without
+  text, /save stashes + keyboard, /save callback invokes save_lesson,
+  /save callback without pending warns, /idea callback uses PLAN
+  category + idea tag, /status full-healthy summary, _format_status
+  partial-mode rendering). All pure mocks — no live Telegram, no live
+  DB. mypy clean. 10/10 pass in 0.65s.
 
 ---
 
