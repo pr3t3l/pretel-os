@@ -415,24 +415,34 @@ Tags: foundation-v1.0, module-1-complete, module-2-complete,
   26c7189, module-0x-complete after Phase E)
 
 
-Last session: 2026-04-28 (M0.X Phase E close — Module 0.X COMPLETE)
+Last session: 2026-04-29 (M0.X Phase E close — Module 0.X COMPLETE, pushed to origin)
 Status: knowledge architecture shipped, M4 Phase B unblocked.
-Last task completed: M0.X Phase E — docs synchronized, tag module-0x-complete
-  Phase E commit chain (see `git log 59127aa..module-0x-complete`):
-  - chore: .gitignore .coverage + htmlcov/
-  - M0X.E.1   layer_loader_contract.md NEW (Phase B input contract frozen)
-  - M0X.E.1.1 contract patch — bundle shape, severity SQL CASE, token method
-  - M0X.E.2   DATA_MODEL.md §5.7-5.10 full DDL + §5.2.1 decisions amendment
-  - M0X.E.3   INTEGRATIONS.md §14 — 18 tool entries
-  - M0X.E.4   SESSION_RESTORE.md §13 update + §14 cleanup (this commit)
-  - M0X.E.5   spec.md drift fixes (tool count 18, decisions.project NOT NULL note)
-  - M0X.E.6   plan.md status complete + tasks.md M0X.* closed
-  - M0X.E close-out + tag module-0x-complete
+Last task completed: M0.X Phase E — tag module-0x-complete pushed; long-lived docs registered
+  Phase E commit chain (see `git log 59127aa..HEAD`):
+  - 9cbc639 chore: .gitignore .coverage + htmlcov/
+  - 469e79e M0X.E.1   layer_loader_contract.md NEW (Phase B input contract frozen)
+  - 532581b M0X.E.1.1 contract patch — bundle shape, severity SQL CASE, token method
+                      (3 patches from operator review: §10 LayerBundle dataclass,
+                       §11 tiktoken cl100k_base, §3.2 mandatory DB-side severity CASE)
+  - 5d35835 M0X.E.2   DATA_MODEL.md §5.7-5.10 full DDL + §5.2.1 decisions amendment
+                      (folded former §5.11 into §5.2.1 for cleaner pairing)
+  - 714d1a9 M0X.E.3   INTEGRATIONS.md §14 — 18 tool entries (5 sources × tool group)
+  - 93b1b43 M0X.E.4   SESSION_RESTORE.md §13 update + §14 cleanup
+  - 9a94e93 M0X.E.5   spec.md drift fixes — tool count 18, decisions.project NOT NULL note
+                      (closed task 80462622 via task_close MCP tool — dogfood)
+  - 85188db M0X.E.6   plan.md status complete + tasks.md M0X.* closed
+  - 49edc0c M0X.E.7   cross-ref consistency — 2 stale "17 tools" refs → 18
+  - (tag)   module-0x-complete annotated, points at 49edc0c, pushed to origin (582e4a3)
+  - cc7c87a M0X.E close-out: long-lived docs (README, plan.md root, runbook §20-21,
+                      DECISIONS.md ADR-025) + ADR-025 persisted to decisions table
+                      via decision_record MCP tool — id 88edd357, embedding generated
+                      inline. All 6 ADRs (020-025) now in canonical + queryable form.
 M0.X scope shipped (Phases A→E):
   - 4 new tables: tasks, operator_preferences, router_feedback, best_practices
   - decisions amended (+7 columns: scope, applicable_buckets, decided_by,
     tags, severity, adr_number, derived_from_lessons)
-  - 5 ADRs seeded (020-024)
+  - 6 ADRs total (020-025); ADR-025 added post-tag in cc7c87a registering the
+    layer loader contract as a frozen architectural commitment
   - SOUL.md L0 voice file (324 tok)
   - 18 MCP tools across 5 files (Phase C)
   - 47 tests, coverage ≥80% per file (Phase D)
