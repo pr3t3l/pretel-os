@@ -28,6 +28,7 @@ from .auth import PretelAuthMiddleware
 from .tools.catalog import load_skill, register_skill, register_tool, tool_search
 from .tools.context import get_context
 from .tools.health import health
+from .tools.report_satisfaction import report_satisfaction
 from .tools.lessons import save_lesson, search_lessons
 from .tools.preferences import (
     preference_get,
@@ -83,6 +84,7 @@ def build_app() -> FastMCP:
     )
 
     app.tool(get_context)
+    app.tool(report_satisfaction)
     app.tool(save_lesson)
     app.tool(search_lessons)
     app.tool(register_skill)
