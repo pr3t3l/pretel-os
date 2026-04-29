@@ -101,3 +101,39 @@ async def test_router_feedback_review_dismissed_leaves_applied_at_null(
         (record["id"],),
     )
     assert row == ("dismissed", "operator", None)
+
+
+async def test_router_feedback_review_rejects_invalid_status(patched_db: None) -> None:
+    """status='pending' (transition into pending) and 'garbage' (not in enum) both rejected."""
+    record = await router_feedback_record(feedback_type="missing_context")
+
+    pending = await router_feedback_review(id=record["id"], status="pending", reviewed_by="x")
+    assert pending["status"] == "error"
+    assert "pending" in pending["error"]
+
+    garbage = await router_feedback_review(id=record["id"], status="garbage", reviewed_by="x")
+    assert garbage["status"] == "error"
+    assert "invalid status" in garbage["error"]
+
+
+async def test_router_feedback_degraded_mode_writes_journal(
+    patched_db: None, db_unhealthy: None, journal_dir: Any
+) -> None:
+    """Both record + review return degraded with journal_id when DB down."""
+    rec_r = await router_feedback_record(feedback_type="wrong_bucket")
+    assert rec_r["status"] == "degraded"
+    assert "journal_id" in rec_r
+
+    rev_r = await router_feedback_review(
+        id="00000000-0000-0000-0000-000000000000",
+        status="reviewed",
+        reviewed_by="operator",
+    )
+    assert rev_r["status"] == "degraded"
+    assert "journal_id" in rev_r
+
+    files = list(journal_dir.glob("*.jsonl"))
+    assert len(files) == 1
+    contents = files[0].read_text()
+    assert "router_feedback_record" in contents
+    assert "router_feedback_review" in contents

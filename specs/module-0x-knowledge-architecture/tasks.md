@@ -176,31 +176,31 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 ### D.1 — Unit tests per tool file
 
-- [ ] M0X.D.1.1 — `tests/mcp_server/tools/test_tasks.py` — 5 tests, one per tool, happy path + error cases
-- [ ] M0X.D.1.2 — `tests/mcp_server/tools/test_decisions.py` — 3 tests; `test_decision_supersede` asserts atomicity
-- [ ] M0X.D.1.3 — `tests/mcp_server/tools/test_preferences.py` — 4 tests; `test_preference_set_upsert` asserts UPSERT behavior
-- [ ] M0X.D.1.4 — `tests/mcp_server/tools/test_router_feedback.py` — 2 tests
-- [ ] M0X.D.1.5 — `tests/mcp_server/tools/test_best_practices.py` — 4 tests, including:
-  - [ ] M0X.D.1.5a — `test_best_practice_rollback_round_trip`: record → update → assert previous_* populated → rollback → assert content restored
-  - [ ] M0X.D.1.5b — `test_best_practice_supersede`: record A → record B with superseded_by=A.id → query A returns superseded chain
+- [x] M0X.D.1.1 — `tests/mcp_server/tools/test_tasks.py` — 5 tests, one per tool, happy path + error cases
+- [x] M0X.D.1.2 — `tests/mcp_server/tools/test_decisions.py` — 3 tests; `test_decision_supersede` asserts atomicity
+- [x] M0X.D.1.3 — `tests/mcp_server/tools/test_preferences.py` — 4 tests; `test_preference_set_upsert` asserts UPSERT behavior
+- [x] M0X.D.1.4 — `tests/mcp_server/tools/test_router_feedback.py` — 2 tests
+- [x] M0X.D.1.5 — `tests/mcp_server/tools/test_best_practices.py` — 4 tests, including:
+  - [x] M0X.D.1.5a — `test_best_practice_rollback_round_trip`: record → update → assert previous_* populated → rollback → assert content restored
+  - [x] M0X.D.1.5b — `test_best_practice_supersede`: record A → record B with superseded_by=A.id → query A returns superseded chain
 
 ### D.2 — Integration tests (LL-M4-PHASE-A-001 mandate)
 
-- [ ] M0X.D.2.1 — `tests/mcp_server/integration/test_m0x_full_flow.py` — boots full MCP server, registers tools, calls each through MCP protocol
-- [ ] M0X.D.2.2 — Each integration test asserts CONTENT of returned payload (not just shape) — includes embedding dimensionality for best_practices
-- [ ] M0X.D.2.3 — Test degraded mode end-to-end: integration test stops DB, calls tool, asserts journal file content matches intended write
+- [x] M0X.D.2.1 — `tests/mcp_server/integration/test_m0x_full_flow.py` — boots full MCP server, registers tools, calls each through MCP protocol
+- [x] M0X.D.2.2 — Each integration test asserts CONTENT of returned payload (not just shape) — includes embedding dimensionality for best_practices
+- [x] M0X.D.2.3 — Test degraded mode end-to-end: integration test stops DB, calls tool, asserts journal file content matches intended write
 
 ### D.3 — Migration tests
 
-- [ ] M0X.D.3.1 — `tests/migrations/test_0029_lessons_split.py` — runs migration on scratch, asserts 4 rows in correct destinations + originals superseded
-- [ ] M0X.D.3.2 — Re-run test: assert idempotency (second run is no-op)
+- [x] M0X.D.3.1 — `tests/migrations/test_0029_lessons_split.py` — runs migration on scratch, asserts 4 rows in correct destinations + originals superseded
+- [x] M0X.D.3.2 — Re-run test: assert idempotency (second run is no-op)
 
 ### Phase D close-out
 
-- [ ] M0X.D.4.1 — Run `pytest tests/mcp_server/tools/ tests/mcp_server/integration/ tests/migrations/` — all green
-- [ ] M0X.D.4.2 — Run `pytest --cov=src/mcp_server/tools` — coverage >= 80% on new files
-- [ ] M0X.D.4.3 — Commit with message "M0X.D: unit + integration tests, coverage >= 80%"
-- [ ] M0X.D.4.4 — **Gate D passed**: all tests green, coverage threshold met
+- [x] M0X.D.4.1 — Run `pytest tests/mcp_server/tools/ tests/mcp_server/integration/ tests/migrations/` — all green
+- [x] M0X.D.4.2 — Run `pytest --cov=src/mcp_server/tools` — coverage >= 80% on new files
+- [x] M0X.D.4.3 — Commit with message "M0X.D: unit + integration tests, coverage >= 80%"
+- [x] M0X.D.4.4 — **Gate D passed**: all tests green, coverage threshold met
 
 ---
 

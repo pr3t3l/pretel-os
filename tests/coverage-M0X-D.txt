@@ -1,0 +1,25 @@
+tests/mcp_server/tools/test_decisions.py .......                         [ 46%]
+tests/mcp_server/tools/test_preferences.py .......                       [ 61%]
+tests/mcp_server/tools/test_router_feedback.py ......                    [ 74%]
+tests/mcp_server/tools/test_tasks.py ..........                          [ 95%]
+tests/migrations/test_0029_lessons_split.py ..                           [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+
+Name                                      Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------
+src/mcp_server/tools/__init__.py              0      0   100%
+src/mcp_server/tools/_common.py              33      0   100%
+src/mcp_server/tools/best_practices.py      145     26    82%   151-162, 242-253, 316-325, 331-332, 337-338, 358-369, 442-453, 561-572
+src/mcp_server/tools/catalog.py              95     78    18%   44, 78, 99-180, 198-293, 317-389
+src/mcp_server/tools/context.py              39     28    28%   32-76, 82-112
+src/mcp_server/tools/decisions.py           112     16    86%   141-152, 215-224, 232-233, 256-267, 432-443
+src/mcp_server/tools/health.py                6      1    83%   17
+src/mcp_server/tools/lessons.py             100     85    15%   66-212, 222-239, 267-359
+src/mcp_server/tools/preferences.py         105     20    81%   93-104, 165-176, 179-188, 247-248, 268-279, 359-370
+src/mcp_server/tools/router_feedback.py      63     10    84%   94-105, 192-203, 206-215
+src/mcp_server/tools/tasks.py               156     25    84%   198-199, 201-202, 204-205, 208, 239-250, 372-381, 458-469, 472-481, 551-562, 565-574
+-----------------------------------------------------------------------
+TOTAL                                       854    289    66%
+============================= 47 passed in 17.71s ==============================

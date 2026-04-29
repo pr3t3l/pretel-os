@@ -153,3 +153,55 @@ async def test_task_reopen_appends_history_and_clears_done_at(
         (created["id"],),
     )
     assert row2 == (2, "second regression")
+
+
+async def test_task_create_check_violation_returns_error(patched_db: None) -> None:
+    """An invalid priority triggers a CHECK violation; tool returns
+    {status:'error', error:...} via the except path."""
+    r = await task_create(
+        title="x", bucket="business", source="operator", priority="invalid_priority",
+    )
+    assert r["status"] == "error"
+    assert "tasks_priority_check" in r["error"] or "check" in r["error"].lower()
+
+
+async def test_task_update_check_violation_returns_error(patched_db: None) -> None:
+    """An invalid status triggers a CHECK violation in UPDATE."""
+    created = await task_create(title="x", bucket="business", source="operator")
+    r = await task_update(id=created["id"], status="not_a_real_status")
+    assert r["status"] == "error"
+    assert "tasks_status_check" in r["error"] or "check" in r["error"].lower()
+
+
+async def test_tasks_degraded_mode_writes_journal(
+    patched_db: None, db_unhealthy: None, journal_dir: Any
+) -> None:
+    """Each mutation (create/update/close/reopen) returns degraded with
+    journal_id when DB is down. task_list (read) returns degraded with
+    no journal_id."""
+    create_r = await task_create(title="x", bucket="business", source="operator")
+    assert create_r["status"] == "degraded"
+    assert "journal_id" in create_r
+
+    update_r = await task_update(id="00000000-0000-0000-0000-000000000000", title="x")
+    assert update_r["status"] == "degraded"
+    assert "journal_id" in update_r
+
+    close_r = await task_close(id="00000000-0000-0000-0000-000000000000")
+    assert close_r["status"] == "degraded"
+    assert "journal_id" in close_r
+
+    reopen_r = await task_reopen(id="00000000-0000-0000-0000-000000000000", reason="x")
+    assert reopen_r["status"] == "degraded"
+    assert "journal_id" in reopen_r
+
+    list_r = await task_list()
+    assert list_r["status"] == "degraded"
+    assert list_r["results"] == []
+    assert "journal_id" not in list_r
+
+    files = list(journal_dir.glob("*.jsonl"))
+    assert len(files) == 1
+    contents = files[0].read_text()
+    for op in ("task_create", "task_update", "task_close", "task_reopen"):
+        assert op in contents

@@ -45,7 +45,7 @@ Per-module detail: `specs/router/tasks.md`
 - [x] M0X.T4.A — Phase A schema migrations (closed; 7 migrations applied; commits db73a67 through bc4e5df)
 - [x] M0X.T4.B — Phase B SOUL.md (closed; commit pending)
 - [x] M0X.T4.C — Phase C MCP tools (18 tools — count corrected from 17 due to best_practice_rollback split)
-- [ ] M0X.T4.D — Phase D tests
+- [x] M0X.T4.D — Phase D tests (closed; 47 tests green, coverage ≥80% on all 5 M0.X tool files)
 - [ ] M0X.T4.E — Phase E docs + close-out + tag
 
 Per-module detail: `specs/module-0x-knowledge-architecture/tasks.md`

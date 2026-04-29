@@ -124,3 +124,34 @@ async def test_preference_unset_idempotent_when_missing(patched_db: None) -> Non
     assert r["status"] == "ok"
     assert r["found"] is False
     assert "id" not in r
+
+
+async def test_preferences_degraded_mode_writes_journal(
+    patched_db: None, db_unhealthy: None, journal_dir: Any
+) -> None:
+    """When DB is unhealthy, preference_set and preference_unset return
+    degraded payloads and write to the fallback journal. preference_get
+    and preference_list return degraded but don't journal (reads, not
+    mutations)."""
+    set_r = await preference_set(category="language", key="primary", value="es")
+    assert set_r["status"] == "degraded"
+    assert "journal_id" in set_r
+
+    get_r = await preference_get(category="language", key="primary")
+    assert get_r["status"] == "degraded"
+    assert get_r["found"] is False
+    assert "journal_id" not in get_r  # reads don't journal
+
+    list_r = await preference_list()
+    assert list_r["status"] == "degraded"
+    assert list_r["results"] == []
+
+    unset_r = await preference_unset(category="language", key="primary")
+    assert unset_r["status"] == "degraded"
+    assert "journal_id" in unset_r
+
+    files = list(journal_dir.glob("*.jsonl"))
+    assert len(files) == 1
+    contents = files[0].read_text()
+    assert "preference_set" in contents
+    assert "preference_unset" in contents

@@ -328,3 +328,59 @@ async def test_best_practice_supersede_chain(
     returned_ids = {row["id"] for row in results["results"]}
     assert a["id"] not in returned_ids
     assert b["id"] in returned_ids
+
+
+async def test_best_practice_record_update_not_found(
+    patched_db: None, patched_embed: Any
+) -> None:
+    """update_id pointing at a non-existent row returns {status:error, error:'not found'}."""
+    r = await best_practice_record(
+        title="x", guidance="y", domain="process",
+        update_id="00000000-0000-0000-0000-000000000000",
+    )
+    assert r["status"] == "error"
+    assert "not found" in r["error"]
+
+
+async def test_best_practice_deactivate_and_rollback_not_found(
+    patched_db: None, patched_embed: Any
+) -> None:
+    """Both tools handle missing id with found:False, not error."""
+    deact = await best_practice_deactivate(
+        id="00000000-0000-0000-0000-000000000000", reason="x"
+    )
+    assert deact["status"] == "ok"
+    assert deact["found"] is False
+
+    rollback = await best_practice_rollback(id="00000000-0000-0000-0000-000000000000")
+    assert rollback["status"] == "ok"
+    assert rollback["found"] is False
+
+
+async def test_best_practices_degraded_mode_writes_journal(
+    patched_db: None, patched_embed: Any, db_unhealthy: None, journal_dir: Any
+) -> None:
+    """record + deactivate + rollback return degraded with journal_id; search returns degraded list."""
+    rec_r = await best_practice_record(title="x", guidance="y", domain="process")
+    assert rec_r["status"] == "degraded"
+    assert "journal_id" in rec_r
+
+    deact_r = await best_practice_deactivate(
+        id="00000000-0000-0000-0000-000000000000", reason="x"
+    )
+    assert deact_r["status"] == "degraded"
+    assert "journal_id" in deact_r
+
+    roll_r = await best_practice_rollback(id="00000000-0000-0000-0000-000000000000")
+    assert roll_r["status"] == "degraded"
+    assert "journal_id" in roll_r
+
+    search_r = await best_practice_search(query="x")
+    assert search_r["status"] == "degraded"
+    assert search_r["results"] == []
+
+    files = list(journal_dir.glob("*.jsonl"))
+    assert len(files) == 1
+    contents = files[0].read_text()
+    for op in ("best_practice_record", "best_practice_deactivate", "best_practice_rollback"):
+        assert op in contents

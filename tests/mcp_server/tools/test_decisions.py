@@ -231,3 +231,74 @@ async def test_decision_supersede_atomic(
         await _delete_decision(test_pool, a["id"])
         if new_id:
             await _delete_decision(test_pool, new_id)
+
+
+async def test_decision_supersede_validates_payload(
+    patched_db: None, patched_embed: Any, test_pool: AsyncConnectionPool
+) -> None:
+    """Validation runs BEFORE DB; returns error for missing/unknown keys."""
+    a = await decision_record(
+        bucket="business", project="pretel-os",
+        title="validate-target", context="x", decision="x", consequences="x",
+    )
+    try:
+        # Missing required keys
+        missing = await decision_supersede(old_id=a["id"], new_decision_payload={"bucket": "business"})
+        assert missing["status"] == "error"
+        assert "missing" in missing["error"]
+
+        # Unknown keys
+        unknown = await decision_supersede(
+            old_id=a["id"],
+            new_decision_payload={
+                "bucket": "business", "project": "pretel-os",
+                "title": "x", "context": "x", "decision": "x", "consequences": "x",
+                "evil_field": "boom",
+            },
+        )
+        assert unknown["status"] == "error"
+        assert "unknown" in unknown["error"]
+
+        # Unknown old_id
+        not_found = await decision_supersede(
+            old_id="00000000-0000-0000-0000-000000000000",
+            new_decision_payload={
+                "bucket": "business", "project": "pretel-os",
+                "title": "x", "context": "x", "decision": "x", "consequences": "x",
+            },
+        )
+        assert not_found == {"status": "ok", "found": False}
+    finally:
+        await _delete_decision(test_pool, a["id"])
+
+
+async def test_decisions_degraded_mode_writes_journal(
+    patched_db: None, patched_embed: Any, db_unhealthy: None, journal_dir: Any
+) -> None:
+    """record + supersede return degraded with journal_id; search returns degraded list."""
+    rec_r = await decision_record(
+        bucket="business", project="pretel-os",
+        title="x", context="x", decision="x", consequences="x",
+    )
+    assert rec_r["status"] == "degraded"
+    assert "journal_id" in rec_r
+
+    sup_r = await decision_supersede(
+        old_id="00000000-0000-0000-0000-000000000000",
+        new_decision_payload={
+            "bucket": "business", "project": "pretel-os",
+            "title": "x", "context": "x", "decision": "x", "consequences": "x",
+        },
+    )
+    assert sup_r["status"] == "degraded"
+    assert "journal_id" in sup_r
+
+    search_r = await decision_search(query="x")
+    assert search_r["status"] == "degraded"
+    assert search_r["results"] == []
+
+    files = list(journal_dir.glob("*.jsonl"))
+    assert len(files) == 1
+    contents = files[0].read_text()
+    assert "decision_record" in contents
+    assert "decision_supersede" in contents
