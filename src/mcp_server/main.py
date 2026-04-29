@@ -35,6 +35,13 @@ from .tools.preferences import (
     preference_set,
     preference_unset,
 )
+from .tools.tasks import (
+    task_close,
+    task_create,
+    task_list,
+    task_reopen,
+    task_update,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -80,6 +87,13 @@ def build_app() -> FastMCP:
     app.tool(preference_get)
     app.tool(preference_list)
     app.tool(preference_unset)
+
+    # Module 0.X — tasks
+    app.tool(task_create)
+    app.tool(task_list)
+    app.tool(task_update)
+    app.tool(task_close)
+    app.tool(task_reopen)
 
     app.custom_route("/health", methods=["GET"])(health)
 
