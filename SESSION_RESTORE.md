@@ -17,13 +17,29 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 4 Phase A complete, Module 0.X (Knowledge Architecture) next.
+**Phase:** Module 0.X Phase A + Phase B complete. Phase C (17 MCP tools) next.
 
-**What is done:** Foundation, Modules 1–3, Module 4 Phase A (Router classifier — 19 unit tests + 1 live eval against Haiku 4.5 cleared all thresholds: bucket 1.0, complexity 0.8, schema_violations 0). LiteLLM cascade Anthropic+OpenAI configured. ChatJsonTelemetry captures truncation, cache hits, reasoning tokens, finish_reason classification with provider-agnostic edge case handling.
+**What is done:**
+- Foundation, Modules 1–3.
+- M4 Phase A (Router classifier — 19 unit tests + live eval Haiku 4.5: bucket 1.0, complexity 0.8, schema_violations 0). LiteLLM cascade configured. ChatJsonTelemetry captures truncation, cache hits, reasoning tokens, finish_reason classification.
+- M0.X SDD trinity (spec/plan/tasks at `specs/module-0x-knowledge-architecture/`).
+- M0.X Phase A: 7 migrations applied to production (0024 tasks, 0025 operator_preferences, 0026 router_feedback, 0027 best_practices, 0028 decisions amendment, 0028a notify_missing_embedding fix, 0029 ADR seed + lessons split). 5 ADRs seeded (020-024). 4 misclassified lessons archived with cross-table pointers. Schema audit at `migrations/audit/0029_post_state.md`.
+- M0.X Phase B: `SOUL.md` shipped to L0 (operator voice contract). `AGENTS.md` updated with SOUL.md in read order. Spec drift #4 (L0 budget interpretation) fixed in same commit.
+- Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
+- 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
-**What is not done:** Module 0.X (knowledge architecture: tasks/operator_preferences/router_feedback tables + SOUL.md), Module 4 Phase B (Layer Loader — depends on M0.X), Module 4 Phase C-F, Modules 5–8.
+**What is not done:**
+- M0.X Phase C (17 MCP tools), Phase D (tests), Phase E (docs + tag).
+- M4 Phase B (Layer Loader — blocked on M0.X close).
+- M4 Phase C-F, Modules 5-8.
 
-**Top of stack:** Module 0.X SDD trinity (spec exists at commit e466796; needs revision then plan.md and tasks.md).
+**Top of stack:** M0.X Phase C — 17 new MCP tools across 5 files. ~38 atomic tasks.
+
+**Where to find Phase C source-of-truth:**
+- Spec: `specs/module-0x-knowledge-architecture/spec.md` §5 (schemas) and §6 (MCP tool inventory)
+- Plan: `specs/module-0x-knowledge-architecture/plan.md` §3 Phase C (deliverables + Gate C)
+- Atomic tasks: `specs/module-0x-knowledge-architecture/tasks.md` Phase C section (~38 tasks: M0X.C.1.x through M0X.C.6.x)
+- Constraints: `DECISIONS.md` ADR-020 (LiteLLM aliases — applies to any chat completion call) and ADR-024 (HNSW deferred — best_practice_search uses sequential scan)
 
 ---
 
@@ -89,8 +105,9 @@ pretel-os/
 ├── DECISIONS.md                             # ADR log (020+); legacy 001-019 in PROJECT_FOUNDATION §5
 ├── SESSION_RESTORE.md                       # This file
 ├── README.md                                # Repo entry point
-├── identity.md                              # L0 operator identity (populated in Module 3)
-├── AGENTS.md                                # LLM reading order (populated in Module 3)
+├── identity.md                              # L0 operator identity / facts (populated in Module 3)
+├── SOUL.md                                  # L0 operator voice / behavior contract (added M0X Phase B)
+├── AGENTS.md                                # LLM reading order (updated M0X Phase B for SOUL.md)
 │
 ├── docs/
 │   ├── PROJECT_FOUNDATION.md                # Vision, stack, roadmap, ADRs
@@ -356,6 +373,46 @@ Lessons captured this session: 2 new (LL-M0X-001 spec drift, LL-M0X-002
 Tags: foundation-v1.0, module-1-complete, module-2-complete,
   module-3-complete (pending: module-4-phase-a-complete on e59b943,
   module-0x-phase-a-complete on bc4e5df, module-0x-complete after Phase E)
+
+
+Last session: 2026-04-28 (Phase B close + tasks structure refactor)
+Last task completed: M0.X Phase B complete + Opción B tasks.md restructure
+  - 567703f: M0.X Phase A doc reconciliation across 5 long-lived files
+  - 12b3d1f: DATA_MODEL stub for 4 new tables + decisions amendment
+  - 74f858c: tasks.md migration to milestone-only + tasks.archive.md
+  - 167c349: runbooks/sdd_module_kickoff.md (per-module trinity rule)
+  - e59f79e: SESSION_RESTORE map + plan.md §6 sync with new tasks.md
+  - 26c7189: M0X.B SOUL.md to L0 + spec/plan/ADR-022 budget drift fix
+Phase B artifacts:
+  - SOUL.md created (324 tok, no per-file cap; ~200 token target was
+    aspirational — every section load-bearing)
+  - AGENTS.md L0 read order updated: SOUL.md inserted as item 3
+  - identity.md unchanged at 1091/1200 tok (only HARD gate, OK)
+Spec drift fix #4 (same family as LL-M0X-001):
+  - M0.X spec/plan/ADR-022 had asserted "L0 budget 1,200 tokens combined"
+  - CONSTITUTION §2.3 actually budgets ONLY identity.md at 1,200 tok
+  - CONSTITUTION/AGENTS/SOUL load into L0 without per-file caps
+  - All 3 docs corrected in commit 26c7189
+Tasks structure now: root tasks.md is milestone-only (115 lines, 1 line
+  per module phase). Atomic detail in specs/<module>/tasks.md per
+  runbooks/sdd_module_kickoff.md. Pre-rule snapshot preserved verbatim
+  in tasks.archive.md (1196 lines). Modules 1-3 closed before the rule;
+  M4 + M0.X partial-retrofitted; M5-M8 follow rule from kickoff.
+Next task: Phase C — 17 MCP tools across 5 files (tasks.py, decisions.py,
+  preferences.py, router_feedback.py, best_practices.py).
+Phase C source-of-truth:
+  - Spec: specs/module-0x-knowledge-architecture/spec.md §5 (schemas), §6 (tools)
+  - Plan: specs/module-0x-knowledge-architecture/plan.md §3 Phase C (deliverables, Gate C)
+  - Atomic: specs/module-0x-knowledge-architecture/tasks.md (~38 tasks under C.1-C.6)
+  - Constraints: DECISIONS.md ADR-020 (LiteLLM aliases for any chat completion
+    — best_practices does not call chat models, only embeddings via OpenAI direct)
+    and ADR-024 (HNSW deferred — best_practice_search uses sequential scan)
+Lessons captured this session: 0 new (drift #4 same family as LL-M0X-001;
+  not a new lesson, just one more incident under the existing one)
+Tags: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete (pending: module-4-phase-a-complete on e59b943,
+  module-0x-phase-a-complete on bc4e5df, module-0x-phase-b-complete on
+  26c7189, module-0x-complete after Phase E)
 
 
 
