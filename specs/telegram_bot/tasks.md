@@ -162,17 +162,29 @@ Covered by M5.T1 above.
   — `help_command = start_command` (alias). Operator-guarded; sends
   `WELCOME_MESSAGE` listing all 7 commands.
 
-- [ ] **M5.B.4.1** `/save <text>` handler with bucket inline keyboard.
+- [x] **M5.B.4.1** `/save <text>` handler in `handlers/save.py`. Two-step
+  flow: command stashes text in `context.user_data`, inline keyboard
+  prompts for bucket; `CallbackQueryHandler(pattern=r'^save:')` calls
+  `save_lesson(category='OPS', tags=['telegram-capture'])` and reports
+  saved/auto-approved/merge_candidate/degraded back to the operator.
 
-- [ ] **M5.B.5.1** `/idea <text>` handler. Fallback to
-  `save_lesson(category='PLAN', tags=['idea','telegram-capture'])` if
-  no `ideas` MCP tool exists.
+- [x] **M5.B.5.1** `/idea <text>` handler in `handlers/idea.py`. Same
+  two-step pattern as `/save`. Q3 fallback: routes to `save_lesson`
+  with `category='PLAN'` and `tags=['idea','telegram-capture']` since
+  no dedicated `ideas` MCP tool exists today.
 
-- [ ] **M5.B.6.1** `/status` handler. Parallel asyncio.gather of 4
-  health checks (MCP, DB, LiteLLM, n8n) with 5s per-check timeout.
-  Color-coded reply.
+- [x] **M5.B.6.1** `/status` handler in `handlers/status.py`. Parallel
+  `asyncio.gather` of 4 checks (MCP `/health`, Postgres `SELECT 1`,
+  LiteLLM `/health`, n8n `/healthz`); per-check 5s timeout. Reply is
+  color-coded (🟢 all healthy / 🟡 partial / 🔴 all down) with a
+  per-row marker + detail + latency_ms. Endpoint URLs are env-
+  overridable (`MCP_HEALTH_URL`, `LITELLM_HEALTH_URL`, `N8N_HEALTH_URL`).
 
-- [ ] **M5.B.7.1** `infra/systemd/pretel-os-bot.service` per plan §B.7.
+- [x] **M5.B.7.1** `infra/systemd/pretel-os-bot.service` shipped.
+  Mirrors the existing `pretel-os-mcp.service` pattern
+  (`/home/pretel/.venvs/pretel-os/bin/python`, `EnvironmentFile`,
+  `Type=simple`, `Restart=on-failure`). Adds
+  `pretel-os-mcp.service` to `After=` to ensure ordering.
 
 - [ ] **M5.B.8.1** `tests/telegram_bot/test_handlers.py` — ≥5 tests
   (start, save parse, status mock, unauthorized rejection, /help

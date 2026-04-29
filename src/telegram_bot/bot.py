@@ -10,10 +10,21 @@ import logging
 from typing import Any
 
 from telegram import Update
-from telegram.ext import Application, CommandHandler
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
 from . import config as config_mod
 from .handlers.help import help_command, start_command
+from .handlers.idea import (
+    IDEA_CALLBACK_PATTERN,
+    idea_callback,
+    idea_command,
+)
+from .handlers.save import (
+    SAVE_CALLBACK_PATTERN,
+    save_callback,
+    save_command,
+)
+from .handlers.status import status_command
 
 log = logging.getLogger(__name__)
 
@@ -33,6 +44,15 @@ def build_application(cfg: config_mod.Config) -> AppT:
     app = Application.builder().token(cfg.telegram_bot_token).build()
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("save", save_command))
+    app.add_handler(CommandHandler("idea", idea_command))
+    app.add_handler(CommandHandler("status", status_command))
+    app.add_handler(
+        CallbackQueryHandler(save_callback, pattern=SAVE_CALLBACK_PATTERN)
+    )
+    app.add_handler(
+        CallbackQueryHandler(idea_callback, pattern=IDEA_CALLBACK_PATTERN)
+    )
     return app
 
 
