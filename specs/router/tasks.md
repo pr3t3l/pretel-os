@@ -113,9 +113,29 @@ they slip through.
 
 ---
 
-## Phase B — Layer loader
+## Phase B — Layer loader  ✅ COMPLETE 2026-04-29
 
-**Plan reference:** `plan.md §4`. Parallelizable with A and E. Blocking for C.
+> ⚠️ **Status: SUPERSEDED ARCHITECTURE.** The atomic B.x tasks below were
+> authored 2026-04-27 against a pre-M0.X file-based loader architecture
+> (`LayerPayload` dataclass, file reads from `buckets/<bucket>/README.md`
+> for L1, etc.). The M4.reconcile commit (`8ac5ff1`, 2026-04-29) realigned
+> Phase B with `specs/module-0x-knowledge-architecture/layer_loader_contract.md`:
+> loaders read from Postgres tables, the output type is `LayerBundle` /
+> `LayerContent` / `ContextBlock`, and the orchestrator is `assemble_bundle`
+> (async with sync conn).
+>
+> Phase B shipped via the post-reconcile atomic tracker at
+> `specs/router/phase_b_close.md` (B.1 → B.9, all 14 atomic tasks). Final
+> commits: `83190af` (B.1) → `97a67d6` (B.9). Tag candidate
+> `phase-b-complete` points at `97a67d6`.
+>
+> The legacy B.x checkboxes below remain unchecked because their
+> *descriptions* (e.g. "Reads `identity.md` from repo root", "Reads
+> `buckets/{bucket}/README.md`") no longer describe the shipped code.
+> They are kept as historical context. For the actual atomic tasks
+> shipped, read `specs/router/phase_b_close.md`.
+
+**Plan reference:** `plan.md §4` (post-reconcile). Parallelizable with A and E. Blocking for C.
 
 ### B.1 — Types and shared keywords
 

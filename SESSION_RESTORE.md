@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 0.X complete (tag `module-0x-complete`, commit `49edc0c`). M4 Phase B (Layer Loader) next.
+**Phase:** Module 0.X complete + M4 Phase B complete. M4 Phase C (invariant violation detection — re-scoped) next.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -29,20 +29,22 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M0.X Phase D: 47 tests, coverage ≥80% per file.
 - M0.X Phase E: `layer_loader_contract.md` frozen as M4 Phase B input contract. Tag `module-0x-complete` pushed. ADR-025 added registering the contract as architectural commitment.
 - M0X.0030: `notify_missing_embedding` trigger attached to `best_practices` (replaces the manual `pending_embeddings` INSERT workaround in `best_practice_record`). Closes the only known M0.X-era workaround in production.
+- M4 Phase B (Layer Loader): all 9 atomic groups shipped 2026-04-29. 5 sync loaders (L0..L4) per contract §3.1-§3.5, async `assemble_bundle` orchestrator wiring `embed()` + loaders + `summarize_oversize` + cache, in-memory `LayerBundleCache` with LISTEN/NOTIFY invalidation via migration 0031 trigger function. 103 fast + 3 slow tests, mypy clean across 16 router source files. Architecture decisions tracked in `specs/router/phase_b_close.md`. Tag candidate: `phase-b-complete` at commit `97a67d6`.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- M4 Phase B (Layer Loader — unblocked, ready to start).
-- M4 Phase C-F, Modules 5-8.
+- M4 Phase C — invariant violation detection (re-scoped per M4.C-rescope `2eb963e`; source priority moved to consumer per contract §10).
+- M4 Phase D-F, Modules 5-8.
 
-**Top of stack:** M4 Phase B (Layer Loader). Input contract frozen at `specs/module-0x-knowledge-architecture/layer_loader_contract.md`. Router `spec.md` and `plan.md` reconciled with the contract on 2026-04-29 (commit `8ac5ff1`).
+**Top of stack:** M4 Phase C (invariant violation detection). Per `plan.md §5` (post-reconcile): `detect_invariant_violations(bundle: LayerBundle) -> list[InvariantViolation]` scans every `ContextBlock` against a registry of invariant checks (Scout denylist, budget ceilings, git/DB boundary, CONSTITUTION §9 agent rules) and populates `routing_logs.source_conflicts`. NO topical conflict resolution — that moved to the consumer per contract §10.
 
-**Where to find M4 Phase B source-of-truth:**
-- Frozen input contract: `specs/module-0x-knowledge-architecture/layer_loader_contract.md` (deviations require ADR)
-- Aligned spec: `specs/router/spec.md` §4.2 (ContextBundle / LayerBundle), §6.1 (dual-source layer table), §8.2 (Router does NOT pre-resolve conflicts)
-- Aligned plan: `specs/router/plan.md` §4.2 Phase B scope (DB-backed loaders + `assemble_bundle` orchestrator), §4.3-4.5 deliverables + done-when + risk notes (incl. Phase C re-scope note)
-- Constraints: `DECISIONS.md` ADR-020 (LiteLLM aliases for any chat completion), ADR-024 (HNSW deferred — sequential pgvector scan), ADR-025 (layer loader contract is frozen)
+**Where to find M4 Phase C source-of-truth:**
+- Plan: `specs/router/plan.md §5` (post-reconcile — Phase C scope shrunk to invariant detection only)
+- Spec: `specs/router/spec.md §8.1` (invariant violation classes), `§8.2` (Router does NOT pre-resolve)
+- Frozen contract: `specs/module-0x-knowledge-architecture/layer_loader_contract.md §10` (rendering + conflict semantics)
+- Constraints: `DECISIONS.md` ADR-025 (contract frozen), `CONSTITUTION.md §9` (agent rules)
+- Phase B atomic tracker (reference for the post-reconcile loader signatures Phase C will consume): `specs/router/phase_b_close.md`
 
 ---
 
@@ -544,6 +546,42 @@ Lessons captured this session: 0 new (no novel failure mode; 0030 was
   mechanical).
 Tags unchanged from prior session: foundation-v1.0, module-1-complete,
   module-2-complete, module-3-complete, module-0x-complete.
+
+
+Last session: 2026-04-29 (M4 Phase B close — Layer Loader complete)
+Status: M4 Phase B shipped end-to-end; all 9 atomic groups (B.1–B.9)
+  green; tag candidate `phase-b-complete` at commit 97a67d6. Phase C
+  unblocked.
+Last task completed: M4.B.9 assemble_bundle orchestrator + integration
+  tests (commit 97a67d6).
+Phase B chain pushed in three sessions:
+  1. B.1+B.2 — types.py, _tokens.py, load_l0.py
+     (commits 83190af, f4aa9cb, 6195693)
+  2. B.3+B.4+B.5 — load_l1, load_l2, load_l3
+     (commits d84fb4c, af8f2ef, f04f38c)
+  3. B.6 — load_l4 vector search (commit 9fc5139)
+  4. B.7+B.8+B.9 — summarize, cache+migration 0031, assemble_bundle
+     (commits d31c8d7, fd4dc4a, 97a67d6)
+Plus 2 chore commits with Phase A eval result JSONs (dd38850, 6ebd251).
+Total Phase B output: ~1900 LoC code + ~2400 LoC tests across 17 router
+  source files. 103 fast + 3 slow router tests green. mypy clean
+  across the entire router/ directory; no `# type: ignore`.
+Migration 0031 applied to prod + test (4 NOTIFY triggers on
+  operator_preferences, decisions, best_practices, lessons feeding the
+  layer_loader_cache channel).
+Architecture decisions tracker: specs/router/phase_b_close.md (Q1-Q4
+  + 14 atomic tasks, all marked complete).
+Lessons saved this session arc (across the 4 sub-sessions): 2 lessons
+  (PROC: brief-as-structure-contract-as-truth, ARCH: L1-vs-L2
+  decisions ordering asymmetry) + 1 best_practice
+  (convention: EXPLAIN via FORMAT JSON not text grep). All auto-
+  approved. See lessons table.
+Next module: M4 Phase C — invariant violation detection only (per
+  M4.C-rescope commit 2eb963e). Scope reduced from "Source priority
+  resolution" because contract §10 moved that to the consumer.
+Tags unchanged: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete, module-0x-complete. Tag candidate this session:
+  phase-b-complete on 97a67d6 (operator-driven creation, not auto).
 ---
 
 **End of SESSION_RESTORE.md.**

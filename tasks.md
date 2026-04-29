@@ -29,13 +29,14 @@ Completed atomic detail is archived to `tasks.archive.md` when a module phase cl
 
 - [x] M4.T1 SDD trinity (commits 3589673, 7ec4764, etc.)
 - [x] Phase A — Classifier (closed; live eval bucket 1.0, complexity 0.8)
-- [ ] Phase B — Layer Loader (blocked on Module 0.X)
-- [ ] Phase C — RAG activation
+- [x] **Phase B — Layer Loader (closed 2026-04-29; commits d31c8d7..97a67d6; 103 fast + 3 slow tests, mypy clean across 16 router files)**
+- [ ] Phase C — Invariant violation detection (re-scoped per M4.C-rescope; source priority moved to consumer per contract §10)
 - [ ] Phase D — Telemetry & orchestrator
 - [ ] Phase E — Fallback classifier
 - [ ] Phase F — Tuning
 
-Per-module detail: `specs/router/tasks.md`
+Per-module detail: `specs/router/tasks.md` (legacy pre-reconcile);
+Phase B atomic tracker shipped at `specs/router/phase_b_close.md`.
 
 ## Module 0.X — knowledge_architecture
 
