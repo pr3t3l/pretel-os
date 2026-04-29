@@ -1,0 +1,9 @@
+# Production deps for src/telegram_bot/.
+#
+# Install in the same virtualenv as src/mcp_server/requirements.txt:
+#     pip install -r src/mcp_server/requirements.txt -r src/telegram_bot/requirements.txt
+#
+# python-dotenv + psycopg + openai are inherited via mcp_server/requirements.txt;
+# this file only adds bot-specific deps.
+
+python-telegram-bot[ext]>=21,<22

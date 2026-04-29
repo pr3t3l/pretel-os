@@ -144,18 +144,23 @@ Covered by M5.T1 above.
 
 ## M5.T3 — Phase B — Bot skeleton + core commands
 
-- [ ] **M5.B.1.1** Create `src/telegram_bot/__init__.py`,
+- [x] **M5.B.1.1** Create `src/telegram_bot/__init__.py`,
   `src/telegram_bot/__main__.py`, `src/telegram_bot/bot.py`,
   `src/telegram_bot/config.py`, `src/telegram_bot/handlers/__init__.py`.
 
-- [ ] **M5.B.1.2** ApplicationBuilder + long-poll entry point.
-  `python -m telegram_bot` starts the bot.
+- [x] **M5.B.1.2** ApplicationBuilder + long-poll entry point.
+  `python -m telegram_bot` starts the bot. (`build_application(cfg)`
+  is a pure factory; `main()` reads env via `load_config()` then
+  `app.run_polling(...)`.)
 
-- [ ] **M5.B.2.1** Operator-only guard middleware. Reject from
-  any chat_id ≠ `TELEGRAM_OPERATOR_CHAT_ID` with "private bot" reply.
+- [x] **M5.B.2.1** Operator-only guard middleware in
+  `handlers/_guard.py`. Decorator `operator_only` rejects any chat_id
+  ≠ `TELEGRAM_OPERATOR_CHAT_ID` with "🔒 This is a private bot.
+  Access denied." reply + WARNING log.
 
-- [ ] **M5.B.3.1** `/start` and `/help` handlers — welcome + command
-  list.
+- [x] **M5.B.3.1** `/start` and `/help` handlers in `handlers/help.py`
+  — `help_command = start_command` (alias). Operator-guarded; sends
+  `WELCOME_MESSAGE` listing all 7 commands.
 
 - [ ] **M5.B.4.1** `/save <text>` handler with bucket inline keyboard.
 
