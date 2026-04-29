@@ -119,13 +119,24 @@ async def patched_db(
 
     Each tool calls `db_mod.is_healthy()` and `db_mod.get_pool()`. We
     replace both so tools talk to `pretel_os_test`.
+
+    Also no-ops the lifespan helpers (`start_background_health_check` and
+    `stop_background_health_check`) so integration tests that invoke
+    `build_app()` — which runs the lifespan — don't have its shutdown
+    close our session-scoped test pool. Direct tool tests never call the
+    lifespan, so this is safely a no-op for them.
     """
     from mcp_server import db as db_mod
+
+    async def _noop() -> None:
+        return None
 
     monkeypatch.setattr(db_mod, "_pool", test_pool, raising=False)
     monkeypatch.setattr(db_mod, "_db_healthy", True, raising=False)
     monkeypatch.setattr(db_mod, "is_healthy", lambda: True)
     monkeypatch.setattr(db_mod, "get_pool", lambda: test_pool)
+    monkeypatch.setattr(db_mod, "start_background_health_check", _noop)
+    monkeypatch.setattr(db_mod, "stop_background_health_check", _noop)
     yield
 
 
