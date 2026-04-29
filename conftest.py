@@ -92,14 +92,16 @@ async def test_pool() -> AsyncIterator[AsyncConnectionPool]:
 
 @pytest_asyncio.fixture(autouse=True)
 async def _truncate_between_tests(request: pytest.FixtureRequest) -> AsyncIterator[None]:
-    """Reset M0.X table state after each test that touches the test pool.
+    """Reset M0.X table state after each test that touches the test DB.
 
-    Skipped (no-op) when the test does not transitively request `test_pool`,
-    so M4 router tests (which use mocks instead of a real DB) don't pay the
-    TRUNCATE cost or trigger an unwanted DB connection.
+    Gated on `patched_db` in fixturenames (not `test_pool`) because tools
+    insert rows whenever they're called against the test DB, even when the
+    test doesn't SELECT-verify directly. Every M0.X test requests
+    `patched_db`; M4 router tests (mocks only) don't, so this fixture is a
+    no-op for them and they pay no TRUNCATE cost.
     """
     yield
-    if "test_pool" not in request.fixturenames:
+    if "patched_db" not in request.fixturenames:
         return
     pool: AsyncConnectionPool = request.getfixturevalue("test_pool")
     async with pool.connection(timeout=5.0) as conn:
