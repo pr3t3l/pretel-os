@@ -26,7 +26,7 @@ Everything else stays in git.
 
 ### 1.2 Tables
 
-Twenty-one tables across two tiers:
+Twenty-five tables across three tiers (21 base + 4 added by Module 0.X Phase A on 2026-04-28):
 
 **Phase 1 (MVP — required for `Module 2: data_layer`):**
 
@@ -54,10 +54,19 @@ Twenty-one tables across two tiers:
 | # | Table | Purpose |
 |---|-------|---------|
 | 17 | `patterns` | Reusable code snippets, templates, UI patterns |
-| 18 | `decisions` | ADR-style architectural records tied to projects |
+| 18 | `decisions` | ADR-style architectural records tied to projects (M0.X amended: +7 columns) |
 | 19 | `gotchas` | Anti-patterns, "never do this" records |
 | 20 | `contacts` | People: clients, collaborators, vendors |
 | 21 | `ideas` | Unprocessed ideas, backlog for future exploration |
+
+**Module 0.X (Knowledge architecture split — added 2026-04-28):**
+
+| # | Table | Purpose |
+|---|-------|---------|
+| 22 | `tasks` | Pending and in-progress work items (no embedding, structured query only) |
+| 23 | `operator_preferences` | Operator-controlled facts and overrides (UNIQUE on category+key+scope, atomic upsert) |
+| 24 | `router_feedback` | Explicit feedback loop signals for Router improvement |
+| 25 | `best_practices` | Reusable PROCESS guidance (prose, not code; distinct from `patterns`) |
 
 ### 1.3 Conventions
 
@@ -780,6 +789,52 @@ CREATE INDEX idx_control_overdue ON control_registry(next_due_at) WHERE active =
 -- ('pricing_verification', 'Re-verify Anthropic + OpenAI pricing pages vs INTEGRATIONS §2.6 and §3.6', 90, 'operator', 'screenshot or updated doc', ...)
 -- ('uptime_review', 'Review 30-day uptime from UptimeRobot, reconcile with SLO target', 30, 'operator', 'dashboard screenshot', ...)
 ```
+
+### 5.7 `tasks` (M0.X Phase A — added 2026-04-28)
+
+Pending and in-progress work items. No embedding — structured query only. Self-referential FK on `blocked_by` for dependency chains. CHECK constraints on `status` (5 values) and `priority` (4 values).
+
+**Migration:** `migrations/0024_tasks.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.1`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
+
+### 5.8 `operator_preferences` (M0.X Phase A — added 2026-04-28)
+
+Operator-controlled facts and overrides (communication style, tooling, workflow, identity, language, schedule). Atomic upsert via `UNIQUE(category, key, scope)`. No embedding — direct lookup. Soft-delete via `active=false`.
+
+**Migration:** `migrations/0025_operator_preferences.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.3`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
+
+### 5.9 `router_feedback` (M0.X Phase A — added 2026-04-28)
+
+Explicit feedback loop signals from operator to Router. `feedback_type` covers `missing_context`, `wrong_bucket`, `wrong_complexity`, `irrelevant_lessons`, `too_much_context`, `low_quality_response`. Status workflow: `pending → reviewed → applied | dismissed`.
+
+**Note:** `request_id` is `text` with NO foreign key — soft reference only. `routing_logs` is partitioned by `created_at` and any UNIQUE constraint must include the partition key, which would force a compound `(request_id, created_at)` reference. See `specs/module-0x-knowledge-architecture/spec.md §5.4` rationale paragraph.
+
+**Migration:** `migrations/0026_router_feedback.sql`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
+
+### 5.10 `best_practices` (M0.X Phase A — added 2026-04-28)
+
+Reusable PROCESS guidance ("always X when Y", narrative). Distinct from `patterns` (§5.1) which holds CODE snippets — see ADR-023 (DECISIONS.md) for the new-table-vs-extend-patterns decision.
+
+Single-step rollback via `previous_guidance` + `previous_rationale` fields (MCP tool `best_practice_record` copies current values to `previous_*` BEFORE overwriting on UPDATE; `best_practice_rollback` restores from them). Supersession chain via `superseded_by` self-ref FK. Provenance from reflection worker via `derived_from_lessons uuid[]`.
+
+**HNSW index INTENTIONALLY OMITTED** per ADR-024 (DECISIONS.md): pgvector 0.6.0 limits HNSW to ≤2000 dims; embedding is `vector(3072)`. At current scale (<5K vectors) sequential scan is sufficient. Re-add when pgvector ≥0.7 or volume crosses ~50K threshold.
+
+**Migration:** `migrations/0027_best_practices.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.5`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
+
+### 5.11 `decisions` amendment (M0.X Phase A — added 2026-04-28)
+
+The `decisions` table (§5.2) gained 7 columns in `migrations/0028_decisions_amendment.sql` to support the typed-decision capture model that ADR-021 introduced:
+
+| Column | Type | Notes |
+|---|---|---|
+| `scope` | text NOT NULL DEFAULT 'operational' | CHECK 4 values: architectural / process / product / operational. Default chosen for legacy rows; formal ADRs MUST set 'architectural' explicitly. |
+| `applicable_buckets` | text[] DEFAULT '{}' | GIN-indexed for cross-bucket scope queries |
+| `decided_by` | text NOT NULL DEFAULT 'operator' | Provenance |
+| `tags` | text[] DEFAULT '{}' | GIN-indexed |
+| `severity` | text DEFAULT 'normal' | Distinguishes load-bearing decisions from process tweaks |
+| `adr_number` | integer UNIQUE | Formal ADR numbering. NULL allowed; multiple NULLs OK in PG. |
+| `derived_from_lessons` | uuid[] DEFAULT '{}' | Provenance when a decision crystallized from lessons |
+
+ADRs 020-024 seeded by `migrations/0029_data_migration_lessons_split.sql`. **Full post-amendment schema:** `migrations/audit/0029_post_state.md`.
 
 ---
 
