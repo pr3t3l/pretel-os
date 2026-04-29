@@ -675,6 +675,43 @@ CREATE INDEX idx_decisions_embedding_hnsw ON decisions USING hnsw (embedding vec
 CREATE INDEX idx_decisions_client ON decisions(client_id) WHERE client_id IS NOT NULL;
 ```
 
+### 5.2.1 Amendment (M0.X, migration 0028)
+
+Seven columns added to support the typed-decision capture model that ADR-021 introduced:
+
+| Column | Type | Default | Purpose |
+|---|---|---|---|
+| `scope` | `text NOT NULL` | `'operational'` | CHECK ∈ {`architectural`, `process`, `product`, `operational`}. Distinguishes ADR-level from day-to-day. Default chosen for legacy rows; formal ADRs MUST set `'architectural'` explicitly. |
+| `applicable_buckets` | `text[] NOT NULL` | `'{}'` | Cross-bucket scope. GIN-indexed. |
+| `decided_by` | `text NOT NULL` | `'operator'` | Provenance. |
+| `tags` | `text[] NOT NULL` | `'{}'` | Free-form filter tags. GIN-indexed. |
+| `severity` | `text` | `'normal'` | CHECK ∈ {`critical`, `normal`, `minor`}. Distinguishes load-bearing decisions from process tweaks. |
+| `adr_number` | `integer` | `NULL` | UNIQUE constraint allows NULL for non-formal decisions (multiple NULLs OK in PG). |
+| `derived_from_lessons` | `uuid[]` | `'{}'` | Provenance when crystallized from lessons (reflection worker pathway). |
+
+```sql
+ALTER TABLE decisions ADD COLUMN scope                TEXT    NOT NULL DEFAULT 'operational';
+ALTER TABLE decisions ADD COLUMN applicable_buckets   TEXT[]  NOT NULL DEFAULT '{}';
+ALTER TABLE decisions ADD COLUMN decided_by           TEXT    NOT NULL DEFAULT 'operator';
+ALTER TABLE decisions ADD COLUMN tags                 TEXT[]  NOT NULL DEFAULT '{}';
+ALTER TABLE decisions ADD COLUMN severity             TEXT             DEFAULT 'normal';
+ALTER TABLE decisions ADD COLUMN adr_number           INTEGER UNIQUE;
+ALTER TABLE decisions ADD COLUMN derived_from_lessons UUID[]           DEFAULT '{}';
+
+ALTER TABLE decisions ADD CONSTRAINT decisions_scope_check
+    CHECK (scope IN ('architectural','process','product','operational'));
+ALTER TABLE decisions ADD CONSTRAINT decisions_severity_check
+    CHECK (severity IN ('critical','normal','minor'));
+
+CREATE INDEX idx_decisions_scope_status        ON decisions(scope, status);
+CREATE INDEX idx_decisions_applicable_buckets  ON decisions USING gin(applicable_buckets);
+CREATE INDEX idx_decisions_tags                ON decisions USING gin(tags);
+```
+
+**Note on `project`:** Per Phase C smoke test discovery (task `80462622`), the `project` column is `NOT NULL` in production (and shown as such in the §5.2 SQL block above). Some early spec drafts called it Optional; production DDL is the source of truth.
+
+ADRs 020–024 seeded by `migrations/0029_data_migration_lessons_split.sql`. Full post-amendment schema dump: `migrations/audit/0029_post_state.md`.
+
 ### 5.3 `gotchas`
 
 Anti-patterns and traps.
@@ -790,51 +827,152 @@ CREATE INDEX idx_control_overdue ON control_registry(next_due_at) WHERE active =
 -- ('uptime_review', 'Review 30-day uptime from UptimeRobot, reconcile with SLO target', 30, 'operator', 'dashboard screenshot', ...)
 ```
 
-### 5.7 `tasks` (M0.X Phase A — added 2026-04-28)
+### 5.7 `tasks` (M0.X Phase A)
 
-Pending and in-progress work items. No embedding — structured query only. Self-referential FK on `blocked_by` for dependency chains. CHECK constraints on `status` (5 values) and `priority` (4 values).
+Pending and in-progress work items. No embedding — structured query only. Self-referential FK on `blocked_by` for dependency chains.
+
+```sql
+CREATE TABLE tasks (
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title             TEXT NOT NULL,
+    description       TEXT,
+    bucket            TEXT NOT NULL,
+    project           TEXT,
+    module            TEXT,                                    -- 'M0.X', 'M4', etc.
+    status            TEXT NOT NULL DEFAULT 'open',            -- open | in_progress | blocked | done | cancelled
+    priority          TEXT      DEFAULT 'normal',              -- urgent | high | normal | low
+    blocked_by        UUID REFERENCES tasks(id) ON DELETE SET NULL,
+    trigger_phase     TEXT,                                    -- 'Phase D', 'before-M5', etc.
+    source            TEXT NOT NULL,                           -- operator | claude | reflection_worker | migration
+    estimated_minutes INTEGER,
+    github_issue_url  TEXT,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+    done_at           TIMESTAMPTZ,
+    metadata          JSONB DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX idx_tasks_bucket_status   ON tasks(bucket, status);
+CREATE INDEX idx_tasks_module          ON tasks(module) WHERE module IS NOT NULL;
+CREATE INDEX idx_tasks_open_by_phase   ON tasks(trigger_phase) WHERE status IN ('open','blocked');
+
+-- updated_at maintained by trg_set_updated_at_tasks (see §6.1).
+```
+
+**Lifecycle:** `open → in_progress → done` is the happy path; `open → blocked` when a dependency exists; reopen via `task_reopen` MCP tool, which clears `done_at` and appends an entry to `metadata.reopened_history` JSON array. Status transitions are enforced by `task_*` MCP tools — no DB-level state machine.
+
+**Not loaded into context** per `layer_loader_contract.md §4` — surfaced only via `task_list` tool when operator asks.
 
 **Migration:** `migrations/0024_tasks.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.1`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
 
-### 5.8 `operator_preferences` (M0.X Phase A — added 2026-04-28)
+### 5.8 `operator_preferences` (M0.X Phase A)
 
-Operator-controlled facts and overrides (communication style, tooling, workflow, identity, language, schedule). Atomic upsert via `UNIQUE(category, key, scope)`. No embedding — direct lookup. Soft-delete via `active=false`.
+Operator-controlled facts and overrides. Atomic upsert via `UNIQUE(category, key, scope)`. No embedding — direct lookup.
+
+```sql
+CREATE TABLE operator_preferences (
+    id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    category   TEXT NOT NULL,                                  -- communication | tooling | workflow | identity | language | schedule
+    key        TEXT NOT NULL,
+    value      TEXT NOT NULL,
+    scope      TEXT NOT NULL DEFAULT 'global',                 -- 'global' or 'bucket:<name>' (e.g. 'bucket:business')
+    active     BOOLEAN NOT NULL DEFAULT true,
+    source     TEXT NOT NULL,                                  -- operator_explicit | inferred | migration
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    metadata   JSONB DEFAULT '{}'::jsonb,
+    UNIQUE(category, key, scope)
+);
+
+CREATE INDEX idx_preferences_category_active ON operator_preferences(category) WHERE active;
+CREATE INDEX idx_preferences_scope_active    ON operator_preferences(scope) WHERE active;
+
+-- updated_at maintained by trg_set_updated_at_operator_preferences (see §6.1).
+```
+
+**Soft-delete semantics:** `preference_unset` MCP tool sets `active = false` rather than `DELETE` — the value is preserved for audit and possible reactivation.
+
+**Layer load:** L0 reads rows where `scope = 'global'`; L1 reads rows where `scope LIKE 'bucket:<bucket>%'`. See `layer_loader_contract.md §3.1, §3.2`.
 
 **Migration:** `migrations/0025_operator_preferences.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.3`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
 
-### 5.9 `router_feedback` (M0.X Phase A — added 2026-04-28)
+### 5.9 `router_feedback` (M0.X Phase A)
 
-Explicit feedback loop signals from operator to Router. `feedback_type` covers `missing_context`, `wrong_bucket`, `wrong_complexity`, `irrelevant_lessons`, `too_much_context`, `low_quality_response`. Status workflow: `pending → reviewed → applied | dismissed`.
+Explicit feedback loop signals from operator to Router. Consumed by Module 6 reflection worker to derive lessons or `operator_preferences` updates. Status workflow: `pending → reviewed → applied | dismissed`.
 
-**Note:** `request_id` is `text` with NO foreign key — soft reference only. `routing_logs` is partitioned by `created_at` and any UNIQUE constraint must include the partition key, which would force a compound `(request_id, created_at)` reference. See `specs/module-0x-knowledge-architecture/spec.md §5.4` rationale paragraph.
+```sql
+CREATE TABLE router_feedback (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    request_id          TEXT,                                  -- soft reference to routing_logs.request_id (see note)
+    feedback_type       TEXT NOT NULL,                         -- missing_context | wrong_bucket | wrong_complexity |
+                                                               -- irrelevant_lessons | too_much_context | low_quality_response
+    operator_note       TEXT,
+    proposed_correction JSONB,
+    status              TEXT NOT NULL DEFAULT 'pending',       -- pending | reviewed | applied | dismissed
+    reviewed_by         TEXT,
+    applied_at          TIMESTAMPTZ,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_router_feedback_request ON router_feedback(request_id) WHERE request_id IS NOT NULL;
+CREATE INDEX idx_router_feedback_status  ON router_feedback(status);
+CREATE INDEX idx_router_feedback_type    ON router_feedback(feedback_type) WHERE status = 'pending';
+```
+
+**Note on `request_id` (no FK):** `request_id` is `TEXT` with no foreign key. `routing_logs` is monthly-partitioned by `created_at`, and any FK from a non-partitioned table to a partitioned one requires a compound key including the partition column. The cost (compound FK + retention coupling) is not justified for a soft-correlation field. Rationale: `specs/module-0x-knowledge-architecture/spec.md §5.4`.
+
+**Not loaded into context** per `layer_loader_contract.md §4`.
 
 **Migration:** `migrations/0026_router_feedback.sql`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
 
-### 5.10 `best_practices` (M0.X Phase A — added 2026-04-28)
+### 5.10 `best_practices` (M0.X Phase A)
 
-Reusable PROCESS guidance ("always X when Y", narrative). Distinct from `patterns` (§5.1) which holds CODE snippets — see ADR-023 (DECISIONS.md) for the new-table-vs-extend-patterns decision.
+Reusable PROCESS guidance ("always X when Y", narrative form). Distinct from `patterns` (§5.1) which holds CODE snippets — see ADR-023 for the new-table-vs-extend-patterns decision.
 
-Single-step rollback via `previous_guidance` + `previous_rationale` fields (MCP tool `best_practice_record` copies current values to `previous_*` BEFORE overwriting on UPDATE; `best_practice_rollback` restores from them). Supersession chain via `superseded_by` self-ref FK. Provenance from reflection worker via `derived_from_lessons uuid[]`.
+```sql
+CREATE TABLE best_practices (
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title                TEXT NOT NULL,
+    guidance             TEXT NOT NULL,
+    rationale            TEXT,
+    domain               TEXT NOT NULL,                        -- process | convention | workflow | communication
+    scope                TEXT NOT NULL DEFAULT 'global',       -- 'global' | 'bucket:<bucket>' | 'project:<bucket>/<project>'
+    applicable_buckets   TEXT[] NOT NULL DEFAULT '{}',
+    tags                 TEXT[] NOT NULL DEFAULT '{}',
+    active               BOOLEAN NOT NULL DEFAULT true,
+    source               TEXT NOT NULL,                        -- operator | derived_from_lessons | migration
+    derived_from_lessons UUID[]   DEFAULT '{}',
+    previous_guidance    TEXT,                                 -- single-step rollback (see lifecycle below)
+    previous_rationale   TEXT,
+    superseded_by        UUID REFERENCES best_practices(id),
+    embedding            vector(3072),
+    created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
-**HNSW index INTENTIONALLY OMITTED** per ADR-024 (DECISIONS.md): pgvector 0.6.0 limits HNSW to ≤2000 dims; embedding is `vector(3072)`. At current scale (<5K vectors) sequential scan is sufficient. Re-add when pgvector ≥0.7 or volume crosses ~50K threshold.
+CREATE INDEX idx_best_practices_applicable_buckets ON best_practices USING gin(applicable_buckets);
+CREATE INDEX idx_best_practices_domain             ON best_practices(domain) WHERE active;
+CREATE INDEX idx_best_practices_scope              ON best_practices(scope) WHERE active;
+CREATE INDEX idx_best_practices_superseded         ON best_practices(superseded_by) WHERE superseded_by IS NOT NULL;
+CREATE INDEX idx_best_practices_tags               ON best_practices USING gin(tags);
+
+-- HNSW index INTENTIONALLY OMITTED per ADR-024:
+--   pgvector 0.6.0 caps HNSW at ≤2000 dims; embedding is vector(3072).
+--   At <5K rows, sequential scan latency is 10–50 ms. Re-add when
+--   pgvector ≥0.7 supports 3072-dim HNSW or volume crosses ~50K rows.
+
+-- updated_at maintained by trg_set_updated_at_best_practices (see §6.1).
+```
+
+**Single-step rollback semantics:** the `best_practice_record` MCP tool, on UPDATE, copies the current `guidance` / `rationale` into `previous_guidance` / `previous_rationale` BEFORE overwriting. The `best_practice_rollback` tool restores from those fields. Only ONE step of history is preserved — multi-step versioning would require a separate history table.
+
+**Supersession chain:** the `superseded_by` self-ref FK plus the `active` flag together model "this practice replaced that one and the old one is no longer applied."
+
+**Layer load:** L2 reads `WHERE active AND scope = 'project:<bucket>/<project>'`; L4 reads `WHERE active AND (domain = $classifier_domain OR $bucket = ANY(applicable_buckets))`. See `layer_loader_contract.md §3.3, §3.5`.
+
+**Known workaround — `pending_embeddings` queueing:** As of `module-0x-complete` tag, this table has NO `notify_missing_embedding` trigger. The migration 0019 trigger covers nine tables but does not yet cover `best_practices`. The `best_practice_record` MCP tool manually inserts into `pending_embeddings` on embedding failure, using `ON CONFLICT (target_id, target_table) DO NOTHING` to remain idempotent. **Migration 0030** (task `92cac1b3`) will replace the manual logic with a trigger consistent with §6.2 patterns.
 
 **Migration:** `migrations/0027_best_practices.sql`. **Spec:** `specs/module-0x-knowledge-architecture/spec.md §5.5`. **Full schema dump:** `migrations/audit/0029_post_state.md`.
-
-### 5.11 `decisions` amendment (M0.X Phase A — added 2026-04-28)
-
-The `decisions` table (§5.2) gained 7 columns in `migrations/0028_decisions_amendment.sql` to support the typed-decision capture model that ADR-021 introduced:
-
-| Column | Type | Notes |
-|---|---|---|
-| `scope` | text NOT NULL DEFAULT 'operational' | CHECK 4 values: architectural / process / product / operational. Default chosen for legacy rows; formal ADRs MUST set 'architectural' explicitly. |
-| `applicable_buckets` | text[] DEFAULT '{}' | GIN-indexed for cross-bucket scope queries |
-| `decided_by` | text NOT NULL DEFAULT 'operator' | Provenance |
-| `tags` | text[] DEFAULT '{}' | GIN-indexed |
-| `severity` | text DEFAULT 'normal' | Distinguishes load-bearing decisions from process tweaks |
-| `adr_number` | integer UNIQUE | Formal ADR numbering. NULL allowed; multiple NULLs OK in PG. |
-| `derived_from_lessons` | uuid[] DEFAULT '{}' | Provenance when a decision crystallized from lessons |
-
-ADRs 020-024 seeded by `migrations/0029_data_migration_lessons_split.sql`. **Full post-amendment schema:** `migrations/audit/0029_post_state.md`.
 
 ---
 
