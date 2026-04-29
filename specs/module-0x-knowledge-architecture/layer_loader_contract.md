@@ -55,11 +55,18 @@ SELECT id, title, scope, severity, adr_number,
        LEFT(decision, 500) AS summary
 FROM decisions
 WHERE status = 'active'
-  AND (bucket = $1 OR $1 = ANY(applicable_buckets));
--- Phase B applies recency + severity ordering in app code.
+  AND (bucket = $1 OR $1 = ANY(applicable_buckets))
+ORDER BY
+  CASE severity
+    WHEN 'critical' THEN 0
+    WHEN 'normal'   THEN 1
+    WHEN 'minor'    THEN 2
+    ELSE 99
+  END,
+  created_at DESC;
 ```
 
-**Severity ranking** (CONSTITUTION §5.4 alignment): `critical` > `normal` > `minor`. Phase B materializes this as a CASE expression or sorts in Python.
+**Severity ranking** (CONSTITUTION §5.4 alignment): `critical` > `normal` > `minor`. Phase B **MUST** apply DB-side ordering via the SQL `CASE` expression above — pull-then-sort-in-Python is non-conformant (testability + determinism). The `ELSE 99` defends against future severity values being added without a contract update — they sort last instead of crashing.
 
 **What is NOT in L1:**
 - Decision `context`, `consequences`, `alternatives` (too verbose for L1; available in L2 if needed)
@@ -177,6 +184,80 @@ Any of the following requires a new ADR superseding this contract:
 - Changing token budgets
 
 Adding new content sources within an existing layer (e.g., a new prefs scope variant) does NOT require an ADR — Phase B can adapt at runtime.
+
+## 10. Output bundle shape (frozen)
+
+Phase B returns a `LayerBundle` instance:
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class ContextBlock:
+    source: str          # 'CONSTITUTION.md' | 'IDENTITY.md' | 'AGENTS.md' | 'SOUL.md' |
+                         # 'operator_preferences' | 'decisions' | 'best_practices' |
+                         # 'patterns' | 'lessons' | 'tools_catalog'
+    content: str         # rendered markdown for this source
+    row_count: int | None  # NULL for file sources, int for table sources
+    token_count: int     # see §11
+
+@dataclass(frozen=True)
+class LayerContent:
+    layer: str           # 'L0' | 'L1' | 'L2' | 'L3' | 'L4'
+    blocks: tuple[ContextBlock, ...]   # ordered; consumer renders in order
+    token_count: int     # sum of block.token_count
+    loaded: bool         # False if layer was skipped (classifier signal off, etc.)
+
+@dataclass(frozen=True)
+class BundleMetadata:
+    bucket: str
+    project: str | None
+    classifier_hash: str        # for cache key; see §6
+    total_tokens: int
+    assembly_latency_ms: int
+    cache_hit: bool
+
+@dataclass(frozen=True)
+class LayerBundle:
+    layers: tuple[LayerContent, ...]   # always 5 entries L0..L4, in order;
+                                       # use loaded=False for skipped layers
+    metadata: BundleMetadata
+```
+
+**Rendering contract:** the consumer renders by iterating `bundle.layers` in order, then each `layer.blocks` in order, concatenating `block.content`. Phase B does NOT pre-render to a single markdown blob — the consumer owns final formatting.
+
+**Conflict resolution:** When content across layers conflicts (e.g., a global preference in L0 says "use Spanish" while a decision in L1 says "use English for this bucket"), Phase B does NOT pre-resolve. The consumer applies CONSTITUTION §2.7 source priority. Phase B's job is faithful retrieval; resolution is downstream.
+
+**What this enables:**
+- Selective layer injection (Router may drop L4 if classifier signals say so)
+- Per-layer token accounting against §7 budgets without re-tokenizing
+- Cache key derivation from `metadata.classifier_hash + bucket + project`
+
+**Intra-layer ordering (L0 only):** Phase B MUST emit L0 blocks in this exact order:
+
+1. `CONSTITUTION.md`
+2. `IDENTITY.md`
+3. `AGENTS.md`
+4. `SOUL.md`
+5. `operator_preferences` (sorted by `category, key`)
+
+Order matters because IDENTITY is read after the rules (CONSTITUTION) and before the voice (SOUL); divergent orderings produce different narrative arcs for the LLM. L1–L4 ordering follows §3.x for that layer (recency DESC, severity, etc.).
+
+## 11. Token counting method (frozen)
+
+All token counts (`ContextBlock.token_count`, `LayerContent.token_count`, `BundleMetadata.total_tokens`, §7 budgets) are measured with:
+
+```python
+import tiktoken
+ENCODER = tiktoken.get_encoding("cl100k_base")
+token_count = len(ENCODER.encode(content))
+```
+
+**Rationale:** `cl100k_base` is the GPT-4 / GPT-3.5-turbo encoding, widely available, deterministic, and a reasonable proxy for Claude's tokenizer (within ~5% on prose). Anthropic does not publish a public tokenizer; using `cl100k_base` for budgeting is the industry-standard workaround.
+
+**Soft-budget interpretation:** §7 budgets (3K/5K/4K) are nominal `cl100k_base` counts. A 5% overshoot is acceptable (proxy error). A 20%+ overshoot triggers truncation per §7.
+
+**Hard budget on identity.md (1,200 tokens):** enforced by `infra/hooks/token_budget.py`, which already uses `tiktoken.get_encoding("cl100k_base")` (verified 2026-04-28). Contract and hook are aligned. If a future hook change diverges, an ADR must reconcile both.
 
 ---
 
