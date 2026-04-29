@@ -106,46 +106,63 @@ Five loader functions, one per layer, each respecting its budget per `spec.md §
 
 ### 4.2 Scope
 
+> **Reconciled 2026-04-29 with `layer_loader_contract.md` §3.** Loaders now read from Postgres tables (and a small fixed set of repo files for L0). Function signatures changed accordingly. Output type changed from `LayerPayload` (loose dict-like) to `LayerContent` / `LayerBundle` (frozen dataclasses, contract §10).
+
 **In:**
 - `src/mcp_server/router/layer_loader.py` with:
-  - `load_l0() -> LayerPayload` — reads `identity.md`.
-  - `load_l1(bucket: str) -> LayerPayload | None` — reads `buckets/{bucket}/README.md`, handles sub-bucket pattern per `spec.md §6.2`.
-  - `load_l2(bucket: str, project: str, module: str | None) -> LayerPayload | None` — reads project README + at most one module file per `spec.md §6.3`.
-  - `load_l3(skill: str) -> LayerPayload | None` — reads `skills/{skill}.md`.
-  - `load_l4(query_embedding, bucket, tags, top_k) -> LayerPayload | None` — filter-first pgvector retrieval.
-- Token-counting helper using `tiktoken` (cl100k_base for compat; provider-agnostic enough at our scale).
-- `summarize_oversize(content, target_tokens) -> str` helper that calls `classifier_default` with a summarization prompt for read-time fallback per `spec.md §6.4`.
-- Unit tests for each loader: happy path, file missing, file empty, file over budget.
+  - `load_l0() -> LayerContent` — reads CONSTITUTION/IDENTITY/AGENTS/SOUL files in pinned order (contract §10) AND queries `operator_preferences` for `scope='global'`. Returns one `LayerContent` with up to 5 `ContextBlock`s.
+  - `load_l1(bucket: str) -> LayerContent` — queries `decisions` (active, bucket+applicable_buckets, severity-ordered via SQL CASE) and `operator_preferences` (scope LIKE 'bucket:...'). Returns `LayerContent` with `loaded=False` if classifier signals indicate no L1 needed.
+  - `load_l2(bucket: str, project: str) -> LayerContent` — queries `decisions` (bucket+project), `best_practices` (project scope), `patterns` (bucket-applicable). No `module` parameter — module-level filtering moved into classifier-supplied tags.
+  - `load_l3(skill_ids: list[str]) -> LayerContent` — queries `tools_catalog` WHERE `kind='skill'` AND `name = ANY(skill_ids)`. Skill file content is loaded from `skill_file_path` per row.
+  - `load_l4(query_embedding, bucket, top_k) -> LayerContent` — filter-first sequential pgvector scan against `lessons` AND `best_practices` (cross-cutting via applicable_buckets). Per ADR-024, no HNSW.
+  - `assemble_bundle(...) -> LayerBundle` — orchestrator that calls the 5 loaders, computes `BundleMetadata`, and returns the frozen dataclass. THIS function is what the Router calls.
+- `src/mcp_server/router/types.py` — `ContextBlock`, `LayerContent`, `BundleMetadata`, `LayerBundle` exactly per contract §10.
+- Token-counting helper using `tiktoken.get_encoding("cl100k_base")` per contract §11.
+- `summarize_oversize(content, target_tokens) -> str` helper calling `classifier_default` for over-budget compression. Behavior unchanged from earlier draft.
+- Unit tests for each loader: happy path, table empty, table query error (degraded mode), file missing (L0 only), over-budget triggers summarization.
+- Integration test: full `assemble_bundle` round-trip with a seeded test DB.
+- Cache invalidation: implement LISTEN/NOTIFY on the 4 trigger tables per contract §6.
 
 **Out:**
-- Source priority resolution (Phase C).
+- Source priority resolution / conflict resolution (consumer's job per contract §10 — was Phase C, now reduced; see Patch F note for Phase C).
 - Decision logic about which layers to load (lives in `router.py` orchestrator, written at end of Phase D integration).
 - Embedding generation (already exists from Module 3; loaders consume it).
+- Reflection-worker writes to `lessons` / `best_practices` (Module 6).
 
 ### 4.3 Deliverables
 
+> **Reconciled 2026-04-29.** `LayerPayload` is superseded by `LayerBundle`/`LayerContent`/`ContextBlock` from contract §10. Old name appears in some early task descriptions; treat as legacy alias when reading tasks.md.
+
 | Path | Content |
 |---|---|
-| `src/mcp_server/router/layer_loader.py` | Five loaders + summarize helper. |
-| `src/mcp_server/router/types.py` | `LayerPayload` dataclass: `{layer, content, tokens, source_path, module?, sub_bucket?}`. |
+| `src/mcp_server/router/layer_loader.py` | 5 loaders + `assemble_bundle` orchestrator + summarize helper. |
+| `src/mcp_server/router/types.py` | `ContextBlock`, `LayerContent`, `BundleMetadata`, `LayerBundle` — frozen dataclasses per contract §10. |
 | `src/mcp_server/router/prompts/summarize.txt` | Compression prompt for over-budget layers. |
-| `src/mcp_server/router/fallback_keywords.py` | Bucket and complexity keyword lists used by fallback classifier (Phase E) and L1 sub-bucket selection. Lives here so both phases share. |
-| `tests/router/test_layer_loader.py` | 5×4 = 20 tests minimum (one per loader × one per failure mode). |
+| `src/mcp_server/router/fallback_keywords.py` | Bucket and complexity keyword lists used by fallback classifier (Phase E). Sub-bucket dotted-path selection moves into the classifier signals (out of layer-loader scope). |
+| `src/mcp_server/router/cache.py` | `(bucket, project, classifier_hash)` cache + LISTEN/NOTIFY invalidation on `operator_preferences`, `decisions`, `best_practices`, `lessons` per contract §6. |
+| `tests/router/test_layer_loader.py` | ≥30 tests covering: per-loader happy path, per-loader DB-empty path, degraded-mode (DB unhealthy), over-budget summarization, intra-L0 ordering invariant, severity SQL CASE ordering verified at SQL level, filter-first verified by EXPLAIN inspection. |
+| `tests/router/test_assemble_bundle.py` | Integration: full round-trip with seeded `pretel_os_test`, asserts `LayerBundle` shape, `cache_hit=False` then `cache_hit=True` on second call, LISTEN/NOTIFY invalidation actually fires. |
 
 ### 4.4 Done when
 
-- Each loader returns a valid `LayerPayload` for its happy path.
-- Each loader returns `None` (or raises a typed I/O error caught upstream) for missing files.
-- `load_l1` correctly resolves to a sub-bucket README when classification supplies a dotted path (`bucket="business/freelance/clients"`).
-- `load_l2` loads exactly one module file when `module` is provided; loads only the project README when `module` is `None`.
-- Over-budget content triggers `summarize_oversize` and returns content ≤ 80% of layer budget, plus an `over_budget=True` marker on the payload.
+- `assemble_bundle(bucket, project, classifier_signals, current_time) -> LayerBundle` returns a valid `LayerBundle` with all 5 `LayerContent` entries (some may have `loaded=False`).
+- L0 always has `loaded=True` and emits ≥4 file blocks + ≤1 prefs block in the pinned order from contract §10.
+- L1/L2/L3/L4 emit `loaded=True` only when classifier signals + inputs require them.
+- Severity-ordered DB queries verified at the SQL plan level (test inspects `EXPLAIN` to confirm the CASE expression participates in the sort).
+- Filter-first verified at the SQL plan level (test inspects `EXPLAIN` for `lessons` and `best_practices` queries — `bucket` filter must precede vector op).
+- Over-budget content triggers `summarize_oversize` and returns content ≤ 80% of layer budget, plus an `over_budget=True` marker on the bundle's `over_budget_layers` list.
 - A `gotcha` row is written to DB when summarization fires (verified by integration test).
-- `pytest tests/router/test_layer_loader.py -v` exits 0.
+- Cache invalidation verified: write to one of the 4 trigger tables, observe next `assemble_bundle` returns `cache_hit=False`.
+- Degraded mode: DB unhealthy → loader returns `LayerContent(loaded=False)` for DB-backed layers, file-backed L0 still works.
+- All token counts use `tiktoken.get_encoding("cl100k_base")` per contract §11.
+- `pytest tests/router/test_layer_loader.py tests/router/test_assemble_bundle.py -v` exits 0.
 
 ### 4.5 Risk notes
 
-- **Token counting drift.** `tiktoken` cl100k_base counts differently from Anthropic's tokenizer and Gemini's. Acceptable at our scale (the budget is approximate, not contractual to any one provider). If drift becomes material later, switch to provider-specific tokenizers per alias — out of scope for Module 4.
-- **L4 filter-first is mandatory.** Per CONSTITUTION §5.6 rule 26, never do a global vector scan. The loader must apply `bucket` + `tags` filters at SQL level *before* the vector sort. Verified by query plan inspection in test.
+- **Token counting drift.** Resolved by contract §11: `cl100k_base` is the canonical encoding. The pre-commit token-budget hook (`infra/hooks/token_budget.py`) was confirmed 2026-04-28 to use the same encoding. If a future hook change diverges, an ADR must reconcile both — not Phase B's concern.
+- **L4 filter-first is mandatory.** Per CONSTITUTION §5.6 rule 26 and contract §3.5, never do a global vector scan. The loader must apply `bucket` + `applicable_buckets` filters at SQL level *before* the vector sort. Verified by `EXPLAIN` inspection in test.
+- **Phase C scope shrank.** Original Phase C built `resolve_conflicts()` inside the Router. Per contract §10, conflict resolution now lives in the consumer. Phase C of this plan should be re-scoped to: (a) `source_conflicts` array population only, (b) invariant violation detection only (the Scout/budget/agent-rule checks). The conflict-priority logic moves to the consumer (likely Phase D or a follow-up). Tracked as a Phase C re-scope task — not blocking Phase B start.
+- **Cache key derivation.** `classifier_hash` per contract §6 must be deterministic over `(bucket, project, complexity, needs_lessons, needs_skills, skill_ids tuple)`. Use `hashlib.sha256(json.dumps(..., sort_keys=True).encode()).hexdigest()[:16]`.
 
 ---
 

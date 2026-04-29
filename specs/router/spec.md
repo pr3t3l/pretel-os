@@ -3,7 +3,9 @@
 **Module:** Router
 **Status:** Draft (M4.T1.1)
 **Last updated:** 2026-04-27
-**Authority:** `CONSTITUTION.md §2.2, §2.3, §2.7, §5`, `docs/PROJECT_FOUNDATION.md ADR-002, ADR-003, ADR-008, ADR-016, ADR-017, ADR-020`
+**Authority:** `CONSTITUTION.md §2.2, §2.3, §2.7, §5`, `docs/PROJECT_FOUNDATION.md ADR-002, ADR-003, ADR-008, ADR-016, ADR-017, ADR-020`, `specs/module-0x-knowledge-architecture/layer_loader_contract.md` (frozen 2026-04-28)
+
+> **Reconciliation note (2026-04-29):** Sections that describe layer-loading mechanics (§4.2, §6.1, §6.2, §8.2) were originally written 2026-04-27 against a file-based world view. Module 0.X (completed 2026-04-29 with tag `module-0x-complete`) introduced a database-backed knowledge architecture for L0–L4 content. Where this spec diverges from `layer_loader_contract.md`, the contract wins. Specific reconciled subsections are marked inline.
 
 > **2-minute read gate (SDD §6 rule 31):** Sections 1–4 are the spec. Everything else is contract detail. If a reviewer cannot describe what the Router does after reading §1–§4, this spec has failed and must be revisited before plan/tasks.
 
@@ -87,7 +89,10 @@ This is the only public entry point. It is exposed via the MCP server as a tool.
 
 ### 4.2 ContextBundle return shape
 
+> **Reconciled with `layer_loader_contract.md` §10 (2026-04-29).** The `layers` field is now a `LayerBundle` (frozen dataclass with ordered `LayerContent` and `ContextBlock` children). Top-level Router metadata fields (`request_id`, `classification`, `tools_recommended`, etc.) wrap the bundle.
+
 ```python
+# Top-level Router output. Wraps the LayerBundle from contract §10.
 {
     "request_id": str,                          # uuid generated server-side, joins to llm_calls
     "session_id": str | None,                   # echoed back from input
@@ -100,17 +105,37 @@ This is the only public entry point. It is exposed via the MCP server as a tool.
         "confidence": float                     # 0.0 – 1.0
     },
     "classification_mode": "llm" | "fallback_rules",
-    "layers": {
-        "L0": { "content": str, "tokens": int },
-        "L1": { "content": str, "tokens": int } | None,
-        "L2": { "content": str, "tokens": int, "module": str | None } | None,
-        "L3": { "skill": str, "content": str, "tokens": int } | None,
-        "L4": { "lessons": list[dict], "tokens": int } | None
+
+    # `bundle` is a LayerBundle per layer_loader_contract.md §10.
+    # Serialized form:
+    "bundle": {
+        "layers": [   # always 5 entries, L0..L4 in order; loaded=False for skipped layers
+            {
+                "layer": "L0",
+                "loaded": True,
+                "token_count": int,
+                "blocks": [   # ordered; L0 ordering pinned per contract §10
+                    {"source": "CONSTITUTION.md", "content": "...", "row_count": None, "token_count": int},
+                    {"source": "IDENTITY.md",     "content": "...", "row_count": None, "token_count": int},
+                    {"source": "AGENTS.md",       "content": "...", "row_count": None, "token_count": int},
+                    {"source": "SOUL.md",         "content": "...", "row_count": None, "token_count": int},
+                    {"source": "operator_preferences", "content": "...", "row_count": int, "token_count": int}
+                ]
+            },
+            # ... L1, L2, L3, L4 ...
+        ],
+        "metadata": {
+            "bucket": str,
+            "project": str | None,
+            "classifier_hash": str,             # cache key per contract §6
+            "total_tokens": int,
+            "assembly_latency_ms": int,
+            "cache_hit": bool
+        }
     },
+
     "tools_recommended": list[dict],            # name + one-line description, ranked by utility_score
-    "source_conflicts": list[dict],             # see §8
-    "tokens_total": int,                        # sum across loaded layers + tools
-    "tokens_per_layer": dict,                   # {'L0': 480, 'L1': 1200, ...}
+    "source_conflicts": list[dict],             # informational only — see §8 (consumer resolves)
     "over_budget_layers": list[str],            # layers that required summarization
     "degraded_mode": bool,
     "degraded_reason": str | None,
@@ -118,7 +143,11 @@ This is the only public entry point. It is exposed via the MCP server as a tool.
 }
 ```
 
-The bundle is JSON-serializable. Order of keys is documented but not enforced by the protocol.
+The Router-level dict is JSON-serializable. The `bundle` sub-object is the JSON form of the `LayerBundle` dataclass — Phase B emits the dataclass; serialization happens at the MCP boundary.
+
+Token counts in every `token_count` field are computed via `tiktoken.get_encoding("cl100k_base")` per contract §11.
+
+`tokens_total` and `tokens_per_layer` are derivable from `bundle.metadata.total_tokens` and per-layer `token_count`. They are NOT duplicated at the top level (contract §10 owns the canonical numbers).
 
 ### 4.3 Companion tool: `report_satisfaction`
 
@@ -204,15 +233,23 @@ response = client.chat.completions.create(
 
 ## 6. Layer loading rules
 
-### 6.1 Layer table (CONSTITUTION §2.3)
+### 6.1 Layer table (CONSTITUTION §2.3 + `layer_loader_contract.md` §3)
 
-| Layer | Source | Loaded when | Budget |
-|---|---|---|---|
-| **L0** | Git: `identity.md` | Always | 1,200 tok |
-| **L1** | Git: `buckets/{bucket}/README.md` (or sub-bucket per §2.3 pattern) | `classification.bucket` is not null | 1,500 tok |
-| **L2** | Git: `buckets/{b}/projects/{p}/README.md` + relevant module file | `classification.project` is not null | 2,000 tok |
-| **L3** | Git: `skills/{skill}.md` | `classification.skill` is not null | 4,000 tok |
-| **L4** | Postgres + pgvector: `lessons` filtered by bucket/tags | `classification.needs_lessons=true` AND complexity allows it (§5.2) | 1,500 tok |
+> **Reconciled 2026-04-29.** Sources changed from file-only to dual file+DB after M0.X. See contract §3 for SQL filter shapes; this table is the summary.
+
+| Layer | File sources (in order) | DB sources | Loaded when | Budget |
+|---|---|---|---|---|
+| **L0** | `CONSTITUTION.md`, `IDENTITY.md`, `AGENTS.md`, `SOUL.md` (intra-layer order pinned, contract §10) | `operator_preferences` WHERE `active=true AND scope='global'` | Always | identity.md ≤1,200 tok hard; rest no per-file cap |
+| **L1** | (none) | `decisions` WHERE active+bucket; `operator_preferences` WHERE scope LIKE 'bucket:...' | `classification.bucket` not null | ~3,000 tok soft |
+| **L2** | (none) | `decisions` WHERE bucket+project; `best_practices` WHERE scope='project:...'; `patterns` WHERE bucket | `classification.project` not null | ~5,000 tok soft |
+| **L3** | (none directly; skill content fetched via `tools_catalog` row's `skill_file_path`) | `tools_catalog` WHERE `kind='skill'` filtered by classifier-supplied skill_ids | `classification.skill` not null | classifier-determined |
+| **L4** | (none) | `lessons` (sequential vector scan, filter-first); `best_practices` (sequential vector scan, cross-cutting) | `classification.needs_lessons=true` AND complexity allows (§5.2) | ~4,000 tok soft |
+
+**Severity ordering (L1):** `decisions` results MUST be ordered by SQL `CASE severity WHEN 'critical' THEN 0 WHEN 'normal' THEN 1 WHEN 'minor' THEN 2 ELSE 99 END, created_at DESC` per contract §3.2. Pull-then-sort-in-Python is non-conformant.
+
+**Token counting:** all `token_count` measurements use `tiktoken.get_encoding("cl100k_base")` per contract §11.
+
+**Files NOT loaded into context per contract §4:** `tasks`, `router_feedback`, `pending_embeddings`, `routing_logs`, `tools_catalog` (non-skill rows). These are operational tables surfaced via dedicated MCP tools, not bundle content.
 
 ### 6.2 Sub-bucket selection (L1)
 
@@ -298,26 +335,32 @@ These are enforced structurally — pre-commit hooks block them at write-time, D
 
 ### 8.2 Contextual ordered priority
 
-For non-invariant content, when two layers say different things on the same topic (e.g., L4 lesson says "use Postgres" but L1 bucket README says "use SQLite"):
+> **Reconciled 2026-04-29 with contract §10.** The Router DOES NOT pre-resolve conflicts at assembly time. It populates `source_conflicts` as informational metadata; the consumer (client model) applies CONSTITUTION §2.7 priority. Phase B's job is faithful retrieval; resolution is downstream.
+
+For non-invariant content, when two layers say different things on the same topic (e.g., L4 lesson says "use Postgres" but L1 decision says "use SQLite"), the canonical priority remains:
 
 ```
 L2 current project state    >  L3 skill  >  L4 lesson  >  L1 bucket  >  L0 contextual identity
 ```
 
-The Router does not silently reconcile. It surfaces the conflict in `source_conflicts` like:
+The Router populates `source_conflicts` like:
 
 ```json
 {
   "topic": "default-database",
-  "winning_source": "L4:lesson:c7f2-...",
-  "winning_text": "Postgres + pgvector for embeddings work",
-  "losing_sources": [
-    {"layer": "L1", "text": "SQLite is fine for prototypes"}
-  ]
+  "candidates": [
+    {"layer": "L4", "source": "lessons:c7f2-...", "text": "Postgres + pgvector for embeddings work"},
+    {"layer": "L1", "source": "decisions:a91e-...", "text": "SQLite is fine for prototypes"}
+  ],
+  "priority_order": ["L2", "L3", "L4", "L1", "L0"]
 }
 ```
 
-The agent reads the bundle, follows the winning source, and surfaces the conflict in its reasoning so the operator sees it. If the higher-priority source is wrong, the operator corrects the source — not the agent's behavior on that turn.
+Note the schema difference vs. earlier drafts: there is NO `winning_source` field. The Router does not pick the winner. The consumer reads `priority_order`, walks the `candidates` list, and applies the first match — which yields the same outcome but keeps responsibility on the consumer.
+
+The agent reads the bundle, follows whichever source wins per §2.7, and surfaces the conflict in its reasoning so the operator sees it. If the higher-priority source is wrong, the operator corrects the source — not the agent's behavior on that turn.
+
+**Why this changed:** Pre-M0.X, the Router was the one place that knew the layer contents. Post-M0.X, the contract says Phase B's responsibility ends at assembly. Multiple downstream consumers (Telemetry/Phase D, Reflection/Module 6, future agents) may want the same conflict data with their own resolution logic. Centralizing resolution in Phase B foreclosed that.
 
 ---
 
