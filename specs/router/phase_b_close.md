@@ -1,7 +1,7 @@
 # specs/router/phase_b_close.md — Phase B close-out (B.7 + B.8 + B.9)
 
 **Module:** Router
-**Status:** Active (in flight 2026-04-29)
+**Status:** Complete 2026-04-29 — all atomic tasks shipped, ready for `phase-b-complete` tag.
 **Authority:** `specs/router/spec.md`, `specs/router/plan.md` §4, `specs/module-0x-knowledge-architecture/layer_loader_contract.md` §6 + §10
 **Scope:** Three remaining atomic groups to close Phase B. After this doc's tasks complete, M4 Phase B is done; tag candidate `phase-b-complete`.
 
@@ -188,14 +188,14 @@ functions (consistent with B.2–B.6).
 
 ### B.9 — assemble_bundle orchestrator
 
-- [ ] **B.9.1** Add `ClassifierSignals` frozen dataclass to
+- [x] **B.9.1** Add `ClassifierSignals` frozen dataclass to
   `src/mcp_server/router/types.py` per Q3 fields (skill_ids as tuple
   for hashability). No `__post_init__` validation — caller (Phase A
   classifier output adapter) is responsible for type integrity.
   - Done when: mypy clean; from `mcp_server.router.types import
     ClassifierSignals` works.
 
-- [ ] **B.9.2** Implement `src/mcp_server/router/assemble.py::assemble_bundle`
+- [x] **B.9.2** Implement `src/mcp_server/router/assemble.py::assemble_bundle`
   per Q4 signature. Logic:
   1. Compute `classifier_hash` from `classifier_signals`.
   2. Cache lookup with `(bucket, project, hash)`. If hit, return cached
@@ -215,7 +215,7 @@ functions (consistent with B.2–B.6).
   - Done when: mypy clean; happy-path integration test returns valid
     bundle.
 
-- [ ] **B.9.3** Write `tests/router/test_assemble_bundle.py` — full
+- [x] **B.9.3** Write `tests/router/test_assemble_bundle.py` — full
   integration covering:
   - happy path (cache miss → 5 LayerContent, 4 with `loaded=True`
     if signals demand all)

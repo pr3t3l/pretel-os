@@ -52,14 +52,42 @@ class BundleMetadata:
     """Per-bundle metadata used for cache keys and telemetry.
 
     Per contract §10. `classifier_hash` is the Phase A output hash
-    used for cache keys per contract §6.
+    used for cache keys per contract §6. `over_budget_layers` (added
+    in B.9 per plan §4.4 done-when) lists layers whose content was
+    summarized at read-time because it exceeded the contract §7
+    soft budget; default empty tuple for backward compatibility with
+    bundles that never trigger summarization.
     """
-    bucket: str
+    bucket: str | None
     project: str | None
     classifier_hash: str
     total_tokens: int
     assembly_latency_ms: int
     cache_hit: bool
+    over_budget_layers: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class ClassifierSignals:
+    """The classifier's per-turn output as consumed by assemble_bundle.
+
+    Per plan/router/plan.md §4.5: this shape feeds the cache-key derivation.
+    Fields chosen for stability: any change here is a cache-busting change
+    and a contract change visible to Phase D telemetry.
+
+    `skill_ids` is a tuple (not a list) so the dataclass is hashable —
+    the cache key can derive a stable hash without re-tupling.
+    `classifier_domain` is forward-looking (contract §3.5 introduced
+    it for L4 cross-cutting BP filtering); the current Phase A
+    classifier output does not produce it. Defaults to None.
+    """
+    bucket: str | None
+    project: str | None
+    complexity: str
+    needs_lessons: bool
+    needs_skills: bool
+    skill_ids: tuple[str, ...] | None
+    classifier_domain: str | None = None
 
 
 _REQUIRED_LAYER_ORDER = ("L0", "L1", "L2", "L3", "L4")
