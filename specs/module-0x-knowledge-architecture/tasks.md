@@ -22,74 +22,74 @@ Each task is atomic — completable in one focused work session. Format: `[ ] M0
 
 ### Migration 0024 — tasks table
 
-- [ ] M0X.A.1.1 — Create `migrations/0024_tasks.sql` with table DDL per spec §5.1
-- [ ] M0X.A.1.2 — Add 3 indexes: `idx_tasks_bucket_status`, `idx_tasks_open_by_phase`, `idx_tasks_module`
-- [ ] M0X.A.1.3 — Add CHECK constraints on status and priority enums
-- [ ] M0X.A.1.4 — Add self-referential FK `blocked_by REFERENCES tasks(id) ON DELETE SET NULL`
-- [ ] M0X.A.1.5 — Wrap in `BEGIN ... COMMIT` transaction with `IF NOT EXISTS` guards
-- [ ] M0X.A.1.6 — Apply on scratch DB, verify with `\d+ tasks` matches spec
-- [ ] M0X.A.1.7 — Insert into `schema_migrations` on success
+- [x] M0X.A.1.1 — Create `migrations/0024_tasks.sql` with table DDL per spec §5.1
+- [x] M0X.A.1.2 — Add 3 indexes: `idx_tasks_bucket_status`, `idx_tasks_open_by_phase`, `idx_tasks_module`
+- [x] M0X.A.1.3 — Add CHECK constraints on status and priority enums
+- [x] M0X.A.1.4 — Add self-referential FK `blocked_by REFERENCES tasks(id) ON DELETE SET NULL`
+- [x] M0X.A.1.5 — Wrap in `BEGIN ... COMMIT` transaction with `IF NOT EXISTS` guards
+- [x] M0X.A.1.6 — Apply on scratch DB, verify with `\d+ tasks` matches spec
+- [x] M0X.A.1.7 — Insert into `schema_migrations` on success
 
 ### Migration 0025 — operator_preferences table
 
-- [ ] M0X.A.2.1 — Create `migrations/0025_operator_preferences.sql` per spec §5.3
-- [ ] M0X.A.2.2 — Add UNIQUE constraint on (category, key, scope)
-- [ ] M0X.A.2.3 — Add 2 partial indexes: `idx_preferences_scope_active`, `idx_preferences_category_active`
-- [ ] M0X.A.2.4 — Add CHECK on category enum (6 values)
-- [ ] M0X.A.2.5 — Apply on scratch DB, verify with `\d+ operator_preferences`
+- [x] M0X.A.2.1 — Create `migrations/0025_operator_preferences.sql` per spec §5.3
+- [x] M0X.A.2.2 — Add UNIQUE constraint on (category, key, scope)
+- [x] M0X.A.2.3 — Add 2 partial indexes: `idx_preferences_scope_active`, `idx_preferences_category_active`
+- [x] M0X.A.2.4 — Add CHECK on category enum (6 values)
+- [x] M0X.A.2.5 — Apply on scratch DB, verify with `\d+ operator_preferences`
 
 ### Migration 0026 — router_feedback table
 
-- [ ] M0X.A.3.1 — Create `migrations/0026_router_feedback.sql` per spec §5.4
-- [ ] M0X.A.3.2 — Add FK `request_id REFERENCES routing_logs(request_id) ON DELETE SET NULL`
-- [ ] M0X.A.3.3 — Verify FK works against partitioned parent table on PG16 (not just a partition)
-- [ ] M0X.A.3.4 — Add 3 indexes: `idx_router_feedback_status`, `idx_router_feedback_request`, `idx_router_feedback_type` (partial)
-- [ ] M0X.A.3.5 — Add CHECK on feedback_type (6 values) and status (4 values)
-- [ ] M0X.A.3.6 — Apply on scratch DB, verify
+- [x] M0X.A.3.1 — Create `migrations/0026_router_feedback.sql` per spec §5.4
+- [x] M0X.A.3.2 — Add FK `request_id REFERENCES routing_logs(request_id) ON DELETE SET NULL`
+- [x] M0X.A.3.3 — Verify FK works against partitioned parent table on PG16 (not just a partition)
+- [x] M0X.A.3.4 — Add 3 indexes: `idx_router_feedback_status`, `idx_router_feedback_request`, `idx_router_feedback_type` (partial)
+- [x] M0X.A.3.5 — Add CHECK on feedback_type (6 values) and status (4 values)
+- [x] M0X.A.3.6 — Apply on scratch DB, verify
 
 ### Migration 0027 — best_practices table
 
-- [ ] M0X.A.4.1 — Create `migrations/0027_best_practices.sql` per spec §5.5
-- [ ] M0X.A.4.2 — Include `previous_guidance` and `previous_rationale` columns for rollback
-- [ ] M0X.A.4.3 — Include `superseded_by uuid REFERENCES best_practices(id)` self-ref FK
-- [ ] M0X.A.4.4 — Include `derived_from_lessons uuid[] DEFAULT '{}'`
-- [ ] M0X.A.4.5 — SKIP HNSW index per ADR-024 (DECISIONS.md). Add commented-out CREATE INDEX with rationale.
-- [ ] M0X.A.4.6 — Add 5 more indexes per spec §5.5
-- [ ] M0X.A.4.7 — Add CHECK on domain (4 values) and source (3 values)
-- [ ] M0X.A.4.8 — Apply on scratch DB, verify with `\d+ best_practices`
+- [x] M0X.A.4.1 — Create `migrations/0027_best_practices.sql` per spec §5.5
+- [x] M0X.A.4.2 — Include `previous_guidance` and `previous_rationale` columns for rollback
+- [x] M0X.A.4.3 — Include `superseded_by uuid REFERENCES best_practices(id)` self-ref FK
+- [x] M0X.A.4.4 — Include `derived_from_lessons uuid[] DEFAULT '{}'`
+- [x] M0X.A.4.5 — SKIP HNSW index per ADR-024 (DECISIONS.md). Add commented-out CREATE INDEX with rationale.
+- [x] M0X.A.4.6 — Add 5 more indexes per spec §5.5
+- [x] M0X.A.4.7 — Add CHECK on domain (4 values) and source (3 values)
+- [x] M0X.A.4.8 — Apply on scratch DB, verify with `\d+ best_practices`
 
 ### Migration 0028 — decisions amendment
 
-- [ ] M0X.A.5.1 — Create `migrations/0028_decisions_amendment.sql` per spec §5.2
-- [ ] M0X.A.5.2 — Add columns: scope, applicable_buckets, decided_by, tags, severity, adr_number, derived_from_lessons
-- [ ] M0X.A.5.3 — Add CHECK on scope enum (4 values)
-- [ ] M0X.A.5.4 — Add UNIQUE on adr_number (allows NULL for non-formal decisions)
-- [ ] M0X.A.5.5 — Add 3 indexes: `idx_decisions_scope_status`, `idx_decisions_applicable_buckets` (GIN), `idx_decisions_tags` (GIN)
-- [ ] M0X.A.5.6 — Apply on scratch DB, verify column additions with `\d+ decisions`
-- [ ] M0X.A.5.7 — Verify existing `decisions` rows still query cleanly (defaults applied correctly)
+- [x] M0X.A.5.1 — Create `migrations/0028_decisions_amendment.sql` per spec §5.2
+- [x] M0X.A.5.2 — Add columns: scope, applicable_buckets, decided_by, tags, severity, adr_number, derived_from_lessons
+- [x] M0X.A.5.3 — Add CHECK on scope enum (4 values)
+- [x] M0X.A.5.4 — Add UNIQUE on adr_number (allows NULL for non-formal decisions)
+- [x] M0X.A.5.5 — Add 3 indexes: `idx_decisions_scope_status`, `idx_decisions_applicable_buckets` (GIN), `idx_decisions_tags` (GIN)
+- [x] M0X.A.5.6 — Apply on scratch DB, verify column additions with `\d+ decisions`
+- [x] M0X.A.5.7 — Verify existing `decisions` rows still query cleanly (defaults applied correctly)
 
 ### Migration 0029 — data migration (lessons split)
 
-- [ ] M0X.A.6.1 — Create `migrations/0029_data_migration_lessons_split.sql`
-- [ ] M0X.A.6.2 — Insert ADR-021 into decisions: "Split lessons into typed stores"
-- [ ] M0X.A.6.3 — Insert ADR-022 into decisions: "SOUL.md voice file"
-- [ ] M0X.A.6.4 — Insert ADR-023 into decisions: "best_practices as new table (not extension of patterns)"
-- [ ] M0X.A.6.5 — Migrate `c40e09fc` (verbal acknowledgment anti-pattern) → decisions with scope='process'
-- [ ] M0X.A.6.6 — Migrate `d7f1e119` (LiteLLM concrete model) → tasks with module='M4', trigger_phase='Phase D'
-- [ ] M0X.A.6.7 — Migrate `89c11602` (pyproject.toml) → tasks with module='M0.X', trigger_phase='before Module 5'
-- [ ] M0X.A.6.8 — Migrate `3d98464b` (prompt caching) → tasks with module='M4', trigger_phase='Phase F'
-- [ ] M0X.A.6.9 — Mark all 4 source `lessons` rows: `status='superseded'`, metadata.superseded_to=<new_uuid>
-- [ ] M0X.A.6.10 — Migration is idempotent: re-running is no-op (gate on source row status)
-- [ ] M0X.A.6.11 — Apply on scratch DB, verify all 4 rows landed in correct tables, originals marked superseded
+- [x] M0X.A.6.1 — Create `migrations/0029_data_migration_lessons_split.sql`
+- [x] M0X.A.6.2 — Insert ADR-021 into decisions: "Split lessons into typed stores"
+- [x] M0X.A.6.3 — Insert ADR-022 into decisions: "SOUL.md voice file"
+- [x] M0X.A.6.4 — Insert ADR-023 into decisions: "best_practices as new table (not extension of patterns)"
+- [x] M0X.A.6.5 — Migrate `c40e09fc` (verbal acknowledgment anti-pattern) → decisions with scope='process'
+- [x] M0X.A.6.6 — Migrate `d7f1e119` (LiteLLM concrete model) → tasks with module='M4', trigger_phase='Phase D'
+- [x] M0X.A.6.7 — Migrate `89c11602` (pyproject.toml) → tasks with module='M0.X', trigger_phase='before Module 5'
+- [x] M0X.A.6.8 — Migrate `3d98464b` (prompt caching) → tasks with module='M4', trigger_phase='Phase F'
+- [x] M0X.A.6.9 — Mark all 4 source `lessons` rows: `status='superseded'`, metadata.superseded_to=<new_uuid>
+- [x] M0X.A.6.10 — Migration is idempotent: re-running is no-op (gate on source row status)
+- [x] M0X.A.6.11 — Apply on scratch DB, verify all 4 rows landed in correct tables, originals marked superseded
 
 ### Phase A close-out
 
-- [ ] M0X.A.7.1 — Apply migrations 0024–0029 in order on production DB
-- [ ] M0X.A.7.2 — Run post-migration assertion script: row counts, indexes present, ADRs visible, supersession metadata correct
-- [ ] M0X.A.7.3 — Capture `\d+` output for each new/amended table to `migrations/0029_post_state.txt` for audit
-- [ ] M0X.A.7.4 — Drop scratch DB
-- [ ] M0X.A.7.5 — Commit migrations + assertion script with message "M0X.A: schema migrations 0024-0029 applied"
-- [ ] M0X.A.7.6 — **Gate A passed**: schema verified, ADRs present, 4 rows migrated
+- [x] M0X.A.7.1 — Apply migrations 0024–0029 in order on production DB
+- [x] M0X.A.7.2 — Run post-migration assertion script: row counts, indexes present, ADRs visible, supersession metadata correct
+- [x] M0X.A.7.3 — Capture `\d+` output for each new/amended table to `migrations/0029_post_state.txt` for audit
+- [x] M0X.A.7.4 — Drop scratch DB
+- [x] M0X.A.7.5 — Commit migrations + assertion script with message "M0X.A: schema migrations 0024-0029 applied"
+- [x] M0X.A.7.6 — **Gate A passed**: schema verified, ADRs present, 4 rows migrated
 
 ---
 
