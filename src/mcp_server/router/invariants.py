@@ -39,7 +39,8 @@ CheckPerBundle = Callable[[LayerBundle], list[InvariantViolation]]
 
 NEGATION_TOKENS: tuple[str, ...] = (
     # English
-    "never", "don't", "do not", "not allowed", "must not",
+    "never", "don't", "do not", "does not", "doesn't",
+    "is not", "not allowed", "must not",
     "denied", "forbidden", "prohibited", "avoid",
     # Spanish (operator writes lessons in both)
     "nunca", "no debes", "prohibido", "no permitido", "evita",
@@ -234,11 +235,15 @@ def _git_db_boundary_check(
 # --- C.2.7: budget ceiling (per-bundle, contract §7 + §11 5% slack) ---------
 
 _LAYER_CEILINGS: dict[str, int] = {
-    "L0": 1200,
     "L1": 3000,
     "L2": 5000,
     "L4": 4000,
 }
+# L0 intentionally absent — contract §7 says 1,200 is a HARD per-file
+# cap on identity.md only (enforced by `infra/hooks/token_budget.py`
+# at write time). No layer-aggregate ceiling exists for L0; the layer
+# total spans CONSTITUTION + IDENTITY + AGENTS + SOUL +
+# operator_preferences and is much larger by design.
 # L3 intentionally absent — classifier-determined, no fixed ceiling per §7.
 
 _BUDGET_SLACK = 0.05
