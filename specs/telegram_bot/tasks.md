@@ -39,7 +39,7 @@ Covered by M5.T1 above.
 
 ### A.2 — `list_pending_lessons` tool
 
-- [ ] **M5.A.2.1** Add `list_pending_lessons(bucket: str | None = None,
+- [x] **M5.A.2.1** Add `list_pending_lessons(bucket: str | None = None,
   limit: int = 10) -> dict` to `src/mcp_server/tools/lessons.py`.
   - SQL: `SELECT id, title, content, bucket, category, tags, created_at
     FROM lessons WHERE status='pending_review' AND deleted_at IS NULL
@@ -54,7 +54,7 @@ Covered by M5.T1 above.
 
 ### A.3 — `approve_lesson` tool
 
-- [ ] **M5.A.3.1** Add `approve_lesson(id: str) -> dict` to lessons.py.
+- [x] **M5.A.3.1** Add `approve_lesson(id: str) -> dict` to lessons.py.
   - SQL: `UPDATE lessons SET status='active', reviewed_at=now(),
     reviewed_by='operator' WHERE id=%s AND status='pending_review'
     RETURNING id`.
@@ -66,7 +66,7 @@ Covered by M5.T1 above.
 
 ### A.4 — `reject_lesson` tool
 
-- [ ] **M5.A.4.1** Add `reject_lesson(id: str, reason: str) -> dict`
+- [x] **M5.A.4.1** Add `reject_lesson(id: str, reason: str) -> dict`
   to lessons.py.
   - Validate: `reason` non-empty string after strip.
   - SQL: `UPDATE lessons SET status='rejected', reviewed_at=now(),
@@ -80,7 +80,7 @@ Covered by M5.T1 above.
 
 ### A.5 — `cross_pollination` tools file
 
-- [ ] **M5.A.5.1** Create `src/mcp_server/tools/cross_pollination.py`
+- [x] **M5.A.5.1** Create `src/mcp_server/tools/cross_pollination.py`
   with `list_pending_cross_pollination(limit: int = 10) -> dict`.
   - SQL: `SELECT id, origin_bucket, origin_project, target_bucket, idea,
     reasoning, suggested_application, priority, confidence_score,
@@ -90,7 +90,7 @@ Covered by M5.T1 above.
   - Clamps: `1 <= limit <= 50`.
   - Done when: function importable; returns seeded pending rows.
 
-- [ ] **M5.A.5.2** Add `resolve_cross_pollination(id: str, action: str,
+- [x] **M5.A.5.2** Add `resolve_cross_pollination(id: str, action: str,
   note: str | None = None) -> dict` to the same file.
   - Validate: `action ∈ {'approve','reject'}` (return error otherwise).
   - Map: `'approve' → 'applied'`, `'reject' → 'dismissed'`.
@@ -105,14 +105,14 @@ Covered by M5.T1 above.
 
 ### A.6 — Tool registration + tests
 
-- [ ] **M5.A.6.1** Register all 5 tools in `src/mcp_server/main.py`:
+- [x] **M5.A.6.1** Register all 5 tools in `src/mcp_server/main.py`:
   `app.tool(list_pending_lessons)`, `app.tool(approve_lesson)`,
   `app.tool(reject_lesson)`, `app.tool(list_pending_cross_pollination)`,
   `app.tool(resolve_cross_pollination)`.
   - Done when: `python -c "from mcp_server.main import build_app;
     build_app()"` runs cleanly.
 
-- [ ] **M5.A.6.2** Write `tests/tools/test_review_tools.py` with ≥8
+- [x] **M5.A.6.2** Write `tests/mcp_server/tools/test_review_tools.py` with 13 (≥8 required)
   `@pytest.mark.slow` tests against `pretel_os_test`:
   1. `test_list_pending_lessons_returns_pending` — seed 2 pending +
      1 active → list returns 2.
@@ -134,7 +134,7 @@ Covered by M5.T1 above.
      `action='maybe'` → `{status:'error', ...}`.
   - Done when: `pytest tests/tools/test_review_tools.py -v` passes.
 
-- [ ] **M5.A.6.3** mypy clean across `tools/lessons.py`,
+- [x] **M5.A.6.3** mypy clean across `tools/lessons.py`,
   `tools/cross_pollination.py`, `main.py`.
   - Done when: `mypy src/mcp_server/tools/lessons.py
     src/mcp_server/tools/cross_pollination.py src/mcp_server/main.py`

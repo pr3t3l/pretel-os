@@ -357,3 +357,253 @@ async def search_lessons(
         metadata={"result_count": len(results)},
     )
     return {"status": "ok", "results": results}
+
+
+# --- Phase A review tools (Module 5 M5.A.2-A.4) ----------------------------
+
+
+async def list_pending_lessons(
+    bucket: Optional[str] = None,
+    limit: int = 10,
+) -> dict:
+    """List lessons awaiting operator review (status='pending_review').
+
+    Used by Module 5 (Telegram bot) `/review_pending` and by Claude.ai
+    review surfaces. Ordered by `created_at ASC` so the oldest pending
+    rows surface first.
+
+    Args:
+        bucket: optional filter; matches `lessons.bucket` exactly. If
+            None, returns rows from every bucket.
+        limit: clamped to [1, 50]; default 10.
+
+    Returns:
+        `{status:'ok', results:[{id, title, content, bucket, category,
+        tags, created_at}, ...]}`. Returns degraded payload when DB is
+        unavailable.
+    """
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            await log_usage(
+                tool_name="list_pending_lessons",
+                bucket=bucket,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable"},
+            )
+            return degraded("db_unavailable", results=[])
+
+        limit_val = max(1, min(int(limit), 50))
+        params: list[Any] = []
+        where_parts = ["status = 'pending_review'", "deleted_at IS NULL"]
+        if bucket:
+            where_parts.append("bucket = %s")
+            params.append(bucket)
+        params.append(limit_val)
+
+        sql = f"""
+            SELECT id, title, content, bucket, category, tags, created_at
+            FROM   lessons
+            WHERE  {" AND ".join(where_parts)}
+            ORDER BY created_at ASC
+            LIMIT %s
+        """
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(sql, params)
+                    rows = await cur.fetchall()
+        except Exception as exc:
+            log.exception("list_pending_lessons failed")
+            await log_usage(
+                tool_name="list_pending_lessons",
+                bucket=bucket,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc)},
+            )
+            return {"status": "error", "error": str(exc), "results": []}
+
+        results = [
+            {
+                "id": str(r[0]),
+                "title": r[1],
+                "content": r[2],
+                "bucket": r[3],
+                "category": r[4],
+                "tags": list(r[5] or []),
+                "created_at": r[6].isoformat() if r[6] is not None else None,
+            }
+            for r in rows
+        ]
+
+    await log_usage(
+        tool_name="list_pending_lessons",
+        bucket=bucket,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={"result_count": len(results)},
+    )
+    return {"status": "ok", "results": results}
+
+
+async def approve_lesson(id: str) -> dict:
+    """Approve a pending lesson — flip status to 'active'.
+
+    UPDATE only fires when the row is currently `pending_review`; if
+    the row was already approved, archived, rejected, or merged, the
+    function returns `{approved: False}` without modifying anything.
+
+    Args:
+        id: UUID string of the lesson row.
+
+    Returns:
+        `{status:'ok', approved: True}` on successful flip;
+        `{status:'ok', approved: False}` when no row matched (already
+        processed or doesn't exist); degraded payload when DB is down.
+    """
+    if not isinstance(id, str) or not id.strip():
+        return {"status": "error", "error": "id must be a non-empty string"}
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            await log_usage(
+                tool_name="approve_lesson",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"id": id, "degraded_reason": "db_unavailable"},
+            )
+            return degraded("db_unavailable")
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        """
+                        UPDATE lessons
+                        SET    status = 'active',
+                               reviewed_at = now(),
+                               reviewed_by = 'operator'
+                        WHERE  id = %s
+                          AND  status = 'pending_review'
+                        RETURNING id
+                        """,
+                        (id,),
+                    )
+                    approved = (await cur.fetchone()) is not None
+        except Exception as exc:
+            log.exception("approve_lesson failed")
+            await log_usage(
+                tool_name="approve_lesson",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"id": id, "error": str(exc)},
+            )
+            return {"status": "error", "error": str(exc)}
+
+    await log_usage(
+        tool_name="approve_lesson",
+        bucket=None,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={"id": id, "approved": approved},
+    )
+    return {"status": "ok", "approved": approved}
+
+
+async def reject_lesson(id: str, reason: str) -> dict:
+    """Reject a pending lesson — flip status to 'rejected'.
+
+    `reason` is required (non-empty after strip); it lands in
+    `metadata.reject_reason` so the operator can audit later via
+    `SELECT metadata->'reject_reason' FROM lessons WHERE
+    status='rejected'`. UPDATE only fires when status is currently
+    `pending_review`.
+
+    Args:
+        id: UUID string of the lesson row.
+        reason: human-readable rejection note.
+
+    Returns:
+        `{status:'ok', rejected: True}` on successful flip;
+        `{status:'ok', rejected: False}` when no row matched; degraded
+        payload when DB is down; `{status:'error', error: ...}` on
+        invalid input.
+    """
+    if not isinstance(id, str) or not id.strip():
+        return {"status": "error", "error": "id must be a non-empty string"}
+    if not isinstance(reason, str) or not reason.strip():
+        return {"status": "error", "error": "reason must be a non-empty string"}
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            await log_usage(
+                tool_name="reject_lesson",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"id": id, "degraded_reason": "db_unavailable"},
+            )
+            return degraded("db_unavailable")
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        """
+                        UPDATE lessons
+                        SET    status = 'rejected',
+                               reviewed_at = now(),
+                               reviewed_by = 'operator',
+                               metadata = metadata
+                                          || jsonb_build_object('reject_reason', %s::text)
+                        WHERE  id = %s
+                          AND  status = 'pending_review'
+                        RETURNING id
+                        """,
+                        (reason, id),
+                    )
+                    rejected = (await cur.fetchone()) is not None
+        except Exception as exc:
+            log.exception("reject_lesson failed")
+            await log_usage(
+                tool_name="reject_lesson",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"id": id, "error": str(exc)},
+            )
+            return {"status": "error", "error": str(exc)}
+
+    await log_usage(
+        tool_name="reject_lesson",
+        bucket=None,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={"id": id, "rejected": rejected},
+    )
+    return {"status": "ok", "rejected": rejected}

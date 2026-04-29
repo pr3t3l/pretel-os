@@ -27,9 +27,19 @@ from . import db as db_mod
 from .auth import PretelAuthMiddleware
 from .tools.catalog import load_skill, register_skill, register_tool, tool_search
 from .tools.context import get_context
+from .tools.cross_pollination import (
+    list_pending_cross_pollination,
+    resolve_cross_pollination,
+)
 from .tools.health import health
 from .tools.report_satisfaction import report_satisfaction
-from .tools.lessons import save_lesson, search_lessons
+from .tools.lessons import (
+    approve_lesson,
+    list_pending_lessons,
+    reject_lesson,
+    save_lesson,
+    search_lessons,
+)
 from .tools.preferences import (
     preference_get,
     preference_list,
@@ -87,6 +97,11 @@ def build_app() -> FastMCP:
     app.tool(report_satisfaction)
     app.tool(save_lesson)
     app.tool(search_lessons)
+    app.tool(list_pending_lessons)
+    app.tool(approve_lesson)
+    app.tool(reject_lesson)
+    app.tool(list_pending_cross_pollination)
+    app.tool(resolve_cross_pollination)
     app.tool(register_skill)
     app.tool(register_tool)
     app.tool(load_skill)

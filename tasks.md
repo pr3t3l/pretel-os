@@ -60,7 +60,7 @@ Per-module detail: `specs/module-0x-knowledge-architecture/tasks.md`
 ## Module 5 — telegram_bot
 
 - [x] **M5.T1** SDD trinity at `specs/telegram_bot/` (this commit)
-- [ ] **M5.T2** Phase A — Review MCP tools (5 new tools + tests)
+- [x] **M5.T2** Phase A — Review MCP tools (5 new tools + 13 tests; all green)
 - [ ] **M5.T3** Phase B — Bot skeleton + core commands (/start, /save, /idea, /status, systemd)
 - [ ] **M5.T4** Phase C — Review flows (/review_pending, /cross_poll_review)
 - [ ] **M5.T5** Phase D — Voice (Whisper) + session tracking (unblocks M4 D.2 Q8)
