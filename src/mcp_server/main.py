@@ -35,6 +35,12 @@ from .tools.preferences import (
     preference_set,
     preference_unset,
 )
+from .tools.best_practices import (
+    best_practice_deactivate,
+    best_practice_record,
+    best_practice_rollback,
+    best_practice_search,
+)
 from .tools.decisions import decision_record, decision_search, decision_supersede
 from .tools.router_feedback import router_feedback_record, router_feedback_review
 from .tools.tasks import (
@@ -105,6 +111,12 @@ def build_app() -> FastMCP:
     app.tool(decision_record)
     app.tool(decision_search)
     app.tool(decision_supersede)
+
+    # Module 0.X — best_practices
+    app.tool(best_practice_record)
+    app.tool(best_practice_search)
+    app.tool(best_practice_deactivate)
+    app.tool(best_practice_rollback)
 
     app.custom_route("/health", methods=["GET"])(health)
 
