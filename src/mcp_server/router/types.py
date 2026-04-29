@@ -94,6 +94,34 @@ _REQUIRED_LAYER_ORDER = ("L0", "L1", "L2", "L3", "L4")
 
 
 @dataclass(frozen=True)
+class InvariantViolation:
+    """A single invariant breach detected by the Phase C scanner.
+
+    Per `specs/router/phase_c_close.md` Q1: this shape is defined in
+    `types.py` (not in `invariant_detector.py`) so downstream consumers
+    (Phase D telemetry, Module 6 reflection) can import the value type
+    without pulling the detector's logic into their import graph. Plan
+    §5.2 names this location explicitly.
+
+    Per phase_c_close.md Q6: every field is a primitive `str` so
+    `dataclasses.asdict(violation)` round-trips through `json.dumps`
+    without custom encoders. Phase D will serialize a list of these
+    into `routing_logs.source_conflicts` (JSONB). No `__post_init__`
+    validation — constructors are trusted, and the runtime cost on
+    every detection is not earned for a final-mile defense check.
+
+    `severity` follows the SQL `CASE` ranking from
+    `layer_loader_contract.md` §3.2: `critical` (0) > `normal` (1) >
+    `minor` (2). Field order in this dataclass matches that doc's Q6.
+    """
+    layer: str
+    source: str
+    invariant_id: str
+    evidence: str
+    severity: str
+
+
+@dataclass(frozen=True)
 class LayerBundle:
     """The complete output of the Layer Loader.
 

@@ -181,7 +181,7 @@ This is a defense-in-depth check that no layer's content sneaks past CONSTITUTIO
 **In:**
 - `src/mcp_server/router/invariant_detector.py` with:
   - `detect_invariant_violations(bundle: LayerBundle) -> list[InvariantViolation]` — iterates every `ContextBlock` in every `LayerContent` in `bundle.layers`, runs each block through every registered invariant check.
-  - `InvariantViolation` frozen dataclass: `layer: str`, `source: str`, `invariant_id: str`, `evidence: str`, `severity: str`.
+  - `InvariantViolation` frozen dataclass (in `types.py` per phase_c_close.md Q1): `layer: str`, `source: str`, `invariant_id: str`, `evidence: str`, `severity: str`.
 - `src/mcp_server/router/invariants.py` — registry of invariant check callables keyed by `invariant_id`. Initial set seeded from CONSTITUTION + scout policy (scout-denylist match, budget-ceiling overrun, git/DB boundary breach, CONSTITUTION §9 agent-rule breach).
 - Unit tests with synthetic violations embedded across layers: scout-denylist string in an L4 lesson, budget-ceiling violation in an L1 bucket README, agent-rule breach in an L3 skill, clean bundle produces empty list.
 
