@@ -273,7 +273,7 @@ they slip through.
 - [x] **C.2** Six invariant checks + mention helper (commit `1cf95f8`)
 - [x] **C.3** Detector orchestrator (commit `0292247`)
 - [x] **C.4** Examples doc + 12 tests + mypy clean (commit `0292247`)
-- [ ] **C.5** Phase C gate + tasks.md cleanup + deferred-todo + tag
+- [x] **C.5** Phase C gate + tasks.md cleanup + deferred-todo + tag
 
 ---
 

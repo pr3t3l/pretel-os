@@ -594,11 +594,11 @@ Commits pushed this session (Phase C chain):
   - 51da98f C.1: InvariantViolation dataclass + invariants registry skeleton
   - 1cf95f8 C.2: six invariant checks + mention-vs-instruction helper
   - 0292247 C.3 + C.4: detector orchestrator + examples doc + 12 tests
-  - [this commit hash] C.5: gate + tasks.md cleanup + SESSION_RESTORE
+  - 7b6f926 C.5: gate + tasks.md cleanup + SESSION_RESTORE
 Phase C output: ~750 LoC code + tests across 4 new router files.
   invariant_detector.py (42 LoC), invariants.py (~260 LoC),
   test_invariant_detector.py (~260 LoC), invariant_examples.md (~183 LoC).
-Tags: phase-c-complete on [this commit hash] (operator-driven).
+Tags: phase-c-complete on 7b6f926 (operator-driven).
 Next: M4 Phase D — Telemetry.
 ---
 
