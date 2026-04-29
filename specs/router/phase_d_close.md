@@ -621,6 +621,13 @@ noted in D.5 cleanup but do not block Phase D start.
 
 **Active task:** first unchecked `[ ]` above.
 
+**D.0.4 gate (Phase E) verified:** 2026-04-29. plan.md §7.4 bullets
+(a)–(d) all pass: (a) valid spec §5.1 schema returned for all 7
+cases; (b) `confidence == 0.4` invariant; (c) `complexity` never
+returns `HIGH` (capped to `MEDIUM`); (d) 7/7 unit tests green in
+0.03s. mypy clean across `fallback_keywords.py` and
+`fallback_classifier.py`.
+
 **Suggested commit boundaries:**
 
 1. **D.0** — fallback_keywords.py + fallback_classifier.py + tests
