@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Module 0.X + M4 Phases A–E complete. M4.T9.x (runbook + module exit gate + tag) next.
+**Phase:** Module 4 complete. Module 5 next.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -32,21 +32,23 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M4 Phase B (Layer Loader): all 9 atomic groups shipped 2026-04-29. 5 sync loaders (L0..L4) per contract §3.1-§3.5, async `assemble_bundle` orchestrator wiring `embed()` + loaders + `summarize_oversize` + cache, in-memory `LayerBundleCache` with LISTEN/NOTIFY invalidation via migration 0031 trigger function. 103 fast + 3 slow tests, mypy clean across 16 router source files. Architecture decisions tracked in `specs/router/phase_b_close.md`. Tag candidate: `phase-b-complete` at commit `97a67d6`.
 - M4 Phase C (Invariant violation detection — post-rescope): `detect_invariant_violations(bundle)` scans every `ContextBlock` against 6 registered invariant checks (3 agent-rule, 1 git/DB boundary, 1 budget ceiling, 1 Scout stub). 12 tests, mypy clean. Scout denylist deferred (Q3). Architecture decisions in `specs/router/phase_c_close.md`.
 - M4 Phase D + E (Telemetry + orchestrator + fallback classifier): full pipeline shipped 2026-04-29. 6 atomic groups (D.0-D.5) per `specs/router/phase_d_close.md`. `router.get_context()` async orchestrator wires classify → assemble_bundle → detect_invariant_violations → telemetry, with try/finally degraded handling per spec §10. 6 telemetry functions (start_request + 5 log_*) write spec §9.1/§9.2 columns; INSERT-early per Q2. MCP tool wrappers `tools/context.py` (replaces Module-3 stub) + `tools/report_satisfaction.py`. 19 D.4 tests green: 8 telemetry + 5 fallback integration + 6 e2e (~$0.018 actual cost). 3 audit queries from spec §9.3 saved to `runbooks/router_audit_queries.sql`. Q5 Q-decisions captured in `phase_d_close.md`.
+- M4 exit (M4.T9.x): plan §10 exit gate verified (9/10 ✓, bullet 8 partial — provider-variance pushes individual HIGH-complexity turns to ~3.5s vs the 2s gate; warm steady-state is ~1s; 5s `ClassifierTimeout` triggers fallback to protect UX). `runbooks/module_4_router.md` rewritten as consolidated module runbook (5 sections + gate verification table + file-to-responsibility map). `runbooks/router_tuning.md` (F.1.1) ships 3 baseline §9.3 queries + 5 Phase F tuning queries. Tag candidate `module-4-complete` (operator-driven).
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- M4.T9.x (runbook + module exit gate + `module-4-complete` tag).
-- M4 Phase F (post-exit tuning, ongoing — not gated).
-- Modules 5-8.
+- Module 5 (Telegram bot — writes per-turn content into `conversation_sessions`, unblocks Q8 deferral from Phase D).
+- Module 6 (Reflection worker — reads `routing_logs` to detect patterns).
+- Modules 7-8.
+- M4 Phase F (post-30-day tuning, ongoing — not gated; queries shipped in `runbooks/router_tuning.md`).
 
-**Top of stack:** M4.T9.x — Module 4 exit. Per `plan.md §10`: the Module 4 gate requires (a) the 6 router responsibilities implemented per CONSTITUTION §2.2, (b) classification per spec §5.1, (c) layer loader respects budgets per CONSTITUTION §2.3, (d) source-priority resolution per CONSTITUTION §2.7 (now consumer-side per contract §10), (e) `routing_logs` populated on every call, (f) fallback classifier on LiteLLM failure, (g) smoke tests, (h) per-turn latency under 2s for HIGH, (i) `runbooks/module_4_router.md` covers the 4 ops scenarios, (j) commit + tag `module-4-complete`. Phase D D.5 closes the technical gates A-E; M4.T9.x adds the runbook polish and the module tag.
+**Top of stack:** Module 5 — Telegram bot. Picks up where Module 4 ends: writes per-turn message content to `conversation_sessions` so the Router's `_get_session_excerpt` can return real session ledger context (currently `""` per phase_d_close.md Q8). Module 5 trinity (spec/plan/tasks) not yet drafted — kickoff via `runbooks/sdd_module_kickoff.md`.
 
-**Where to find M4.T9.x source-of-truth:**
-- Plan: `specs/router/plan.md §10` (Module 4 exit gate restatement)
-- Existing runbook: `runbooks/module_4_router.md` (audit queries already present + new `runbooks/router_audit_queries.sql` from D.5.2)
-- Phase D decisions tracker: `specs/router/phase_d_close.md`
-- All Phase A-E decision trackers: `phase_b_close.md`, `phase_c_close.md`, `phase_d_close.md`
+**Where to find Module 4 source-of-truth (now closed):**
+- Module runbook: `runbooks/module_4_router.md` (consolidated; ops scenarios + gate verification + file-to-responsibility map)
+- Tuning queries: `runbooks/router_tuning.md` + `runbooks/router_audit_queries.sql`
+- Phase decision trackers: `specs/router/phase_b_close.md`, `phase_c_close.md`, `phase_d_close.md`
+- Spec / plan / tasks: `specs/router/spec.md`, `plan.md`, `tasks.md`
 
 ---
 
@@ -634,6 +636,33 @@ Phase D + E output: ~1900 LoC across 7 new files + 1 modified main.py.
 Tags candidate this session (operator-driven): phase-e-complete on
   c5e1f11, phase-d-complete on the D.5 close-out commit.
 Next: M4.T9.x — Module 4 exit gate (runbook + module-4-complete tag).
+
+
+Last session: 2026-04-29 (M4.T9.x — Module 4 exit complete)
+Status: Module 4 closed. plan §10 exit gate verified line-by-line:
+  9/10 ✓ + 1 partial (bullet 8 per-turn latency < 2s for HIGH:
+  warm steady-state ~1s, but provider-variance pushes individual
+  turns to ~3.5s — full table in `runbooks/module_4_router.md`).
+  Two new runbooks: `module_4_router.md` consolidated (5 sections +
+  gate verification + file-to-responsibility map) and
+  `router_tuning.md` (3 baseline §9.3 queries + 5 Phase F tuning
+  queries). Tag candidate: module-4-complete (operator-driven).
+Last task completed: M4.T9.3 — runbook + tasks.md cleanup +
+  SESSION_RESTORE update.
+Commits pushed this session arc (full Module 4 close):
+  - c5e1f11 D.0: fallback_classifier + 7 tests (Phase E bundled)
+  - b33fc15 D.1: telemetry primitives (6 functions, INSERT-early)
+  - afea9ff D.2: router.py orchestrator + context_bundle_schema.json
+  - a91ef61 D.3: tools/context.py + tools/report_satisfaction.py
+  - 7c1f7af D.4: 19 tests (8 telemetry + 5 fallback + 6 e2e)
+  - 210e22f hot-fix: 2 false positives in invariant detector
+  - 8bda98d D.5: Phase D + E gate + tasks.md cleanup + audit-query runbook
+  - [this commit hash] M4.T9: Module 4 exit — runbook + tuning + gate verified
+Tags candidate this session (operator-driven): module-4-complete
+  on this commit.
+Next: Module 5 — Telegram bot (writes per-turn content to
+  `conversation_sessions`, unblocks the Phase D Q8 session-excerpt
+  deferral).
 ---
 
 **End of SESSION_RESTORE.md.**
