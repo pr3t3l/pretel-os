@@ -1,0 +1,11 @@
+# Test dependencies for pretel-os.
+# Production deps live in src/mcp_server/requirements.txt.
+# Install with: pip install -r requirements-dev.txt
+#
+# Versions pinned to what was installed when M0.X Phase D shipped (2026-04-29)
+# to avoid surprise breakage on future fresh setups. Bump when needed.
+
+pytest>=9.0,<10.0
+pytest-asyncio>=1.3,<2.0
+pytest-cov>=7.1,<8.0
+tiktoken>=0.12,<1.0
