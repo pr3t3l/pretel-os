@@ -1,0 +1,402 @@
+{
+  "timestamp": "2026-04-29T14:27:04.636306Z",
+  "model_alias": "classifier_default",
+  "concrete_models_seen": [
+    "classifier_default"
+  ],
+  "n_examples": 10,
+  "summary": {
+    "bucket_accuracy": 1.0,
+    "complexity_accuracy": 0.8,
+    "needs_lessons_accuracy": 0.9,
+    "schema_violations": 0,
+    "provider_errors": 0,
+    "avg_confidence": 0.846,
+    "avg_prompt_tokens": 1051.9,
+    "avg_completion_tokens": 59.2,
+    "avg_reasoning_tokens": 0.0,
+    "total_cost_usd_est": 0.010783
+  },
+  "results": [
+    {
+      "title": "Example 1: personal \u2014 quick factual lookup",
+      "input": "What's the street address of the Goose Creek rental?",
+      "expected": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.95
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1047,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 2: personal \u2014 calendar add command",
+      "input": "Add an event to my calendar for my daughter's kindergarten open house next Tuesday at 6pm.",
+      "expected": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.95
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1055,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 3: personal \u2014 refinance decision",
+      "input": "Should I refinance the Charleston rental given current interest rates and the projected Q3 vacancy?",
+      "expected": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "personal",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.92
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1053,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 4: business \u2014 list unchecked tasks",
+      "input": "lista las tasks sin completar del Module 4",
+      "expected": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.95
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1044,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 5: business \u2014 task append command",
+      "input": "agrega una nueva task M5.T2.1 en tasks.md para el Telegram bot scaffold",
+      "expected": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "MEDIUM",
+        "needs_lessons": false,
+        "confidence": 0.92
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1057,
+        "completion_tokens": 60,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.075,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": false,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 6: business \u2014 Reflection worker design",
+      "input": "help me design the Reflection worker para Module 6, qu\u00e9 patterns deber\u00eda seguir?",
+      "expected": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.95
+      },
+      "actual": {
+        "bucket": "business",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.92
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1054,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 7: scout \u2014 abstract pattern name lookup",
+      "input": "what's the abstract name we used for the operator-context-capture pattern?",
+      "expected": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.85
+      },
+      "actual": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "MEDIUM",
+        "needs_lessons": false,
+        "confidence": 0.85
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1050,
+        "completion_tokens": 60,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.075,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": false,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 8: scout \u2014 abstract pattern documentation",
+      "input": "Document the cycle-time pattern I observed at the station this morning, abstracted from any specific product line.",
+      "expected": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "MEDIUM",
+        "needs_lessons": true,
+        "confidence": 0.85
+      },
+      "actual": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "MEDIUM",
+        "needs_lessons": false,
+        "confidence": 0.88
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1056,
+        "completion_tokens": 60,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.075,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": false,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 9: scout \u2014 vendor pushback decision",
+      "input": "Help me think through whether to push back on a new MTM standard a vendor is proposing \u2014 what factors should drive the decision?",
+      "expected": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.9
+      },
+      "actual": {
+        "bucket": "scout",
+        "project": null,
+        "skill": null,
+        "complexity": "HIGH",
+        "needs_lessons": true,
+        "confidence": 0.92
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1061,
+        "completion_tokens": 59,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.07375,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    },
+    {
+      "title": "Example 10: ambiguous \u2014 bare opinion request",
+      "input": "qu\u00e9 piensas de esto?",
+      "expected": {
+        "bucket": null,
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.3
+      },
+      "actual": {
+        "bucket": null,
+        "project": null,
+        "skill": null,
+        "complexity": "LOW",
+        "needs_lessons": false,
+        "confidence": 0.2
+      },
+      "telemetry": {
+        "finish_reason": "stop",
+        "model": "classifier_default",
+        "prompt_tokens": 1042,
+        "completion_tokens": 58,
+        "reasoning_tokens": 0,
+        "headroom_used_ratio": 0.0725,
+        "near_truncation": false,
+        "cache_hit": false
+      },
+      "matches": {
+        "bucket": true,
+        "complexity": true,
+        "needs_lessons": true,
+        "project": true,
+        "skill": true
+      },
+      "error": null
+    }
+  ]
+}
