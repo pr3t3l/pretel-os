@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContextBundle",
+  "description": "Top-level Router output per specs/router/spec.md §4.2. Validates the dict returned by router.get_context().",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "session_id",
+    "classification",
+    "classification_mode",
+    "bundle",
+    "tools_recommended",
+    "source_conflicts",
+    "over_budget_layers",
+    "degraded_mode",
+    "degraded_reason",
+    "latency_ms"
+  ],
+  "properties": {
+    "request_id": {"type": "string"},
+    "session_id": {"type": ["string", "null"]},
+    "classification": {
+      "type": "object",
+      "required": [
+        "bucket",
+        "project",
+        "skill",
+        "complexity",
+        "needs_lessons",
+        "confidence"
+      ],
+      "properties": {
+        "bucket": {"enum": ["personal", "business", "scout", null]},
+        "project": {"type": ["string", "null"]},
+        "skill": {"type": ["string", "null"]},
+        "complexity": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+        "needs_lessons": {"type": "boolean"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "classification_mode": {"enum": ["llm", "fallback_rules"]},
+    "bundle": {
+      "type": "object",
+      "required": ["layers", "metadata"],
+      "properties": {
+        "layers": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "required": ["layer", "loaded", "token_count", "blocks"],
+            "properties": {
+              "layer": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+              "loaded": {"type": "boolean"},
+              "token_count": {"type": "integer", "minimum": 0},
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "source",
+                    "content",
+                    "row_count",
+                    "token_count"
+                  ],
+                  "properties": {
+                    "source": {"type": "string"},
+                    "content": {"type": "string"},
+                    "row_count": {"type": ["integer", "null"]},
+                    "token_count": {"type": "integer", "minimum": 0}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "required": [
+            "bucket",
+            "project",
+            "classifier_hash",
+            "total_tokens",
+            "assembly_latency_ms",
+            "cache_hit"
+          ],
+          "properties": {
+            "bucket": {"type": ["string", "null"]},
+            "project": {"type": ["string", "null"]},
+            "classifier_hash": {"type": "string"},
+            "total_tokens": {"type": "integer", "minimum": 0},
+            "assembly_latency_ms": {"type": "integer", "minimum": 0},
+            "cache_hit": {"type": "boolean"},
+            "over_budget_layers": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "tools_recommended": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "source_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "layer",
+          "source",
+          "invariant_id",
+          "evidence",
+          "severity"
+        ],
+        "properties": {
+          "layer": {"type": "string"},
+          "source": {"type": "string"},
+          "invariant_id": {"type": "string"},
+          "evidence": {"type": "string"},
+          "severity": {"type": "string"}
+        }
+      }
+    },
+    "over_budget_layers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "degraded_mode": {"type": "boolean"},
+    "degraded_reason": {"type": ["string", "null"]},
+    "latency_ms": {"type": "integer", "minimum": 0}
+  }
+}
