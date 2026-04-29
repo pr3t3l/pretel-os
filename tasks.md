@@ -777,7 +777,7 @@ Phase A exit gate: PASSED.
 
 ## Module 0.X: Knowledge Architecture
 
-**Status:** SDD trinity complete (spec 8a6cf7d, plan ff81538, tasks c4b4649). Implementation pending at M0X.T4.
+**Status:** SDD trinity complete (spec 8a6cf7d, plan ff81538, tasks c4b4649). Implementation Phase A complete (commit bc4e5df, 7 migrations applied). Phase B-E pending.
 
 Splits the single `lessons` table into typed knowledge stores. **Important deduplication note**: the original draft proposed `decisions` and `best_practices` as new tables, but `decisions` already exists in DATA_MODEL §5.2 and `patterns` (§5.1) + `gotchas` (§5.3) cover similar ground. Revised scope:
 
@@ -796,9 +796,13 @@ Splits the single `lessons` table into typed knowledge stores. **Important dedup
 - [x] M0X.T1 — Revise spec.md based on dedupe finding (decisions/patterns exist) [commit 8a6cf7d]
 - [x] M0X.T2 — Write plan.md (phases, gates, dependencies) [commit ff81538]
 - [x] M0X.T3 — Write tasks.md (atomic tasks) [commit pending — this commit]
-- [ ] M0X.T4 — Implementation (after spec/plan/tasks reviewed)
+- [x] M0X.T4.A — Phase A: Schema migrations [commit bc4e5df]
+- [ ] M0X.T4.B — Phase B: SOUL.md workspace file
+- [ ] M0X.T4.C — Phase C: MCP tools (17 tools)
+- [ ] M0X.T4.D — Phase D: Unit + integration tests
+- [ ] M0X.T4.E — Phase E: Layer loader contract + DATA_MODEL update + tag module-0x-complete
 
-(M0X subtasks expanded after T1-T3 complete.)
+Per-phase atomic tasks live in `specs/module-0x-knowledge-architecture/tasks.md`.
 
 ---
 

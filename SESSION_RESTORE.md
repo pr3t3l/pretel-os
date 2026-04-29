@@ -327,6 +327,33 @@ Tags: foundation-v1.0, module-1-complete, module-2-complete,
   module-0x-complete after Phase E)
 
 
+Last session: 2026-04-28 (Phase A close)
+Last task completed: M0.X Phase A complete — 7 migrations applied to production
+  - db73a67: M0X.A.1 migration 0024 tasks
+  - 394bf1a: M0X.A.2 migration 0025 operator_preferences
+  - fe923a9: M0X.A.3 migration 0026 router_feedback + spec §5.4 amendment (request_id text)
+  - 885adba: M0X.A.4 migration 0027 best_practices (HNSW deferred per ADR-024)
+  - cb56311: fix M2 — 0028a notify_missing_embedding polymorphic CASE bug
+  - acac675: M0X.A.5 migration 0028 decisions amendment + spec §5.2 fix (default 'operational')
+  - 40d51cc: M0X.A.6 migration 0029 ADR seed + lessons split + spec §7 fix (status archived)
+  - 3e55baf: M0X.A.7 schema audit captured at migrations/audit/0029_post_state.md
+  - bc4e5df: M0X.A close-out, all 46 atomic tasks marked [x]
+Production state: 25 tables (21 base + 4 new), 5 ADRs (020-024) seeded,
+  4 misclassified lessons archived to decisions+tasks with metadata
+  cross-pointers, notify_missing_embedding rewritten using IF/ELSIF.
+Next task: Phase B — draft SOUL.md, measure L0 token budget, register in AGENTS.md
+  (M0X.B.1 through M0X.B.8 in specs/module-0x-knowledge-architecture/tasks.md)
+Operator setup gaps documented (runbooks/module_2_data_layer.md):
+  - ~/.pgpass for non-interactive psql
+  - ALTER ROLE pretel_os CREATEDB
+  - Pre-load extensions into template1 (pgvector 0.6.0 not trusted)
+Lessons captured this session: 2 new (LL-M0X-001 spec drift, LL-M0X-002
+  polymorphic PL/pgSQL CASE bug — see docs/LESSONS_LEARNED.md §9)
+Tags: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete (pending: module-4-phase-a-complete on e59b943,
+  module-0x-phase-a-complete on bc4e5df, module-0x-complete after Phase E)
+
+
 
 ## 14. Last-known state snapshot
 

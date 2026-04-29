@@ -499,6 +499,42 @@ Ten lessons already learned during the four-document foundation cycle of pretel-
 
 **Lesson:** Provider-agnostic abstractions hide telemetry detail. Always query underlying metadata fields for true model identity.
 
+### LL-M0X-001 — Spec drift caught at scratch test time (no production damage)
+
+**Severity:** moderate
+**Captured:** 2026-04-28 during M0.X Phase A migration smoke tests.
+
+**Problem:** Three independent schema mismatches between the M0.X spec and actual production schema surfaced during scratch DB testing of migrations 0026-0029:
+
+1. **`router_feedback.request_id`** — spec §5.4 declared `uuid REFERENCES routing_logs(request_id) ON DELETE SET NULL`. Reality: `routing_logs.request_id` is `text` (not uuid), and `routing_logs` is partitioned by `created_at` so no UNIQUE constraint on `request_id` is possible. The hard FK was impossible. Fixed in commit `fe923a9`: `request_id text` with no FK (soft reference).
+
+2. **`decisions.scope` DEFAULT** — spec §5.2 declared `DEFAULT 'project' CHECK (scope IN ('architectural','process','product','operational'))`. The default value `'project'` is not in the CHECK enum. Any legacy-style INSERT without explicit scope violated CHECK. Fixed in commit `acac675`: `DEFAULT 'operational'`.
+
+3. **`lessons.status='superseded'`** — spec §7 instructed migration 0029 to mark migrated source rows `status='superseded'`. Reality: `lessons.status` is enum `lesson_status` with allowed values `pending_review|active|archived|merged_into|rejected`. `'superseded'` is not a valid enum value. Fixed in commit `40d51cc`: `status='archived'` (closest semantic match) with cross-table pointer in `metadata.superseded_to_table`.
+
+**Pattern:** spec was written referencing the *intended* schema, not the *actual* production schema. All 3 errors would have failed at production-apply time.
+
+**Mitigation that saved us:** the discipline of "scratch DB first, smoke test, then production" caught all 3 before any production damage. Production was never in a broken state.
+
+**Lesson:** Before writing any migration that references existing tables, run `\d <table>` on production to verify column types, constraints, partitioning, and enum values match what the spec assumes. Spec source-of-truth claims should be cross-checked, not trusted. The pre-check step in tasks.md (e.g., M0X.A.5 pre-check counted existing decisions rows) should also include schema verification.
+
+**Tags:** spec-drift, scratch-testing, migration-discipline, m0x
+
+### LL-M0X-002 — Polymorphic PL/pgSQL CASE bug latent for months
+
+**Severity:** critical
+**Captured:** 2026-04-28 during M0X.A.5 (migration 0028 smoke test).
+
+**Problem:** `notify_missing_embedding()` from migration `0019_functions_triggers.sql` used `CASE TG_TABLE_NAME WHEN 'lessons' THEN NEW.title || NEW.content WHEN 'decisions' THEN NEW.title || NEW.context || NEW.decision ... END`. PL/pgSQL evaluates `NEW.<column>` references in *every* branch at runtime against the firing table's row type, even branches whose WHEN condition doesn't match. When the trigger fired for `decisions`, PL/pgSQL hit `NEW.content` (lessons branch) and threw `ERROR: record "new" has no field "content"`.
+
+**Why it stayed latent ~6 months:** the trigger was attached to 9 tables but only `lessons` had data. Phase 2 tables (`decisions`, `patterns`, `gotchas`, `contacts`, `ideas`, `projects_indexed`, `conversations_indexed`, `tools_catalog`) were all empty. The bug fired the first time M0.X smoke-tested an INSERT into `decisions`. Same bug would have detonated on first insert into ANY of the 7 other Phase 2 tables.
+
+**Fix:** rewrite using `IF/ELSIF` chain. PL/pgSQL only evaluates the matched branch's expressions in IF/ELSIF — no pre-validation. All 9 table branches preserved with identical semantics. Commit `cb56311` (migration 0028a).
+
+**Lesson:** Polymorphic trigger functions that branch on `TG_TABLE_NAME` with `CASE WHEN ... THEN NEW.<column>` are time bombs against empty tables. Use `IF/ELSIF` for dispatch. Empty tables have not exercised the code path — assume zero coverage until first INSERT happens.
+
+**Tags:** plpgsql, triggers, latent-bug, schema-completeness, m2
+
 ---
 
 ## 10. Pre-flight checklist (master)

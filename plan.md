@@ -72,7 +72,12 @@ This document does not contain estimates in time units. Time-to-complete is neve
 - ✅ Phase 1 Bootstrap (Modules 1, 2, 3)
 - 🔄 Phase 2 Intelligence — Module 4 Router IN PROGRESS:
   - ✅ M4 Phase A Classifier (complete 2026-04-28)
-  - 🆕 Module 0.X Knowledge Architecture (spec drafted, plan/tasks pending) — must close before M4 Phase B
+  - 🔄 Module 0.X Knowledge Architecture:
+    - ✅ Phase A Schema migrations (7 migrations applied 2026-04-28: 0024-0029 + 0028a fix)
+    - ⏸️ Phase B SOUL.md
+    - ⏸️ Phase C MCP tools (17)
+    - ⏸️ Phase D Tests
+    - ⏸️ Phase E Layer loader contract + DATA_MODEL update
   - ⏸️ M4 Phase B Layer Loader (blocked on M0.X)
   - ⏸️ M4 Phase C-F (blocked)
 - ⏸️ Module 5 telegram_bot
@@ -400,9 +405,13 @@ These are one-page summaries. Full specs live at `specs/{module}/spec.md` (writt
 
 **Out of scope:** Reflection worker (M6), Phase B layer loader, replacement of `lessons`.
 
-**Spec:** `specs/module-0x-knowledge-architecture/spec.md` (commit e466796 draft, revision in progress).
+**Spec:** `specs/module-0x-knowledge-architecture/spec.md` (revised at commit 8a6cf7d, plan ff81538, tasks c4b4649). Per-phase commit chain in `specs/module-0x-knowledge-architecture/tasks.md`.
 
-**Exit gate:** Migration applies cleanly, all new MCP tools registered and callable, mypy --strict clean, integration tests for every tool, the 4 misclassified lessons visible in their proper tables with originals marked superseded.
+**Phase A status (2026-04-28):** COMPLETE. 7 migrations applied to production (0024-0029 + 0028a Module 2 trigger fix). 5 ADRs seeded into `decisions`. 4 misclassified `lessons` rows archived with cross-table pointers. Schema audit at `migrations/audit/0029_post_state.md`. Spec drifts caught and corrected inline: §5.4 (request_id text vs uuid), §5.2 (scope DEFAULT 'operational'), §7 (status='archived' since lesson_status enum has no 'superseded'). Phase A close-out commit: `bc4e5df`.
+
+**Phase B-E status:** Pending. Phase B (SOUL.md) is next.
+
+**Exit gate:** Migration applies cleanly, all new MCP tools registered and callable, mypy --strict clean, integration tests for every tool, the 4 misclassified lessons visible in their proper tables with originals marked archived.
 
 ### Module 5: `telegram_bot`
 

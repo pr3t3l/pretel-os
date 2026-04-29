@@ -261,7 +261,9 @@ The Router per `CONSTITUTION §2.2`: classifier via LiteLLM alias `classifier_de
 
 ### Module 0.X: `knowledge_architecture`
 
-Inserted 2026-04-28 between Module 4 Phase A and Phase B. Splits `lessons` table into typed knowledge stores: `tasks`, `operator_preferences`, `router_feedback` (new) + amendments to `decisions` (existing). Adds `SOUL.md` voice file. ~12 new MCP tools. See specs/module-0x-knowledge-architecture/.
+Inserted 2026-04-28 between Module 4 Phase A and Phase B. Splits `lessons` table into typed knowledge stores: `tasks`, `operator_preferences`, `router_feedback`, `best_practices` (new) + amendments to `decisions` (existing). Adds `SOUL.md` voice file. 17 new MCP tools. See specs/module-0x-knowledge-architecture/.
+
+**Phase A status (2026-04-28):** COMPLETE. 7 migrations applied to production: 0024 (tasks), 0025 (operator_preferences), 0026 (router_feedback), 0027 (best_practices, HNSW deferred per ADR-024), 0028 (decisions amendment), 0028a (Module 2 trigger fix), 0029 (ADR seed + lessons split). Schema audit at `migrations/audit/0029_post_state.md`. Phases B-E pending.
 
 ### Module 5: `telegram_bot`
 
