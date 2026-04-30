@@ -98,6 +98,48 @@ def _get_session_excerpt(
     return ""
 
 
+def _check_project_exists(
+    conn: psycopg.Connection,
+    bucket: str | None,
+    project: str | None,
+    repo_root: Path,
+) -> bool:
+    """Return True iff (bucket, project) is registered or has an L2 README.
+
+    Used to decide whether to surface an `unknown_project` hint to the
+    LLM client. Existence is a logical OR across two sources of truth:
+
+    1. The `projects` live registry (migration 0033) — written by the
+       create_project MCP tool.
+    2. `buckets/{bucket}/projects/{project}/README.md` on disk — covers
+       projects that predate the registry or were created out-of-band.
+
+    Either path counts as "known" so the hint never fires on a project
+    that legitimately exists. Returns True when bucket or project is
+    None (nothing to check; caller short-circuits).
+    """
+    if not bucket or not project:
+        return True
+
+    readme = repo_root / "buckets" / bucket / "projects" / project / "README.md"
+    if readme.exists():
+        return True
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT 1 FROM projects WHERE bucket = %s AND slug = %s LIMIT 1",
+                (bucket, project),
+            )
+            return cur.fetchone() is not None
+    except psycopg.Error as exc:
+        # Treat DB lookup failures as "known" so we don't spam the hint
+        # during a degraded DB window. The bundle assembly path will
+        # already be flagging degraded_mode=True separately.
+        log.warning("project existence check failed: %s", exc)
+        return True
+
+
 def _provider_from_model(model: str) -> str:
     """Best-effort provider inference from a LiteLLM-resolved model name."""
     m = model.lower()
@@ -281,6 +323,7 @@ async def get_context(
     bundle: LayerBundle = _empty_bundle()
     violations: list[InvariantViolation] = []
     tools_recommended: list[dict[str, Any]] = []
+    unknown_project: dict[str, Any] | None = None
 
     try:
         identity_content = _read_identity(repo_root)
@@ -322,6 +365,23 @@ async def get_context(
             skill_ids=None,
             classifier_domain=None,
         )
+
+        # Surface a hint when the classifier picked a (bucket, project)
+        # but the project is not registered and has no L2 README on disk.
+        # The LLM uses this to prompt the operator to call create_project.
+        if signals.bucket and signals.project:
+            if not _check_project_exists(
+                conn, signals.bucket, signals.project, repo_root
+            ):
+                unknown_project = {
+                    "bucket": signals.bucket,
+                    "slug": signals.project,
+                    "message": (
+                        "Project not found. "
+                        "Call create_project tool to register it."
+                    ),
+                    "create_project_hint": True,
+                }
 
         try:
             bundle = await assemble_bundle(
@@ -382,7 +442,7 @@ async def get_context(
             latency_ms,
         )
 
-    return {
+    response: dict[str, Any] = {
         "request_id": request_id,
         "session_id": session_id,
         "classification": classification,
@@ -395,3 +455,6 @@ async def get_context(
         "degraded_reason": "; ".join(reasons) if reasons else None,
         "latency_ms": latency_ms,
     }
+    if unknown_project is not None:
+        response["unknown_project"] = unknown_project
+    return response

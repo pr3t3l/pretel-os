@@ -46,6 +46,7 @@ from .tools.preferences import (
     preference_set,
     preference_unset,
 )
+from .tools.projects import create_project, get_project, list_projects
 from .tools.best_practices import (
     best_practice_deactivate,
     best_practice_record,
@@ -150,6 +151,11 @@ def build_app() -> FastMCP:
     app.tool(best_practice_search)
     app.tool(best_practice_deactivate)
     app.tool(best_practice_rollback)
+
+    # Module 7 Phase B — projects
+    app.tool(create_project)
+    app.tool(get_project)
+    app.tool(list_projects)
 
     app.custom_route("/health", methods=["GET"])(health)
 
