@@ -130,6 +130,21 @@ def _assert_schema_valid(result: dict[str, Any], schema: dict[str, Any]) -> None
     jsonschema.validate(instance=json.loads(json.dumps(result)), schema=schema)
 
 
+def _assert_awareness_keys(result: dict[str, Any]) -> None:
+    """Module 7.5 RUN 2 contract — Router injects per-bucket awareness.
+
+    Both keys must always be present on the response (the schema
+    enforces it too). Both must be lists. Counts may be zero — the
+    fixtures here run against the test DB which has no projects, and
+    `available_skills` reflects whatever the test DB's tools_catalog
+    holds for the classified bucket.
+    """
+    assert "available_skills" in result, sorted(result.keys())
+    assert "active_projects" in result, sorted(result.keys())
+    assert isinstance(result["available_skills"], list)
+    assert isinstance(result["active_projects"], list)
+
+
 @pytest.mark.slow
 async def test_n8n_debug_query(
     db_conn: psycopg.Connection,
@@ -147,6 +162,7 @@ async def test_n8n_debug_query(
     )
     _print_violations(capsys, "test_n8n_debug_query", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     assert result["classification"]["bucket"] == "business"
     assert result["classification"]["complexity"] in ("MEDIUM", "HIGH")
     assert result["latency_ms"] > 0
@@ -183,6 +199,7 @@ async def test_known_bucket_no_project(
     )
     _print_violations(capsys, "test_known_bucket_no_project", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     assert result["classification"]["bucket"] == "business"
     assert result["latency_ms"] > 0
     rl = _assert_routing_log_row(db_conn, result["request_id"])
@@ -206,6 +223,7 @@ async def test_ambiguous_message(
     )
     _print_violations(capsys, "test_ambiguous_message", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     assert result["classification_mode"] in ("llm", "fallback_rules")
     assert result["latency_ms"] > 0
 
@@ -227,6 +245,7 @@ async def test_greeting_low_complexity(
     )
     _print_violations(capsys, "test_greeting_low_complexity", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     assert result["classification"]["complexity"] == "LOW"
     assert result["tools_recommended"] == []
     # L4 must NOT load on LOW complexity (spec §5.2)
@@ -253,6 +272,7 @@ async def test_high_complexity_recommendation(
     )
     _print_violations(capsys, "test_high_complexity_recommendation", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     assert result["classification"]["complexity"] in ("MEDIUM", "HIGH")
     assert result["latency_ms"] > 0
     # tools_recommended is best-effort: tools_catalog may be empty in
@@ -277,6 +297,7 @@ async def test_scout_query_abstract(
     )
     _print_violations(capsys, "test_scout_query_abstract", result)
     _assert_schema_valid(result, schema)
+    _assert_awareness_keys(result)
     # bucket may be 'scout' (best case), 'business' (LLM picks freelance
     # association), or null (rules-only fallback). All three respect the
     # CONSTITUTION §3 "abstract patterns only" rule because the message

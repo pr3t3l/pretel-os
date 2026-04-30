@@ -16,6 +16,7 @@ tree.
 from __future__ import annotations
 
 import os
+from dataclasses import replace as dc_replace
 from pathlib import Path
 from typing import Any, AsyncIterator
 from unittest.mock import MagicMock
@@ -79,7 +80,15 @@ async def patch_db(
     projects_pool: AsyncConnectionPool,
     monkeypatch: pytest.MonkeyPatch,
 ) -> AsyncIterator[None]:
-    """Force production db_mod helpers to use the test pool."""
+    """Force production db_mod helpers to use the test pool.
+
+    Also redirects `config_mod.load_config().database_url` to the test
+    DB so the synchronous renderer that `create_project` (and
+    `archive_project`) calls via asyncio.to_thread reads the same DB
+    as the INSERT — without this, the renderer would silently query
+    prod DB and the bucket README projection would not see the
+    just-inserted row (Module 7.5 RUN 2 wired the regenerate call).
+    """
     async def _noop() -> None:
         return None
 
@@ -89,6 +98,14 @@ async def patch_db(
     monkeypatch.setattr(db_mod, "get_pool", lambda: projects_pool)
     monkeypatch.setattr(db_mod, "start_background_health_check", _noop)
     monkeypatch.setattr(db_mod, "stop_background_health_check", _noop)
+
+    original_load = config_mod.load_config
+
+    def _patched_load() -> Any:
+        cfg = original_load()
+        return dc_replace(cfg, database_url=_TEST_DATABASE_URL)
+
+    monkeypatch.setattr(config_mod, "load_config", _patched_load)
     yield
 
 
@@ -197,6 +214,23 @@ async def test_create_project_happy_path(
         (body, "business", "declassified"),
     )
     assert snap_row == ("project_created", "create_project_tool", True)
+
+    # 5) Module 7.5 — bucket README projection: regenerate_bucket_readme
+    # was called inline so the slug should appear in the bucket README
+    # under Active projects. Read from the patched REPO_ROOT.
+    assert r["bucket_readme_regenerated"] is True
+    bucket_readme = patch_repo_root / "buckets" / "business" / "README.md"
+    assert bucket_readme.exists()
+    bucket_body = bucket_readme.read_text(encoding="utf-8")
+    assert "declassified" in bucket_body, (
+        "new project slug should appear in regenerated bucket README"
+    )
+    # Slug must be inside the active_projects auto section, not somewhere
+    # else (e.g. operator notes from a prior session).
+    active_section = bucket_body.split(
+        "<!-- pretel:auto:end active_projects -->"
+    )[0]
+    assert "declassified" in active_section
 
 
 async def test_create_project_already_exists(

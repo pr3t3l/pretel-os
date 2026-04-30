@@ -2,9 +2,9 @@
 
 <!-- pretel:auto:start summary -->
 **Active projects:** 0  
-**Archived projects:** 0  
-**Open tasks:** 0  
-**Last regenerated:** 2026-04-30T19:56:16Z
+**Archived projects:** 1  
+**Open tasks:** 2  
+**Last regenerated:** 2026-04-30T21:54:09Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start active_projects -->
@@ -16,7 +16,7 @@ _(none)_
 <!-- pretel:auto:start archived_projects -->
 ## Archived projects
 
-_(none)_
+- [m7-5-demo](projects/m7-5-demo/README.md) — M7.5 Awareness Layer Demo Project (archived) — Demonstrate the 7 awareness-layer success criteria end-to-end.
 <!-- pretel:auto:end archived_projects -->
 
 <!-- pretel:auto:start applicable_skills -->

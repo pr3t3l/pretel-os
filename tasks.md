@@ -73,6 +73,7 @@ Tag: `module-5-complete` on this commit (pushed).
 
 - [ ] SDD trinity (M6.T1)
 - [ ] Implementation
+- [ ] Production deployment (unblocked by M7.5 — lessons / tasks / decisions now carry `project_id` FK so M6 outputs are queryable per project)
 
 Per-module detail: TBD (created at M6 kickoff per `runbooks/sdd_module_kickoff.md`)
 
@@ -89,6 +90,19 @@ Per-module detail: TBD (created at M6 kickoff per `runbooks/sdd_module_kickoff.m
 Per-module detail: TBD. Open follow-ups carried forward:
 - **M7.A.fu1** — Apply `migrations/0032_seed_skills_sdd_vett.sql` to `pretel_os` (and `pretel_os_test`). Will register sdd+vett rows in `tools_catalog`; trigger `trg_tools_emb` queues embedding generation; auto-index worker fills `embedding`. Required before M7 exit gate.
 - **M7.A.fu2** — Reconcile `infra/db/migrate.py`: it stores `path.stem` (e.g. `0024_tasks`) as `version` while older rows use 4-digit prefixes (`0024`). Re-running the runner re-attempts already-applied migrations. Sidestep used in M7.B was direct `psql -1 -f` + manual `INSERT INTO schema_migrations` with prefix-only version. Worth a one-shot reconciliation migration that backfills the missing stems. Captured in DECISIONS as "deferred fix" and as `LL-INFRA-001` in LESSONS_LEARNED.
+
+## Module 7.5 — awareness_layer (COMPLETE 2026-04-30)
+
+- [x] **M7.5.AB** — Migration 0034 + readme renderer + LISTEN/NOTIFY consumer (commit `ebd51f0`):
+  Schema migration adding `project_id` FK on lessons / tasks / decisions, `archived_at` + `archive_reason` + `applicable_skills` on projects, `trigger_keywords` on tools_catalog. 4 NOTIFY trigger functions (`project_lifecycle`, `readme_dirty_bucket`, `readme_dirty_project`, `catalog_changed`) attached across the 5 affected tables. `src/awareness/readme_renderer.py` (idempotent parse + render + sync regenerate_*; preserves operator notes between `<!-- pretel:notes -->` markers). `src/awareness/readme_consumer.py` (async LISTEN on `readme_dirty`, 30s debounce, dispatch via `asyncio.to_thread`). `infra/systemd/pretel-os-readme.service` active. Two new MCP tools: `regenerate_bucket_readme` + `regenerate_project_readme`.
+- [x] **M7.5.C** — Router awareness injection + new tools + project_id population (commit `6e64b39`):
+  `router.py` adds `_get_skills_for_bucket` + `_get_active_projects_for_bucket`; `available_skills` + `active_projects` injected into ContextBundle; schema updated. `create_project` calls `regenerate_bucket_readme` post-INSERT (best-effort). New `archive_project` MCP tool emits lifecycle notify and regenerates bucket README inline. New `recommend_skills_for_query` MCP tool (keyword + utility scoring per Q5). `task_create` + `decision_record` resolve `project_id` from (bucket, project) with no-silent-fallback warning on miss. `save_lesson` signature unchanged; project_id stays NULL until M6 wires its own write path.
+- [x] **M7.5.D** — `skills/skill_discovery.md` + utility seeding + initial README regeneration (commit `81c52bf`):
+  222-line skill teaching LLM the discovery cycle (3 worked examples, anti-patterns, references). Migration 0035 seeds tools_catalog with utility_score per Q6 + trigger_keywords for vett/sdd/skill_discovery + skill_discovery row at utility=1.0; idempotent ON CONFLICT. All 3 bucket READMEs (personal/business/scout) regenerated; legacy hand-authored content preserved verbatim under operator-notes blocks via the one-time D.0 wrap.
+- [x] **M7.5.E** — Phase E gate: tests + 7 success criteria + cleanup + tag candidate (this commit):
+  6 renderer tests + 3 slow consumer tests + 6 awareness-tool tests; existing test_e2e.py (6 tests) and test_create_project_happy_path updated with awareness assertions; 7 success criteria all PASS — see `runbooks/m7_5_demo.md`. Tag candidate `module-7-5-complete` (operator-driven push).
+
+Per-module reference: rationale + plan + atomic_tasks + 4-run code briefings live at `~/Downloads/M7_5_*.md`. Demonstration runbook: `runbooks/m7_5_demo.md`. No formal SDD trinity (per-phase operator briefs same pattern as Module 7).
 
 ## Module 8 — lessons_migration
 

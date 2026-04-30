@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Modules 4 + 5 complete. Module 7 in progress (Phases A + B closed via per-phase operator briefs). Module 7.5 (Awareness layer) in progress — RUN 1 of 4 closed (Phases A + B: migration 0034 + readme renderer + LISTEN/NOTIFY consumer + 2 MCP tools). Module 6 (reflection_worker) still open in parallel; M7.5 must close before M6 production deployment per `M7_5_awareness_layer_rationale.md` §0.
+**Phase:** Modules 4 + 5 + 7.5 complete. Module 7 in progress (Phases A + B closed via per-phase operator briefs; Phase C scope pending). Module 6 (reflection_worker) implementation pending — production deployment now unblocked by M7.5 closing.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -36,13 +36,17 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M5 Module 5 — telegram_bot (COMPLETE 2026-04-29). Mobile-first capture + review surface: 7 commands (`/start /help /save /idea /status /review_pending /cross_poll_review`) + voice handler (Whisper `whisper-1` ES). Bot imports MCP tools directly per Q2 (no HTTP/MCP-protocol round-trip). 5 new MCP tools shipped in Phase A (`list_pending_lessons`, `approve_lesson`, `reject_lesson`, `list_pending_cross_pollination`, `resolve_cross_pollination`) — benefits Claude.ai too. `session_middleware` populates `conversation_sessions` per turn — unblocks the M4 D.2 Q8 deferral that left `_get_session_excerpt()` returning `""`. Idle-close loop (300s interval, 10-min idle) closes stale sessions via `app.bot_data` lifecycle hooks. 45 tests (32 bot + 13 review tools) green; ~$0 in CI, ~$0.003/30s in production Whisper smoke. Tag `module-5-complete` pushed.
 - M7.A Generic skills + Scout overlay (commit `3a41d7f`, 2026-04-29). `skills/sdd.md` (455 lines) and `skills/vett.md` (655 lines, organization-agnostic with `{the organization}` / `{client_tech_stack}` / `{client_governance_team}` variable bindings — verified `grep -i scout|zscaler|databricks|kubernetes|eks|livekit|pinecone` returns 0 matches). Scout L2 overlay at `buckets/scout/skills/vett_scout_context.md` (182 lines, supplies tech stack + governance + compliance + data taxonomy + scoring deltas + presentation visuals). `buckets/scout/README.md` rewritten as bucket manifest. SQL fallback `migrations/0032_seed_skills_sdd_vett.sql` registers sdd + vett in `tools_catalog` (idempotent ON CONFLICT DO UPDATE) — **NOT yet applied** to either DB; MCP `register_skill` returned "Session not found" mid-task and the operator chose to ship the SQL form rather than rabbit-hole into MCP debugging.
 - M7.B `create_project` MCP tool + live `projects` registry + router unknown-project hint (commit `fbe3a66`, 2026-04-30). Migration `0033` applied to `pretel_os` and `pretel_os_test` directly via `psql -1 -f` + manual prefix-only INSERT into `schema_migrations` (the `infra/db/migrate.py` runner has a pre-existing version-format bug; documented in `LL-INFRA-001`). New tools `create_project / get_project / list_projects` in `src/mcp_server/tools/projects.py`; main.py wiring + service restart clean. Router helper `_check_project_exists()` and conditional `unknown_project` key in the bundle response (only set when classifier picks bucket+project and neither registry nor on-disk README matches). 8/8 slow tests green; mypy clean.
-- M7.5 RUN 1 (Phases A + B) — awareness layer foundation (commit `ebd51f0`, 2026-04-30). Migration `0034_awareness_layer.sql` applied to both DBs: adds `project_id UUID FK projects(id) ON DELETE SET NULL` to `lessons / tasks / decisions`; adds `archived_at + archive_reason + applicable_skills` to `projects`; adds `trigger_keywords TEXT[]` to `tools_catalog`; backfills `project_id` by joining `(bucket, project_text) -> projects(bucket, slug)` (0/0/0 matches, expected — `projects` was empty); attaches 4 NOTIFY trigger functions across 5 tables (`project_lifecycle`, `readme_dirty_bucket`, `readme_dirty_project`, `catalog_changed`). New `src/awareness/` package: `readme_renderer.py` (pure parse + render + sync `regenerate_*` orchestrators with byte-identical idempotency via stable-timestamp logic and atomic write tempfile→fsync→rename; preserves operator notes verbatim between `<!-- pretel:notes:start -->` markers); `readme_consumer.py` (async LISTEN on `readme_dirty`, 30s debounce, 5s scan, `asyncio.to_thread` dispatch to sync `psycopg.connect`, SIGTERM/SIGINT graceful shutdown). New `src/mcp_server/tools/awareness.py` exposes `regenerate_bucket_readme(bucket)` + `regenerate_project_readme(bucket, slug)` MCP tools. systemd user unit `pretel-os-readme.service` active. mypy --strict clean. Reference docs in `~/Downloads/M7_5_*.md` (rationale + plan + atomic_tasks + 4-run code briefings). RUNs 2-4 still pending.
+- M7.5 (Awareness layer, COMPLETE 2026-04-30): four commits across four runs.
+  - **RUN 1 / M7.5.AB** (`ebd51f0`): migration 0034 (`project_id` FK on lessons/tasks/decisions; `archived_at`/`archive_reason`/`applicable_skills` on projects; `trigger_keywords` on tools_catalog; 4 NOTIFY trigger functions). `src/awareness/readme_renderer.py` (idempotent parse/render with stable-timestamp logic and atomic write); `src/awareness/readme_consumer.py` (async LISTEN on `readme_dirty`, 30s debounce, 5s scan); `src/mcp_server/tools/awareness.py` exposes `regenerate_bucket_readme` + `regenerate_project_readme` MCP tools. systemd unit `pretel-os-readme.service` active.
+  - **RUN 2 / M7.5.C** (`6e64b39`): Router `_get_skills_for_bucket` + `_get_active_projects_for_bucket` injected into ContextBundle; schema updated. `create_project` regenerates bucket README post-INSERT (best-effort). New `archive_project` MCP tool. New `recommend_skills_for_query` MCP tool (keyword + utility scoring). `task_create` + `decision_record` resolve `project_id` from `(bucket, project)` with no-silent-fallback warning on miss.
+  - **RUN 3 / M7.5.D** (`81c52bf`): `skills/skill_discovery.md` (222 lines, 3 worked examples). Migration 0035 seeds `tools_catalog`: skill_discovery row at utility=1.0; vett (0.85) and sdd (0.90) with trigger_keywords; 26 tool rows with utility_score per Q6 (idempotent ON CONFLICT). Initial regeneration of all 3 bucket READMEs (personal/business/scout) with the one-time D.0 wrap preserving legacy content under operator-notes blocks.
+  - **RUN 4 / M7.5.E** (this commit): tests/awareness/ (6 renderer + 3 slow consumer = 9), tests/mcp_server/tools/test_awareness.py (6 tests). test_e2e.py + test_create_project_happy_path updated with awareness assertions. 7 success criteria all PASS — `runbooks/m7_5_demo.md` (419 lines). Tag candidate `module-7-5-complete` (operator-driven push).
+  Reference docs: `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`. Demo runbook: `runbooks/m7_5_demo.md`. The `pretel-os-readme.service` is now production infrastructure — any future write that should regenerate READMEs depends on it being active.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- **Module 7.5 RUNs 2-4** — RUN 2 (Phase C: Router awareness injection + `archive_project` + `recommend_skills_for_query` + `project_id` population in task_create/save_lesson/decision_record); RUN 3 (Phase D: `skills/skill_discovery.md` + migration `0035_seed_awareness.sql` + initial regeneration of all bucket and project READMEs); RUN 4 (Phase E: tests + 7 success-criteria demos + tag `module-7-5-complete`). Each RUN is self-contained; operator pastes one at a time per the briefings doc.
-- Module 6 (Reflection worker — reads `routing_logs` + `conversations_indexed` to detect patterns; writes `cross_pollination_queue` rows). **Blocked on M7.5 close** — M6's lesson outputs need `project_id` FKs to be queryable by project, per `M7_5_awareness_layer_rationale.md` §0.
+- **Module 6 (Reflection worker) production deployment** — code committed; M7.5 unblock is now done so M6 outputs (lessons + cross_pollination_queue rows) will carry `project_id` FKs and be queryable per project. This is the new top-of-stack.
 - **Module 7 Phase C** — operator picks scope at next kickoff. Candidates: migrate the 5 remaining skills (`scout_slides`, `declassified_pipeline`, `forge`, `marketing_system`, `finance_system`); write the 3 new ones (`client_discovery`, `sow_generator`, `mtm_efficiency_audit`); apply migration `0032` to populate `tools_catalog` rows + embeddings for sdd+vett; ship `runbooks/module_7_skills.md` (required for the Module 7 exit gate per plan §6).
 - Module 8 (lessons migration).
 - M4 Phase F (post-30-day tuning, ongoing — not gated; queries shipped in `runbooks/router_tuning.md`).
@@ -53,13 +57,13 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
   - **M7.A.fu1** — apply `migrations/0032_seed_skills_sdd_vett.sql` to `pretel_os` (and `pretel_os_test`); the embedding trigger will queue both rows for the auto-index worker.
   - **M7.A.fu2** — reconcile `infra/db/migrate.py` version-format bug (stem vs prefix). Workaround: direct `psql -1 -f` + manual prefix-only `schema_migrations` INSERT. Captured as `LL-INFRA-001`. Backfill migration to retro-apply prefixes is the cleanest fix.
 
-**Top of stack:** **Module 7.5 RUN 2** — Phase C: Router `available_skills` + `active_projects` injection into ContextBundle, `create_project` calls `regenerate_bucket_readme` post-INSERT, new `archive_project` MCP tool, new `recommend_skills_for_query` MCP tool, plus `project_id` population in `task_create / save_lesson / decision_record` when caller provides `bucket + project`. Briefing in `~/Downloads/M7_5_code_briefings.md` (RUN 2 section). Each RUN is self-contained; operator pastes the next briefing in a fresh prompt. Once M7.5 RUN 4 closes (tag `module-7-5-complete`), Module 6 (Reflection worker) is the next module to kick off via `runbooks/sdd_module_kickoff.md`.
+**Top of stack:** **Module 6 — Reflection worker production deployment.** M7.5 closed end-to-end (4 commits, tag candidate `module-7-5-complete` pending operator push); the FK linkage M6 needs is in place (migration 0034 + RUN 2 C.5 wiring) and demonstrated end-to-end in `runbooks/m7_5_demo.md` criteria #2 + #7. SDD trinity for M6 still pending — kickoff via `runbooks/sdd_module_kickoff.md`. M6 reads `routing_logs` low-confidence clusters / RAG mismatches / repeat queries, `conversations_indexed`, `usage_logs`, and proposes lessons + cross-pollination rows for operator review via M5's already-wired `/review_pending` + `/cross_poll_review`. M6 worker code is committed but NOT running in production.
 
 **Where to find recently-closed module sources-of-truth:**
 - Module 4: `runbooks/module_4_router.md`, `runbooks/router_tuning.md`, `runbooks/router_audit_queries.sql`, `specs/router/{spec,plan,tasks,phase_b_close,phase_c_close,phase_d_close}.md`.
 - Module 5: `specs/telegram_bot/{spec,plan,tasks}.md`, `infra/systemd/pretel-os-bot.service`, `tests/telegram_bot/`, `tests/mcp_server/tools/test_review_tools.py`.
 - Module 7 (in progress, no SDD trinity yet): closure summaries in `tasks.archive.md` (Phase A and Phase B sections, dated 2026-04-29 and 2026-04-30); generic skill files at `skills/{sdd,vett}.md`; Scout overlay at `buckets/scout/skills/vett_scout_context.md`; tool implementations at `src/mcp_server/tools/projects.py`; tests at `tests/mcp_server/tools/test_projects.py`. Open follow-ups in `tasks.md` Module 7 section (M7.A.fu1, M7.A.fu2).
-- Module 7.5 (in progress, no SDD trinity — operator briefs at `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`): migration at `migrations/0034_awareness_layer.sql`; renderer + consumer at `src/awareness/`; MCP wrappers at `src/mcp_server/tools/awareness.py`; systemd unit at `infra/systemd/pretel-os-readme.service`. Tests deferred to RUN 4.
+- Module 7.5 (COMPLETE 2026-04-30, no SDD trinity — operator briefs at `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`): migrations at `migrations/{0034_awareness_layer,0035_seed_awareness}.sql`; renderer + consumer at `src/awareness/`; MCP wrappers at `src/mcp_server/tools/awareness.py`; systemd unit at `infra/systemd/pretel-os-readme.service`; tests at `tests/awareness/` + `tests/mcp_server/tools/test_awareness.py`; demo runbook at `runbooks/m7_5_demo.md`; new skill `skills/skill_discovery.md`. Production state: `pretel-os-readme.service` active (the consumer **must** stay running for any write to lessons/tasks/decisions/projects/tools_catalog to project to its bucket README — stopping it leaves READMEs stale until next regenerate).
 
 ---
 
@@ -707,6 +711,63 @@ Next: Module 6 — Reflection worker (reads routing_logs +
   conversations_indexed, proposes lessons + cross_pollination_queue
   rows for the operator to triage via M5's /review_pending +
   /cross_poll_review).
+
+
+Last session: 2026-04-30 (Module 7.5 COMPLETE — 4-RUN arc closed)
+Status: M7.5 shipped end-to-end in 4 commits. Tag candidate
+  module-7-5-complete pending operator push. M6 (reflection_worker)
+  production deployment is now unblocked — the FK linkage M6 needs
+  (lessons.project_id / tasks.project_id / decisions.project_id) is
+  in place and demonstrated by criteria #2 + #7 of the demo runbook.
+Last task completed: M7.5 RUN 4 — Phase E gate.
+Commits pushed during this M7.5 arc (in order):
+  - ebd51f0 M7.5.AB (RUN 1) — migration 0034 + readme renderer +
+                   readme_consumer worker + 2 MCP tools.
+  - 1722627 docs    — SESSION_RESTORE update for RUN 1 closure.
+  - 6e64b39 M7.5.C  (RUN 2) — Router awareness injection
+                   (available_skills + active_projects), archive_project,
+                   recommend_skills_for_query, project_id population in
+                   task_create + decision_record.
+  - 81c52bf M7.5.D  (RUN 3) — skills/skill_discovery.md (222 ln) +
+                   migration 0035 (utility_score + trigger_keywords) +
+                   bucket README regeneration with legacy preservation.
+  - <THIS>  M7.5.E  (RUN 4) — tests + 7 success criteria demos +
+                   tasks.md / SESSION_RESTORE update + tag candidate.
+Test count this session arc:
+  - tests/awareness/test_readme_renderer.py — 7 tests (1 bonus over E.1
+    minimum) — pure, no DB.
+  - tests/awareness/test_readme_consumer.py — 3 slow tests (LISTEN /
+    debounce / multi-target dispatch).
+  - tests/mcp_server/tools/test_awareness.py — 6 tests (3 recommend
+    cases + regenerate + archive moves + lifecycle notify).
+  - tests/router/test_e2e.py — 6 existing tests, each augmented with
+    available_skills + active_projects assertions.
+  - tests/mcp_server/tools/test_projects.py — 8 existing tests; the
+    happy-path test now also asserts the bucket README projection.
+Total new + modified: 16 new tests, 14 existing tests augmented.
+Demonstration: runbooks/m7_5_demo.md (419 lines) walks through the 7
+  rationale-doc success criteria with command transcripts and DB
+  evidence. All 7 PASS. Criterion #6 archived the m7-5-demo fixture
+  project (intentionally retained as forensic trail for the demo).
+  Criterion #7 emulates M6 via direct INSERT — M6 not yet running.
+Open follow-ups carried forward (unchanged):
+  M7.A.fu1 (apply 0032), M7.A.fu2 (migrate.py runner bug), the M6
+  scaffold tasks, the M4 5db4bc6f / cost_usd / session_excerpt
+  follow-ups, and the lessons.py mypy item.
+New observation worth noting: pretel-os-readme.service is now load-
+  bearing infrastructure. If it stops, every write to lessons /
+  tasks / decisions / projects / tools_catalog still emits the
+  readme_dirty NOTIFY (the migration 0034 triggers persist), but no
+  one is listening — bucket and project READMEs go stale until the
+  service is restarted or `regenerate_*_readme` is called manually.
+  Any subsequent module that adds NEW writers to these tables should
+  be aware of the projection contract.
+Tags unchanged: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete, module-0x-complete, module-5-complete (plus M4
+  phase tags). Tag candidate this session: module-7-5-complete on
+  the M7.5.E commit (operator-driven push).
+Next: Module 6 (reflection_worker) — SDD trinity + production
+  deployment. OR Module 7 Phase C (operator-driven brief).
 
 
 Last session: 2026-04-30 (Module 7.5 RUN 1 of 4 — awareness layer foundation)
