@@ -1,0 +1,16 @@
+[Unit]
+Description=pretel-os README regeneration consumer (Module 7.5)
+After=network-online.target postgresql.service pretel-os-mcp.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pretel/dev/pretel-os
+Environment=PYTHONPATH=/home/pretel/dev/pretel-os/src
+EnvironmentFile=/home/pretel/.env.pretel_os
+ExecStart=/home/pretel/.venvs/pretel-os/bin/python -m awareness.readme_consumer
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
