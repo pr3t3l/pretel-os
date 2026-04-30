@@ -3,3 +3,10 @@ psycopg[pool,binary]>=3.2.0
 openai>=1.0.0
 python-dotenv>=1.0.0
 pyyaml>=6.0.0
+# Phase B router/_tokens.py imports at module load — tiktoken is a
+# production runtime dep, not test-only. Surfaced when M5 follow-up
+# 5db4bc6f restarted the MCP server and ImportError'd at boot.
+tiktoken>=0.12,<1.0
+# python-telegram-bot[ext] is the bot's runtime dep; managed in
+# src/telegram_bot/requirements.txt to keep the bot's dependency
+# surface explicit.

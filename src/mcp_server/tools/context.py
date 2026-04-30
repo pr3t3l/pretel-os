@@ -20,11 +20,14 @@ and a reason. If the sync DB connect itself fails, the wrapper builds
 a minimal ContextBundle skeleton inline (no router stack invocation
 because that requires a live connection for telemetry).
 
-Open follow-ups (not blocking D.3):
-- Wire LISTEN/NOTIFY listener via the MCP server lifespan hook
-  (cache.py docstring describes the contract). The lazy-init below
-  works without it; the cost is potentially-stale entries between
-  process restarts. `max_entries=256` bounds blast radius.
+Open follow-ups:
+- LISTEN/NOTIFY listener is wired via `mcp_server/main.py::_lifespan`
+  (closed task 5db4bc6f). The lazy-init `_get_cache()` below is the
+  single canonical singleton — main.py imports it and calls
+  `start_listener` / `stop_listener` around the bot lifecycle. Tests
+  that don't run lifespan still work via the lazy path; the
+  listener simply doesn't run in those cases (acceptable — tests
+  use direct DB writes, no need for cache invalidation).
 - Plumb `client_origin` from the FastMCP transport context once the
   framework exposes it via a tool-arg `Context` injection. Today the
   wrapper hard-codes `'unknown'`.

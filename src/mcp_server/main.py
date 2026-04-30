@@ -26,7 +26,7 @@ from . import config as config_mod
 from . import db as db_mod
 from .auth import PretelAuthMiddleware
 from .tools.catalog import load_skill, register_skill, register_tool, tool_search
-from .tools.context import get_context
+from .tools.context import _get_cache, get_context
 from .tools.cross_pollination import (
     list_pending_cross_pollination,
     resolve_cross_pollination,
@@ -73,10 +73,26 @@ log = logging.getLogger("mcp_server")
 async def _lifespan(_server: FastMCP) -> AsyncIterator[None]:
     log.info("starting db health poller")
     await db_mod.start_background_health_check()
+
+    # Wire LayerBundleCache LISTEN/NOTIFY listener (closes task
+    # 5db4bc6f-fbea-4eaf-8de0-7a246b25021f from M4 D.3 follow-ups).
+    # Without this, the cache works but stales between MCP restarts.
+    cfg = config_mod.load_config()
+    layer_cache = _get_cache()
+    try:
+        layer_cache.start_listener(cfg.database_url)
+        log.info("LayerBundleCache LISTEN/NOTIFY listener started")
+    except Exception as exc:
+        log.warning("layer cache listener failed to start: %s", exc)
+
     try:
         yield
     finally:
-        log.info("stopping db health poller")
+        log.info("stopping layer cache listener + db health poller")
+        try:
+            layer_cache.stop_listener()
+        except Exception as exc:
+            log.debug("layer cache stop_listener: %s", exc)
         await db_mod.stop_background_health_check()
 
 
