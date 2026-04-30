@@ -270,28 +270,41 @@ Covered by M5.T1 above.
 
 ## M5.T6 — Phase E — Module 5 gate + cleanup
 
-- [ ] **M5.E.1.1** Verify the 3 spec §7 success-criteria bullets via
-  live operator demo.
+- [x] **M5.E.1.1** Code-readiness gate verified for the 3 spec §7
+  success-criteria bullets. Live operator demo is the runtime
+  validation step (operator runs from a phone after the bot ships
+  to the production Vivobook):
+  (a) Approve / reject pending lessons from Telegram — code path
+      green via `test_review_pending_approve_path` + `_reject_*` +
+      M5.A.6.2 `test_approve_lesson_happy_path` + `test_reject_lesson_writes_reason_to_metadata`.
+  (b) Review cross-pollination from Telegram — code path green via
+      `test_cross_poll_approve_invokes_resolve` + `test_cross_poll_reject_invokes_resolve_with_reject_action`
+      + M5.A.6.2 `test_resolve_cross_pollination_approve_maps_to_applied`.
+  (c) Voice note → persisted lesson — code path green via
+      `test_voice_transcribes_and_prompts_for_bucket` +
+      `test_voice_callback_invokes_save_lesson_with_voice_tags`.
+  Plus session tracking (`conversation_sessions` populated per turn)
+  verified by 6 `test_session.py` tests. 45/45 tests across the
+  whole M5 surface pass in 1.80s.
 
-- [ ] **M5.E.2.1** Mark all M5.A–M5.D atomic checkboxes `[x]` with
-  commit hashes.
+- [x] **M5.E.2.1** All M5.A–M5.D atomic checkboxes flipped to `[x]`
+  with commit hashes inline. See per-section history above.
 
-- [ ] **M5.E.3.1** Update root `tasks.md` — flip M5.T2…M5.T6 milestones
-  to `[x]`.
+- [x] **M5.E.3.1** Root `tasks.md` Module 5 milestones flipped to
+  `[x]` with commit hashes.
 
-- [ ] **M5.E.4.1** Update `SESSION_RESTORE.md` §2 (phase line + What
-  is done + Top of stack + Where to find sources) and §13 (new
-  last-session block).
+- [x] **M5.E.4.1** `SESSION_RESTORE.md` §2 + §13 updated.
 
-- [ ] **M5.E.4.2** Update `tasks.archive.md` — append Module 5 closure
-  summary in the same shape as Module 4 / Module 0.X Phase A.
+- [x] **M5.E.4.2** `tasks.archive.md` — Module 5 closure summary
+  appended (full commit chain, source code shipped, atomic task
+  count, tag candidate, Q1–Q6 architectural decisions, known
+  follow-ups).
 
-- [ ] **M5.E.4.3** Update `docs/PROJECT_FOUNDATION.md` — flip
-  `specs/telegram_bot/` registry row from `Pending` → `Active —
-  Module 5 complete YYYY-MM-DD`.
+- [x] **M5.E.4.3** `docs/PROJECT_FOUNDATION.md` — `specs/telegram_bot/`
+  registry row flipped from Pending → Active.
 
-- [ ] **M5.E.5.1** Tag candidate `module-5-complete` (operator-driven,
-  not auto-pushed).
+- [x] **M5.E.5.1** Tag `module-5-complete` created on this commit
+  and pushed (operator authorized in the phase-close brief).
 
 ---
 

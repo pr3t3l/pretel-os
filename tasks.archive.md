@@ -1293,3 +1293,90 @@ Full detail in `specs/router/tasks.md` with [x] markers.
   row `e5a540c5-6516-4e6b-8725-5c6de6f986e5`)
 - `client_origin` plumbing from FastMCP transport context (currently
   hard-coded to `'unknown'` in tools/context.py)
+
+---
+
+## Module 5 — telegram_bot (closed 2026-04-29)
+
+Source: `specs/telegram_bot/{spec,plan,tasks}.md`.
+
+**Closure commits (chronological):**
+
+Phase A — SDD trinity + review MCP tools:
+- 7488589 — M5.T1 SDD trinity for telegram_bot module
+- 04cae82 — M5.A.2-A.6 review MCP tools (5 new) + 13 tests
+
+Phase B — Bot skeleton + core commands:
+- 14bfd19 — M5.B.1-B.3 skeleton + operator guard + /start /help
+- e5c02e3 — M5.B.4-B.7 /save /idea /status + systemd unit
+- 5d7e2ba — M5.B.8 10 mocked handler tests
+
+Phase C — Review flows:
+- c873488 — /review_pending + /cross_poll_review + 11 tests
+
+Phase D — Voice + session tracking:
+- 4239b69 — M5.D.1 voice capture (Whisper) + 5 mocked tests
+- ceb2126 — M5.D.2 + D.3 session middleware + idle-close + 6 tests
+
+Phase E — Gate + cleanup + tag:
+- [this commit] M5.E gate verified, doc updates, tag
+
+**Source code shipped (Module 5):**
+- `src/telegram_bot/` — 12 modules: `__init__.py`, `__main__.py`,
+  `bot.py` (Application + post_init/post_shutdown for idle-close
+  loop + 11 handlers registered), `config.py` (env loader),
+  `session.py` (per-turn middleware + idle-close), `requirements.txt`
+  (python-telegram-bot[ext]>=21,<22). `handlers/` package with
+  `_guard.py` (operator-only decorator), `help.py`, `save.py`,
+  `idea.py`, `status.py`, `review.py`, `cross_poll.py`, `voice.py`.
+- `src/mcp_server/tools/cross_pollination.py` (new) — 2 tools used
+  by both bot and Claude.ai.
+- `src/mcp_server/tools/lessons.py` extended — 3 new tools
+  (list_pending_lessons, approve_lesson, reject_lesson).
+- `src/mcp_server/main.py` — 5 new tools registered with FastMCP.
+- `tests/telegram_bot/` — 4 test files, 32 tests.
+- `tests/mcp_server/tools/test_review_tools.py` — 13 tests.
+- `infra/systemd/pretel-os-bot.service` — long-poll bot unit (mirrors
+  `pretel-os-mcp.service` pattern).
+
+**Atomic task count:** ~30 atomic tasks (M5.T1.1-M5.T1.4 + M5.A.2.1-
+M5.A.6.3 + M5.B.1.1-M5.B.8.1 + M5.C.1.1-M5.C.3.1 + M5.D.1.1-M5.D.3.1
++ M5.E.1.1-M5.E.5.1). Full detail in `specs/telegram_bot/tasks.md`
+with `[x]` markers.
+
+**Tags created:** `module-5-complete` on the M5.E close-out commit
+(pushed per operator authorization in the phase-close brief).
+
+**Architectural decisions captured (Q1–Q6 from plan §1):**
+- Q1: Reuse existing @Robotin1620_Bot token; no BotFather friction.
+- Q2: Bot ↔ MCP boundary is DIRECT PYTHON IMPORTS, not HTTP. Same
+  pattern as Reflection worker (M6) and Dream Engine. CONSTITUTION
+  §2.2 protects EXTERNAL client portability; the bot is internal.
+- Q3: 5 new MCP tools (list_pending_lessons / approve_lesson /
+  reject_lesson / list_pending_cross_pollination /
+  resolve_cross_pollination) benefit Claude.ai too. Status-enum
+  decision: `lesson_status='rejected'` over `archived` for explicit
+  rejection; `cross_poll_status` maps approve→applied, reject→dismissed.
+- Q4: OpenAI Whisper (`whisper-1`, `language=es`,
+  `response_format=text`) — ~$0.006/minute. Local whisper.cpp
+  rejected (Vivobook GPU-less, Spanish quality gap).
+- Q5: Session tracking via `TypeHandler(Update, ...)` middleware at
+  group=-1; INSERTs first turn, UPDATEs `last_seen_at + turn_count`
+  on subsequent. Idle-close at 10 min via asyncio loop started by
+  `Application.post_init`. Unblocks M4 D.2 Q8.
+- Q6: Long polling for v1 (zero config, no public subdomain).
+  Webhook migration is a future task (python-telegram-bot v21
+  handles both transparently).
+
+**Known follow-ups (not blocking):**
+- Router `_get_session_excerpt()` swap to a real query against
+  `conversation_sessions` (currently returns `""`). Now that M5
+  populates the table, this is a small follow-up commit on the
+  Router, not Module 5 work.
+- Bot reply-tracking in JSONL transcripts (Phase D simplification:
+  only INCOMING user messages are captured; bot replies are not).
+  Worth revisiting if the operator wants full transcript review.
+- Webhook migration (Q6 deferral) — currently long-poll via
+  systemd; switch when public subdomain stable.
+- LayerBundleCache listener wiring (M4 task `5db4bc6f`) — still
+  outstanding from M4, non-blocking for M5.

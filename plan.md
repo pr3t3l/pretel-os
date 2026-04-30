@@ -83,8 +83,8 @@ This document does not contain estimates in time units. Time-to-complete is neve
   - ✅ M4 Phase D + E Telemetry + orchestrator + fallback (complete 2026-04-29, tag candidates `phase-e-complete` on c5e1f11 / `phase-d-complete` on 8bda98d)
   - ✅ M4.T9 Exit gate + runbook (complete 2026-04-29 on bf3807e)
   - 🔄 M4 Phase F Tuning (post-30-day, ongoing — observational, no gate; queries in `runbooks/router_tuning.md`)
-- 🔄 Module 5 telegram_bot (NEXT — unblocks Q8 session-excerpt deferral from Phase D)
-- ⏸️ Module 6 reflection_worker
+- ✅ Module 5 telegram_bot COMPLETE (2026-04-29, tag `module-5-complete`). 7 commands + voice handler + session tracking; unblocked M4 D.2 Q8.
+- 🔄 Module 6 reflection_worker (NEXT — outputs feed M5's `/review_pending` + `/cross_poll_review`)
 - ⏸️ Phase 3 Knowledge loading (Modules 7, 8)
 
 ---

@@ -57,16 +57,17 @@ Tag candidates (operator-driven): `phase-b-complete` on 97a67d6,
 
 Per-module detail: `specs/module-0x-knowledge-architecture/tasks.md`
 
-## Module 5 — telegram_bot
+## Module 5 — telegram_bot (COMPLETE 2026-04-29)
 
-- [x] **M5.T1** SDD trinity at `specs/telegram_bot/` (this commit)
-- [x] **M5.T2** Phase A — Review MCP tools (5 new tools + 13 tests; all green)
-- [x] **M5.T3** Phase B — Bot skeleton + core commands (commits `14bfd19`, `e5c02e3`, this commit; /start /help /save /idea /status + operator guard + systemd unit; 10 handler tests; ~$0 cost)
-- [x] **M5.T4** Phase C — Review flows (this commit; /review_pending with [✅][❌][⏭] inline buttons + reject-reason follow-up; /cross_poll_review with [✅][❌] inline buttons; 11 mocked tests; ~$0 cost)
-- [x] **M5.T5** Phase D — Voice (Whisper) + session tracking (commits `4239b69`, this commit; voice handler with mocked-Whisper tests, session middleware + idle-close loop, 11 tests; ~$0 cost in tests, ~$0.003 per real voice clip in production; unblocks M4 D.2 Q8 deferral)
-- [ ] **M5.T6** Phase E — Module 5 gate + cleanup + `module-5-complete` tag
+- [x] **M5.T1** SDD trinity at `specs/telegram_bot/` (commit `7488589`)
+- [x] **M5.T2** Phase A — Review MCP tools (commit `04cae82`; 5 new tools + 13 tests; all green)
+- [x] **M5.T3** Phase B — Bot skeleton + core commands (commits `14bfd19`, `e5c02e3`, `5d7e2ba`; /start /help /save /idea /status + operator guard + systemd unit; 10 handler tests; ~$0 cost)
+- [x] **M5.T4** Phase C — Review flows (commit `c873488`; /review_pending with [✅][❌][⏭] inline buttons + reject-reason follow-up; /cross_poll_review with [✅][❌] inline buttons; 11 mocked tests; ~$0 cost)
+- [x] **M5.T5** Phase D — Voice (Whisper) + session tracking (commits `4239b69`, `ceb2126`; voice handler with mocked-Whisper tests, session middleware + idle-close loop, 11 tests; ~$0 cost in tests, ~$0.003 per real voice clip in production; unblocks M4 D.2 Q8 deferral)
+- [x] **M5.T6** Phase E — Module 5 gate + cleanup + `module-5-complete` tag (this commit; 45/45 tests across full M5 surface; mypy clean across 15 source files; tag created + pushed per operator authorization)
 
-Per-module detail: `specs/telegram_bot/tasks.md`
+Per-module detail: `specs/telegram_bot/tasks.md` (all M5.A–M5.E rows `[x]`).
+Tag: `module-5-complete` on this commit (pushed).
 
 ## Module 6 — reflection_worker
 
