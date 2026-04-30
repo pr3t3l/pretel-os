@@ -198,15 +198,31 @@ Covered by M5.T1 above.
 
 ## M5.T4 — Phase C — Review flows
 
-- [ ] **M5.C.1.1** `/review_pending` ConversationHandler — walks
-  pending lessons one-by-one with [✅][❌][⏭] inline buttons. On reject,
-  prompts for reason.
+- [x] **M5.C.1.1** `/review_pending` flow in `handlers/review.py`.
+  Walks pending lessons one-by-one with [✅ Aprobar][❌ Rechazar]
+  [⏭ Saltar] inline buttons. Approve / skip cycle directly to the
+  next item via `_send_next_or_empty`; reject stashes
+  `awaiting_reason_for=<id>` in `user_data["review_state"]` and the
+  next plain-text message becomes the reason (handled by the
+  `MessageHandler(filters.TEXT & ~filters.COMMAND, ...)` registered
+  in `bot.py`). Empty queue → "No hay lecciones pendientes 🎉".
+  Note: chose simple `user_data` state over `ConversationHandler`
+  per plan §11 risk register guidance — handler stayed under 200 LoC
+  and is trivially mock-testable.
 
-- [ ] **M5.C.2.1** `/cross_poll_review` — same pattern over
-  `cross_pollination_queue`.
+- [x] **M5.C.2.1** `/cross_poll_review` flow in `handlers/cross_poll.py`.
+  Walks `cross_pollination_queue` rows with [✅ Aprobar][❌ Rechazar]
+  inline buttons (no reason prompt — Phase C scope). Approve →
+  `resolve_cross_pollination(id, 'approve')` → status `applied`;
+  reject → `resolve_cross_pollination(id, 'reject')` → status
+  `dismissed`. Empty queue → "No hay propuestas pendientes 🎉".
 
-- [ ] **M5.C.3.1** `tests/telegram_bot/test_review_flows.py` — ≥4
-  tests (full walk, approve path, reject-with-reason path, empty queue).
+- [x] **M5.C.3.1** `tests/telegram_bot/test_review_flows.py` — 11
+  pure-mock tests (≥4 required). Coverage: review empty queue +
+  first-card render + approve path + reject-prompt path + reason-
+  message path + plain-text-without-state no-op + skip path; cross-
+  poll empty queue + first-proposal render + approve path + reject
+  path. All 11 + 10 prior Phase B tests pass in 0.88s. mypy clean.
 
 ---
 

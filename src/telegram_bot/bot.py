@@ -10,14 +10,31 @@ import logging
 from typing import Any
 
 from telegram import Update
-from telegram.ext import Application, CallbackQueryHandler, CommandHandler
+from telegram.ext import (
+    Application,
+    CallbackQueryHandler,
+    CommandHandler,
+    MessageHandler,
+    filters,
+)
 
 from . import config as config_mod
+from .handlers.cross_poll import (
+    XPOLL_CALLBACK_PATTERN,
+    cross_poll_review_callback,
+    cross_poll_review_command,
+)
 from .handlers.help import help_command, start_command
 from .handlers.idea import (
     IDEA_CALLBACK_PATTERN,
     idea_callback,
     idea_command,
+)
+from .handlers.review import (
+    REVIEW_CALLBACK_PATTERN,
+    review_pending_callback,
+    review_pending_command,
+    review_pending_reason_message,
 )
 from .handlers.save import (
     SAVE_CALLBACK_PATTERN,
@@ -47,11 +64,33 @@ def build_application(cfg: config_mod.Config) -> AppT:
     app.add_handler(CommandHandler("save", save_command))
     app.add_handler(CommandHandler("idea", idea_command))
     app.add_handler(CommandHandler("status", status_command))
+    app.add_handler(CommandHandler("review_pending", review_pending_command))
+    app.add_handler(
+        CommandHandler("cross_poll_review", cross_poll_review_command)
+    )
     app.add_handler(
         CallbackQueryHandler(save_callback, pattern=SAVE_CALLBACK_PATTERN)
     )
     app.add_handler(
         CallbackQueryHandler(idea_callback, pattern=IDEA_CALLBACK_PATTERN)
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            review_pending_callback, pattern=REVIEW_CALLBACK_PATTERN
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            cross_poll_review_callback, pattern=XPOLL_CALLBACK_PATTERN
+        )
+    )
+    # Plain-text fallback — picks up the reject-reason from
+    # /review_pending. The handler short-circuits when no review state
+    # is set, so it's a no-op for any other free-form text.
+    app.add_handler(
+        MessageHandler(
+            filters.TEXT & ~filters.COMMAND, review_pending_reason_message
+        )
     )
     return app
 
