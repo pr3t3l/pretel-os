@@ -43,17 +43,24 @@ _N8N_HEALTH_URL = os.environ.get(
 @dataclass(frozen=True)
 class Check:
     name: str
-    healthy: bool
+    healthy: bool | None  # True = 🟢 / False = 🔴 / None = 🟡 (unknown)
     detail: str
     latency_ms: int
 
 
-async def _http_check(name: str, url: str) -> Check:
-    """GET `url` with `_TIMEOUT_S`. 2xx = healthy."""
+async def _http_check(
+    name: str, url: str, *, headers: dict[str, str] | None = None
+) -> Check:
+    """GET `url` with `_TIMEOUT_S`. 2xx = healthy.
+
+    Optional `headers` are passed through so the caller can attach
+    `Authorization: Bearer <key>` for LiteLLM (which gates `/health`
+    behind the master key).
+    """
     t0 = time.monotonic()
     try:
         async with httpx.AsyncClient(timeout=_TIMEOUT_S) as client:
-            response = await client.get(url)
+            response = await client.get(url, headers=headers or {})
         latency_ms = int((time.monotonic() - t0) * 1000)
         if 200 <= response.status_code < 300:
             return Check(
@@ -76,6 +83,30 @@ async def _http_check(name: str, url: str) -> Check:
             detail=type(exc).__name__,
             latency_ms=latency_ms,
         )
+
+
+async def _litellm_check() -> Check:
+    """LiteLLM `/health` requires `Authorization: Bearer <master_key>`.
+
+    Reads `LITELLM_API_KEY` (which the existing
+    `mcp_server.router.litellm_client` also uses). When unset, returns
+    healthy=None (🟡 unknown) rather than 🔴 — LiteLLM is optional from
+    the bot's perspective and "unconfigured" is genuinely different
+    from "down". When set, calls `/health` with the auth header.
+    """
+    api_key = os.environ.get("LITELLM_API_KEY", "").strip()
+    if not api_key:
+        return Check(
+            name="litellm",
+            healthy=None,
+            detail="LITELLM_API_KEY not set",
+            latency_ms=0,
+        )
+    return await _http_check(
+        "litellm",
+        _LITELLM_HEALTH_URL,
+        headers={"Authorization": f"Bearer {api_key}"},
+    )
 
 
 async def _db_check(database_url: str) -> Check:
@@ -113,18 +144,30 @@ async def _db_check(database_url: str) -> Check:
 
 
 def _format_status(checks: list[Check]) -> str:
-    """Format the 4-check result list into a Telegram-friendly reply."""
-    healthy_count = sum(1 for c in checks if c.healthy)
+    """Format the 4-check result list into a Telegram-friendly reply.
+
+    Per-row marker: 🟢 (healthy=True) / 🔴 (healthy=False) /
+    🟡 (healthy=None — unknown / unconfigured). Overall header
+    counts only `healthy is True` as healthy; unknown rows pull
+    the header into 🟡 partial.
+    """
+    healthy_count = sum(1 for c in checks if c.healthy is True)
+    unhealthy_count = sum(1 for c in checks if c.healthy is False)
     if healthy_count == len(checks):
         header = "🟢 All systems healthy"
-    elif healthy_count == 0:
+    elif unhealthy_count == len(checks):
         header = "🔴 All systems down"
     else:
         header = "🟡 Partial availability"
 
     lines = [header, ""]
     for check in checks:
-        marker = "🟢" if check.healthy else "🔴"
+        if check.healthy is True:
+            marker = "🟢"
+        elif check.healthy is False:
+            marker = "🔴"
+        else:
+            marker = "🟡"
         lines.append(
             f"{marker} {check.name}: {check.detail} ({check.latency_ms}ms)"
         )
@@ -142,7 +185,7 @@ async def status_command(
     checks_tuple = await asyncio.gather(
         _http_check("mcp_server", _MCP_HEALTH_URL),
         _db_check(cfg.database_url),
-        _http_check("litellm", _LITELLM_HEALTH_URL),
+        _litellm_check(),
         _http_check("n8n", _N8N_HEALTH_URL),
     )
     await update.message.reply_text(_format_status(list(checks_tuple)))

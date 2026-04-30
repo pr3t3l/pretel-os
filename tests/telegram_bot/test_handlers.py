@@ -247,12 +247,18 @@ async def test_status_runs_4_checks_and_renders_summary(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _patch_config(monkeypatch)
+    # _litellm_check reads LITELLM_API_KEY at call time; set it so the
+    # check goes through _http_check (which the test patches below)
+    # rather than short-circuiting to the 🟡 unconfigured path.
+    monkeypatch.setenv("LITELLM_API_KEY", "test-key")
 
     healthy = status_mod.Check(
         name="placeholder", healthy=True, detail="HTTP 200", latency_ms=42
     )
 
-    async def _fake_http_check(name: str, _url: str) -> status_mod.Check:
+    async def _fake_http_check(
+        name: str, _url: str, *, headers: dict[str, str] | None = None
+    ) -> status_mod.Check:
         return status_mod.Check(
             name=name, healthy=True, detail="HTTP 200", latency_ms=42
         )

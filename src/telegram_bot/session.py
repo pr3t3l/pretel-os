@@ -158,13 +158,33 @@ def append_transcript(
 # --- async wrappers --------------------------------------------------------
 
 
+def _validate_dsn(dsn: str | None) -> str:
+    """Defensive guard: raise a clear error if DSN is unset at connect time.
+
+    Catches misconfigurations where systemd's `EnvironmentFile` failed
+    to load `~/.env.pretel_os` or the operator forgot `DATABASE_URL=`
+    in the env file. The actual env-load happens in `config.load_config`
+    at call time (not import time), but a defense-in-depth check here
+    surfaces the bad DSN at the connect site rather than producing a
+    cryptic psycopg parse error.
+    """
+    if not dsn or not dsn.strip():
+        raise RuntimeError(
+            "DATABASE_URL is empty or unset at connect time. "
+            "Verify ~/.env.pretel_os has DATABASE_URL=postgresql://... "
+            "and that systemd's EnvironmentFile=/home/pretel/.env.pretel_os "
+            "is in pretel-os-bot.service."
+        )
+    return dsn
+
+
 def _ensure_session_blocking(dsn: str) -> str:
-    with psycopg.connect(dsn, autocommit=True) as conn:
+    with psycopg.connect(_validate_dsn(dsn), autocommit=True) as conn:
         return ensure_session_sync(conn)
 
 
 def _close_idle_blocking(dsn: str, idle_minutes: int) -> int:
-    with psycopg.connect(dsn, autocommit=True) as conn:
+    with psycopg.connect(_validate_dsn(dsn), autocommit=True) as conn:
         return close_idle_sessions_sync(conn, idle_minutes=idle_minutes)
 
 

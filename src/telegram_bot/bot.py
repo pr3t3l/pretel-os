@@ -20,6 +20,8 @@ from telegram.ext import (
     filters,
 )
 
+from mcp_server import db as mcp_db_mod
+
 from . import config as config_mod
 from .session import idle_close_loop, session_middleware
 from .handlers.cross_poll import (
@@ -61,8 +63,27 @@ AppT = Application[Any, Any, Any, Any, Any, Any]
 
 
 async def _post_init(app: AppT) -> None:
-    """Start the idle-close background loop after Application init."""
+    """Start the MCP db health poller + idle-close loop.
+
+    The bot calls `mcp_server.tools.*` functions directly per plan Q2.
+    Those functions gate on `mcp_server.db.is_healthy()`; without the
+    poller running in the bot process, every tool call returns
+    `degraded('db_unavailable')`. We bring up the same poller the MCP
+    server's lifespan uses, then force one immediate probe so the
+    first incoming Telegram message doesn't race the 30s cadence.
+    """
     cfg = config_mod.load_config()
+
+    # Boot the shared MCP db pool + health poller. Without this the
+    # bot's calls into list_pending_lessons / save_lesson / etc. would
+    # all degrade because db_mod._db_healthy starts at False and only
+    # the poller flips it.
+    await mcp_db_mod.start_background_health_check()
+    # Force an immediate probe so the first message doesn't race the
+    # poller's 30s cadence. Reaches the same private attribute the
+    # poller would set; conftest.patched_db follows the same pattern.
+    mcp_db_mod._db_healthy = await mcp_db_mod._probe_once()
+
     stop_event = asyncio.Event()
     task = asyncio.create_task(
         idle_close_loop(stop_event, cfg.database_url),
@@ -73,7 +94,7 @@ async def _post_init(app: AppT) -> None:
 
 
 async def _post_shutdown(app: AppT) -> None:
-    """Cancel the idle-close loop before shutdown drains the event loop."""
+    """Cancel the idle-close loop + stop the MCP db health poller."""
     stop_event = app.bot_data.get("idle_stop_event")
     task = app.bot_data.get("idle_task")
     if stop_event is not None:
@@ -83,6 +104,7 @@ async def _post_shutdown(app: AppT) -> None:
             await asyncio.wait_for(task, timeout=5.0)
         except (asyncio.TimeoutError, asyncio.CancelledError):
             task.cancel()
+    await mcp_db_mod.stop_background_health_check()
 
 
 def build_application(cfg: config_mod.Config) -> AppT:
