@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Modules 4 + 5 complete. Module 7 in progress (phases A + B closed via per-phase operator briefs; Phase C scope pending). Module 6 (reflection_worker) still open in parallel.
+**Phase:** Modules 4 + 5 complete. Module 7 in progress (Phases A + B closed via per-phase operator briefs). Module 7.5 (Awareness layer) in progress — RUN 1 of 4 closed (Phases A + B: migration 0034 + readme renderer + LISTEN/NOTIFY consumer + 2 MCP tools). Module 6 (reflection_worker) still open in parallel; M7.5 must close before M6 production deployment per `M7_5_awareness_layer_rationale.md` §0.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -36,11 +36,13 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M5 Module 5 — telegram_bot (COMPLETE 2026-04-29). Mobile-first capture + review surface: 7 commands (`/start /help /save /idea /status /review_pending /cross_poll_review`) + voice handler (Whisper `whisper-1` ES). Bot imports MCP tools directly per Q2 (no HTTP/MCP-protocol round-trip). 5 new MCP tools shipped in Phase A (`list_pending_lessons`, `approve_lesson`, `reject_lesson`, `list_pending_cross_pollination`, `resolve_cross_pollination`) — benefits Claude.ai too. `session_middleware` populates `conversation_sessions` per turn — unblocks the M4 D.2 Q8 deferral that left `_get_session_excerpt()` returning `""`. Idle-close loop (300s interval, 10-min idle) closes stale sessions via `app.bot_data` lifecycle hooks. 45 tests (32 bot + 13 review tools) green; ~$0 in CI, ~$0.003/30s in production Whisper smoke. Tag `module-5-complete` pushed.
 - M7.A Generic skills + Scout overlay (commit `3a41d7f`, 2026-04-29). `skills/sdd.md` (455 lines) and `skills/vett.md` (655 lines, organization-agnostic with `{the organization}` / `{client_tech_stack}` / `{client_governance_team}` variable bindings — verified `grep -i scout|zscaler|databricks|kubernetes|eks|livekit|pinecone` returns 0 matches). Scout L2 overlay at `buckets/scout/skills/vett_scout_context.md` (182 lines, supplies tech stack + governance + compliance + data taxonomy + scoring deltas + presentation visuals). `buckets/scout/README.md` rewritten as bucket manifest. SQL fallback `migrations/0032_seed_skills_sdd_vett.sql` registers sdd + vett in `tools_catalog` (idempotent ON CONFLICT DO UPDATE) — **NOT yet applied** to either DB; MCP `register_skill` returned "Session not found" mid-task and the operator chose to ship the SQL form rather than rabbit-hole into MCP debugging.
 - M7.B `create_project` MCP tool + live `projects` registry + router unknown-project hint (commit `fbe3a66`, 2026-04-30). Migration `0033` applied to `pretel_os` and `pretel_os_test` directly via `psql -1 -f` + manual prefix-only INSERT into `schema_migrations` (the `infra/db/migrate.py` runner has a pre-existing version-format bug; documented in `LL-INFRA-001`). New tools `create_project / get_project / list_projects` in `src/mcp_server/tools/projects.py`; main.py wiring + service restart clean. Router helper `_check_project_exists()` and conditional `unknown_project` key in the bundle response (only set when classifier picks bucket+project and neither registry nor on-disk README matches). 8/8 slow tests green; mypy clean.
+- M7.5 RUN 1 (Phases A + B) — awareness layer foundation (commit `ebd51f0`, 2026-04-30). Migration `0034_awareness_layer.sql` applied to both DBs: adds `project_id UUID FK projects(id) ON DELETE SET NULL` to `lessons / tasks / decisions`; adds `archived_at + archive_reason + applicable_skills` to `projects`; adds `trigger_keywords TEXT[]` to `tools_catalog`; backfills `project_id` by joining `(bucket, project_text) -> projects(bucket, slug)` (0/0/0 matches, expected — `projects` was empty); attaches 4 NOTIFY trigger functions across 5 tables (`project_lifecycle`, `readme_dirty_bucket`, `readme_dirty_project`, `catalog_changed`). New `src/awareness/` package: `readme_renderer.py` (pure parse + render + sync `regenerate_*` orchestrators with byte-identical idempotency via stable-timestamp logic and atomic write tempfile→fsync→rename; preserves operator notes verbatim between `<!-- pretel:notes:start -->` markers); `readme_consumer.py` (async LISTEN on `readme_dirty`, 30s debounce, 5s scan, `asyncio.to_thread` dispatch to sync `psycopg.connect`, SIGTERM/SIGINT graceful shutdown). New `src/mcp_server/tools/awareness.py` exposes `regenerate_bucket_readme(bucket)` + `regenerate_project_readme(bucket, slug)` MCP tools. systemd user unit `pretel-os-readme.service` active. mypy --strict clean. Reference docs in `~/Downloads/M7_5_*.md` (rationale + plan + atomic_tasks + 4-run code briefings). RUNs 2-4 still pending.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
-- Module 6 (Reflection worker — reads `routing_logs` + `conversations_indexed` to detect patterns; writes `cross_pollination_queue` rows).
+- **Module 7.5 RUNs 2-4** — RUN 2 (Phase C: Router awareness injection + `archive_project` + `recommend_skills_for_query` + `project_id` population in task_create/save_lesson/decision_record); RUN 3 (Phase D: `skills/skill_discovery.md` + migration `0035_seed_awareness.sql` + initial regeneration of all bucket and project READMEs); RUN 4 (Phase E: tests + 7 success-criteria demos + tag `module-7-5-complete`). Each RUN is self-contained; operator pastes one at a time per the briefings doc.
+- Module 6 (Reflection worker — reads `routing_logs` + `conversations_indexed` to detect patterns; writes `cross_pollination_queue` rows). **Blocked on M7.5 close** — M6's lesson outputs need `project_id` FKs to be queryable by project, per `M7_5_awareness_layer_rationale.md` §0.
 - **Module 7 Phase C** — operator picks scope at next kickoff. Candidates: migrate the 5 remaining skills (`scout_slides`, `declassified_pipeline`, `forge`, `marketing_system`, `finance_system`); write the 3 new ones (`client_discovery`, `sow_generator`, `mtm_efficiency_audit`); apply migration `0032` to populate `tools_catalog` rows + embeddings for sdd+vett; ship `runbooks/module_7_skills.md` (required for the Module 7 exit gate per plan §6).
 - Module 8 (lessons migration).
 - M4 Phase F (post-30-day tuning, ongoing — not gated; queries shipped in `runbooks/router_tuning.md`).
@@ -51,12 +53,13 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
   - **M7.A.fu1** — apply `migrations/0032_seed_skills_sdd_vett.sql` to `pretel_os` (and `pretel_os_test`); the embedding trigger will queue both rows for the auto-index worker.
   - **M7.A.fu2** — reconcile `infra/db/migrate.py` version-format bug (stem vs prefix). Workaround: direct `psql -1 -f` + manual prefix-only `schema_migrations` INSERT. Captured as `LL-INFRA-001`. Backfill migration to retro-apply prefixes is the cleanest fix.
 
-**Top of stack:** Either Module 6 (Reflection worker — SDD trinity not yet drafted; kickoff via `runbooks/sdd_module_kickoff.md`; reads from `routing_logs` low-confidence clusters / RAG mismatches / repeat queries, `conversations_indexed`, `usage_logs`, proposes lessons + cross-pollination rows for operator review via M5's already-wired `/review_pending` + `/cross_poll_review`) OR **Module 7 Phase C** (operator-driven brief, no canonical M7 trinity — Phase C scope is what the operator chooses to brief next). Module 7 has been driven via per-phase operator briefs since M7.A; if it formalizes, the SDD trinity must be retro-built to capture the running record.
+**Top of stack:** **Module 7.5 RUN 2** — Phase C: Router `available_skills` + `active_projects` injection into ContextBundle, `create_project` calls `regenerate_bucket_readme` post-INSERT, new `archive_project` MCP tool, new `recommend_skills_for_query` MCP tool, plus `project_id` population in `task_create / save_lesson / decision_record` when caller provides `bucket + project`. Briefing in `~/Downloads/M7_5_code_briefings.md` (RUN 2 section). Each RUN is self-contained; operator pastes the next briefing in a fresh prompt. Once M7.5 RUN 4 closes (tag `module-7-5-complete`), Module 6 (Reflection worker) is the next module to kick off via `runbooks/sdd_module_kickoff.md`.
 
 **Where to find recently-closed module sources-of-truth:**
 - Module 4: `runbooks/module_4_router.md`, `runbooks/router_tuning.md`, `runbooks/router_audit_queries.sql`, `specs/router/{spec,plan,tasks,phase_b_close,phase_c_close,phase_d_close}.md`.
 - Module 5: `specs/telegram_bot/{spec,plan,tasks}.md`, `infra/systemd/pretel-os-bot.service`, `tests/telegram_bot/`, `tests/mcp_server/tools/test_review_tools.py`.
 - Module 7 (in progress, no SDD trinity yet): closure summaries in `tasks.archive.md` (Phase A and Phase B sections, dated 2026-04-29 and 2026-04-30); generic skill files at `skills/{sdd,vett}.md`; Scout overlay at `buckets/scout/skills/vett_scout_context.md`; tool implementations at `src/mcp_server/tools/projects.py`; tests at `tests/mcp_server/tools/test_projects.py`. Open follow-ups in `tasks.md` Module 7 section (M7.A.fu1, M7.A.fu2).
+- Module 7.5 (in progress, no SDD trinity — operator briefs at `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`): migration at `migrations/0034_awareness_layer.sql`; renderer + consumer at `src/awareness/`; MCP wrappers at `src/mcp_server/tools/awareness.py`; systemd unit at `infra/systemd/pretel-os-readme.service`. Tests deferred to RUN 4.
 
 ---
 
@@ -704,6 +707,71 @@ Next: Module 6 — Reflection worker (reads routing_logs +
   conversations_indexed, proposes lessons + cross_pollination_queue
   rows for the operator to triage via M5's /review_pending +
   /cross_poll_review).
+
+
+Last session: 2026-04-30 (Module 7.5 RUN 1 of 4 — awareness layer foundation)
+Status: M7.5 in progress. RUN 1 of the 4-run code briefing closed end-
+  to-end: schema migration + lifecycle hooks (Phase A) + README renderer
+  + LISTEN/NOTIFY consumer + 2 MCP tools (Phase B). RUNs 2-4 pending,
+  each self-contained per the briefings doc.
+Last task completed: M7.5 RUN 1 — commit ebd51f0.
+Commit pushed this session arc:
+  - ebd51f0 M7.5.AB: awareness migration 0034 + readme renderer +
+            consumer worker. 8 files, +1364 LoC.
+            Migration 0034: project_id UUID FK on lessons/tasks/decisions
+            (NULLABLE + ON DELETE SET NULL); archived_at + archive_reason
+            + applicable_skills on projects; trigger_keywords on
+            tools_catalog; backfill UPDATE 0/0/0 (projects empty); 4
+            NOTIFY trigger functions (project_lifecycle, readme_dirty_
+            bucket fans out per applicable_buckets, readme_dirty_project
+            looks up bucket+slug from FK, catalog_changed); 10 triggers
+            attached. Applied to pretel_os AND pretel_os_test;
+            schema_migrations row '0034' inserted in-migration (idempotent
+            ON CONFLICT). Manual workaround for migrate.py runner bug
+            still applies (matches LL-INFRA-001).
+            src/awareness/readme_renderer.py: pure parse_readme +
+            render_bucket_readme + render_project_readme; sync
+            regenerate_bucket_readme + regenerate_project_readme
+            orchestrators. Marker pattern <!-- pretel:auto:start NAME -->
+            ... <!-- pretel:auto:end NAME --> per Q3 plan; operator
+            notes preserved byte-for-byte between <!-- pretel:notes -->.
+            Atomic write: tempfile.NamedTemporaryFile in same dir +
+            fsync + os.rename. Idempotency via stable-timestamp logic
+            (reuses old timestamp when data unchanged) — running twice
+            in a row = byte-identical file.
+            src/awareness/readme_consumer.py: async LISTEN on
+            'readme_dirty' channel via psycopg.AsyncConnection
+            autocommit=True; debounce 30s, scan every 5s; dispatch via
+            asyncio.to_thread to a sync psycopg.connect calling the
+            renderer's regenerate_*. Graceful shutdown on SIGTERM/SIGINT
+            via add_signal_handler -> stop_event.
+            src/awareness/__main__.py: python -m awareness =
+            readme_consumer.main().
+            infra/systemd/pretel-os-readme.service: user unit mirroring
+            pretel-os-bot.service. systemctl --user start showed
+            "active (running)" + "LISTENing on channel=readme_dirty
+            (debounce=30s, scan=5s)".
+            src/mcp_server/tools/awareness.py: async MCP wrappers
+            regenerate_bucket_readme(bucket) + regenerate_project_readme
+            (bucket, slug). Use asyncio.to_thread + fresh sync
+            psycopg.connect; respect db_mod.is_healthy degraded gate;
+            log_usage on every call; return content_preview (first 500
+            chars).
+            mcp_server/main.py: imports + app.tool registrations under
+            "Module 7.5 — awareness layer".
+Smoke verified: imports OK; consumer boots clean and shuts down on
+  SIGTERM; mypy --strict clean across src/awareness/ + tools/awareness.py
+  + main.py.
+Open follow-ups carried forward (unchanged from prior session):
+  M7.A.fu1 (apply 0032), M7.A.fu2 (migrate.py runner bug), and the
+  M6 / tool-family / lessons.py-mypy items already tracked.
+Next: M7.5 RUN 2 — Phase C (Router awareness injection + new MCP
+  tools + tool updates). Operator pastes RUN 2 briefing from
+  ~/Downloads/M7_5_code_briefings.md when ready.
+Tags unchanged: foundation-v1.0, module-1-complete, module-2-complete,
+  module-3-complete, module-0x-complete, module-5-complete (plus M4
+  phase tags). M7.5 will tag module-7-5-complete on RUN 4 close
+  (operator-driven push, per the briefing).
 
 
 Last session: 2026-04-30 (Module 7 Phases A + B closed via per-phase operator briefs)
