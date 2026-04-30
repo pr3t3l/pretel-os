@@ -42,6 +42,11 @@ from .handlers.save import (
     save_command,
 )
 from .handlers.status import status_command
+from .handlers.voice import (
+    VOICE_CALLBACK_PATTERN,
+    voice_callback,
+    voice_message_handler,
+)
 
 log = logging.getLogger(__name__)
 
@@ -83,6 +88,13 @@ def build_application(cfg: config_mod.Config) -> AppT:
         CallbackQueryHandler(
             cross_poll_review_callback, pattern=XPOLL_CALLBACK_PATTERN
         )
+    )
+    app.add_handler(
+        CallbackQueryHandler(voice_callback, pattern=VOICE_CALLBACK_PATTERN)
+    )
+    # Voice / audio messages → Whisper → save_lesson (Phase D.1).
+    app.add_handler(
+        MessageHandler(filters.VOICE | filters.AUDIO, voice_message_handler)
     )
     # Plain-text fallback — picks up the reject-reason from
     # /review_pending. The handler short-circuits when no review state

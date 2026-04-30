@@ -228,9 +228,15 @@ Covered by M5.T1 above.
 
 ## M5.T5 — Phase D — Voice + session tracking
 
-- [ ] **M5.D.1.1** Voice handler: download `.ogg` → Whisper
-  `whisper-1` → bucket prompt → `save_lesson(category='OPS',
-  tags=['voice-capture','telegram'])`.
+- [x] **M5.D.1.1** Voice handler in `handlers/voice.py`. Downloads
+  the `.ogg` via `voice.get_file().download_as_bytearray()`, posts
+  to Whisper (`model='whisper-1'`, `language='es'`,
+  `response_format='text'`) via `AsyncOpenAI`, defensively strips the
+  result, stashes in `user_data["voice_pending_text"]`, prompts for
+  bucket. Bucket callback calls `save_lesson(category='OPS',
+  tags=['voice-capture','telegram'])`. Failures (download error,
+  Whisper error, empty transcription) degrade to "Envía /save
+  <texto>" fallback so the operator's flow is never blocked.
 
 - [ ] **M5.D.2.1** Session tracker: INSERT first message; UPDATE
   per turn; append JSONL transcript at
