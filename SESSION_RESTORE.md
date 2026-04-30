@@ -17,7 +17,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 
 ## 2. Current state
 
-**Phase:** Modules 4 + 5 complete. Module 6 (reflection_worker) next.
+**Phase:** Modules 4 + 5 complete. Module 7 in progress (phases A + B closed via per-phase operator briefs; Phase C scope pending). Module 6 (reflection_worker) still open in parallel.
 
 **What is done:**
 - Foundation, Modules 1–3.
@@ -34,20 +34,29 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
 - M4 Phase D + E (Telemetry + orchestrator + fallback classifier): full pipeline shipped 2026-04-29. 6 atomic groups (D.0-D.5) per `specs/router/phase_d_close.md`. `router.get_context()` async orchestrator wires classify → assemble_bundle → detect_invariant_violations → telemetry, with try/finally degraded handling per spec §10. 6 telemetry functions (start_request + 5 log_*) write spec §9.1/§9.2 columns; INSERT-early per Q2. MCP tool wrappers `tools/context.py` (replaces Module-3 stub) + `tools/report_satisfaction.py`. 19 D.4 tests green: 8 telemetry + 5 fallback integration + 6 e2e (~$0.018 actual cost). 3 audit queries from spec §9.3 saved to `runbooks/router_audit_queries.sql`. Q5 Q-decisions captured in `phase_d_close.md`.
 - M4 exit (M4.T9.x): plan §10 exit gate verified (9/10 ✓, bullet 8 partial — provider-variance pushes individual HIGH-complexity turns to ~3.5s vs the 2s gate; warm steady-state is ~1s; 5s `ClassifierTimeout` triggers fallback to protect UX). `runbooks/module_4_router.md` rewritten as consolidated module runbook (5 sections + gate verification table + file-to-responsibility map). `runbooks/router_tuning.md` (F.1.1) ships 3 baseline §9.3 queries + 5 Phase F tuning queries. Tag candidate `module-4-complete` (operator-driven).
 - M5 Module 5 — telegram_bot (COMPLETE 2026-04-29). Mobile-first capture + review surface: 7 commands (`/start /help /save /idea /status /review_pending /cross_poll_review`) + voice handler (Whisper `whisper-1` ES). Bot imports MCP tools directly per Q2 (no HTTP/MCP-protocol round-trip). 5 new MCP tools shipped in Phase A (`list_pending_lessons`, `approve_lesson`, `reject_lesson`, `list_pending_cross_pollination`, `resolve_cross_pollination`) — benefits Claude.ai too. `session_middleware` populates `conversation_sessions` per turn — unblocks the M4 D.2 Q8 deferral that left `_get_session_excerpt()` returning `""`. Idle-close loop (300s interval, 10-min idle) closes stale sessions via `app.bot_data` lifecycle hooks. 45 tests (32 bot + 13 review tools) green; ~$0 in CI, ~$0.003/30s in production Whisper smoke. Tag `module-5-complete` pushed.
+- M7.A Generic skills + Scout overlay (commit `3a41d7f`, 2026-04-29). `skills/sdd.md` (455 lines) and `skills/vett.md` (655 lines, organization-agnostic with `{the organization}` / `{client_tech_stack}` / `{client_governance_team}` variable bindings — verified `grep -i scout|zscaler|databricks|kubernetes|eks|livekit|pinecone` returns 0 matches). Scout L2 overlay at `buckets/scout/skills/vett_scout_context.md` (182 lines, supplies tech stack + governance + compliance + data taxonomy + scoring deltas + presentation visuals). `buckets/scout/README.md` rewritten as bucket manifest. SQL fallback `migrations/0032_seed_skills_sdd_vett.sql` registers sdd + vett in `tools_catalog` (idempotent ON CONFLICT DO UPDATE) — **NOT yet applied** to either DB; MCP `register_skill` returned "Session not found" mid-task and the operator chose to ship the SQL form rather than rabbit-hole into MCP debugging.
+- M7.B `create_project` MCP tool + live `projects` registry + router unknown-project hint (commit `fbe3a66`, 2026-04-30). Migration `0033` applied to `pretel_os` and `pretel_os_test` directly via `psql -1 -f` + manual prefix-only INSERT into `schema_migrations` (the `infra/db/migrate.py` runner has a pre-existing version-format bug; documented in `LL-INFRA-001`). New tools `create_project / get_project / list_projects` in `src/mcp_server/tools/projects.py`; main.py wiring + service restart clean. Router helper `_check_project_exists()` and conditional `unknown_project` key in the bundle response (only set when classifier picks bucket+project and neither registry nor on-disk README matches). 8/8 slow tests green; mypy clean.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
 
 **What is not done:**
 - Module 6 (Reflection worker — reads `routing_logs` + `conversations_indexed` to detect patterns; writes `cross_pollination_queue` rows).
-- Modules 7–8 (skills + lessons migration).
+- **Module 7 Phase C** — operator picks scope at next kickoff. Candidates: migrate the 5 remaining skills (`scout_slides`, `declassified_pipeline`, `forge`, `marketing_system`, `finance_system`); write the 3 new ones (`client_discovery`, `sow_generator`, `mtm_efficiency_audit`); apply migration `0032` to populate `tools_catalog` rows + embeddings for sdd+vett; ship `runbooks/module_7_skills.md` (required for the Module 7 exit gate per plan §6).
+- Module 8 (lessons migration).
 - M4 Phase F (post-30-day tuning, ongoing — not gated; queries shipped in `runbooks/router_tuning.md`).
-- Follow-ups (non-blocking): M4 `5db4bc6f` (LayerBundleCache listener wiring); Router `_get_session_excerpt()` swap to real `conversation_sessions` query now that M5 populates the table; cost_usd plumbing from LiteLLM proxy to `llm_calls`.
+- Follow-ups (non-blocking):
+  - M4 `5db4bc6f` LayerBundleCache listener wiring (closed 2026-04-29 by commit `8123a82`; verify if any residual remains).
+  - Router `_get_session_excerpt()` swap to real `conversation_sessions` query now that M5 populates the table.
+  - cost_usd plumbing from LiteLLM proxy to `llm_calls`.
+  - **M7.A.fu1** — apply `migrations/0032_seed_skills_sdd_vett.sql` to `pretel_os` (and `pretel_os_test`); the embedding trigger will queue both rows for the auto-index worker.
+  - **M7.A.fu2** — reconcile `infra/db/migrate.py` version-format bug (stem vs prefix). Workaround: direct `psql -1 -f` + manual prefix-only `schema_migrations` INSERT. Captured as `LL-INFRA-001`. Backfill migration to retro-apply prefixes is the cleanest fix.
 
-**Top of stack:** Module 6 — Reflection worker. SDD trinity not yet drafted; kickoff via `runbooks/sdd_module_kickoff.md`. Module 6 reads from `routing_logs` (low-confidence clusters, RAG mismatches, repeat queries), `conversations_indexed`, `usage_logs`, and proposes lessons + cross-pollination rows for operator review. Operator review surface: M5's `/review_pending` + `/cross_poll_review` are already wired, so M6 outputs land in a workflow the operator already runs.
+**Top of stack:** Either Module 6 (Reflection worker — SDD trinity not yet drafted; kickoff via `runbooks/sdd_module_kickoff.md`; reads from `routing_logs` low-confidence clusters / RAG mismatches / repeat queries, `conversations_indexed`, `usage_logs`, proposes lessons + cross-pollination rows for operator review via M5's already-wired `/review_pending` + `/cross_poll_review`) OR **Module 7 Phase C** (operator-driven brief, no canonical M7 trinity — Phase C scope is what the operator chooses to brief next). Module 7 has been driven via per-phase operator briefs since M7.A; if it formalizes, the SDD trinity must be retro-built to capture the running record.
 
 **Where to find recently-closed module sources-of-truth:**
 - Module 4: `runbooks/module_4_router.md`, `runbooks/router_tuning.md`, `runbooks/router_audit_queries.sql`, `specs/router/{spec,plan,tasks,phase_b_close,phase_c_close,phase_d_close}.md`.
 - Module 5: `specs/telegram_bot/{spec,plan,tasks}.md`, `infra/systemd/pretel-os-bot.service`, `tests/telegram_bot/`, `tests/mcp_server/tools/test_review_tools.py`.
+- Module 7 (in progress, no SDD trinity yet): closure summaries in `tasks.archive.md` (Phase A and Phase B sections, dated 2026-04-29 and 2026-04-30); generic skill files at `skills/{sdd,vett}.md`; Scout overlay at `buckets/scout/skills/vett_scout_context.md`; tool implementations at `src/mcp_server/tools/projects.py`; tests at `tests/mcp_server/tools/test_projects.py`. Open follow-ups in `tasks.md` Module 7 section (M7.A.fu1, M7.A.fu2).
 
 ---
 
@@ -695,6 +704,80 @@ Next: Module 6 — Reflection worker (reads routing_logs +
   conversations_indexed, proposes lessons + cross_pollination_queue
   rows for the operator to triage via M5's /review_pending +
   /cross_poll_review).
+
+
+Last session: 2026-04-30 (Module 7 Phases A + B closed via per-phase operator briefs)
+Status: Module 7 in progress without a formal SDD trinity. Two phases
+  closed via standalone operator briefs (M7.A on 2026-04-29, M7.B on
+  2026-04-30). Phase C scope pending — operator picks at next kickoff.
+Last task completed: doc-only update across this session — `tasks.md`,
+  `plan.md`, `tasks.archive.md`, `SESSION_RESTORE.md`, `DECISIONS.md`,
+  `docs/DATA_MODEL.md`, `docs/LESSONS_LEARNED.md`.
+Commits pushed earlier in this session arc:
+  - 3a41d7f M7.A: skills/sdd.md (455 ln, generic across all buckets) +
+            skills/vett.md (655 ln, organization-agnostic — verified
+            zero matches for "scout|zscaler|databricks|kubernetes|eks
+            |livekit|pinecone") + buckets/scout/skills/vett_scout_context.md
+            (182 ln L2 overlay supplying tech stack / governance /
+            compliance / data taxonomy / scoring deltas) +
+            buckets/scout/README.md rewrite (52 ln) +
+            migrations/0032_seed_skills_sdd_vett.sql (SQL fallback,
+            idempotent ON CONFLICT DO UPDATE — MCP register_skill
+            session was lost mid-task). Migration 0032 NOT yet
+            applied to either DB.
+  - fbe3a66 M7.B: migration 0033_projects_table.sql (live registry,
+            distinct from projects_indexed) applied directly via
+            psql -1 -f to both pretel_os and pretel_os_test +
+            manual prefix-only INSERT into schema_migrations
+            (sidesteps the migrate.py runner version-format bug).
+            src/mcp_server/tools/projects.py: create_project +
+            get_project + list_projects, registered in main.py
+            (line 49 import, lines 156-158 app.tool calls).
+            src/mcp_server/router/router.py: _check_project_exists
+            helper + conditional unknown_project key in get_context
+            response. tests/mcp_server/tools/test_projects.py:
+            8 tests, @pytest.mark.slow, inline fixtures, all green
+            in 1.15s. mypy clean. systemctl --user restart
+            pretel-os-mcp succeeded; service active running.
+Open follow-ups carried forward:
+  - M7.A.fu1 — apply migration 0032 to populate tools_catalog rows +
+              queue embeddings for sdd + vett. Required before M7
+              exit gate per plan §6.
+  - M7.A.fu2 — reconcile infra/db/migrate.py: stores path.stem as
+              version while older rows use 4-digit prefix only.
+              Workaround in M7.B was direct psql -1 -f + manual
+              prefix-only schema_migrations INSERT. See LL-INFRA-001
+              and DECISIONS ADR-026.
+  - M7 trinity retro-build — when Phase C closes (or earlier), build
+              specs/skills_migration/{spec,plan,tasks}.md to capture
+              the running record. Anti-pattern logged.
+Decisions captured this session arc (full reasoning in DECISIONS.md):
+  - ADR-026 (NEW) — migrate.py version-format bug deferred; direct
+              psql + manual schema_migrations INSERT is the
+              sanctioned workaround until reconciliation lands.
+  - ADR-027 (NEW) — projects (live, M7.B) and projects_indexed
+              (closed/archived with embeddings, M2) are intentionally
+              two tables. Live rows move to projects_indexed at
+              project close-time (no automatic copy yet — manual or
+              future tool).
+Lessons captured this session arc (in docs/LESSONS_LEARNED.md §9):
+  - LL-INFRA-001 — migrate.py version-format mismatch (stem vs
+              prefix); how to detect and how to work around.
+  - LL-PROC-003 — MCP session loss mid-task: ship the durable
+              on-disk form of the mutation (SQL with idempotent
+              upsert) rather than rabbit-holing into MCP debugging
+              when the on-disk form is the canonical answer anyway.
+Next:
+  - Operator drives M7.C scope (per the SDD-skill convention, the
+    L1+L3 context for Phase C is already in place: skills/sdd.md
+    and skills/vett.md plus the Scout overlay).
+  - OR resume Module 6 (Reflection worker) in parallel —
+    SDD trinity not yet drafted.
+Tags unchanged this session arc: foundation-v1.0, module-1-complete,
+  module-2-complete, module-3-complete, module-0x-complete,
+  module-5-complete (and the M4 phase tags from Module 4's session arc).
+  M7 phases tracked by commit hash only — no intermediate tags
+  (consistent with the operator pattern from M0.X).
 ---
 
 **End of SESSION_RESTORE.md.**

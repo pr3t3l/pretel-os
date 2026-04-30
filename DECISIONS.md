@@ -1,7 +1,7 @@
 # DECISIONS — pretel-os
 
 **Status:** Active ADR log
-**Last updated:** 2026-04-28
+**Last updated:** 2026-04-30
 **Owner:** Alfredo Pretel Vargas
 
 This file is the canonical record of architectural and process decisions for pretel-os. Every entry is an ADR (Architectural Decision Record) with explicit context, decision, consequences, and alternatives. Decisions here are immutable; if a decision needs to change, a new ADR supersedes it (status flips to `superseded`, `superseded_by` points to the new ADR).
@@ -240,3 +240,87 @@ The contract is the input spec for M4 Phase B. Phase B writes its own spec/plan/
 ### Derived from lessons
 - `LL-M0X-001` — Spec drift caught at scratch test time. Phase E's drift fixes (tool count 16 → 18, `decisions.project` NOT NULL clarification) are the same family. The contract is intentionally fully-specified to avoid being the source of similar drift downstream.
 - `LL-M4-PHASE-A-002` — Verbal acknowledgment is not persistence. The contract is a written, version-pinned artifact (`module-0x-complete` tag), not a verbal handoff.
+
+---
+
+## ADR-026 — `infra/db/migrate.py` version-format reconciliation deferred
+
+**Status:** active
+**Scope:** operational
+**Severity:** normal
+**Decided:** 2026-04-30
+**Decided by:** operator+claude
+**Applicable buckets:** all
+**Tags:** [migrations, runner, schema_migrations, technical-debt]
+**Derived from lessons:** LL-INFRA-001
+
+### Context
+`infra/db/migrate.py` records `path.stem` (e.g. `0024_tasks`) as the `version` column in `schema_migrations`. Pre-existing rows in both `pretel_os` and `pretel_os_test` use 4-digit prefixes only (`0024`, `0025`, ..., `0031`) — applied via an earlier convention. The runner's existence check `prior = already.get(path.stem)` therefore always returns `None` for migrations 0024–0031, prompting re-application; non-idempotent migrations then fail with `ERROR: trigger already exists` and abort the run on the first non-idempotent file (currently `0024_tasks.sql`).
+
+This blocks the runner from being used to apply any new migration without first either reconciling the `schema_migrations` rows or fixing the runner's version derivation. Discovered while applying `0033_projects_table.sql` for Module 7 Phase B.
+
+### Decision
+Defer the runner fix. For new migrations, use the documented workaround:
+1. Apply the migration directly via `psql -v ON_ERROR_STOP=1 -X -1 -q -d "$DB_URL" -f migrations/NNNN_*.sql`.
+2. Compute the SHA256 with `sha256sum migrations/NNNN_*.sql | awk '{print $1}'`.
+3. Insert into `schema_migrations` using **prefix-only** version: `INSERT INTO schema_migrations(version, checksum) VALUES ('NNNN', '<sha>') ON CONFLICT (version) DO NOTHING`.
+
+Apply to both `pretel_os` and `pretel_os_test`.
+
+The proper fix (a one-shot reconciliation migration that backfills full stems into `schema_migrations` for rows 0024–0033, plus a runner change to derive prefix-only `version`) is captured as `M7.A.fu2` in `tasks.md` and revisited at next infra-touching session.
+
+### Consequences
+- Every new migration carries an extra two-line ritual until reconciled.
+- The `migrate.py` runner cannot be used as a single command for fresh applies; cognitive overhead falls on the operator (or whoever is shipping the migration).
+- Test database stays in lockstep with prod because both get the same direct-apply treatment.
+- The reconciliation migration itself, when it lands, is a data-only change to `schema_migrations` (rewriting existing rows + inserting any missing); it carries no schema risk.
+
+### Alternatives considered
+- **Fix the runner immediately** — rejected: minor scope creep at a phase boundary; the new migration (0033) needed to land cleanly, and changing the runner contract on the same commit creates two failure surfaces in one PR.
+- **Backfill schema_migrations rows now to match the runner's expected format** — rejected: 8 rows × 2 databases = 16 manual updates with no test coverage on the result; safer to handle in one reconciliation migration with explicit verification.
+- **Make every future migration idempotent enough to survive double-apply** — equivalent to keeping the bug; the existing migrations are a mix of `IF NOT EXISTS` and not, and forcing strict idempotency on every future file just hides the runner defect.
+
+---
+
+## ADR-027 — `projects` (live) and `projects_indexed` (closed) are intentionally two tables
+
+**Status:** active
+**Scope:** architectural
+**Severity:** normal
+**Decided:** 2026-04-30
+**Decided by:** operator+claude
+**Applicable buckets:** all
+**Tags:** [data-model, projects, lifecycle, m7]
+
+### Context
+Module 2 shipped `projects_indexed` (DATA_MODEL §2.3) as a historical/closed-project table with `embedding vector(3072)`, narrative columns (`outcome`, `closure_reason`, `final_readme`), and `key_decisions JSONB`. It was designed for semantic recall of finished work, not for active-project state.
+
+Module 7 Phase B (`create_project` MCP tool) needs a live registry where (bucket, slug) is unique, where the row carries an active `status='active'` default, and where the writer is a tool — not a closure ritual. Reusing `projects_indexed` would have meant either: (a) overloading the table with a status discriminator and weakening its semantic-recall mission, or (b) requiring active projects to populate the closure-only columns at insert time.
+
+### Decision
+Migration 0033 introduces a separate `projects` table for **live, active projects**, distinct from `projects_indexed`:
+
+| Concern | `projects` (live, M7.B) | `projects_indexed` (closed, M2) |
+|---|---|---|
+| Identity | `(bucket, slug)` unique | `(name, bucket)` not unique |
+| Lifecycle column | `status` (default `'active'`) | `closure_reason`, `closed_at` |
+| Embeddings | none | `vector(3072)` HNSW (deferred per ADR-024) |
+| Closure narrative | none | `outcome`, `final_readme`, `key_decisions` |
+| Trigger | `set_updated_at()` only | `set_updated_at()` + `notify_missing_embedding()` |
+| Writer | `create_project` MCP tool | manual / future close-out tool |
+| Reader | router L2 + `get_project` MCP tool | semantic recall over closed work |
+
+When a project closes, a future tool (or manual workflow) copies the row from `projects` → `projects_indexed`, populates the closure narrative, generates the embedding, and (optionally) deletes from `projects`. That tool is **out of scope** for M7.B.
+
+### Consequences
+- Queries against "live projects" go to `projects`; queries against "what did we ship before" go to `projects_indexed`. No status filter required to disambiguate.
+- The router's `_check_project_exists()` checks **only** `projects` (plus on-disk README). Closed projects in `projects_indexed` do not satisfy the freshness check — by design (closed work is not the subject of a new conversation turn).
+- The `projects` table is small and write-light (one row per active project); the absence of an embedding column saves a 24KB vector per row.
+- Future tool: `close_project(bucket, slug, outcome, closure_reason)` copies → indexes → optionally deletes. Captured as a backlog item; not blocking.
+
+### Alternatives considered
+- **Single `projects` table with `status` enum and embedding column** — rejected: forces every active project to either carry NULL embedding (wasted column) or get embedded prematurely (doesn't capture final state). Also conflicts with `projects_indexed`'s narrative columns being NOT NULL when populated.
+- **Add `status` column to `projects_indexed` and use it for both** — same anti-pattern as the lessons-table consolidation that ADR-021 split apart. Different lifecycle, different writer, different read pattern → different tables.
+
+### Derived from lessons
+- `LL-DATA-001` — single table with status enum beats parallel pending/archive only when the lifecycle states are of one entity type. Here the entities (active project identity vs. archived semantic-recall record) are ontologically distinct; the rule does not apply.

@@ -1,7 +1,7 @@
 # DATA MODEL — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-18
+**Last updated:** 2026-04-30
 **Owner:** Alfredo Pretel Vargas
 **Database:** PostgreSQL 16 + pgvector
 **Embeddings:** `text-embedding-3-large` (OpenAI), 3072 dimensions
@@ -26,7 +26,7 @@ Everything else stays in git.
 
 ### 1.2 Tables
 
-Twenty-five tables across three tiers (21 base + 4 added by Module 0.X Phase A on 2026-04-28):
+Twenty-six tables across four tiers (21 base + 4 added by Module 0.X Phase A on 2026-04-28 + 1 added by Module 7 Phase B on 2026-04-30):
 
 **Phase 1 (MVP — required for `Module 2: data_layer`):**
 
@@ -67,6 +67,12 @@ Twenty-five tables across three tiers (21 base + 4 added by Module 0.X Phase A o
 | 23 | `operator_preferences` | Operator-controlled facts and overrides (UNIQUE on category+key+scope, atomic upsert) |
 | 24 | `router_feedback` | Explicit feedback loop signals for Router improvement |
 | 25 | `best_practices` | Reusable PROCESS guidance (prose, not code; distinct from `patterns`) |
+
+**Module 7 Phase B (live project registry — added 2026-04-30):**
+
+| # | Table | Purpose |
+|---|-------|---------|
+| 26 | `projects` | LIVE active-project registry (bucket+slug unique). Distinct from `projects_indexed` (#3, closed/archived with embeddings) per ADR-027. |
 
 ### 1.3 Conventions
 
@@ -308,6 +314,50 @@ CREATE TABLE project_versions (
 CREATE INDEX idx_versions_project ON project_versions(bucket, project, created_at DESC);
 CREATE INDEX idx_versions_client ON project_versions(client_id) WHERE client_id IS NOT NULL;
 ```
+
+### 2.5.1 `projects` — live active-project registry (Module 7 Phase B, migration 0033)
+
+Live registry of currently-active projects. Distinct from `projects_indexed` (§2.3, which holds closed/archived projects with embeddings for semantic recall) per ADR-027. Written by the `create_project` MCP tool; read by the Router when checking the `unknown_project` hint condition; read by `get_project` / `list_projects` MCP tools.
+
+```sql
+CREATE TABLE projects (
+    id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bucket       TEXT NOT NULL,
+    slug         TEXT NOT NULL,
+    name         TEXT NOT NULL,
+    description  TEXT NOT NULL,
+    status       TEXT NOT NULL DEFAULT 'active',
+    stack        TEXT[] NOT NULL DEFAULT '{}',
+    skills_used  TEXT[] NOT NULL DEFAULT '{}',
+    objective    TEXT,
+    client_id    UUID,                                   -- multi-tenancy hook (Phase 4+); NULL for operator-internal projects
+    readme_path  TEXT,                                   -- relative to REPO_ROOT (e.g. 'buckets/business/projects/declassified/README.md')
+    metadata     JSONB NOT NULL DEFAULT '{}',
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE UNIQUE INDEX idx_projects_bucket_slug ON projects(bucket, slug);
+CREATE INDEX idx_projects_bucket_status ON projects(bucket, status);
+
+-- Trigger filtered by tgrelid because trg_projects_updated_at also exists on projects_indexed.
+CREATE TRIGGER trg_projects_updated_at BEFORE UPDATE ON projects
+    FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+```
+
+**Conventions:**
+- `slug` is normalized client-side by `create_project`: lowercase, non-`[a-z0-9-]` runs collapsed to single hyphens, repeated hyphens collapsed, leading/trailing hyphens stripped. Stored verbatim after normalization.
+- `bucket` validation accepts `personal`, `business`, `scout`, or `freelance:<client-name>` (non-empty suffix). The DB does not enforce this — application layer does.
+- `status` defaults to `'active'`. Non-default values (`'paused'`, `'closed'`, `'archived'`) are reserved for future close-out flows; M7.B does not write them.
+- `readme_path` is set by `create_project` after the README is written to disk (a two-step INSERT then UPDATE within the same transaction). Tests monkeypatch `config_mod.REPO_ROOT` to redirect writes.
+
+**Lifecycle relative to `projects_indexed`:**
+A project is created in `projects` (live) and remains there for its working lifetime. When closed, a future tool (`close_project(...)`) copies the row to `projects_indexed` with closure narrative + embedding generation, optionally deleting from `projects`. M7.B did not ship that tool — it is captured as a backlog item.
+
+**Side effects of `create_project`:**
+- Inserts an initial `project_state` row (`state_key='status', content='active', status='open'`) — see §2.4.
+- Writes a `project_versions` snapshot (`snapshot_reason='project_created', triggered_by='create_project_tool'`) — see §2.5.
+- Writes the L2 README to `{REPO_ROOT}/buckets/{bucket}/projects/{slug}/README.md` (filesystem, outside the DB).
 
 ### 2.6 `skill_versions`
 

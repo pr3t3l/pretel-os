@@ -1,7 +1,7 @@
 # LESSONS LEARNED — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-18
+**Last updated:** 2026-04-30
 **Owner:** Alfredo Pretel Vargas
 **Primary storage:** Postgres `lessons` table (see `DATA_MODEL.md §2.1`)
 **Git export:** `exports/lessons_YYYYMMDD.yaml` (weekly, produced by Dream Engine)
@@ -534,6 +534,67 @@ Ten lessons already learned during the four-document foundation cycle of pretel-
 **Lesson:** Polymorphic trigger functions that branch on `TG_TABLE_NAME` with `CASE WHEN ... THEN NEW.<column>` are time bombs against empty tables. Use `IF/ELSIF` for dispatch. Empty tables have not exercised the code path — assume zero coverage until first INSERT happens.
 
 **Tags:** plpgsql, triggers, latent-bug, schema-completeness, m2
+
+---
+
+### LL-INFRA-001 — Migration runner stores `path.stem` while older rows store 4-digit prefix
+
+**Category:** INFRA / **Severity:** 🟡 moderate / **Bucket:** business
+**Captured:** 2026-04-30 during M7.B (applying migration 0033).
+
+**Problem:** `infra/db/migrate.py` line 114 records `version = path.stem` (e.g. `'0024_tasks'`) into `schema_migrations`. Pre-existing rows in both `pretel_os` and `pretel_os_test` databases use 4-digit prefixes only (`'0024'` ... `'0031'`), applied by an earlier convention. The runner's existence check `prior = already.get(path.stem)` therefore returns `None` for every migration 0024-0031, prompting re-application. The first non-idempotent migration (`0024_tasks.sql`) fails with `ERROR: trigger "trg_set_updated_at_tasks" for relation "tasks" already exists` and the runner exits with rc=4 before reaching newer files.
+
+**Evidence:** `DATABASE_URL=postgresql://pretel_os@localhost/pretel_os python3 infra/db/migrate.py` output:
+```
+skip   0023_seed_control_registry
+apply  0024_tasks
+       FAILED: ... ERROR:  trigger "trg_set_updated_at_tasks" ... already exists
+```
+`SELECT version FROM schema_migrations ORDER BY applied_at DESC LIMIT 5` returns `0031, 0030, 0029, 0028, 0028a` — all prefix-only.
+
+**Workaround used in M7.B (commit `fbe3a66`):**
+```bash
+CHK=$(sha256sum migrations/0033_projects_table.sql | awk '{print $1}')
+for DB in pretel_os pretel_os_test; do
+  psql -v ON_ERROR_STOP=1 -X -1 -q -d "postgresql://pretel_os@localhost/$DB" \
+       -f migrations/0033_projects_table.sql
+  psql -v ON_ERROR_STOP=1 -X -q -d "postgresql://pretel_os@localhost/$DB" \
+       -c "INSERT INTO schema_migrations(version, checksum) VALUES ('0033', '$CHK') ON CONFLICT (version) DO NOTHING;"
+done
+```
+
+**Root cause:** the runner's version derivation diverged from the convention used to seed the early migrations, and the divergence was never reconciled. The runner has been worked around or the convention has been worked around — both happen now, depending on who applies the migration.
+
+**Fix (deferred per ADR-026):** a one-shot reconciliation migration that backfills full stems into `schema_migrations` for rows 0024-0033, plus a runner change to derive prefix-only `version`. Captured as `M7.A.fu2` in `tasks.md`.
+
+**Next time:** when shipping a migration, do not assume `infra/db/migrate.py` runs cleanly. Use the documented two-line workaround from ADR-026 until the reconciliation lands. Tagged for revisit at next infra-touching session.
+
+**Tags:** migrations, runner, schema_migrations, technical-debt, m7
+**Related tools:** `infra/db/migrate.py`
+**ADR:** ADR-026
+
+---
+
+### LL-PROC-003 — When MCP session is lost mid-task, ship the durable on-disk form
+
+**Category:** PROC / **Severity:** 🟢 minor / **Bucket:** business
+**Captured:** 2026-04-29 during M7.A (registering sdd + vett skills).
+
+**Problem:** Mid-task, `mcp__claude_ai_pretel-os__register_skill` returned `Streamable HTTP error: ... "Session not found"` for both calls. The temptation was to retry, debug the session lifecycle, or open the MCP server logs. But the canonical persistence form for `tools_catalog` rows is **a SQL row**, and the deferred skill registration could be expressed as an idempotent SQL upsert that the operator (or any future caller) can apply at any time.
+
+**Evidence:** Two `register_skill` calls returned the JSON-RPC error simultaneously. Retrying would have produced the same error. The MCP session lifecycle is not the operator's problem at task-shipping time; the durable artifact is.
+
+**Fix:** Wrote `migrations/0032_seed_skills_sdd_vett.sql` with `INSERT INTO tools_catalog (...) VALUES ... ON CONFLICT (name) DO UPDATE SET ...`. Committed alongside the skill files (commit `3a41d7f`). Application of the migration carried forward as `M7.A.fu1` in `tasks.md`.
+
+**Why this is a lesson, not a workaround:** the MCP tool wraps a SQL mutation. When the wrapper fails, the SQL is not lost — it is the canonical form. Producing the SQL as a fallback artifact is **the same outcome** as a successful MCP call; it just happens via a different writer. The principle generalizes: when an MCP tool's purpose is "persist to a known table," the durable backup is "the SQL that persists to that table."
+
+**Anti-pattern this avoids:** rabbit-holing into MCP session debugging when the on-disk form is the answer. Same family as LL-M4-PHASE-A-002 (verbal acknowledgment is not persistence) — both are about distinguishing the durable record from the transient channel.
+
+**Next time:** if an MCP tool fails mid-task and the tool's purpose is data persistence, write the equivalent SQL (or filesystem write) to disk and ship that. Apply the MCP form later when the channel is healthy. The DB cannot tell the difference.
+
+**Tags:** mcp, persistence, fallback, session, m7
+**Related tools:** `register_skill`, `tools_catalog`
+**Cross-refs:** LL-M4-PHASE-A-002
 
 ---
 

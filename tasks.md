@@ -76,12 +76,19 @@ Tag: `module-5-complete` on this commit (pushed).
 
 Per-module detail: TBD (created at M6 kickoff per `runbooks/sdd_module_kickoff.md`)
 
-## Module 7 — skills_migration
+## Module 7 — skills_migration (IN PROGRESS — phases A+B closed, ad-hoc per-phase briefs)
 
-- [ ] SDD trinity (M7.T1)
-- [ ] Implementation (10 skills + 3 new)
+- [ ] SDD trinity (M7.T1) — **deferred:** module is being driven via per-phase operator briefs (no canonical M7 trinity yet). When the remaining phases are scoped, retro-build the trinity to capture the running record.
+- [x] **M7.A** — Generic skills + Scout overlay (closed 2026-04-29, commit `3a41d7f`):
+  `skills/sdd.md` (455 lines) + `skills/vett.md` (655 lines, organization-agnostic) + `buckets/scout/skills/vett_scout_context.md` (182 lines, L2 overlay) + `buckets/scout/README.md` rewritten (52 lines). SQL fallback `migrations/0032_seed_skills_sdd_vett.sql` registers both skills in `tools_catalog` (MCP `register_skill` was unavailable mid-task → SQL form on disk, idempotent `ON CONFLICT DO UPDATE`; **NOT yet applied to either DB** — see "Open follow-ups").
+- [x] **M7.B** — `create_project` MCP tool + live `projects` registry + router unknown-project hint (closed 2026-04-30, commit `fbe3a66`):
+  Migration `0033_projects_table.sql` applied to `pretel_os` and `pretel_os_test` (live registry distinct from `projects_indexed`; bucket+slug unique). `src/mcp_server/tools/projects.py` ships `create_project` / `get_project` / `list_projects`. `router.py` adds `_check_project_exists()` and surfaces `unknown_project` hint in the bundle response when the classifier picks a (bucket, project) with no registry row and no L2 README on disk. 8/8 tests in `tests/mcp_server/tools/test_projects.py` (all `@pytest.mark.slow`, inline fixtures). main.py registers the three tools; service restarted clean on 2026-04-30.
+- [ ] **M7.C** — TBD scope. Candidates from plan §6 Module 7: migrate the remaining 5 skills (`scout_slides`, `declassified_pipeline`, `forge`, `marketing_system`, `finance_system`); write the 3 new skills (`client_discovery`, `sow_generator`, `mtm_efficiency_audit`); apply migration 0032 to populate embeddings for sdd+vett; ship `runbooks/module_7_skills.md`. Operator picks scope at M7.C kickoff.
+- [ ] **M7 exit gate** (per plan §6 Module 7): all 10 skills exist + each registered in `tools_catalog` with embeddings + each under L3 4K-token budget + per-bucket retrieval test passes top-3 + `runbooks/module_7_skills.md` shipped.
 
-Per-module detail: TBD (created at M7 kickoff per `runbooks/sdd_module_kickoff.md`)
+Per-module detail: TBD. Open follow-ups carried forward:
+- **M7.A.fu1** — Apply `migrations/0032_seed_skills_sdd_vett.sql` to `pretel_os` (and `pretel_os_test`). Will register sdd+vett rows in `tools_catalog`; trigger `trg_tools_emb` queues embedding generation; auto-index worker fills `embedding`. Required before M7 exit gate.
+- **M7.A.fu2** — Reconcile `infra/db/migrate.py`: it stores `path.stem` (e.g. `0024_tasks`) as `version` while older rows use 4-digit prefixes (`0024`). Re-running the runner re-attempts already-applied migrations. Sidestep used in M7.B was direct `psql -1 -f` + manual `INSERT INTO schema_migrations` with prefix-only version. Worth a one-shot reconciliation migration that backfills the missing stems. Captured in DECISIONS as "deferred fix" and as `LL-INFRA-001` in LESSONS_LEARNED.
 
 ## Module 8 — lessons_migration
 

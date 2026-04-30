@@ -84,8 +84,12 @@ This document does not contain estimates in time units. Time-to-complete is neve
   - ✅ M4.T9 Exit gate + runbook (complete 2026-04-29 on bf3807e)
   - 🔄 M4 Phase F Tuning (post-30-day, ongoing — observational, no gate; queries in `runbooks/router_tuning.md`)
 - ✅ Module 5 telegram_bot COMPLETE (2026-04-29, tag `module-5-complete`). 7 commands + voice handler + session tracking; unblocked M4 D.2 Q8.
-- 🔄 Module 6 reflection_worker (NEXT — outputs feed M5's `/review_pending` + `/cross_poll_review`)
-- ⏸️ Phase 3 Knowledge loading (Modules 7, 8)
+- 🔄 Module 6 reflection_worker (outputs feed M5's `/review_pending` + `/cross_poll_review`)
+- 🔄 **Module 7 skills_migration IN PROGRESS** — driven by per-phase operator briefs ahead of formal SDD trinity:
+  - ✅ M7.A — `skills/sdd.md` + `skills/vett.md` (org-agnostic) + Scout L2 overlay + bucket README (commit `3a41d7f`, 2026-04-29). SQL fallback for `tools_catalog` registration: `migrations/0032_seed_skills_sdd_vett.sql` (NOT yet applied — see Module 7 in `tasks.md` for the open follow-up).
+  - ✅ M7.B — `create_project` MCP tool + live `projects` registry (migration 0033) + router `unknown_project` hint (commit `fbe3a66`, 2026-04-30). 8/8 slow tests green. mypy clean.
+  - ⏳ M7.C — scope TBD at next kickoff. Candidates: migrate 5 remaining skills, write 3 new skills, apply 0032, ship `runbooks/module_7_skills.md`.
+- ⏸️ Module 8 lessons_migration
 
 ---
 
@@ -467,23 +471,37 @@ These are one-page summaries. Full specs live at `specs/{module}/spec.md` (writt
 
 **One-line summary:** Port 10 skills to `skills/*.md`, register each in `tools_catalog` with embeddings. Includes 3 new skills: `client_discovery`, `sow_generator`, `mtm_efficiency_audit`.
 
+**Status (2026-04-30):** Phases A and B closed via per-phase operator briefs (no formal SDD trinity yet — flagged as carry-forward). Phase C scope pending.
+
 **Why:** L3 (skill layer) is empty until this runs. The Router has nothing to return for skill-classified queries.
 
 **Depends on:** Module 2.
 
 **Unblocks:** L3 retrieval. Freelance productization (SOW and client discovery are immediately useful).
 
+**Phases shipped so far:**
+
+- **M7.A** (commit `3a41d7f`, 2026-04-29): generic `skills/sdd.md` + `skills/vett.md` (organization-agnostic, with `{the organization}` / `{client_tech_stack}` / `{client_governance_team}` variable bindings); Scout-specific L2 overlay at `buckets/scout/skills/vett_scout_context.md`; rewritten `buckets/scout/README.md`. Migration `0032_seed_skills_sdd_vett.sql` ships the `tools_catalog` upsert (SQL fallback after the MCP `register_skill` session was lost mid-task). **Migration 0032 not yet applied to either DB** — open follow-up.
+- **M7.B** (commit `fbe3a66`, 2026-04-30): live `projects` registry table (migration `0033`, distinct from `projects_indexed` which holds closed/archived projects with embeddings); MCP tools `create_project` / `get_project` / `list_projects` in `src/mcp_server/tools/projects.py`; router helper `_check_project_exists()` + `unknown_project` hint in the bundle response when the classifier picks a (bucket, project) with no registry row and no L2 README on disk. 8/8 slow tests green; mypy clean. Service restarted clean.
+
+**Phase C — TBD scope.** Operator picks at next kickoff. Candidates:
+1. Migrate the remaining 5 skills (`scout_slides`, `declassified_pipeline`, `forge`, `marketing_system`, `finance_system`) from their source repos.
+2. Write the 3 new skills from scratch (`client_discovery`, `sow_generator`, `mtm_efficiency_audit`).
+3. Apply `migrations/0032_seed_skills_sdd_vett.sql` and verify `tools_catalog` rows + embeddings for sdd + vett.
+4. Ship `runbooks/module_7_skills.md` (how to add a new skill post-migration; required for the exit gate below).
+
 **Done when:**
-- All 10 skill files exist in `skills/` (7 migrated: vett, sdd, scout_slides, declassified_pipeline, forge, marketing_system, finance_system; 3 new: client_discovery, sow_generator, mtm_efficiency_audit)
-- Each skill is under L3 budget (4,000 tokens) — if any exceeds, the pre-commit hook blocks the commit (good signal)
-- Each skill registered via `register_skill()` tool with correct `applicable_buckets` metadata
-- Each has embeddings populated (Auto-index worker runs, or bulk insert via batch embedding)
-- Test query for each bucket returns the expected skill in top-3 via `recommend_tools` or `load_skill` by name
-- A runbook at `runbooks/module_7_skills.md` documents how to add a new skill post-migration
+- All 10 skill files exist in `skills/` (7 migrated: vett ✅, sdd ✅, scout_slides, declassified_pipeline, forge, marketing_system, finance_system; 3 new: client_discovery, sow_generator, mtm_efficiency_audit) — currently 2/10.
+- Each skill is under L3 budget (4,000 tokens) — if any exceeds, the pre-commit hook blocks the commit (good signal).
+- Each skill registered via `register_skill()` tool with correct `applicable_buckets` metadata. **Currently 0/2 applied** — sdd+vett rows live only in the SQL file at migration 0032, not in any DB.
+- Each has embeddings populated (Auto-index worker runs after migration 0032 inserts, or bulk insert via batch embedding).
+- Test query for each bucket returns the expected skill in top-3 via `recommend_tools` or `load_skill` by name.
+- A runbook at `runbooks/module_7_skills.md` documents how to add a new skill post-migration.
 
 **Risk notes:**
 - The 3 new skills (client_discovery, sow_generator, mtm_efficiency_audit) have no prior version. Write them from scratch using patterns from existing skills + Gemini Strategic review descriptions.
 - Scout slides skill must not contain employer-identifying content. Pre-commit hook + Scout safety trigger catch this; verify before commit.
+- Migration runner `infra/db/migrate.py` has a pre-existing version-format bug (stores `path.stem`, older rows store 4-digit prefix); workaround documented in `LL-INFRA-001`. Applying 0032 should use direct `psql -1 -f` + prefix-only INSERT until the runner is reconciled (`M7.A.fu2` in tasks.md).
 
 ### Module 8: `lessons_migration`
 

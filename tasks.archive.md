@@ -1380,3 +1380,57 @@ with `[x]` markers.
   systemd; switch when public subdomain stable.
 - LayerBundleCache listener wiring (M4 task `5db4bc6f`) — still
   outstanding from M4, non-blocking for M5.
+
+---
+
+## Module 7 Phase A close — 2026-04-29 (commit `3a41d7f`)
+
+**Phase:** M7.A — Generic skills + Scout L2 overlay.
+
+**Atomic deliverables:**
+- `skills/sdd.md` (455 lines, target 400-600) — Spec-Driven Development distilled from `~/dev/sdd-system`. Generic across all buckets; six-step lifecycle (SPEC → PLAN → TASKS → BUILD → VALIDATE → CLOSE) with explicit gates; eight working rules; lessons-trigger policy; anti-patterns table.
+- `skills/vett.md` (655 lines, target 500-700) — VETT framework distilled from `~/dev/VETT-Vendor-Evaluation-Technology-Triage`. **Organization-agnostic.** `{the organization}` / `{client_tech_stack}` / `{client_governance_team}` variable bindings. Preserves: 12 immutable rules, six-phase lifecycle, Tier 1 (D0-D7 with weights 25/20/15/20/20%), Tier 2 modules A-G, 0-3 scoring with N/A for category errors via Relevance Gate, final score `(T1 × 0.70) + (T2 × 0.30)`, recommendation bands, Pyramid Principle 10-slide presentation. Verified `grep -i` for "scout motors|zscaler|databricks|kubernetes|eks|livekit|pinecone" returns 0.
+- `buckets/scout/skills/vett_scout_context.md` (182 lines, target 100-200) — L2 overlay loaded only when `bucket=scout` AND `vett` skill loaded. Supplies: tech stack matrix (Azure, AWS+Bedrock, Databricks+Mosaic, Zscaler perimeter, N8N, DynamoDB SoT, Pinecone, LiveKit SaaS agent layer, Open Web UI, GitHub, Jira, Confluence, O365), governance teams, compliance frameworks (SOC2, ISO 27001, IATF 16949, GDPR, CCPA), data taxonomy with sensitivity ratings, scoring deltas (Zscaler-incompatible → HIGH Advertencia floor; D2 60% gate for HIGH-sensitivity data; D5 hyperscaler-overlap penalty; G2.3 mandatory), Operator Training System architecture (LiveKit + EKS + DynamoDB + Databricks hybrid), presentation visual system. Same grep returns 25 matches — all in correct location.
+- `buckets/scout/README.md` (52 lines, target 50-80) — Scout bucket manifest pointing to active skills (vett with overlay; sdd generic), key projects (VETT evaluations + MTM + Operator Training System), and CONSTITUTION §3 data-handling note.
+- `migrations/0032_seed_skills_sdd_vett.sql` — SQL fallback for `tools_catalog` registration. **MCP `register_skill` returned "Session not found"** mid-task; fell back to idempotent `INSERT ... ON CONFLICT (name) DO UPDATE`. **NOT yet applied to either DB** — carried forward as `M7.A.fu1` in `tasks.md`.
+
+**Key decisions:**
+- Generic VETT skill is the canonical framework; bucket overlays are the only place client-specific values live. This pattern enables future freelance buckets (`freelance:client_x`) to ship their own overlay without forking the framework.
+- Overlay file path convention: `buckets/{bucket}/skills/{skill}_{bucket}_context.md`. Loaded as L2 context (not L1) so it pairs only when both the bucket and the skill are active.
+- SQL fallback over re-trying the MCP tool: avoid deeper rabbit-hole debugging when the on-disk SQL is the durable form anyway. Operator can re-run `register_skill` later when the MCP session is healthy and the DB reconciliation is a no-op.
+
+---
+
+## Module 7 Phase B close — 2026-04-30 (commit `fbe3a66`)
+
+**Phase:** M7.B — `create_project` MCP tool + live `projects` registry + router unknown-project hint.
+
+**Atomic deliverables:**
+- `migrations/0033_projects_table.sql` — live `projects` registry table (`id`, `bucket`, `slug`, `name`, `description`, `status`, `stack`, `skills_used`, `objective`, `client_id`, `readme_path`, `metadata`, `created_at`, `updated_at`). Unique on `(bucket, slug)`. Distinct from `projects_indexed` (which holds closed/archived projects with embeddings for semantic recall). Trigger `trg_projects_updated_at` filtered by `tgrelid='projects'::regclass` so it coexists with the existing same-named trigger on `projects_indexed`. **Applied directly via `psql -1 -f`** to `pretel_os` and `pretel_os_test` with manual `INSERT INTO schema_migrations` using prefix-only `'0033'` to match the existing convention — `infra/db/migrate.py` runner has a version-format bug (see `M7.A.fu2`).
+- `src/mcp_server/tools/projects.py` — three MCP tools registered with FastMCP:
+  - `create_project(bucket, slug, name, description, objective?, stack?, skills_used?, client_id?)` — validates bucket against `{personal, business, scout, freelance:<client>}`, normalizes slug to lowercase-hyphenated, dedup-checks by `(bucket, slug)` returning `status='exists'` on collision, INSERTs the row, generates and writes the L2 README to `{REPO_ROOT}/buckets/{bucket}/projects/{slug}/README.md`, UPDATEs `readme_path`, seeds `project_state(state_key='status', content='active')`, snapshots `project_versions(snapshot_reason='project_created', triggered_by='create_project_tool')`. Degraded-mode journal write when DB down.
+  - `get_project(bucket, slug)` — returns full project row + README content from disk if `readme_path` is set.
+  - `list_projects(bucket?, status?, limit=50)` — optional filters, limit clamped to 200, ordered by `created_at DESC`.
+- `src/mcp_server/router/router.py` — added `_check_project_exists(conn, bucket, project, repo_root)` (sync helper that returns True if either the `projects` table or the on-disk `buckets/{bucket}/projects/{project}/README.md` matches; True on either to avoid the hint firing on legacy projects). `get_context()` now sets `unknown_project = {"bucket": ..., "slug": ..., "message": "...", "create_project_hint": True}` when classifier produces both bucket+project but neither location matches; key only added to response dict when set (not always-present).
+- `src/mcp_server/main.py` — three new `app.tool(...)` registrations under "Module 7 Phase B — projects".
+- `tests/mcp_server/tools/test_projects.py` — 8 tests, all `@pytest.mark.slow`, inline fixtures (no conftest.py changes per spec):
+  1. `test_create_project_happy_path` — verifies row, on-disk README content, `project_state` row, `project_versions` snapshot.
+  2. `test_create_project_already_exists` — `exists` status, count=1, snapshot count=1.
+  3. `test_create_project_invalid_bucket` — `random-bucket` and bare `freelance:` rejected; `freelance:acme` accepted.
+  4. `test_create_project_slug_normalization` — `"My Project!"` → `"my-project"` plus 3 helper-level cases; verified end-to-end.
+  5. `test_get_project_found` — full project + README content from disk.
+  6. `test_get_project_not_found` — `found=False`, no `project` key.
+  7. `test_list_projects_by_bucket` — bucket filter, status filter combined, no-filter returns all.
+  8. `test_router_unknown_project_hint` — mocks `classify` + `assemble_bundle` + telemetry, real DB conn; asserts hint shape; then re-runs after `create_project` registers the slug and asserts hint is absent.
+
+**Final verification:**
+- mypy clean on `src/mcp_server/tools/projects.py` and `src/mcp_server/router/router.py`.
+- pytest: 8/8 passed in 1.15s.
+- `psql -d pretel_os -c "\d projects"` matches schema; trigger present.
+- Service restarted clean (2026-04-30): `systemctl --user status pretel-os-mcp` shows active running, LISTEN/NOTIFY listener up, DB transitioned False→True.
+
+**Key decisions:**
+- Live `projects` table is **separate** from `projects_indexed` (which holds closed/archived projects with embeddings). Active projects are git-resident READMEs + a thin DB row for identity; archival projects move to `projects_indexed` at close-time.
+- README writes resolve relative to `config_mod.REPO_ROOT` (matches `load_skill` pattern in `tools/catalog.py`); tests monkeypatch REPO_ROOT to `tmp_path` to keep the working tree clean.
+- Slug normalization: lowercase, replace non-`[a-z0-9-]` runs with single hyphens, collapse repeated hyphens, strip leading/trailing. Helper `_normalize_slug` and `_validate_bucket` are pure functions, importable for tests.
+- Router hint surfaces ONLY when classifier picked both bucket+project AND neither registry nor disk has it. False-positive guard: DB lookup failure (degraded) returns True (treats as known) so the hint doesn't spam during DB outages.
