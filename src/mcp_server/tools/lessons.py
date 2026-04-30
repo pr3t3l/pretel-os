@@ -149,18 +149,27 @@ async def save_lesson(
         try:
             async with pool.connection(timeout=5.0) as conn:
                 async with conn.cursor() as cur:
+                    # Module 7.5 C.5 — save_lesson takes no `project`
+                    # argument (signature unchanged per the C.5
+                    # constraints), so the (bucket, project) -> project_id
+                    # lookup that task_create and decision_record perform
+                    # has nothing to resolve here. project_id stays NULL.
+                    # The Reflection Worker (M6) populates project_id via
+                    # its own write path when it produces lessons against
+                    # a known project.
+                    project_id_for_insert: Optional[str] = None
                     await cur.execute(
                         """
                         INSERT INTO lessons (
                             title, content, next_time, bucket, category, tags,
                             applicable_buckets, related_tools, metadata,
                             status, source, evidence, embedding, reviewed_by,
-                            reviewed_at
+                            reviewed_at, project_id
                         ) VALUES (
                             %s, %s, %s, %s, %s, %s,
                             %s, %s, %s::jsonb,
                             %s, %s, %s::jsonb, %s, %s,
-                            CASE WHEN %s THEN now() ELSE NULL END
+                            CASE WHEN %s THEN now() ELSE NULL END, %s
                         ) RETURNING id
                         """,
                         (
@@ -179,6 +188,7 @@ async def save_lesson(
                             vector_literal(embedding) if embedding is not None else None,
                             reviewed_by,
                             auto_approved,
+                            project_id_for_insert,
                         ),
                     )
                     row = await cur.fetchone()

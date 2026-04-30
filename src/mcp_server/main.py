@@ -25,7 +25,11 @@ from starlette.middleware import Middleware
 from . import config as config_mod
 from . import db as db_mod
 from .auth import PretelAuthMiddleware
-from .tools.awareness import regenerate_bucket_readme, regenerate_project_readme
+from .tools.awareness import (
+    recommend_skills_for_query,
+    regenerate_bucket_readme,
+    regenerate_project_readme,
+)
 from .tools.catalog import load_skill, register_skill, register_tool, tool_search
 from .tools.context import _get_cache, get_context
 from .tools.cross_pollination import (
@@ -47,7 +51,12 @@ from .tools.preferences import (
     preference_set,
     preference_unset,
 )
-from .tools.projects import create_project, get_project, list_projects
+from .tools.projects import (
+    archive_project,
+    create_project,
+    get_project,
+    list_projects,
+)
 from .tools.best_practices import (
     best_practice_deactivate,
     best_practice_record,
@@ -158,9 +167,12 @@ def build_app() -> FastMCP:
     app.tool(get_project)
     app.tool(list_projects)
 
-    # Module 7.5 — awareness layer (README regeneration)
+    # Module 7.5 — awareness layer (README regeneration + archive +
+    # skill recommendation)
     app.tool(regenerate_bucket_readme)
     app.tool(regenerate_project_readme)
+    app.tool(archive_project)
+    app.tool(recommend_skills_for_query)
 
     app.custom_route("/health", methods=["GET"])(health)
 

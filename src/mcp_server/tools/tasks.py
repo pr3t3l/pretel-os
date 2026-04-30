@@ -105,22 +105,45 @@ async def task_create(
         try:
             async with pool.connection(timeout=5.0) as conn:
                 async with conn.cursor() as cur:
+                    # Module 7.5 C.5 — resolve project_id when caller
+                    # supplied (bucket, project). Failed lookup is a
+                    # warning, not an error: legacy text column stays
+                    # populated; project_id falls back to NULL.
+                    project_id: Optional[str] = None
+                    if bucket and project:
+                        await cur.execute(
+                            "SELECT id FROM projects "
+                            "WHERE bucket = %s AND slug = %s LIMIT 1",
+                            (bucket, project),
+                        )
+                        proj_row = await cur.fetchone()
+                        if proj_row is not None:
+                            project_id = str(proj_row[0])
+                        else:
+                            log.warning(
+                                "task_create: project lookup failed "
+                                "(bucket=%r project=%r)",
+                                bucket, project,
+                            )
                     await cur.execute(
                         """
                         INSERT INTO tasks (
                             title, description, bucket, project, module,
                             status, priority, blocked_by, trigger_phase,
-                            source, estimated_minutes, github_issue_url
+                            source, estimated_minutes, github_issue_url,
+                            project_id
                         ) VALUES (
                             %s, %s, %s, %s, %s,
                             %s, %s, %s, %s,
-                            %s, %s, %s
+                            %s, %s, %s,
+                            %s
                         ) RETURNING id, status
                         """,
                         (
                             title, description, bucket, project, module,
                             initial_status, priority, blocked_by, trigger_phase,
                             source, estimated_minutes, github_issue_url,
+                            project_id,
                         ),
                     )
                     row = await cur.fetchone()

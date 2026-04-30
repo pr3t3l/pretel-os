@@ -112,18 +112,39 @@ async def decision_record(
         try:
             async with pool.connection(timeout=5.0) as conn:
                 async with conn.cursor() as cur:
+                    # Module 7.5 C.5 — resolve project_id from
+                    # (bucket, project). Decisions.project is NOT NULL,
+                    # so the legacy text column always carries the slug;
+                    # project_id is added alongside when the project is
+                    # registered. Lookup failure is a warning.
+                    project_id: Optional[str] = None
+                    if bucket and project:
+                        await cur.execute(
+                            "SELECT id FROM projects "
+                            "WHERE bucket = %s AND slug = %s LIMIT 1",
+                            (bucket, project),
+                        )
+                        proj_row = await cur.fetchone()
+                        if proj_row is not None:
+                            project_id = str(proj_row[0])
+                        else:
+                            log.warning(
+                                "decision_record: project lookup failed "
+                                "(bucket=%r project=%r)",
+                                bucket, project,
+                            )
                     await cur.execute(
                         """
                         INSERT INTO decisions (
                             bucket, project, client_id, title, context, decision,
                             consequences, alternatives, scope, applicable_buckets,
                             decided_by, tags, severity, adr_number, derived_from_lessons,
-                            embedding
+                            embedding, project_id
                         ) VALUES (
                             %s, %s, %s, %s, %s, %s,
                             %s, %s, %s, %s,
                             %s, %s, %s, %s, %s,
-                            %s::vector
+                            %s::vector, %s
                         ) RETURNING id, adr_number
                         """,
                         (
@@ -132,6 +153,7 @@ async def decision_record(
                             decided_by, tags or [], severity, adr_number,
                             derived_from_lessons or [],
                             vector_literal(embedding) if embedding is not None else None,
+                            project_id,
                         ),
                     )
                     row = await cur.fetchone()

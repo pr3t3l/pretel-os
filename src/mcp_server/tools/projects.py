@@ -18,12 +18,17 @@ created_at DESC.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
 from datetime import date
 from pathlib import Path
 from typing import Any, Optional
+
+import psycopg
+
+from awareness import readme_renderer
 
 from .. import config as config_mod
 from .. import db as db_mod
@@ -35,6 +40,20 @@ log = logging.getLogger(__name__)
 _FIXED_BUCKETS = frozenset({"personal", "business", "scout"})
 _FREELANCE_PREFIX = "freelance:"
 _LIST_LIMIT_MAX = 200
+
+
+def _regenerate_bucket_readme_sync(database_url: str, bucket: str) -> dict[str, Any]:
+    """Open a fresh sync connection and call the renderer (Module 7.5).
+
+    Used by `create_project` and `archive_project` to project the live
+    DB state into `buckets/<bucket>/README.md` immediately after a
+    mutation. The trigger 0034 also fires `pg_notify('readme_dirty')`,
+    which the readme_consumer worker debounces — we still call the
+    renderer inline so an operator using a fresh client sees the new
+    bucket README without waiting for the 30s debounce.
+    """
+    with psycopg.connect(database_url) as conn:
+        return readme_renderer.regenerate_bucket_readme(conn, bucket)
 
 # Slug normalization: lowercase, replace any run of non [a-z0-9-] with a
 # single hyphen, collapse repeated hyphens, strip leading/trailing hyphens.
@@ -291,6 +310,23 @@ async def create_project(
             )
             return {"status": "error", "error": str(exc)}
 
+        # Module 7.5 — projection: regenerate the bucket README so the
+        # new project surfaces under "Active projects" immediately.
+        # Best-effort — failure here must NOT undo the project insert.
+        bucket_readme_regenerated = False
+        try:
+            await asyncio.to_thread(
+                _regenerate_bucket_readme_sync,
+                config_mod.load_config().database_url,
+                bucket,
+            )
+            bucket_readme_regenerated = True
+        except Exception as exc:
+            log.warning(
+                "create_project: bucket README regeneration failed "
+                "(insert kept): %s", exc,
+            )
+
     await log_usage(
         tool_name="create_project",
         bucket=bucket,
@@ -298,13 +334,19 @@ async def create_project(
         invoked_by="client",
         success=True,
         duration_ms=t.ms,
-        metadata={"action": "inserted", "id": project_id, "readme_path": readme_relpath},
+        metadata={
+            "action": "inserted",
+            "id": project_id,
+            "readme_path": readme_relpath,
+            "bucket_readme_regenerated": bucket_readme_regenerated,
+        },
     )
     return {
         "status": "ok",
         "id": project_id,
         "slug": norm_slug,
         "readme_path": readme_relpath,
+        "bucket_readme_regenerated": bucket_readme_regenerated,
     }
 
 
@@ -502,3 +544,134 @@ async def list_projects(
         metadata={"result_count": len(results)},
     )
     return {"status": "ok", "results": results}
+
+
+async def archive_project(
+    bucket: str,
+    slug: str,
+    reason: str,
+) -> dict[str, Any]:
+    """Archive an active project (Module 7.5 Q7).
+
+    Idempotent: only flips a row whose status is currently 'active'. A
+    second call (or a call against an unknown slug) returns a clean
+    error, not a degraded state. The 0034 trigger emits
+    `pg_notify('project_lifecycle', 'archived:<bucket>/<slug>')` on the
+    UPDATE; the readme_consumer worker debounces the corresponding
+    `readme_dirty` signal. We also call `regenerate_bucket_readme`
+    inline so the bucket README's "Archived projects" section reflects
+    the change immediately for clients that look at the file directly.
+
+    Args:
+        bucket: 'personal' | 'business' | 'scout' | 'freelance:<client>'.
+        slug: project slug within the bucket.
+        reason: human-readable justification (stored in archive_reason).
+
+    Returns:
+        {status:'ok', id, archived_at, bucket_readme_regenerated} on success.
+        {status:'error', reason} when the project is missing or already archived.
+        {status:'degraded', degraded_reason:'db_unavailable'} when DB is down.
+    """
+    bucket_err = _validate_bucket(bucket)
+    if bucket_err is not None:
+        return {"status": "error", "reason": bucket_err}
+    if not slug.strip():
+        return {"status": "error", "reason": "slug must be non-empty"}
+    if not reason.strip():
+        return {"status": "error", "reason": "reason must be non-empty"}
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            await log_usage(
+                tool_name="archive_project",
+                bucket=bucket,
+                project=slug,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable"},
+            )
+            return degraded("db_unavailable")
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(
+                        """
+                        UPDATE projects
+                        SET status = 'archived',
+                            archived_at = now(),
+                            archive_reason = %s
+                        WHERE bucket = %s
+                          AND slug = %s
+                          AND status = 'active'
+                        RETURNING id, archived_at
+                        """,
+                        (reason, bucket, slug),
+                    )
+                    row = await cur.fetchone()
+        except Exception as exc:
+            log.exception("archive_project failed")
+            await log_usage(
+                tool_name="archive_project",
+                bucket=bucket,
+                project=slug,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc)},
+            )
+            return {"status": "error", "reason": str(exc)}
+
+        if row is None:
+            await log_usage(
+                tool_name="archive_project",
+                bucket=bucket,
+                project=slug,
+                invoked_by="client",
+                success=True,
+                duration_ms=t.ms,
+                metadata={"result": "not_found_or_already_archived"},
+            )
+            return {
+                "status": "error",
+                "reason": "project not found or already archived",
+            }
+
+        project_id = str(row[0])
+        archived_at = row[1].isoformat() if row[1] is not None else None
+
+        bucket_readme_regenerated = False
+        try:
+            await asyncio.to_thread(
+                _regenerate_bucket_readme_sync,
+                config_mod.load_config().database_url,
+                bucket,
+            )
+            bucket_readme_regenerated = True
+        except Exception as exc:
+            log.warning(
+                "archive_project: bucket README regeneration failed "
+                "(archive kept): %s", exc,
+            )
+
+    await log_usage(
+        tool_name="archive_project",
+        bucket=bucket,
+        project=slug,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={
+            "action": "archived",
+            "id": project_id,
+            "bucket_readme_regenerated": bucket_readme_regenerated,
+        },
+    )
+    return {
+        "status": "ok",
+        "id": project_id,
+        "archived_at": archived_at,
+        "bucket_readme_regenerated": bucket_readme_regenerated,
+    }

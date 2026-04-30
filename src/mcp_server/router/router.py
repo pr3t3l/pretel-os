@@ -188,6 +188,84 @@ def _telemetry_to_llm_call_data(
     }
 
 
+def _get_skills_for_bucket(
+    conn: psycopg.Connection,
+    bucket: str,
+) -> list[dict[str, Any]]:
+    """Top 10 skills applicable to `bucket`, ordered by `utility_score` (Q4).
+
+    Module 7.5 awareness injection — the LLM does not reliably call
+    `tool_search` proactively, so the Router precomputes the skill
+    surface and embeds it in the bundle. Result is cached per
+    (bucket, classifier_hash) by the existing LayerBundleCache via
+    `get_context`'s overall flow; no extra cache here.
+    """
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT name, description_short, utility_score
+                FROM tools_catalog
+                WHERE kind = 'skill'
+                  AND %s = ANY(applicable_buckets)
+                  AND deprecated = false
+                  AND archived_at IS NULL
+                ORDER BY utility_score DESC NULLS LAST, name ASC
+                LIMIT 10
+                """,
+                (bucket,),
+            )
+            return [
+                {
+                    "name": row[0],
+                    "description_short": row[1],
+                    "utility_score": (
+                        float(row[2]) if row[2] is not None else None
+                    ),
+                }
+                for row in cur.fetchall()
+            ]
+    except psycopg.Error as exc:
+        log.warning("_get_skills_for_bucket failed: %s", exc)
+        return []
+
+
+def _get_active_projects_for_bucket(
+    conn: psycopg.Connection,
+    bucket: str,
+) -> list[dict[str, Any]]:
+    """Active projects in `bucket`, newest first, capped at 20 (Q4).
+
+    Module 7.5 awareness injection. Mirrors `_get_skills_for_bucket`'s
+    purpose: surface the project surface so the LLM can refer to live
+    projects without an extra tool call.
+    """
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT slug, name, status, objective
+                FROM projects
+                WHERE bucket = %s AND status = 'active'
+                ORDER BY updated_at DESC
+                LIMIT 20
+                """,
+                (bucket,),
+            )
+            return [
+                {
+                    "slug": row[0],
+                    "name": row[1],
+                    "status": row[2],
+                    "objective": row[3],
+                }
+                for row in cur.fetchall()
+            ]
+    except psycopg.Error as exc:
+        log.warning("_get_active_projects_for_bucket failed: %s", exc)
+        return []
+
+
 def _recommend_tools(
     conn: psycopg.Connection,
     complexity: str,
@@ -324,6 +402,8 @@ async def get_context(
     violations: list[InvariantViolation] = []
     tools_recommended: list[dict[str, Any]] = []
     unknown_project: dict[str, Any] | None = None
+    available_skills: list[dict[str, Any]] = []
+    active_projects: list[dict[str, Any]] = []
 
     try:
         identity_content = _read_identity(repo_root)
@@ -418,6 +498,14 @@ async def get_context(
             conn, signals.complexity, signals.needs_lessons
         )
 
+        # Module 7.5 awareness: precomputed skill + project surfaces per
+        # bucket (Q4). Empty when classifier did not pick a bucket.
+        if signals.bucket:
+            available_skills = _get_skills_for_bucket(conn, signals.bucket)
+            active_projects = _get_active_projects_for_bucket(
+                conn, signals.bucket
+            )
+
         rag_expected = _compute_rag_expected(classification)
         l4_layer = next(
             (layer for layer in bundle.layers if layer.layer == "L4"), None
@@ -449,6 +537,8 @@ async def get_context(
         "classification_mode": classification_mode,
         "bundle": asdict(bundle),
         "tools_recommended": tools_recommended,
+        "available_skills": available_skills,
+        "active_projects": active_projects,
         "source_conflicts": [asdict(v) for v in violations],
         "over_budget_layers": list(bundle.metadata.over_budget_layers),
         "degraded_mode": degraded,

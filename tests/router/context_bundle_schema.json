@@ -11,6 +11,8 @@
     "classification_mode",
     "bundle",
     "tools_recommended",
+    "available_skills",
+    "active_projects",
     "source_conflicts",
     "over_budget_layers",
     "degraded_mode",
@@ -104,6 +106,31 @@
     "tools_recommended": {
       "type": "array",
       "items": {"type": "object"}
+    },
+    "available_skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description_short", "utility_score"],
+        "properties": {
+          "name": {"type": "string"},
+          "description_short": {"type": ["string", "null"]},
+          "utility_score": {"type": ["number", "null"]}
+        }
+      }
+    },
+    "active_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slug", "name", "status", "objective"],
+        "properties": {
+          "slug": {"type": "string"},
+          "name": {"type": "string"},
+          "status": {"type": "string"},
+          "objective": {"type": ["string", "null"]}
+        }
+      }
     },
     "source_conflicts": {
       "type": "array",
