@@ -1,7 +1,7 @@
 # CONSTITUTION — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-27 (v4)
+**Last updated:** 2026-04-30 (v5 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker)
 **Owner:** Alfredo Pretel Vargas
 
 This document contains the immutable rules of pretel-os. Every module, agent, skill, and human operator must respect these rules without exception. Rules in this document only change through an explicit decision-log entry in `PROJECT_FOUNDATION.md §Decisions`, never silently.
@@ -81,18 +81,36 @@ Every persistent asset lives in exactly one of two places. Dual-homing is forbid
 - `AGENTS.md` (the entry point any LLM reads first)
 
 **Database (Postgres + pgvector, local or Supabase) — dynamic memory:**
-- `lessons` (with embeddings)
-- `tools_catalog` (with embeddings, usage_count, utility_score)
+
+Stable knowledge (with embeddings):
+- `lessons` (with embeddings; `project_id` UUID FK added M7.5 / 0034)
+- `tools_catalog` (with embeddings, usage_count, utility_score; `trigger_keywords` TEXT[] added M7.5 / 0034 for `recommend_skills_for_query`)
 - `projects_indexed` (with embeddings, past-project retrieval)
-- `project_versions` (snapshots of project state at decision boundaries)
 - `conversations_indexed` (with embeddings)
-- `cross_pollination_queue`
+- `decisions` (with embeddings; `project_id` UUID FK added M7.5 / 0034)
+- `best_practices` (with embeddings; M0.X / 0027)
+- `patterns`, `gotchas`, `contacts`, `ideas` (Phase 2 tables, embeddings columns reserved)
+
+Project + skill state:
+- `projects` — live active-project registry (M7.B / 0033; `archived_at`, `archive_reason`, `applicable_skills` added M7.5 / 0034)
 - `project_state` (live TODOs, active decisions, not in git)
-- `routing_logs`, `usage_logs`
+- `project_versions` (snapshots at decision boundaries)
 - `skill_versions` (history of skill changes)
-- `patterns`, `decisions`, `gotchas`, `contacts`, `ideas`
+
+Operations + audit:
+- `routing_logs` (partitioned by month)
+- `usage_logs` (partitioned by month)
+- `llm_calls` (partitioned by month)
+- `pending_embeddings` (queue for missing-embedding worker)
+- `cross_pollination_queue`
 - `reflection_pending` (degraded-mode queue for Reflection worker outputs when Sonnet is unreachable)
 - `conversation_sessions` (live session ledger — session_id, client_origin, started_at, last_seen_at, closed_at)
+- `tasks` (M0.X / 0024; `project_id` UUID FK added M7.5 / 0034)
+- `operator_preferences` (M0.X / 0025; loaded into L0)
+- `router_feedback` (M0.X / 0026)
+- `scout_denylist` (defense-in-depth keywords for §3 rule 1; 0016)
+- `control_registry` (recurring-control cadences)
+- `schema_migrations` (applied migration ledger)
 
 A file-system asset that is dynamic, an embedding, a counter, a queue, or a log belongs in the database. A document that is reviewed, versioned, and read by humans or LLMs as canonical knowledge belongs in git. Anything ambiguous defaults to git until it demonstrates dynamic behavior that justifies migration.
 
@@ -102,16 +120,21 @@ The system uses `text-embedding-3-large` (OpenAI, 3072 dimensions) for every emb
 
 ### 2.6 Background workers are named and chartered
 
-The system runs exactly four background workers. Each has a fixed charter, a trigger, and a home. No worker operates outside these boundaries.
+The system runs exactly five background workers. Each has a fixed charter, a trigger, and a home. No worker operates outside these boundaries.
 
 | Worker | Trigger | Responsibility | Home |
 |--------|---------|----------------|------|
-| **Reflection** | Event: `close_session` (10 min idle), `task_complete` tool call, fallback every 20 turns, or fallback every 60 minutes of session lifespan (whichever fires first) | Read the transcript. Propose 0–3 lessons, 0–N cross-pollination flags, state updates to the active project. Insert lessons with `status='pending_review'`, write `cross_pollination_queue` and `project_state` rows. If Sonnet unreachable, queue to `reflection_pending` for later replay. | Python script on the Vivobook server, triggered by MCP |
+| **Reflection** | Event: `close_session` (10 min idle), `task_complete` tool call, fallback every 20 turns, or fallback every 60 minutes of session lifespan (whichever fires first) | Read the transcript. Propose 0–3 lessons, 0–N cross-pollination flags, state updates to the active project. Insert lessons with `status='pending_review'` and `project_id` resolved from classification, write `cross_pollination_queue` and `project_state` rows. If Sonnet unreachable, queue to `reflection_pending` for later replay. | Python script on the Vivobook server, triggered by MCP |
 | **Nightly consolidation (Dream Engine)** | Cron 02:00 America/New_York | Recompute `utility_score` on `tools_catalog` and `lessons`. Detect duplicates and contradictions. Expand pending cross-pollination entries. Archive low-utility lessons per §5.5. Summarize old conversations per §5.5. Reindex changed embeddings. Prepare morning-intelligence brief. | systemd timer on the Vivobook server |
 | **Morning intelligence** | Cron 06:00 America/New_York | Deliver conversational Spanish voice + written brief via Telegram covering: critical changes, strategic AI news, macro and markets, business opportunities, professional edge. Max 15 items. | n8n workflow |
-| **Auto-index on save** | Postgres trigger `ON INSERT` for rows lacking `embedding` | Compute the missing embedding and populate the column. | Python listener or `pg_cron` on the Vivobook server |
+| **Auto-index on save** | Postgres trigger `ON INSERT` for rows lacking `embedding` (uses `notify_missing_embedding` function — see DATA_MODEL §6.2) | Compute the missing embedding and populate the column. Listens on `pending_embeddings` queue + `embedding_queue` channel. | Python listener or `pg_cron` on the Vivobook server |
+| **README consumer (M7.5)** | Postgres LISTEN on `readme_dirty` channel (fired by 0034 triggers on lessons/tasks/decisions/projects/tools_catalog INSERT or UPDATE) | Debounce 30s, then call `regenerate_bucket_readme` / `regenerate_project_readme` for each dirty target. Projects the live DB state of bucket/project READMEs to disk per §2.4 git/db boundary. Stopping this worker leaves bucket and project READMEs stale until restart or manual MCP-tool call. | systemd user unit `pretel-os-readme.service` (Vivobook) |
 
-Any desire to add a fifth worker triggers a constitutional amendment. No ad-hoc cron jobs.
+Process-internal helpers that do not count as workers:
+- The MCP server lifespan starts a daemon thread for `LayerBundleCache` LISTEN on `layer_loader_cache` (§2.3 caching, M4 / 0031). It runs inside the MCP process, not as a separate service.
+- The Telegram bot's `idle_close_loop` runs inside the bot's asyncio event loop (Module 5), not as a separate service.
+
+Any desire to add a sixth worker triggers a constitutional amendment. No ad-hoc cron jobs.
 
 ### 2.7 Source priority resolves conflicts between layers
 
@@ -197,16 +220,18 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
 
 ### 5.3 Tools catalog
 
-17. **Every reusable tool or skill is registered in `tools_catalog`.** An unregistered tool is invisible to the recommendation system. Registration happens via `register_skill()` / `register_tool()` MCP tools, never manually.
-18. **Tool recommendations use a published utility score.** Formula:
+17. **Every reusable tool or skill is registered in `tools_catalog`.** An unregistered tool is invisible to the recommendation system. Registration happens via `register_skill()` / `register_tool()` MCP tools, or via SQL `INSERT ... ON CONFLICT (name) DO UPDATE` for the periodic seeding migrations. Migration 0035 (M7.5) seeds `utility_score` and `trigger_keywords` for every catalog entry; the operator may adjust manually with `UPDATE tools_catalog SET utility_score=X WHERE name=Y` until the Dream Engine automates recomputation.
+18. **Tool recommendations use a published utility score.** Formula (per `recompute_utility_scores()` in 0019):
     ```
-    utility_score = log(1 + usage_count)
-                  + recency_weight(last_used)
+    utility_score = ln(1 + usage_count)
+                  + recency_weight(last_used)        -- 0..2.0 stepwise
                   + 2 * cross_bucket_count
                   + manual_boost
     ```
     Recomputed nightly by the Dream Engine (§2.6). The Router uses utility score + semantic similarity to rank recommendations. Ties break toward higher cross-bucket reach (favor reusable tools).
-19. **Tools are surfaced by name in L0 and by detail via MCP.** L0 holds only tool names and one-line descriptions (fits in the 1,200 tok budget). When a tool is needed, the agent calls `load_skill(name)` to retrieve full procedural memory (L3). This prevents L0 bloat as the catalog grows.
+
+    **Per-query skill recommendation (M7.5):** the `recommend_skills_for_query(message, bucket)` MCP tool scores skills against a user message via `score = 1.0 * (any trigger_keyword in message) + 0.3 * utility_score`. Skills below threshold 1.0 are dropped. This is keyword-deterministic — no LLM call. `trigger_keywords TEXT[]` lives on `tools_catalog`, seeded by 0035 for `vett`, `sdd`, and `skill_discovery`.
+19. **Tools are surfaced by name in L0, by per-bucket utility-ranked list in the ContextBundle, and by detail via MCP.** L0 holds only tool names and one-line descriptions (fits in the 1,200 tok budget). The Router additionally injects `available_skills` (top-10 per bucket, M7.5 RUN 2) and `active_projects` (top-20 per bucket) into every `get_context` response so the LLM sees what's available without an extra `tool_search` call. When a skill's full content is needed, the agent calls `load_skill(name)` to retrieve full procedural memory (L3). This prevents L0 bloat as the catalog grows.
 
 ### 5.4 Cross-pollination
 
@@ -255,17 +280,21 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
 
     | Tool | Triggers update at |
     |------|--------------------|
-    | `create_project(bucket, name, ...)` | L1 bucket README (adds project to index) |
-    | `close_project(bucket, name)` | L1 bucket README (moves to archived section) + `projects_indexed` (insert) |
-    | `add_module(bucket, project, module, ...)` | L2 project README (adds module to index) |
-    | `remove_module(bucket, project, module)` | L2 project README (removes) |
+    | `create_project(bucket, slug, ...)` | L1 bucket README (adds project under Active projects via `regenerate_bucket_readme`) + `projects` row + L2 README on disk + `project_state` + `project_versions` snapshot. M7.5 / 0034 trigger also fires `pg_notify('project_lifecycle', 'created:bucket/slug')` and `readme_dirty` for the consumer worker. |
+    | `archive_project(bucket, slug, reason)` | `projects` row (status=archived, archived_at, archive_reason) + L1 bucket README (moves to Archived projects via `regenerate_bucket_readme`). 0034 trigger fires `pg_notify('project_lifecycle', 'archived:bucket/slug')`. |
+    | `regenerate_bucket_readme(bucket)` | L1 bucket README projection from current DB state (idempotent; preserves operator notes between `<!-- pretel:notes -->` markers). |
+    | `regenerate_project_readme(bucket, slug)` | L2 project README projection from current DB state (idempotent). |
+    | `add_module(bucket, project, module, ...)` (planned) | L2 project README (adds module to index) |
+    | `remove_module(bucket, project, module)` (planned) | L2 project README (removes) |
     | `register_skill(name, ...)` | L0 identity (adds skill name + 1-line description) + `tools_catalog` insert |
     | `register_tool(name, ...)` | L0 identity (adds tool name + 1-line description) + `tools_catalog` insert |
-    | `deprecate_skill(name)` | L0 identity (removes line) + `skill_versions` (final entry) |
-    | `create_bucket(name, ...)` | L0 identity (adds bucket name) |
-    | `change_stack(project, new_stack)` | L2 project README (updates stack) + `snapshot_project` (auto-triggered) |
+    | `deprecate_skill(name)` (planned) | L0 identity (removes line) + `skill_versions` (final entry) |
+    | `create_bucket(name, ...)` (planned) | L0 identity (adds bucket name) |
+    | `change_stack(project, new_stack)` (planned) | L2 project README (updates stack) + `snapshot_project` (auto-triggered) |
 
     A manual file edit that bypasses these tools is a violation. CI check runs on every PR to detect orphaned layer entries (child without parent index line or parent index line without child file).
+
+    **DB-trigger-enforced sync (M7.5).** Migration 0034 attaches NOTIFY triggers to the five tables that drive bucket and project READMEs (`lessons`, `tasks`, `decisions`, `projects`, `tools_catalog`). Any INSERT or UPDATE to those tables fires `pg_notify('readme_dirty', 'bucket:<name>'|'project:<bucket>/<slug>')`. The `pretel-os-readme.service` worker (§2.6) LISTENs, debounces 30s, and dispatches `regenerate_*_readme`. This makes the L0/L1/L2 projection contract enforced at the schema level — even mutations that sidestep the MCP tool layer (e.g., direct `psql` writes by the operator) still converge the on-disk READMEs. Stopping the consumer leaves the NOTIFY events queued (Postgres delivers only to active LISTENers); READMEs go stale until the consumer is restarted or `regenerate_*_readme` is called manually.
 
     **Write-time token budget enforcement.** A pre-commit hook at `infra/hooks/pre-commit-token-budget.sh` counts tokens (via `tiktoken` with the `cl100k_base` encoding for ballpark parity with Claude tokenization) on every modified markdown file and blocks the commit if any layer exceeds its budget:
 
@@ -305,6 +334,7 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
     - **Sonnet unreachable (Reflection worker)**: pending reflection payloads queue to `reflection_pending` table per `DATA_MODEL §4.5`; retried by Dream Engine.
     - **n8n down**: Forge pipeline and Morning Intelligence are skipped with logged incidents. Router and core retrieval continue normally.
     - **Telegram bot down**: outbound notifications queue in memory (bounded 100 most recent); operator uses Claude.ai web as fallback interface.
+    - **README consumer (`pretel-os-readme.service`) down (M7.5)**: 0034 triggers continue to emit `pg_notify('readme_dirty', ...)` on every write to lessons/tasks/decisions/projects/tools_catalog, but no LISTENer is consuming. Bucket and project READMEs go stale; the on-disk projection lags the live DB state until the consumer is restarted (Postgres delivers NOTIFY only to active LISTENers — pending events are NOT replayed on restart). Recovery: `systemctl --user restart pretel-os-readme` plus a manual sweep `regenerate_bucket_readme(bucket)` for each known bucket if the staleness window matters. The consumer is non-critical for read paths (the renderer is idempotent and can be invoked on demand) but stopping it long-term is an operator decision, not a silent failure mode.
     - **Hard failure** (MCP process itself down): clients receive the MCP framework's standard disconnection error. Clients are responsible for showing this to the operator; no silent failure is acceptable.
 
     Every degraded response carries a `degraded_mode=true` flag plus a human-readable `degraded_reason`. The agent surfaces the reduced-functionality state to the operator rather than pretending everything works.
@@ -338,3 +368,104 @@ A rule in this document changes only when:
 3. The change is committed with message format `[CONSTITUTION] Amend rule X.Y: brief reason`.
 
 No rule is changed through conversation alone. Speech is not law; the commit is.
+
+---
+
+## 11. MCP tool catalog (38 tools across 11 domains)
+
+This section is the canonical inventory of the live MCP tool surface. The order matches `app.tool(...)` registrations in `src/mcp_server/main.py`. Adding a tool here without registering it in `main.py` is a doc lie; registering a tool in `main.py` without adding it here is the same. Both must move together.
+
+### 11.1 Router & contexto (3)
+
+| Tool | Function |
+|------|----------|
+| `get_context` | Router entry point. Classifies turn, assembles L0–L4, returns ContextBundle (incl. `available_skills` + `active_projects` per M7.5). |
+| `tool_search` | Fuzzy catalog search via ILIKE + pg_trgm similarity on name/description_short. |
+| `load_skill` | Returns the full markdown body of `skills/<name>.md` (L3). |
+
+### 11.2 Skills/tools registration (2)
+
+| Tool | Function |
+|------|----------|
+| `register_skill` | Registers methodology (`kind='skill'`) with `skill_file_path`. |
+| `register_tool` | Registers executable tool (`kind='tool'`) with `mcp_tool_name`. |
+
+### 11.3 Lessons — capture and review (5)
+
+| Tool | Function |
+|------|----------|
+| `save_lesson` | Insert with `status='pending_review'` (auto-approves if §5.2 rule 13's four conditions hold). |
+| `search_lessons` | Filter-first semantic search (bucket+tags before embedding). |
+| `list_pending_lessons` | Review queue, oldest-first. |
+| `approve_lesson` | Flip `pending_review` → `active`. |
+| `reject_lesson` | Flip `pending_review` → `rejected` (reason required). |
+
+### 11.4 Best practices (4)
+
+| Tool | Function |
+|------|----------|
+| `best_practice_record` | INSERT or UPDATE with semantic rollback (`previous_guidance` preserved). |
+| `best_practice_search` | Semantic search filtered by category / applicable_buckets / active. |
+| `best_practice_deactivate` | Soft-delete (`active=false`). |
+| `best_practice_rollback` | Restores `previous_guidance` once (no chain). |
+
+### 11.5 Tasks (5)
+
+| Tool | Function |
+|------|----------|
+| `task_create` | Default `open`, `blocked` if `blocked_by` set; M7.5 resolves `project_id` from (bucket, project). |
+| `task_list` | Filters: bucket / module / status / trigger_phase. |
+| `task_update` | Partial update with column whitelist. |
+| `task_close` | Mark done with optional `completion_note`. |
+| `task_reopen` | Append to `metadata.reopened_history` (audit trail). |
+
+### 11.6 Decisions (3)
+
+| Tool | Function |
+|------|----------|
+| `decision_record` | INSERT with embedding; `project` is REQUIRED by NOT NULL schema; M7.5 also resolves `project_id`. |
+| `decision_search` | Semantic search with default `status='active'`. |
+| `decision_supersede` | Atomic supersede of an active decision. |
+
+### 11.7 Projects (3)
+
+| Tool | Function |
+|------|----------|
+| `create_project` | Trinity: row + L2 README on disk + `project_state` + `project_versions` snapshot. M7.5 calls `regenerate_bucket_readme` post-INSERT. |
+| `get_project` | Lookup by `(bucket, slug)` verbatim, returns row + README content. |
+| `list_projects` | Filters bucket/status, ordered `created_at DESC`. |
+
+### 11.8 Cross-pollination (2)
+
+| Tool | Function |
+|------|----------|
+| `list_pending_cross_pollination` | Queue ordered priority ASC NULLS LAST. |
+| `resolve_cross_pollination` | `approve` → `applied` / `reject` → `dismissed`. |
+
+### 11.9 Preferences (4)
+
+| Tool | Function |
+|------|----------|
+| `preference_get` | Single value or null. |
+| `preference_set` | UPSERT, forces `active=true`. |
+| `preference_unset` | Soft-delete (`active=false`). |
+| `preference_list` | Filters category/scope, default active-only. |
+
+### 11.10 Router feedback & telemetry (3)
+
+| Tool | Function |
+|------|----------|
+| `router_feedback_record` | INSERT with `status='pending'`, `request_id` optional. |
+| `router_feedback_review` | Transition out of pending. |
+| `report_satisfaction` | UPDATE `routing_logs.user_satisfaction` (1-5). |
+
+### 11.11 Awareness layer (4) — Module 7.5
+
+| Tool | Function |
+|------|----------|
+| `regenerate_bucket_readme` | Project DB state to `buckets/<bucket>/README.md`. Idempotent (stable timestamp); preserves operator notes between markers. |
+| `regenerate_project_readme` | Same as above for `buckets/<bucket>/projects/<slug>/README.md`. |
+| `archive_project` | Status active→archived; emits `project_lifecycle` notify; regenerates bucket README inline. |
+| `recommend_skills_for_query` | Per-query skill recommendation: keyword + utility scoring (no LLM call). Returns top-3 with `score >= 1.0`. |
+
+**Total: 38 tools.** When a new tool is registered, this section is updated in the same commit and the count in the section title is bumped.

@@ -40,7 +40,7 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
   - **RUN 1 / M7.5.AB** (`ebd51f0`): migration 0034 (`project_id` FK on lessons/tasks/decisions; `archived_at`/`archive_reason`/`applicable_skills` on projects; `trigger_keywords` on tools_catalog; 4 NOTIFY trigger functions). `src/awareness/readme_renderer.py` (idempotent parse/render with stable-timestamp logic and atomic write); `src/awareness/readme_consumer.py` (async LISTEN on `readme_dirty`, 30s debounce, 5s scan); `src/mcp_server/tools/awareness.py` exposes `regenerate_bucket_readme` + `regenerate_project_readme` MCP tools. systemd unit `pretel-os-readme.service` active.
   - **RUN 2 / M7.5.C** (`6e64b39`): Router `_get_skills_for_bucket` + `_get_active_projects_for_bucket` injected into ContextBundle; schema updated. `create_project` regenerates bucket README post-INSERT (best-effort). New `archive_project` MCP tool. New `recommend_skills_for_query` MCP tool (keyword + utility scoring). `task_create` + `decision_record` resolve `project_id` from `(bucket, project)` with no-silent-fallback warning on miss.
   - **RUN 3 / M7.5.D** (`81c52bf`): `skills/skill_discovery.md` (222 lines, 3 worked examples). Migration 0035 seeds `tools_catalog`: skill_discovery row at utility=1.0; vett (0.85) and sdd (0.90) with trigger_keywords; 26 tool rows with utility_score per Q6 (idempotent ON CONFLICT). Initial regeneration of all 3 bucket READMEs (personal/business/scout) with the one-time D.0 wrap preserving legacy content under operator-notes blocks.
-  - **RUN 4 / M7.5.E** (this commit): tests/awareness/ (6 renderer + 3 slow consumer = 9), tests/mcp_server/tools/test_awareness.py (6 tests). test_e2e.py + test_create_project_happy_path updated with awareness assertions. 7 success criteria all PASS — `runbooks/m7_5_demo.md` (419 lines). Tag candidate `module-7-5-complete` (operator-driven push).
+  - **RUN 4 / M7.5.E** (`a9a341c`): tests/awareness/ (7 renderer + 3 slow consumer = 10), tests/mcp_server/tools/test_awareness.py (6 tests). test_e2e.py + test_create_project_happy_path updated with awareness assertions. 7 success criteria all PASS — `runbooks/m7_5_demo.md` (419 lines). Tag candidate `module-7-5-complete` (operator-driven push).
   Reference docs: `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`. Demo runbook: `runbooks/m7_5_demo.md`. The `pretel-os-readme.service` is now production infrastructure — any future write that should regenerate READMEs depends on it being active.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
@@ -135,7 +135,7 @@ pretel-os/
 │
 ├── docs/
 │   ├── PROJECT_FOUNDATION.md                # Vision, stack, roadmap, ADRs
-│   ├── DATA_MODEL.md                        # DB schema (25 tables)
+│   ├── DATA_MODEL.md                        # DB schema (26 application tables + schema_migrations; M7.5 columns + 4 NOTIFY trigger functions)
 │   ├── INTEGRATIONS.md                      # External services (10 integrations)
 │   ├── LESSONS_LEARNED.md                   # Process doc for lessons
 │   └── audits/
@@ -146,13 +146,16 @@ pretel-os/
 │
 ├── specs/                                   # Per-module specs (each created at module start)
 ├── buckets/                                 # L1 content (personal, business, scout)
-├── skills/                                  # L3 content (methodologies)
+├── skills/                                  # L3 content — sdd, vett, skill_discovery (M7.5)
 ├── templates/                               # SDD templates
-├── src/                                     # Code (mcp_server, workers, telegram_bot)
-├── migrations/                              # Postgres schema migrations
-├── infra/                                   # systemd, hooks, backup, monitoring
+├── src/
+│   ├── awareness/                           # M7.5 readme renderer + LISTEN/NOTIFY consumer
+│   ├── mcp_server/                          # MCP server: router, tools (10 modules), telemetry
+│   └── telegram_bot/                        # Module 5
+├── migrations/                              # 37 Postgres migrations (0000-0035 + 0028a)
+├── infra/                                   # systemd units (pretel-os-mcp / -bot / -readme), hooks, backup, monitoring
 ├── exports/                                 # Weekly YAML lesson exports (by Dream Engine)
-├── runbooks/                                # Per-module operational procedures
+├── runbooks/                                # Per-module operational procedures, including m7_5_demo.md
 └── .env.pretel_os.example                   # Credentials template
 ```
 
@@ -731,7 +734,7 @@ Commits pushed during this M7.5 arc (in order):
   - 81c52bf M7.5.D  (RUN 3) — skills/skill_discovery.md (222 ln) +
                    migration 0035 (utility_score + trigger_keywords) +
                    bucket README regeneration with legacy preservation.
-  - <THIS>  M7.5.E  (RUN 4) — tests + 7 success criteria demos +
+  - a9a341c M7.5.E  (RUN 4) — tests + 7 success criteria demos +
                    tasks.md / SESSION_RESTORE update + tag candidate.
 Test count this session arc:
   - tests/awareness/test_readme_renderer.py — 7 tests (1 bonus over E.1

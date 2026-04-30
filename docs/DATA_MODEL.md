@@ -26,7 +26,7 @@ Everything else stays in git.
 
 ### 1.2 Tables
 
-Twenty-six tables across four tiers (21 base + 4 added by Module 0.X Phase A on 2026-04-28 + 1 added by Module 7 Phase B on 2026-04-30):
+Twenty-six application tables across four tiers (21 base + 4 added by Module 0.X Phase A on 2026-04-28 + 1 added by Module 7 Phase B on 2026-04-30). Plus `schema_migrations` (the applied-migration ledger; §9.2). Module 7.5 (2026-04-30) did not add any new tables — it added columns and triggers; see §6.9 and the per-table sections below.
 
 **Phase 1 (MVP — required for `Module 2: data_layer`):**
 
@@ -74,6 +74,20 @@ Twenty-six tables across four tiers (21 base + 4 added by Module 0.X Phase A on 
 |---|-------|---------|
 | 26 | `projects` | LIVE active-project registry (bucket+slug unique). Distinct from `projects_indexed` (#3, closed/archived with embeddings) per ADR-027. |
 
+**Module 7.5 (Awareness layer — 2026-04-30; columns + triggers, no new tables):**
+
+Migration `0034_awareness_layer.sql` added columns to existing tables:
+
+| Existing table | Columns added (M7.5 / 0034) |
+|----------------|------------------------------|
+| `lessons` | `project_id UUID REFERENCES projects(id) ON DELETE SET NULL` (+ partial index where NOT NULL) |
+| `tasks` | `project_id UUID REFERENCES projects(id) ON DELETE SET NULL` (+ partial index) |
+| `decisions` | `project_id UUID REFERENCES projects(id) ON DELETE SET NULL` (+ partial index) |
+| `projects` | `archived_at TIMESTAMPTZ`, `archive_reason TEXT`, `applicable_skills TEXT[] NOT NULL DEFAULT '{}'` |
+| `tools_catalog` | `trigger_keywords TEXT[] NOT NULL DEFAULT '{}'` (used by `recommend_skills_for_query`, seeded by 0035 for vett/sdd/skill_discovery) |
+
+Plus the four NOTIFY trigger functions enumerated in §6.9 and the `pretel-os-readme.service` consumer (CONSTITUTION §2.6 worker #5) that LISTENs on the `readme_dirty` channel they emit.
+
 ### 1.3 Conventions
 
 - **Primary keys:** `UUID` generated via `gen_random_uuid()`. Never integer sequences (not portable across environments).
@@ -119,7 +133,8 @@ CREATE TABLE lessons (
     content             TEXT NOT NULL,
     next_time           TEXT,                              -- the "next time X, do Y" clause
     bucket              TEXT NOT NULL,                     -- personal | business | scout | freelance:<client>
-    project             TEXT,                              -- optional project association
+    project             TEXT,                              -- optional project association (legacy text — see project_id below)
+    project_id          UUID REFERENCES projects(id) ON DELETE SET NULL,  -- M7.5 / 0034: FK to live registry; backfilled by joining (bucket, project_text)→projects(bucket, slug)
     category            TEXT NOT NULL,                     -- PLAN | ARCH | COST | INFRA | AI | CODE | DATA | OPS | PROC
     tags                TEXT[] NOT NULL DEFAULT '{}',
     applicable_buckets  TEXT[] NOT NULL DEFAULT '{}',      -- empty means bucket of origin only; ['personal','business'] means cross-bucket lesson
@@ -156,6 +171,7 @@ CREATE INDEX idx_lessons_embedding_hnsw
 CREATE INDEX idx_lessons_bucket_status ON lessons(bucket, status) WHERE deleted_at IS NULL;
 CREATE INDEX idx_lessons_applicable_buckets ON lessons USING gin(applicable_buckets);
 CREATE INDEX idx_lessons_project ON lessons(project) WHERE project IS NOT NULL;
+CREATE INDEX idx_lessons_project_id ON lessons(project_id) WHERE project_id IS NOT NULL;  -- M7.5 / 0034
 CREATE INDEX idx_lessons_tags ON lessons USING gin(tags);
 CREATE INDEX idx_lessons_related_tools ON lessons USING gin(related_tools);
 CREATE INDEX idx_lessons_category ON lessons(category);
@@ -212,6 +228,8 @@ CREATE TABLE tools_catalog (
     deprecation_reason   TEXT,
     archived_at          TIMESTAMPTZ,                      -- set by Dream Engine when unused > 180 days + low utility
     archive_reason       TEXT,                             -- 'unused >180d' | 'superseded:<name>' | 'operator'
+
+    trigger_keywords     TEXT[] NOT NULL DEFAULT '{}',     -- M7.5 / 0034: lowercased keywords used by recommend_skills_for_query (Q5 algorithm). Seeded by 0035 for vett/sdd/skill_discovery.
 
     created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -321,20 +339,23 @@ Live registry of currently-active projects. Distinct from `projects_indexed` (§
 
 ```sql
 CREATE TABLE projects (
-    id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    bucket       TEXT NOT NULL,
-    slug         TEXT NOT NULL,
-    name         TEXT NOT NULL,
-    description  TEXT NOT NULL,
-    status       TEXT NOT NULL DEFAULT 'active',
-    stack        TEXT[] NOT NULL DEFAULT '{}',
-    skills_used  TEXT[] NOT NULL DEFAULT '{}',
-    objective    TEXT,
-    client_id    UUID,                                   -- multi-tenancy hook (Phase 4+); NULL for operator-internal projects
-    readme_path  TEXT,                                   -- relative to REPO_ROOT (e.g. 'buckets/business/projects/declassified/README.md')
-    metadata     JSONB NOT NULL DEFAULT '{}',
-    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+    id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bucket             TEXT NOT NULL,
+    slug               TEXT NOT NULL,
+    name               TEXT NOT NULL,
+    description        TEXT NOT NULL,
+    status             TEXT NOT NULL DEFAULT 'active',          -- 'active' | 'archived' (M7.5)
+    stack              TEXT[] NOT NULL DEFAULT '{}',
+    skills_used        TEXT[] NOT NULL DEFAULT '{}',
+    applicable_skills  TEXT[] NOT NULL DEFAULT '{}',            -- M7.5 / 0034: skills surfaced in the project README
+    objective          TEXT,
+    client_id          UUID,                                    -- multi-tenancy hook (Phase 4+); NULL for operator-internal projects
+    readme_path        TEXT,                                    -- relative to REPO_ROOT (e.g. 'buckets/business/projects/declassified/README.md')
+    metadata           JSONB NOT NULL DEFAULT '{}',
+    archived_at        TIMESTAMPTZ,                             -- M7.5 / 0034: set by archive_project()
+    archive_reason     TEXT,                                    -- M7.5 / 0034: human-readable reason from archive_project()
+    created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at         TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE UNIQUE INDEX idx_projects_bucket_slug ON projects(bucket, slug);
@@ -343,13 +364,22 @@ CREATE INDEX idx_projects_bucket_status ON projects(bucket, status);
 -- Trigger filtered by tgrelid because trg_projects_updated_at also exists on projects_indexed.
 CREATE TRIGGER trg_projects_updated_at BEFORE UPDATE ON projects
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- M7.5 / 0034 lifecycle + readme-projection triggers — see §6.9.
+CREATE TRIGGER trg_projects_lifecycle
+    AFTER INSERT OR UPDATE ON projects
+    FOR EACH ROW EXECUTE FUNCTION notify_project_lifecycle();
+CREATE TRIGGER trg_projects_readme_dirty_bucket
+    AFTER INSERT OR UPDATE ON projects
+    FOR EACH ROW EXECUTE FUNCTION notify_readme_dirty_bucket();
 ```
 
 **Conventions:**
 - `slug` is normalized client-side by `create_project`: lowercase, non-`[a-z0-9-]` runs collapsed to single hyphens, repeated hyphens collapsed, leading/trailing hyphens stripped. Stored verbatim after normalization.
 - `bucket` validation accepts `personal`, `business`, `scout`, or `freelance:<client-name>` (non-empty suffix). The DB does not enforce this — application layer does.
-- `status` defaults to `'active'`. Non-default values (`'paused'`, `'closed'`, `'archived'`) are reserved for future close-out flows; M7.B does not write them.
+- `status` is `'active'` on insert and flips to `'archived'` via the `archive_project` MCP tool (M7.5). The status transition active→archived emits `pg_notify('project_lifecycle', 'archived:<bucket>/<slug>')`; INSERT emits `'created:<bucket>/<slug>'`; other UPDATEs emit `'updated:<bucket>/<slug>'`.
 - `readme_path` is set by `create_project` after the README is written to disk (a two-step INSERT then UPDATE within the same transaction). Tests monkeypatch `config_mod.REPO_ROOT` to redirect writes.
+- `applicable_skills` is operator-set. The bucket README's "Available skills" section is sourced from `tools_catalog`, not from this column; this column scopes the project's own README.
 
 **Lifecycle relative to `projects_indexed`:**
 A project is created in `projects` (live) and remains there for its working lifetime. When closed, a future tool (`close_project(...)`) copies the row to `projects_indexed` with closure narrative + embedding generation, optionally deleting from `projects`. M7.B did not ship that tool — it is captured as a backlog item.
@@ -705,7 +735,8 @@ ADR-style architectural decisions tied to projects. Separate from `project_versi
 CREATE TABLE decisions (
     id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     bucket               TEXT NOT NULL,
-    project              TEXT NOT NULL,                   -- active project name (git-resident)
+    project              TEXT NOT NULL,                   -- active project name (git-resident, legacy text)
+    project_id           UUID REFERENCES projects(id) ON DELETE SET NULL,  -- M7.5 / 0034: FK to live registry; resolved by decision_record from (bucket, project)
     projects_indexed_id  UUID REFERENCES projects_indexed(id),  -- populated when the project closes and moves to projects_indexed
     client_id            UUID,                             -- inherited from project_state when project is client-scoped
     title                TEXT NOT NULL,
@@ -720,6 +751,7 @@ CREATE TABLE decisions (
 );
 
 CREATE INDEX idx_decisions_project ON decisions(bucket, project);
+CREATE INDEX idx_decisions_project_id ON decisions(project_id) WHERE project_id IS NOT NULL;  -- M7.5 / 0034
 CREATE INDEX idx_decisions_indexed_project ON decisions(projects_indexed_id) WHERE projects_indexed_id IS NOT NULL;
 CREATE INDEX idx_decisions_embedding_hnsw ON decisions USING hnsw (embedding vector_cosine_ops);
 CREATE INDEX idx_decisions_client ON decisions(client_id) WHERE client_id IS NOT NULL;
@@ -887,7 +919,8 @@ CREATE TABLE tasks (
     title             TEXT NOT NULL,
     description       TEXT,
     bucket            TEXT NOT NULL,
-    project           TEXT,
+    project           TEXT,                                    -- legacy text; see project_id below
+    project_id        UUID REFERENCES projects(id) ON DELETE SET NULL,  -- M7.5 / 0034: FK to live registry; resolved by task_create from (bucket, project)
     module            TEXT,                                    -- 'M0.X', 'M4', etc.
     status            TEXT NOT NULL DEFAULT 'open',            -- open | in_progress | blocked | done | cancelled
     priority          TEXT      DEFAULT 'normal',              -- urgent | high | normal | low
@@ -905,6 +938,7 @@ CREATE TABLE tasks (
 CREATE INDEX idx_tasks_bucket_status   ON tasks(bucket, status);
 CREATE INDEX idx_tasks_module          ON tasks(module) WHERE module IS NOT NULL;
 CREATE INDEX idx_tasks_open_by_phase   ON tasks(trigger_phase) WHERE status IN ('open','blocked');
+CREATE INDEX idx_tasks_project_id      ON tasks(project_id) WHERE project_id IS NOT NULL;  -- M7.5 / 0034
 
 -- updated_at maintained by trg_set_updated_at_tasks (see §6.1).
 ```
@@ -1302,6 +1336,109 @@ $$;
 
 Archived tools remain queryable with explicit `include_archived=true` on `recommend_tools()`. The operator can unarchive manually by clearing `archived_at`.
 
+### 6.9 Awareness layer NOTIFY triggers (M7.5, migration 0034)
+
+Module 7.5 added four NOTIFY trigger functions that drive the projection of bucket and project READMEs from live DB state (CONSTITUTION §2.4 git/DB boundary, §7.36 cross-layer sync). The functions emit on three Postgres channels; the LISTENers are listed in CONSTITUTION §2.6 worker table.
+
+```sql
+-- 6.9.1 project_lifecycle: 'created'|'updated'|'archived' on projects INSERT/UPDATE.
+CREATE OR REPLACE FUNCTION public.notify_project_lifecycle()
+RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE v_event TEXT;
+BEGIN
+    IF TG_OP = 'INSERT' THEN v_event := 'created';
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF NEW.status = 'archived' AND OLD.status IS DISTINCT FROM 'archived' THEN
+            v_event := 'archived';
+        ELSE v_event := 'updated';
+        END IF;
+    ELSE RETURN NEW;
+    END IF;
+    PERFORM pg_notify('project_lifecycle', v_event || ':' || NEW.bucket || '/' || NEW.slug);
+    RETURN NEW;
+END;
+$$;
+
+-- 6.9.2 readme_dirty_bucket: bucket README projection.
+-- Attached to lessons / tasks / decisions / projects / tools_catalog.
+-- For tools_catalog, fans out one notify per applicable_bucket
+-- (union of OLD ∪ NEW on UPDATE).
+CREATE OR REPLACE FUNCTION public.notify_readme_dirty_bucket()
+RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE v_buckets TEXT[]; v_bucket TEXT;
+BEGIN
+    IF TG_TABLE_NAME = 'tools_catalog' THEN
+        IF TG_OP = 'UPDATE' THEN
+            v_buckets := ARRAY(SELECT DISTINCT b
+                FROM unnest(COALESCE(NEW.applicable_buckets, ARRAY[]::TEXT[])
+                          || COALESCE(OLD.applicable_buckets, ARRAY[]::TEXT[])) AS t(b)
+                WHERE b IS NOT NULL);
+        ELSE v_buckets := COALESCE(NEW.applicable_buckets, ARRAY[]::TEXT[]);
+        END IF;
+        IF v_buckets IS NOT NULL THEN
+            FOREACH v_bucket IN ARRAY v_buckets LOOP
+                PERFORM pg_notify('readme_dirty', 'bucket:' || v_bucket);
+            END LOOP;
+        END IF;
+    ELSE
+        IF NEW.bucket IS NOT NULL THEN
+            PERFORM pg_notify('readme_dirty', 'bucket:' || NEW.bucket);
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- 6.9.3 readme_dirty_project: project README projection.
+-- Attached to lessons / tasks / decisions where project_id IS NOT NULL.
+CREATE OR REPLACE FUNCTION public.notify_readme_dirty_project()
+RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE v_bucket TEXT; v_slug TEXT;
+BEGIN
+    IF NEW.project_id IS NULL THEN RETURN NEW; END IF;
+    SELECT bucket, slug INTO v_bucket, v_slug
+        FROM projects WHERE id = NEW.project_id;
+    IF v_bucket IS NULL OR v_slug IS NULL THEN RETURN NEW; END IF;
+    PERFORM pg_notify('readme_dirty', 'project:' || v_bucket || '/' || v_slug);
+    RETURN NEW;
+END;
+$$;
+
+-- 6.9.4 catalog_changed: advisory channel for downstream catalog caches.
+CREATE OR REPLACE FUNCTION public.notify_catalog_changed()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+    PERFORM pg_notify('catalog_changed', TG_OP || ':' || NEW.name);
+    RETURN NEW;
+END;
+$$;
+```
+
+**Trigger attachments (10 triggers across 5 tables):**
+
+| Table | Trigger | Calls |
+|-------|---------|-------|
+| `projects` | `trg_projects_lifecycle` | `notify_project_lifecycle()` |
+| `projects` | `trg_projects_readme_dirty_bucket` | `notify_readme_dirty_bucket()` |
+| `lessons` | `trg_lessons_readme_dirty_bucket` | `notify_readme_dirty_bucket()` |
+| `lessons` | `trg_lessons_readme_dirty_project` | `notify_readme_dirty_project()` |
+| `tasks` | `trg_tasks_readme_dirty_bucket` | `notify_readme_dirty_bucket()` |
+| `tasks` | `trg_tasks_readme_dirty_project` | `notify_readme_dirty_project()` |
+| `decisions` | `trg_decisions_readme_dirty_bucket` | `notify_readme_dirty_bucket()` |
+| `decisions` | `trg_decisions_readme_dirty_project` | `notify_readme_dirty_project()` |
+| `tools_catalog` | `trg_tools_catalog_readme_dirty_bucket` | `notify_readme_dirty_bucket()` |
+| `tools_catalog` | `trg_tools_catalog_changed` | `notify_catalog_changed()` |
+
+**Channels and consumers:**
+
+| Channel | Payload format | LISTENer |
+|---------|----------------|----------|
+| `project_lifecycle` | `<event>:<bucket>/<slug>` (event ∈ {created, updated, archived}) | Telegram bot status loop (planned), audit tooling, ad-hoc operator scripts |
+| `readme_dirty` | `bucket:<bucket>` or `project:<bucket>/<slug>` | `pretel-os-readme.service` (CONSTITUTION §2.6 worker #5) — debounces 30s and dispatches `regenerate_*_readme` |
+| `catalog_changed` | `<TG_OP>:<name>` | Reserved for downstream catalog caches; no consumer in production today |
+
+`pretel-os-readme.service` runs `python -m awareness.readme_consumer` from `src/awareness/`. The renderer at `src/awareness/readme_renderer.py` is sync, idempotent (stable timestamp when data unchanged), and atomic-write (tempfile → fsync → rename). Operator notes between `<!-- pretel:notes:start -->` ... `<!-- pretel:notes:end -->` are preserved verbatim across regenerations — this is the only mechanism by which an operator can edit a bucket or project README without losing the edit on the next refresh.
+
 ---
 
 ## 7. Views
@@ -1407,6 +1544,7 @@ Migration files live in `migrations/`, numbered sequentially:
 
 ```
 migrations/
+├── 0000_schema_migrations.sql                       # ledger table itself
 ├── 0001_extensions.sql
 ├── 0002_lessons.sql
 ├── 0003_tools_catalog.sql
@@ -1424,15 +1562,32 @@ migrations/
 ├── 0015_reflection_pending.sql
 ├── 0016_scout_denylist.sql
 ├── 0017_control_registry.sql
-├── 0018_phase2_tables.sql
-├── 0019_functions_triggers.sql
+├── 0018_phase2_tables.sql                           # patterns, decisions, gotchas, contacts, ideas
+├── 0019_functions_triggers.sql                      # set_updated_at, notify_missing_embedding (CASE form, see 0028a), recompute_utility_scores, archive_low_utility_lessons
 ├── 0020_scout_safety_trigger.sql
-├── 0021_views.sql
-├── 0022_seed_tools_catalog.sql
-└── 0023_seed_control_registry.sql
+├── 0021_views.sql                                   # 6 views per §7
+├── 0022_seed_tools_catalog.sql                      # M4 deferred — bootstrap_tools_catalog.py used as interim
+├── 0023_seed_control_registry.sql
+├── 0024_tasks.sql                                   # M0.X Phase A
+├── 0025_operator_preferences.sql                    # M0.X Phase A
+├── 0026_router_feedback.sql                         # M0.X Phase A
+├── 0027_best_practices.sql                          # M0.X Phase A
+├── 0028_decisions_amendment.sql                     # M0.X Phase A — +7 columns on decisions
+├── 0028a_fix_notify_missing_embedding.sql           # M0.X Phase A regression fix — IF/ELSIF chain replaces broken CASE in 0019 (LL-M0X-002)
+├── 0029_data_migration_lessons_split.sql            # M0.X Phase A — 4 misclassified lessons → decisions/tasks
+├── 0030_best_practices_embedding_trigger.sql        # M0.X close-out — adds best_practices branch to notify_missing_embedding + AFTER INSERT trigger
+├── 0031_layer_cache_invalidation_triggers.sql       # M4 Phase B — operator_preferences/decisions/best_practices/lessons → 'layer_loader_cache' channel
+├── 0032_seed_skills_sdd_vett.sql                    # M7.A — SQL fallback registering sdd+vett. NOT YET APPLIED (M7.A.fu1 open).
+├── 0033_projects_table.sql                          # M7.B — live projects registry
+├── 0034_awareness_layer.sql                         # M7.5 RUN 1 — project_id FKs + archived_at + applicable_skills + trigger_keywords + 4 NOTIFY trigger functions
+└── 0035_seed_awareness.sql                          # M7.5 RUN 3 — utility_score + trigger_keywords seed for catalog; skill_discovery row
 ```
 
-Applied in order by the migration runner (simple Python script wrapping `psql`, or `alembic` if Python-native preferred). Each migration is idempotent (`CREATE IF NOT EXISTS`) and logs to `schema_migrations` table.
+Applied in order by the migration runner (simple Python script wrapping `psql`). Each migration is idempotent (`CREATE IF NOT EXISTS`) and logs to `schema_migrations` table.
+
+**Open follow-ups (LL-INFRA-001):**
+- Migration `0032_seed_skills_sdd_vett.sql` is on disk but not yet applied to either DB. Tracked as `M7.A.fu1` in `tasks.md`. Workaround: `psql -1 -f migrations/0032_seed_skills_sdd_vett.sql` plus a manual `INSERT INTO schema_migrations (version) VALUES ('0032')`.
+- The `infra/db/migrate.py` runner stores `path.stem` (e.g. `0024_tasks`) as `version` while older rows use 4-digit prefix only (`0024`). Re-running re-attempts already-applied migrations. Sidestepped from M7.B onward by direct `psql -1 -f` + manual prefix-only `INSERT INTO schema_migrations`. Tracked as `M7.A.fu2`.
 
 ### 9.2 Schema migrations table
 
