@@ -238,16 +238,33 @@ Covered by M5.T1 above.
   Whisper error, empty transcription) degrade to "Envía /save
   <texto>" fallback so the operator's flow is never blocked.
 
-- [ ] **M5.D.2.1** Session tracker: INSERT first message; UPDATE
-  per turn; append JSONL transcript at
-  `~/pretel-os-data/transcripts/{session_id}.jsonl`.
+- [x] **M5.D.2.1** Session tracker in `src/telegram_bot/session.py`.
+  `session_middleware` registered as `TypeHandler(Update, ...)` at
+  group=-1 in `bot.py` so it runs before any command handler.
+  `ensure_session_sync` finds the open session for `(client_origin,
+  operator_id)` via `SELECT FOR UPDATE` and bumps
+  `last_seen_at + turn_count`, or INSERTs a new row. Per turn,
+  `append_transcript` writes a JSONL line `{role, content,
+  timestamp}` to `~/pretel-os-data/transcripts/{session_id}.jsonl`.
+  Silent-on-error: DB / file failures log at WARNING and the
+  command handlers run unaffected. Unblocks M4 D.2 Q8 deferral —
+  Router's `_get_session_excerpt()` now has data to read.
 
-- [ ] **M5.D.2.2** Background idle-close task (asyncio loop, every
-  5 min): close sessions with `last_seen_at < now() - 10 min`,
-  `close_reason='idle_10min'`.
+- [x] **M5.D.2.2** Background idle-close loop in
+  `session.idle_close_loop`. asyncio task started by
+  `bot._post_init` (stashed in `app.bot_data["idle_task"]`) and
+  cancelled by `bot._post_shutdown`. Default interval=300s,
+  idle_minutes=10; closes sessions with `last_seen_at < now() -
+  10 min`, sets `close_reason='idle_10min'`. Cancellation via
+  `stop_event.set()`.
 
-- [ ] **M5.D.3.1** Tests: ≥4 (mock Whisper for voice; real DB for
-  session).
+- [x] **M5.D.3.1** Tests in `test_voice.py` (5) + `test_session.py`
+  (6) — 11 total, ≥4 required. Voice tests mock Whisper ($0).
+  Session tests use real `pretel_os_test` DB with per-test unique
+  `client_origin` markers + DELETE-WHERE cleanup fixture (since
+  `conversation_sessions` isn't in conftest's auto-truncate list).
+  Coverage: ensure_session insert + update + reopen-after-close +
+  close_idle marks-old + close_idle keeps-recent + JSONL append.
 
 ---
 

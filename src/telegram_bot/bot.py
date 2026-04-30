@@ -6,6 +6,7 @@ bot proves stable.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 from typing import Any
 
@@ -15,10 +16,12 @@ from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
     MessageHandler,
+    TypeHandler,
     filters,
 )
 
 from . import config as config_mod
+from .session import idle_close_loop, session_middleware
 from .handlers.cross_poll import (
     XPOLL_CALLBACK_PATTERN,
     cross_poll_review_callback,
@@ -57,13 +60,48 @@ log = logging.getLogger(__name__)
 AppT = Application[Any, Any, Any, Any, Any, Any]
 
 
+async def _post_init(app: AppT) -> None:
+    """Start the idle-close background loop after Application init."""
+    cfg = config_mod.load_config()
+    stop_event = asyncio.Event()
+    task = asyncio.create_task(
+        idle_close_loop(stop_event, cfg.database_url),
+        name="telegram-bot-idle-close",
+    )
+    app.bot_data["idle_stop_event"] = stop_event
+    app.bot_data["idle_task"] = task
+
+
+async def _post_shutdown(app: AppT) -> None:
+    """Cancel the idle-close loop before shutdown drains the event loop."""
+    stop_event = app.bot_data.get("idle_stop_event")
+    task = app.bot_data.get("idle_task")
+    if stop_event is not None:
+        stop_event.set()
+    if task is not None:
+        try:
+            await asyncio.wait_for(task, timeout=5.0)
+        except (asyncio.TimeoutError, asyncio.CancelledError):
+            task.cancel()
+
+
 def build_application(cfg: config_mod.Config) -> AppT:
-    """Construct the Application + register Phase-B command handlers.
+    """Construct the Application + register Phase-B/C/D handlers.
 
     Pure function — does not start polling. Tests call this to inspect
     handler registration without needing a live Telegram connection.
+    `post_init` / `post_shutdown` hooks own the idle-close loop.
     """
-    app = Application.builder().token(cfg.telegram_bot_token).build()
+    app = (
+        Application.builder()
+        .token(cfg.telegram_bot_token)
+        .post_init(_post_init)
+        .post_shutdown(_post_shutdown)
+        .build()
+    )
+    # Session middleware runs before every command handler so each
+    # operator turn lands in conversation_sessions + the JSONL transcript.
+    app.add_handler(TypeHandler(Update, session_middleware), group=-1)
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("save", save_command))
