@@ -1,3 +1,39 @@
+# Bucket: scout
+
+<!-- pretel:auto:start summary -->
+**Active projects:** 0  
+**Archived projects:** 0  
+**Open tasks:** 0  
+**Last regenerated:** 2026-04-30T19:56:16Z
+<!-- pretel:auto:end summary -->
+
+<!-- pretel:auto:start active_projects -->
+## Active projects
+
+_(none)_
+<!-- pretel:auto:end active_projects -->
+
+<!-- pretel:auto:start archived_projects -->
+## Archived projects
+
+_(none)_
+<!-- pretel:auto:end archived_projects -->
+
+<!-- pretel:auto:start applicable_skills -->
+## Available skills
+
+- **skill_discovery** — How to discover and use registered skills
+- **sdd** — Spec-Driven Development process
+- **vett** — Vendor Evaluation & Technology Triage framework
+<!-- pretel:auto:end applicable_skills -->
+
+<!-- pretel:auto:start recent_decisions -->
+## Recent decisions (5 most recent)
+
+_(none)_
+<!-- pretel:auto:end recent_decisions -->
+
+<!-- pretel:notes:start -->
 # Scout Bucket
 
 **Purpose.** This bucket holds the operator's W2 work at **Scout Motors** — Workflow Engineering, IT. It is the L1 context loaded by the Router when a turn is classified into `bucket=scout`.
@@ -50,3 +86,4 @@ When in doubt: store the **shape of the problem and the approach**, not the spec
 - Generic SDD skill: `skills/sdd.md`
 - pretel-os CONSTITUTION §3 — data sovereignty rules.
 - pretel-os CONSTITUTION §5 — context layering and Router behavior (L0–L4).
+<!-- pretel:notes:end -->
