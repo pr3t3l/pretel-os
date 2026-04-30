@@ -54,13 +54,13 @@ Not everything lives in this repo. The Router assembles context from multiple so
 
 When entering via the repo (Claude Code, git), you only see L0, L1, L3 directly. When entering via MCP (Claude.ai), the Router provides L0–L4 plus `available_skills` + `active_projects` as needed.
 
-## Tool catalog (38 tools across 11 domains)
+## Tool catalog (39 tools across 11 domains)
 
 Canonical reference: `CONSTITUTION §11`. Quick map for orientation:
 
 | Domain | Tools |
 |--------|-------|
-| Router & contexto (3) | `get_context`, `tool_search`, `load_skill` |
+| Router & contexto (4) | `get_context`, `tool_search`, `list_catalog`, `load_skill` |
 | Skills/tools registration (2) | `register_skill`, `register_tool` |
 | Lessons — capture & review (5) | `save_lesson`, `search_lessons`, `list_pending_lessons`, `approve_lesson`, `reject_lesson` |
 | Best practices (4) | `best_practice_record`, `best_practice_search`, `best_practice_deactivate`, `best_practice_rollback` |
@@ -72,7 +72,7 @@ Canonical reference: `CONSTITUTION §11`. Quick map for orientation:
 | Router feedback & telemetry (3) | `router_feedback_record`, `router_feedback_review`, `report_satisfaction` |
 | Awareness layer (4, M7.5) | `regenerate_bucket_readme`, `regenerate_project_readme`, `archive_project`, `recommend_skills_for_query` |
 
-If a tool you expect is not in this map, call `tool_search` — never invent a name.
+If a tool you expect is not in this map, call `list_catalog()` to enumerate the full inventory or `tool_search('<keyword>')` to query by topic — never invent a name. `tool_search` is filtered by query and capped at 50; `list_catalog` is the canonical "what exists" endpoint.
 
 ## Directory map
 

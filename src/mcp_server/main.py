@@ -30,7 +30,13 @@ from .tools.awareness import (
     regenerate_bucket_readme,
     regenerate_project_readme,
 )
-from .tools.catalog import load_skill, register_skill, register_tool, tool_search
+from .tools.catalog import (
+    list_catalog,
+    load_skill,
+    register_skill,
+    register_tool,
+    tool_search,
+)
 from .tools.context import _get_cache, get_context
 from .tools.cross_pollination import (
     list_pending_cross_pollination,
@@ -133,6 +139,7 @@ def build_app() -> FastMCP:
     app.tool(register_tool)
     app.tool(load_skill)
     app.tool(tool_search)
+    app.tool(list_catalog)
 
     # Module 0.X — preferences
     app.tool(preference_set)

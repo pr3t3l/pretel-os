@@ -1,7 +1,7 @@
 # CONSTITUTION — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-30 (v5 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker)
+**Last updated:** 2026-04-30 (v5.1 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker; +list_catalog tool + 3 catalog orphans seeded via migration 0036)
 **Owner:** Alfredo Pretel Vargas
 
 This document contains the immutable rules of pretel-os. Every module, agent, skill, and human operator must respect these rules without exception. Rules in this document only change through an explicit decision-log entry in `PROJECT_FOUNDATION.md §Decisions`, never silently.
@@ -371,16 +371,24 @@ No rule is changed through conversation alone. Speech is not law; the commit is.
 
 ---
 
-## 11. MCP tool catalog (38 tools across 11 domains)
+## 11. MCP tool catalog (39 tools across 11 domains)
 
 This section is the canonical inventory of the live MCP tool surface. The order matches `app.tool(...)` registrations in `src/mcp_server/main.py`. Adding a tool here without registering it in `main.py` is a doc lie; registering a tool in `main.py` without adding it here is the same. Both must move together.
 
-### 11.1 Router & contexto (3)
+**Two registration layers exist; both must be in sync:**
+
+1. **`main.py app.tool()`** — makes the tool callable via the MCP transport. Required for any client to invoke it.
+2. **`tools_catalog` row in DB** — makes the tool discoverable via `tool_search`, `list_catalog`, `recommend_skills_for_query`, and the per-bucket `available_skills` field that the Router injects into every `get_context` response. A tool missing from the catalog is invisible to the discovery loop in `skills/skill_discovery.md`, even when callable.
+
+The two layers diverged historically (3 tools had main.py registrations but no catalog row through M7.5). Migration 0036 reconciled both layers and added `list_catalog` to give LLMs a deterministic enumeration endpoint that complements `tool_search`'s query-filtered behavior.
+
+### 11.1 Router & contexto (4)
 
 | Tool | Function |
 |------|----------|
 | `get_context` | Router entry point. Classifies turn, assembles L0–L4, returns ContextBundle (incl. `available_skills` + `active_projects` per M7.5). |
-| `tool_search` | Fuzzy catalog search via ILIKE + pg_trgm similarity on name/description_short. |
+| `tool_search` | Fuzzy catalog search via ILIKE + pg_trgm similarity on name/description_short. **Default limit 50** (clamped at 50). Use this for "find me a tool that does X". |
+| `list_catalog` | Paginated enumeration of every catalog row with optional `kind`/`bucket`/`include_archived` filters and a `total_count`. Use this for "what tools exist". Companion to `tool_search` — added 2026-04-30 to close the discoverability gap surfaced when an LLM relied on `tool_search` and assumed its filtered output was the full inventory. |
 | `load_skill` | Returns the full markdown body of `skills/<name>.md` (L3). |
 
 ### 11.2 Skills/tools registration (2)
@@ -439,8 +447,8 @@ This section is the canonical inventory of the live MCP tool surface. The order 
 
 | Tool | Function |
 |------|----------|
-| `list_pending_cross_pollination` | Queue ordered priority ASC NULLS LAST. |
-| `resolve_cross_pollination` | `approve` → `applied` / `reject` → `dismissed`. |
+| `list_pending_cross_pollination` | Queue ordered priority ASC NULLS LAST. Catalog row added 2026-04-30 / migration 0036. |
+| `resolve_cross_pollination` | `approve` → `applied` / `reject` → `dismissed`. Catalog row added 2026-04-30 / migration 0036. |
 
 ### 11.9 Preferences (4)
 
@@ -457,7 +465,7 @@ This section is the canonical inventory of the live MCP tool surface. The order 
 |------|----------|
 | `router_feedback_record` | INSERT with `status='pending'`, `request_id` optional. |
 | `router_feedback_review` | Transition out of pending. |
-| `report_satisfaction` | UPDATE `routing_logs.user_satisfaction` (1-5). |
+| `report_satisfaction` | UPDATE `routing_logs.user_satisfaction` (1-5). Catalog row added 2026-04-30 / migration 0036. |
 
 ### 11.11 Awareness layer (4) — Module 7.5
 
@@ -468,4 +476,11 @@ This section is the canonical inventory of the live MCP tool surface. The order 
 | `archive_project` | Status active→archived; emits `project_lifecycle` notify; regenerates bucket README inline. |
 | `recommend_skills_for_query` | Per-query skill recommendation: keyword + utility scoring (no LLM call). Returns top-3 with `score >= 1.0`. |
 
-**Total: 38 tools.** When a new tool is registered, this section is updated in the same commit and the count in the section title is bumped.
+**Total: 39 tools across 11 domains** (3+2+5+4+5+3+3+2+4+3+4 = 38 + `list_catalog` in §11.1 = 39). Plus 3 registered skills in `tools_catalog`: `sdd`, `vett`, `skill_discovery` — making the catalog row count 42.
+
+When a new tool is registered, **two artifacts move in the same commit**:
+1. `app.tool(<name>)` in `src/mcp_server/main.py`.
+2. `INSERT INTO tools_catalog ... ON CONFLICT (name) DO UPDATE` in a new migration (or via `register_tool` MCP tool).
+3. This §11 entry, with the count in the section title bumped.
+
+A doc-only update of §11 without the migration is not enough — the tool stays invisible to the discovery loop until the catalog row exists.

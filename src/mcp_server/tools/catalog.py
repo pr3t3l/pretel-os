@@ -299,12 +299,17 @@ async def load_skill(name: str) -> dict:
     }
 
 
-async def tool_search(query: str, limit: int = 10) -> dict:
+async def tool_search(query: str, limit: int = 50) -> dict:
     """Fuzzy catalog search by name or description.
 
     Required by CONSTITUTION §9 rule 3 so agents can discover tools without
     guessing. Uses ILIKE + pg_trgm similarity on name and description_short;
     returns the top matches ordered by trigram similarity, then utility.
+
+    NOTE: this is a *search* — it filters by query. To enumerate the full
+    catalog without filtering, use `list_catalog()` instead. The default
+    limit is 50 (catalog ceiling) so a generic query (e.g. ' ') returns
+    every match; narrow queries return what they match.
 
     Args:
         query: free-text query.
@@ -387,3 +392,139 @@ async def tool_search(query: str, limit: int = 10) -> dict:
         metadata={"result_count": len(results)},
     )
     return {"status": "ok", "results": results}
+
+
+_LIST_CATALOG_LIMIT_MAX = 200
+
+
+async def list_catalog(
+    kind: Optional[str] = None,
+    bucket: Optional[str] = None,
+    include_archived: bool = False,
+    include_deprecated: bool = False,
+    limit: int = 200,
+    offset: int = 0,
+) -> dict:
+    """Enumerate the full tools_catalog (Module 7.5 follow-up).
+
+    `tool_search` is filtered + capped at 50 results — useful for "find
+    me a tool that does X". This function is the canonical "what's
+    in the catalog" enumeration: paginated, optionally filtered by
+    `kind` (`'skill'` | `'tool'` | `'prompt'`) or `bucket`, and
+    returning a `total_count` so the caller knows whether to paginate.
+
+    Args:
+        kind: optional `catalog_kind` filter.
+        bucket: optional applicable_buckets filter.
+        include_archived: include rows where `archived_at IS NOT NULL`.
+        include_deprecated: include rows where `deprecated = true`.
+        limit: page size (default 200, clamped to 200).
+        offset: page start.
+
+    Returns:
+        {status:'ok', total_count:int, returned:int, offset:int, limit:int,
+         results: [{name, kind, description_short, applicable_buckets,
+                    utility_score, deprecated, archived_at}, ...]}
+    """
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            await log_usage(
+                tool_name="list_catalog",
+                bucket=bucket,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable"},
+            )
+            return degraded(
+                "db_unavailable", results=[], total_count=0,
+            )
+
+        limit_val = max(1, min(int(limit), _LIST_CATALOG_LIMIT_MAX))
+        offset_val = max(0, int(offset))
+
+        where_parts: list[str] = []
+        params: list[Any] = []
+        if kind is not None:
+            where_parts.append("kind = %s")
+            params.append(kind)
+        if bucket is not None:
+            where_parts.append("%s = ANY(applicable_buckets)")
+            params.append(bucket)
+        if not include_deprecated:
+            where_parts.append("deprecated = false")
+        if not include_archived:
+            where_parts.append("archived_at IS NULL")
+
+        where_sql = (" WHERE " + " AND ".join(where_parts)) if where_parts else ""
+        count_sql = f"SELECT count(*) FROM tools_catalog{where_sql}"
+        list_sql = f"""
+            SELECT name, kind, description_short, applicable_buckets,
+                   utility_score, deprecated, archived_at
+            FROM tools_catalog
+            {where_sql}
+            ORDER BY kind, utility_score DESC NULLS LAST, name ASC
+            LIMIT %s OFFSET %s
+        """
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(count_sql, params)
+                    count_row = await cur.fetchone()
+                    total_count = int(count_row[0]) if count_row is not None else 0
+
+                    await cur.execute(
+                        list_sql, params + [limit_val, offset_val]
+                    )
+                    rows = await cur.fetchall()
+        except Exception as exc:
+            log.exception("list_catalog failed")
+            await log_usage(
+                tool_name="list_catalog",
+                bucket=bucket,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc)},
+            )
+            return {"status": "error", "error": str(exc), "results": []}
+
+    results = [
+        {
+            "name": r[0],
+            "kind": r[1],
+            "description_short": r[2],
+            "applicable_buckets": list(r[3] or []),
+            "utility_score": float(r[4]) if r[4] is not None else 0.0,
+            "deprecated": bool(r[5]),
+            "archived_at": r[6].isoformat() if r[6] is not None else None,
+        }
+        for r in rows
+    ]
+
+    await log_usage(
+        tool_name="list_catalog",
+        bucket=bucket,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={
+            "total_count": total_count,
+            "returned": len(results),
+            "kind": kind,
+            "bucket_filter": bucket,
+        },
+    )
+    return {
+        "status": "ok",
+        "total_count": total_count,
+        "returned": len(results),
+        "offset": offset_val,
+        "limit": limit_val,
+        "results": results,
+    }
