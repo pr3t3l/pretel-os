@@ -104,6 +104,7 @@
 - [ ] **M8.fu1** — Stale schema-default cleanup: `cross_pollination_queue.proposed_by DEFAULT 'reflection_worker'` is a leftover from migration 0010. Optionally migrate the default to `'manual'` or DROP DEFAULT entirely once M8 is stable. Low priority.
 - [ ] **M8.fu2** — If first-week dedup pass burst is large (>50 rows), evaluate raising similarity threshold from 0.95 to 0.97 in queries.py. Document via plan §6 tuning playbook.
 - [ ] **M8.fu3** — Consider `report_satisfaction` on `dream_engine_runs` rows from operator (post-archival, post-merge) to feed back into utility scoring. Fase 2.
+- [ ] **M8.fu4** — Implement CONSTITUTION §5.5 rule 22 predicate (5) ("Not referenced by any active project in `project_state`") once `project_state` acquires typed lesson references OR if observation shows archive incidents on still-relevant lessons. See `phase_b_close.md` Constitutional drift section.
 
 ---
 
