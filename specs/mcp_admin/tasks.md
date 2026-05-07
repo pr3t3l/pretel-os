@@ -79,25 +79,25 @@
 
 ## Phase D — Production deploy + Cloudflare Access
 
-- [ ] **M10.D.1** — Decide Q6 (single-email allowlist or backup admin email). Document in `phase_d_close.md`.
-- [ ] **M10.D.2** — Cloudflare dashboard → DNS → add CNAME `mcp-admin` → Tunnel ID (or use existing Tunnel UI).
-- [ ] **M10.D.3** — Cloudflare Tunnel: add public hostname `mcp-admin.alfredopretelvargas.com` → service `http://localhost:PORT`. Verify via cloudflared logs.
-- [ ] **M10.D.4** — Cloudflare Zero Trust → Access → Applications → Add application → Self-hosted. Domain `mcp-admin.alfredopretelvargas.com`. Session duration 24h.
-- [ ] **M10.D.5** — Add policy "operator-only" → Action: Allow → Include: Emails → `prettelv1@gmail.com` (+ backup per Q6).
-- [ ] **M10.D.6** — Identity providers: confirm One-time PIN enabled. Optional: add Google.
-- [ ] **M10.D.7** — Save application. Wait ~30s for propagation.
-- [ ] **M10.D.8** — `cp infra/systemd/pretel-os-admin.service ~/.config/systemd/user/`.
-- [ ] **M10.D.9** — `systemctl --user daemon-reload && systemctl --user enable --now pretel-os-admin.service`.
-- [ ] **M10.D.10** — `systemctl --user status pretel-os-admin.service` — Active (running).
-- [ ] **M10.D.11** — Open `https://mcp-admin.alfredopretelvargas.com` in browser. Verify Cloudflare Access challenge appears.
-- [ ] **M10.D.12** — Login via PIN flow with operator email. Verify dashboard loads.
-- [ ] **M10.D.13** — Walk all 5 views + 6 drill-downs against production data. Each must render without error.
-- [ ] **M10.D.14** — Verify SC1 (no traffic reaches FastAPI without auth): test by curling the Tunnel hostname without an Access cookie — should get the Access HTML challenge, not the app.
-- [ ] **M10.D.15** — Verify SC2 (page load < 2s) via browser devtools.
-- [ ] **M10.D.16** — Verify SC4 (no SQL DML in admin code): `grep -rEn "INSERT|UPDATE|DELETE" src/mcp_admin/ | grep -v "^\s*#" | grep -v "test_"` → 0 lines.
-- [ ] **M10.D.17** — Verify SC7 (visual coherence): side-by-side screenshot vs `alfredopretelvargas.com`.
-- [ ] **M10.D.18** — Phase D close: `specs/mcp_admin/phase_d_close.md` with deployment timeline + SC1-7 verification.
-- [ ] **M10.D.19** — Commit Phase D: `[M10.D] mcp_admin: production deploy + Cloudflare Access (live)`.
+- [x] **M10.D.1** — Decide Q6 (single-email allowlist or backup admin email). Document in `phase_d_close.md`.
+- [x] **M10.D.2** — Cloudflare dashboard → DNS → add CNAME `mcp-admin` → Tunnel ID (or use existing Tunnel UI).
+- [x] **M10.D.3** — Cloudflare Tunnel: add public hostname `mcp-admin.alfredopretelvargas.com` → service `http://localhost:PORT`. Verify via cloudflared logs.
+- [x] **M10.D.4** — Cloudflare Zero Trust → Access → Applications → Add application → Self-hosted. Domain `mcp-admin.alfredopretelvargas.com`. Session duration 24h.
+- [x] **M10.D.5** — Add policy "operator-only" → Action: Allow → Include: Emails → `prettelv1@gmail.com` (+ backup per Q6).
+- [x] **M10.D.6** — Identity providers: confirm One-time PIN enabled. Optional: add Google.
+- [x] **M10.D.7** — Save application. Wait ~30s for propagation.
+- [x] **M10.D.8** — `cp infra/systemd/pretel-os-admin.service ~/.config/systemd/user/`.
+- [x] **M10.D.9** — `systemctl --user daemon-reload && systemctl --user enable --now pretel-os-admin.service`.
+- [x] **M10.D.10** — `systemctl --user status pretel-os-admin.service` — Active (running).
+- [x] **M10.D.11** — Open `https://mcp-admin.alfredopretelvargas.com` in browser. Verify Cloudflare Access challenge appears.
+- [x] **M10.D.12** — Login via PIN flow with operator email. Verify dashboard loads.
+- [x] **M10.D.13** — Walk all 5 views + 6 drill-downs against production data. Each must render without error.
+- [x] **M10.D.14** — Verify SC1 (no traffic reaches FastAPI without auth): test by curling the Tunnel hostname without an Access cookie — should get the Access HTML challenge, not the app.
+- [x] **M10.D.15** — Verify SC2 (page load < 2s) via browser devtools.
+- [x] **M10.D.16** — Verify SC4 (no SQL DML in admin code): `grep -rEn "INSERT|UPDATE|DELETE" src/mcp_admin/ | grep -v "^\s*#" | grep -v "test_"` → 0 lines.
+- [x] **M10.D.17** — Verify SC7 (visual coherence): side-by-side screenshot vs `alfredopretelvargas.com`.
+- [x] **M10.D.18** — Phase D close: `specs/mcp_admin/phase_d_close.md` with deployment timeline + SC1-7 verification.
+- [x] **M10.D.19** — Commit Phase D: `[M10.D] mcp_admin: production deploy + Cloudflare Access (live)`.
 
 ## Phase E — Observation + module exit
 
