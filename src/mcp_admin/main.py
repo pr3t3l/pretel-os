@@ -28,6 +28,14 @@ from fastapi.templating import Jinja2Templates
 
 from mcp_server import db as db_mod
 
+from .handlers.costs import attach_templates as costs_attach
+from .handlers.costs import router as costs_router
+from .handlers.dream_engine import attach_templates as dream_engine_attach
+from .handlers.dream_engine import router as dream_engine_router
+from .handlers.memory import attach_templates as memory_attach
+from .handlers.memory import router as memory_router
+from .handlers.pending import attach_templates as pending_attach
+from .handlers.pending import router as pending_router
 from .handlers.preferences import attach_templates as preferences_attach
 from .handlers.preferences import router as preferences_router
 from .middleware import AccessIdentityMiddleware
@@ -69,8 +77,22 @@ def build_app() -> FastAPI:
 
     templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-    preferences_attach(templates)
-    app.include_router(preferences_router)
+    for attach in (
+        preferences_attach,
+        memory_attach,
+        dream_engine_attach,
+        costs_attach,
+        pending_attach,
+    ):
+        attach(templates)
+    for r in (
+        preferences_router,
+        memory_router,
+        dream_engine_router,
+        costs_router,
+        pending_router,
+    ):
+        app.include_router(r)
 
     @app.get("/")
     async def root_redirect() -> dict[str, str]:

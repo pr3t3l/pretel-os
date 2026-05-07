@@ -25,7 +25,10 @@
       <div class="nav-title">Operación</div>
       <nav>
         <a href="/preferences" class="{% if active_view == 'preferences' %}active{% endif %}"><span class="dot"></span> Operator preferences</a>
-        {# Phase B will add: Memoria, Dream Engine, Costs, Pending #}
+        <a href="/memory"      class="{% if active_view == 'memory'      %}active{% endif %}"><span class="dot"></span> Memory browser</a>
+        <a href="/dream-engine" class="{% if active_view == 'dream_engine' %}active{% endif %}"><span class="dot"></span> Dream Engine</a>
+        <a href="/costs"       class="{% if active_view == 'costs'       %}active{% endif %}"><span class="dot"></span> Costs</a>
+        <a href="/pending"     class="{% if active_view == 'pending'     %}active{% endif %}"><span class="dot"></span> Pending review</a>
       </nav>
     </aside>
 

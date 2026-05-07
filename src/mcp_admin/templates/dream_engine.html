@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Dream Engine — pretel-os admin{% endblock %}
+{% block heading %}Dream Engine — últimas 14 noches{% endblock %}
+{% block subtitle %}{{ summary.total }} runs · {{ summary.success }} success · {{ summary.partial }} partial · {{ summary.failed }} failed · {{ summary.running }} running.{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-head">
+    <div>
+      <h3>Trigger manual</h3>
+      <p>Lanza el systemd service ahora mismo. La run registra su propio row en <code>dream_engine_runs</code>.</p>
+    </div>
+    <form method="post" action="/dream-engine/run" onsubmit="return confirm('¿Lanzar Dream Engine ahora? La run aparecerá en la tabla en pocos segundos.');">
+      <button class="btn primary" type="submit">Run now</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head">
+    <div>
+      <h3>Run history</h3>
+      <p>SC1 evidence: telemetry rows con status / jobs_run / failures por noche.</p>
+    </div>
+    <span class="tag">cron 02:00 ET</span>
+  </div>
+
+  {% if runs %}
+    <table>
+      <thead>
+        <tr>
+          <th>Started</th>
+          <th>Wall</th>
+          <th>Status</th>
+          <th>utility_recompute</th>
+          <th>dedup_pass</th>
+          <th>archive_low_utility</th>
+          <th>PID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in runs %}
+          <tr>
+            <td class="mono" style="font-size: 11px;">{{ r.started_at[:19] }}</td>
+            <td>{% if r.duration_ms is not none %}{{ r.duration_ms }} ms{% else %}—{% endif %}</td>
+            <td>
+              {% if r.status == "success" %}<span class="pill green">success</span>
+              {% elif r.status == "partial" %}<span class="pill amber">partial</span>
+              {% elif r.status == "failed" %}<span class="pill red">failed</span>
+              {% else %}<span class="pill">{{ r.status }}</span>{% endif %}
+            </td>
+            {% for job in ["utility_recompute", "dedup_pass", "archive_low_utility"] %}
+              <td>
+                {% set j = r.jobs_run.get(job) %}
+                {% if j %}
+                  {% if j.error %}<span class="pill red">{{ j.error_class or "err" }}</span>
+                  {% else %}<span class="mono" style="font-size: 11px;">{{ j.rows_affected }} rows · {{ j.duration_ms }} ms</span>
+                  {% endif %}
+                {% else %}<span style="color: hsl(var(--muted-foreground));">—</span>{% endif %}
+              </td>
+            {% endfor %}
+            <td class="mono" style="font-size: 11px;">{{ r.worker_pid or "—" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">No runs en las últimas 14 noches. Si el timer está armado, esperar al próximo 02:00 ET o usar "Run now".</p>
+  {% endif %}
+</div>
+{% endblock %}

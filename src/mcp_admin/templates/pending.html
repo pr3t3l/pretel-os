@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Pending review — pretel-os admin{% endblock %}
+{% block heading %}Pending review{% endblock %}
+{% block subtitle %}{{ lesson_count }} lessons en pending_review · {{ xpoll_count }} cross-pollination proposals. Mutations enrutan vía MCP tools (approve_lesson / reject_lesson / resolve_cross_pollination).{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-head"><div><h3>Lessons — pending_review</h3><p>Aprobación de auto-approval falló alguna condición §5.2 rule 13. Revisa y aprueba o rechaza.</p></div><span class="tag">{{ lesson_count }}</span></div>
+
+  {% if pending_lessons %}
+    <table>
+      <thead>
+        <tr><th>Title</th><th>Bucket</th><th>Tags</th><th>next_time</th><th>Created</th><th style="width: 220px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for l in pending_lessons %}
+          <tr>
+            <td>
+              <div>{{ l.title }}</div>
+              <div style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 2px;">{{ l.content[:140] }}{% if l.content|length > 140 %}...{% endif %}</div>
+            </td>
+            <td><span class="pill">{{ l.bucket }}</span></td>
+            <td style="font-size: 11px;">{{ l.tags|join(', ') }}</td>
+            <td style="font-size: 12px;">{% if l.next_time %}{{ l.next_time[:80] }}{% if l.next_time|length > 80 %}...{% endif %}{% else %}<span class="pill red">missing</span>{% endif %}</td>
+            <td style="font-size: 11px;">{{ l.created_at[:10] }}</td>
+            <td>
+              <form method="post" action="/pending/lessons/{{ l.id }}/approve" style="display: inline-block; margin-right: 4px;">
+                <button class="btn primary" type="submit">Approve</button>
+              </form>
+              <form method="post" action="/pending/lessons/{{ l.id }}/reject" style="display: inline-block;" onsubmit="this.reason.value = prompt('Razón del reject (opcional):') || 'rejected via admin console'; return true;">
+                <input type="hidden" name="reason" />
+                <button class="btn danger" type="submit">Reject</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">No pending lessons. Lo bueno: las que se han guardado pasaron auto-approval (CONSTITUTION §5.2 rule 13).</p>
+  {% endif %}
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>Cross-pollination queue — pending</h3><p>Propuestas de merge / cross-bucket. Approve commits, reject discards.</p></div><span class="tag">{{ xpoll_count }}</span></div>
+
+  {% if pending_xpoll %}
+    <table>
+      <thead>
+        <tr><th>Origin</th><th>Target</th><th>Idea</th><th>Confidence</th><th>By</th><th style="width: 220px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for x in pending_xpoll %}
+          <tr>
+            <td><span class="pill">{{ x.origin_bucket }}</span></td>
+            <td><span class="pill purple">{{ x.target_bucket }}</span></td>
+            <td>
+              <div>{{ x.idea[:120] }}{% if x.idea|length > 120 %}...{% endif %}</div>
+              <div style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 2px;">{{ x.reasoning[:140] }}{% if x.reasoning|length > 140 %}...{% endif %}</div>
+            </td>
+            <td>{% if x.confidence_score is not none %}{{ "%.2f"|format(x.confidence_score) }}{% else %}—{% endif %}</td>
+            <td style="font-size: 11px;"><span class="pill">{{ x.proposed_by }}</span></td>
+            <td>
+              <form method="post" action="/pending/cross-poll/{{ x.id }}/approve" style="display: inline-block; margin-right: 4px;">
+                <button class="btn primary" type="submit">Approve</button>
+              </form>
+              <form method="post" action="/pending/cross-poll/{{ x.id }}/reject" style="display: inline-block;" onsubmit="this.note.value = prompt('Nota (opcional):') || ''; return true;">
+                <input type="hidden" name="note" />
+                <button class="btn danger" type="submit">Reject</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">Queue vacía. Dream Engine dedup pass produce 0 proposals al threshold actual (≥0.95 cosine sim).</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Costs — pretel-os admin{% endblock %}
+{% block heading %}Costs dashboard{% endblock %}
+{% block subtitle %}Últimos 30 días desde <code>v_daily_cost_by_purpose</code>. Total ${{ "%.4f"|format(total_cost) }} · {{ total_calls }} llamadas. Charts vienen en fase 2.{% endblock %}
+
+{% block content %}
+<div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+  <div class="panel">
+    <div class="panel-head"><div><h3>Por propósito</h3><p>Suma 30 días.</p></div></div>
+    <table>
+      <thead><tr><th>Purpose</th><th style="text-align: right;">Cost USD</th></tr></thead>
+      <tbody>
+        {% for purpose, cost in by_purpose %}
+          <tr>
+            <td><span class="pill purple">{{ purpose }}</span></td>
+            <td class="mono" style="text-align: right;">${{ "%.6f"|format(cost) }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="2" style="color: hsl(var(--muted-foreground));">Sin costos en últimos 30 días.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div><h3>Por día</h3><p>Suma de todos los purposes y modelos.</p></div></div>
+    <table>
+      <thead><tr><th>Day</th><th style="text-align: right;">Cost USD</th></tr></thead>
+      <tbody>
+        {% for day, cost in by_day[:14] %}
+          <tr>
+            <td class="mono" style="font-size: 12px;">{{ day }}</td>
+            <td class="mono" style="text-align: right;">${{ "%.6f"|format(cost) }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="2" style="color: hsl(var(--muted-foreground));">Sin costos.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>Detalle (purpose × model × day)</h3><p>Cada llamada agregada por la view.</p></div></div>
+
+  {% if rows %}
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th><th>Purpose</th><th>Model</th>
+          <th style="text-align: right;">Cost USD</th>
+          <th style="text-align: right;">In tokens</th>
+          <th style="text-align: right;">Out tokens</th>
+          <th style="text-align: right;">Calls</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+          <tr>
+            <td class="mono" style="font-size: 12px;">{{ r.day }}</td>
+            <td><span class="pill">{{ r.purpose }}</span></td>
+            <td class="mono" style="font-size: 11px;">{{ r.model }}</td>
+            <td class="mono" style="text-align: right;">${{ "%.6f"|format(r.cost_usd) }}</td>
+            <td class="mono" style="text-align: right;">{{ "{:,}".format(r.input_tokens) }}</td>
+            <td class="mono" style="text-align: right;">{{ "{:,}".format(r.output_tokens) }}</td>
+            <td class="mono" style="text-align: right;">{{ r.call_count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">Sin llamadas LLM en los últimos 30 días.</p>
+  {% endif %}
+</div>
+{% endblock %}

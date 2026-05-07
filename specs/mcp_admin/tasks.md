@@ -32,27 +32,27 @@
 
 ## Phase B — Remaining 4 MVP views
 
-- [ ] **M10.B.1** — Decide Q3 (pagination strategy). Document in `phase_b_close.md`.
-- [ ] **M10.B.2** — Decide Q4 (confirmation modal vs one-click + undo). Document in `phase_b_close.md`.
-- [ ] **M10.B.3** — Decide Q5 (charts vs numeric tables for costs view in V1). Document in `phase_b_close.md`.
-- [ ] **M10.B.4** — Write `src/mcp_admin/handlers/memory.py` — `GET /memory` with tabs (Lessons | Decisions | Best Practices), filters (bucket, tag, status), search box.
-- [ ] **M10.B.5** — Write `src/mcp_admin/templates/memory.html`.
-- [ ] **M10.B.6** — Hook semantic search to `mcp_server.tools.lessons.search_lessons` / `decision_search` / `best_practice_search`.
-- [ ] **M10.B.7** — Write `src/mcp_admin/handlers/dream_engine.py` — `GET /dream-engine` lists last 14 runs from `dream_engine_runs`. Sort by started_at DESC.
-- [ ] **M10.B.8** — Write `src/mcp_admin/templates/dream_engine.html`.
-- [ ] **M10.B.9** — Add "Trigger manual run" button → POST `/dream-engine/run` → `subprocess.run(['systemctl', '--user', 'start', 'pretel-os-dream-engine.service'])`.
-- [ ] **M10.B.10** — Write `src/mcp_admin/handlers/costs.py` — `GET /costs` reads `v_daily_cost_by_purpose` for last 30 days.
-- [ ] **M10.B.11** — Write `src/mcp_admin/templates/costs.html` (numeric table V1 per Q5).
-- [ ] **M10.B.12** — Write `src/mcp_admin/handlers/pending.py` — `GET /pending` lists `lessons WHERE status='pending_review'` + `cross_pollination_queue WHERE status='pending'`.
-- [ ] **M10.B.13** — Write `src/mcp_admin/templates/pending.html` with approve / reject buttons per row.
-- [ ] **M10.B.14** — Wire approve/reject to `mcp_server.tools.review_tools.approve_lesson` / `reject_lesson` / `resolve_cross_pollination`.
-- [ ] **M10.B.15** — Add nav entries to base.html for the 4 new views.
-- [ ] **M10.B.16** — Write unit tests for the 4 handlers (4 modules × ~3 tests = 12 tests).
-- [ ] **M10.B.17** — Write integration tests `tests/mcp_admin/test_e2e_phase_b.py` (@pytest.mark.slow) — 1 test per view.
-- [ ] **M10.B.18** — Run full test suite — green. mypy clean.
-- [ ] **M10.B.19** — Manual smoke walk through 5 views (preferences + 4 new).
-- [ ] **M10.B.20** — Phase B close: `specs/mcp_admin/phase_b_close.md` answering Q3/Q4/Q5.
-- [ ] **M10.B.21** — Commit Phase B: `[M10.B] mcp_admin: 4 MVP views (memory, dream-engine, costs, pending)`.
+- [x] **M10.B.1** — Decide Q3 (pagination strategy). Document in `phase_b_close.md`.
+- [x] **M10.B.2** — Decide Q4 (confirmation modal vs one-click + undo). Document in `phase_b_close.md`.
+- [x] **M10.B.3** — Decide Q5 (charts vs numeric tables for costs view in V1). Document in `phase_b_close.md`.
+- [x] **M10.B.4** — Write `src/mcp_admin/handlers/memory.py` — `GET /memory` with tabs (Lessons | Decisions | Best Practices), filters (bucket, tag, status), search box.
+- [x] **M10.B.5** — Write `src/mcp_admin/templates/memory.html`.
+- [x] **M10.B.6** — Hook semantic search to `mcp_server.tools.lessons.search_lessons` / `decision_search` / `best_practice_search`.
+- [x] **M10.B.7** — Write `src/mcp_admin/handlers/dream_engine.py` — `GET /dream-engine` lists last 14 runs from `dream_engine_runs`. Sort by started_at DESC.
+- [x] **M10.B.8** — Write `src/mcp_admin/templates/dream_engine.html`.
+- [x] **M10.B.9** — Add "Trigger manual run" button → POST `/dream-engine/run` → `subprocess.run(['systemctl', '--user', 'start', 'pretel-os-dream-engine.service'])`.
+- [x] **M10.B.10** — Write `src/mcp_admin/handlers/costs.py` — `GET /costs` reads `v_daily_cost_by_purpose` for last 30 days.
+- [x] **M10.B.11** — Write `src/mcp_admin/templates/costs.html` (numeric table V1 per Q5).
+- [x] **M10.B.12** — Write `src/mcp_admin/handlers/pending.py` — `GET /pending` lists `lessons WHERE status='pending_review'` + `cross_pollination_queue WHERE status='pending'`.
+- [x] **M10.B.13** — Write `src/mcp_admin/templates/pending.html` with approve / reject buttons per row.
+- [x] **M10.B.14** — Wire approve/reject to `mcp_server.tools.review_tools.approve_lesson` / `reject_lesson` / `resolve_cross_pollination`.
+- [x] **M10.B.15** — Add nav entries to base.html for the 4 new views.
+- [x] **M10.B.16** — Write unit tests for the 4 handlers (4 modules × ~3 tests = 12 tests).
+- [x] **M10.B.17** — Write integration tests `tests/mcp_admin/test_e2e_phase_b.py` (@pytest.mark.slow) — 1 test per view.
+- [x] **M10.B.18** — Run full test suite — green. mypy clean.
+- [x] **M10.B.19** — Manual smoke walk through 5 views (preferences + 4 new).
+- [x] **M10.B.20** — Phase B close: `specs/mcp_admin/phase_b_close.md` answering Q3/Q4/Q5.
+- [x] **M10.B.21** — Commit Phase B: `[M10.B] mcp_admin: 4 MVP views (memory, dream-engine, costs, pending)`.
 
 ## Phase C — Drill-downs
 

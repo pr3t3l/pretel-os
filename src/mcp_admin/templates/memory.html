@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Memory — pretel-os admin{% endblock %}
+{% block heading %}Memory browser{% endblock %}
+{% block subtitle %}{{ total }} {{ tab }} en total. Tabs · filtros · paginación. Drill-down a card completa en Phase C.{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <form method="get" action="/memory" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 14px;">
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Tab</div>
+      <select name="tab">
+        {% for t in tabs %}
+          <option value="{{ t }}" {% if t == tab %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Bucket</div>
+      <input type="text" name="bucket" value="{{ bucket }}" placeholder="personal / business / scout" />
+    </div>
+    {% if tab == "lessons" %}
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Tag</div>
+      <input type="text" name="tag" value="{{ tag }}" placeholder="ai-engineering" />
+    </div>
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Status</div>
+      <input type="text" name="status" value="{{ status_filter }}" placeholder="active / pending_review / archived" />
+    </div>
+    {% endif %}
+    <div style="flex: 1; min-width: 200px;">
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search (ILIKE en title + content)</div>
+      <input type="search" name="q" value="{{ q }}" placeholder="palabra clave..." style="width: 100%;" />
+    </div>
+    <button type="submit" class="btn primary">Filtrar</button>
+  </form>
+
+  {% if rows %}
+    <table>
+      <thead>
+        <tr>
+          {% if tab == "lessons" %}
+            <th>Title</th><th>Bucket</th><th>Status</th><th>Tags</th><th>Uses</th><th>Utility</th><th>Created</th>
+          {% elif tab == "decisions" %}
+            <th>Title</th><th>Bucket</th><th>Project</th><th>Sev</th><th>Scope</th><th>ADR</th><th>Created</th>
+          {% else %}
+            <th>Title</th><th>Domain</th><th>Scope</th><th>Active</th><th>Created</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+          <tr>
+            {% if tab == "lessons" %}
+              <td>{{ r.title }}</td>
+              <td><span class="pill">{{ r.bucket }}</span></td>
+              <td>
+                {% if r.status == "active" %}<span class="pill green">{{ r.status }}</span>
+                {% elif r.status == "pending_review" %}<span class="pill amber">{{ r.status }}</span>
+                {% elif r.status == "archived" %}<span class="pill">{{ r.status }}</span>
+                {% else %}<span class="pill">{{ r.status }}</span>{% endif %}
+              </td>
+              <td style="font-size: 11px; color: hsl(var(--muted-foreground));">{{ r.tags }}</td>
+              <td>{{ r.usage_count }}</td>
+              <td>{{ "%.2f"|format(r.utility_score) }}</td>
+              <td style="font-size: 11px;">{{ r.created_at[:10] }}</td>
+            {% elif tab == "decisions" %}
+              <td>{{ r.title }}</td>
+              <td><span class="pill">{{ r.bucket }}</span></td>
+              <td>{{ r.project }}</td>
+              <td>{% if r.severity == "critical" %}<span class="pill red">{{ r.severity }}</span>{% else %}<span class="pill">{{ r.severity }}</span>{% endif %}</td>
+              <td><span class="pill purple">{{ r.scope }}</span></td>
+              <td>{% if r.adr_number %}ADR-{{ r.adr_number }}{% else %}—{% endif %}</td>
+              <td style="font-size: 11px;">{{ r.created_at[:10] }}</td>
+            {% else %}
+              <td>{{ r.title }}</td>
+              <td><span class="pill purple">{{ r.domain }}</span></td>
+              <td>{{ r.scope }}</td>
+              <td>{% if r.active %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td>
+              <td style="font-size: 11px;">{{ r.created_at[:10] }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px; color: hsl(var(--muted-foreground));">
+      <div>
+        Showing {{ offset + 1 }}–{{ offset + rows|length }} of {{ total }}
+      </div>
+      <div style="display: flex; gap: 8px;">
+        {% if prev_offset is not none %}
+          <a class="btn" href="?tab={{ tab }}&bucket={{ bucket }}&tag={{ tag }}&status={{ status_filter }}&q={{ q }}&offset={{ prev_offset }}&limit={{ limit }}">‹ Prev</a>
+        {% endif %}
+        {% if next_offset is not none %}
+          <a class="btn" href="?tab={{ tab }}&bucket={{ bucket }}&tag={{ tag }}&status={{ status_filter }}&q={{ q }}&offset={{ next_offset }}&limit={{ limit }}">Next ›</a>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">Sin resultados con los filtros actuales.</p>
+  {% endif %}
+</div>
+{% endblock %}
