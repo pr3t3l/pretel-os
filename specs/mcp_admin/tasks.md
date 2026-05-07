@@ -56,26 +56,26 @@
 
 ## Phase C — Drill-downs
 
-- [ ] **M10.C.1** — Decide Q2 (markdown library — markdown-it-py vs mistune vs python-markdown). Document in `phase_c_close.md`. Default candidate: `markdown-it-py` (GFM support, code highlighting via `mdit-py-plugins`).
-- [ ] **M10.C.2** — `pip install` the chosen library; commit dependency.
-- [ ] **M10.C.3** — Write `src/mcp_admin/handlers/db_browser.py` — `GET /db/{table}/{id}` shows full row pretty-printed; foreign keys are clickable links.
-- [ ] **M10.C.4** — Template `db_row.html`.
-- [ ] **M10.C.5** — Write `src/mcp_admin/handlers/skills_detail.py` — `GET /skills/{name}` calls `mcp_server.tools.catalog.load_skill`, renders markdown to HTML, sidebar shows metadata.
-- [ ] **M10.C.6** — Template `skill_detail.html`.
-- [ ] **M10.C.7** — Write `src/mcp_admin/handlers/projects_detail.py` — `GET /projects/{bucket}/{slug}` calls `get_project`, reads README, renders markdown, lists project_state KV + recent decisions/tasks.
-- [ ] **M10.C.8** — Template `project_detail.html`.
-- [ ] **M10.C.9** — Write `src/mcp_admin/handlers/dream_run_detail.py` — `GET /dream-engine/{run_id}` shows jobs_run + failures pretty-printed JSONB; embeds `journalctl` excerpt for that time window.
-- [ ] **M10.C.10** — Template `dream_run_detail.html`.
-- [ ] **M10.C.11** — Hook inline preference edit (HTMX swap) on `/preferences` — POST returns the row HTML, HTMX swaps in place.
-- [ ] **M10.C.12** — Write `src/mcp_admin/handlers/lesson_detail.py` — `GET /memory/lessons/{id}` shows full lesson card; approve/reject/archive actions wire to MCP tools.
-- [ ] **M10.C.13** — Template `lesson_detail.html`.
-- [ ] **M10.C.14** — Add clickable links from list views to drill-down pages (memory list → lesson detail; dream-engine list → run detail; tools_catalog list → skill detail; projects list → project detail).
-- [ ] **M10.C.15** — Unit tests for the 6 drill-down handlers.
-- [ ] **M10.C.16** — Integration tests `tests/mcp_admin/test_e2e_phase_c.py` (@pytest.mark.slow) — 1 per drill-down with a fixture row.
-- [ ] **M10.C.17** — Run full test suite — green. mypy clean.
-- [ ] **M10.C.18** — Manual walk: every drill-down reachable from its parent view, no 5xx.
-- [ ] **M10.C.19** — Phase C close: `specs/mcp_admin/phase_c_close.md`.
-- [ ] **M10.C.20** — Commit Phase C: `[M10.C] mcp_admin: 6 drill-down detail views`.
+- [x] **M10.C.1** — Decide Q2 (markdown library — markdown-it-py vs mistune vs python-markdown). Document in `phase_c_close.md`. Default candidate: `markdown-it-py` (GFM support, code highlighting via `mdit-py-plugins`).
+- [x] **M10.C.2** — `pip install` the chosen library; commit dependency.
+- [x] **M10.C.3** — Write `src/mcp_admin/handlers/db_browser.py` — `GET /db/{table}/{id}` shows full row pretty-printed; foreign keys are clickable links.
+- [x] **M10.C.4** — Template `db_row.html`.
+- [x] **M10.C.5** — Write `src/mcp_admin/handlers/skills_detail.py` — `GET /skills/{name}` calls `mcp_server.tools.catalog.load_skill`, renders markdown to HTML, sidebar shows metadata.
+- [x] **M10.C.6** — Template `skill_detail.html`.
+- [x] **M10.C.7** — Write `src/mcp_admin/handlers/projects_detail.py` — `GET /projects/{bucket}/{slug}` calls `get_project`, reads README, renders markdown, lists project_state KV + recent decisions/tasks.
+- [x] **M10.C.8** — Template `project_detail.html`.
+- [x] **M10.C.9** — Write `src/mcp_admin/handlers/dream_run_detail.py` — `GET /dream-engine/{run_id}` shows jobs_run + failures pretty-printed JSONB; embeds `journalctl` excerpt for that time window.
+- [x] **M10.C.10** — Template `dream_run_detail.html`.
+- [x] **M10.C.11** — Hook inline preference edit (HTMX swap) on `/preferences` — POST returns the row HTML, HTMX swaps in place.
+- [x] **M10.C.12** — Write `src/mcp_admin/handlers/lesson_detail.py` — `GET /memory/lessons/{id}` shows full lesson card; approve/reject/archive actions wire to MCP tools.
+- [x] **M10.C.13** — Template `lesson_detail.html`.
+- [x] **M10.C.14** — Add clickable links from list views to drill-down pages (memory list → lesson detail; dream-engine list → run detail; tools_catalog list → skill detail; projects list → project detail).
+- [x] **M10.C.15** — Unit tests for the 6 drill-down handlers.
+- [x] **M10.C.16** — Integration tests `tests/mcp_admin/test_e2e_phase_c.py` (@pytest.mark.slow) — 1 per drill-down with a fixture row.
+- [x] **M10.C.17** — Run full test suite — green. mypy clean.
+- [x] **M10.C.18** — Manual walk: every drill-down reachable from its parent view, no 5xx.
+- [x] **M10.C.19** — Phase C close: `specs/mcp_admin/phase_c_close.md`.
+- [x] **M10.C.20** — Commit Phase C: `[M10.C] mcp_admin: 6 drill-down detail views`.
 
 ## Phase D — Production deploy + Cloudflare Access
 
@@ -132,3 +132,6 @@
 ---
 
 **For atomic completion tracking:** check the box and commit per the SDD convention "one task = one commit, prefix `[M10.X.Y]`." The phase-close commits (`M10.A.21`, `M10.B.21`, `M10.C.20`, `M10.D.19`, `M10.E.9`) collect the phase-close documents.
+- [ ] **M10.fu9** — HTMX inline preference edit (no page reload). Plan §M10.C.11 deferred.
+- [ ] **M10.fu10** — Embedded journalctl excerpt in dream_run_detail. Plan §M10.C.9 deferred.
+- [ ] **M10.fu11** — `archive_lesson` MCP tool + lesson detail archive button.

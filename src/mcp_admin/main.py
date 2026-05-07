@@ -30,14 +30,24 @@ from mcp_server import db as db_mod
 
 from .handlers.costs import attach_templates as costs_attach
 from .handlers.costs import router as costs_router
+from .handlers.db_browser import attach_templates as db_browser_attach
+from .handlers.db_browser import router as db_browser_router
 from .handlers.dream_engine import attach_templates as dream_engine_attach
 from .handlers.dream_engine import router as dream_engine_router
+from .handlers.dream_run_detail import attach_templates as dream_run_detail_attach
+from .handlers.dream_run_detail import router as dream_run_detail_router
+from .handlers.lesson_detail import attach_templates as lesson_detail_attach
+from .handlers.lesson_detail import router as lesson_detail_router
 from .handlers.memory import attach_templates as memory_attach
 from .handlers.memory import router as memory_router
 from .handlers.pending import attach_templates as pending_attach
 from .handlers.pending import router as pending_router
 from .handlers.preferences import attach_templates as preferences_attach
 from .handlers.preferences import router as preferences_router
+from .handlers.projects_detail import attach_templates as projects_detail_attach
+from .handlers.projects_detail import router as projects_detail_router
+from .handlers.skills_detail import attach_templates as skills_detail_attach
+from .handlers.skills_detail import router as skills_detail_router
 from .middleware import AccessIdentityMiddleware
 
 log = logging.getLogger(__name__)
@@ -83,6 +93,12 @@ def build_app() -> FastAPI:
         dream_engine_attach,
         costs_attach,
         pending_attach,
+        # Phase C drill-downs
+        db_browser_attach,
+        skills_detail_attach,
+        projects_detail_attach,
+        dream_run_detail_attach,
+        lesson_detail_attach,
     ):
         attach(templates)
     for r in (
@@ -91,6 +107,12 @@ def build_app() -> FastAPI:
         dream_engine_router,
         costs_router,
         pending_router,
+        # Phase C drill-downs
+        db_browser_router,
+        skills_detail_router,
+        projects_detail_router,
+        dream_run_detail_router,
+        lesson_detail_router,
     ):
         app.include_router(r)
 

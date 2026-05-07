@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ table }}/{{ row_id[:12] }} — pretel-os admin{% endblock %}
+{% block heading %}{{ table }} <span style="color: hsl(var(--muted-foreground));">·</span> <span class="mono" style="font-size: 14px;">{{ row_id }}</span>{% endblock %}
+{% block subtitle %}Read-only row inspection. Mutations route through MCP tools, not this view.{% endblock %}
+
+{% block content %}
+{% if row %}
+  <div class="panel">
+    <table>
+      <thead><tr><th style="width: 26%">Column</th><th style="width: 20%">Type</th><th>Value</th></tr></thead>
+      <tbody>
+        {% for c in columns %}
+          <tr>
+            <td class="mono" style="font-size: 12px;">{{ c.name }}</td>
+            <td><span class="pill">{{ c.type }}</span></td>
+            <td><pre class="mono" style="white-space: pre-wrap; margin: 0; font-size: 12px; max-height: 280px; overflow-y: auto;">{{ row[c.name] }}</pre></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="panel">
+    <p>Row not found in <code>{{ table }}</code> with id <code>{{ row_id }}</code>.</p>
+  </div>
+{% endif %}
+{% endblock %}

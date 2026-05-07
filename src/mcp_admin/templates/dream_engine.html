@@ -42,7 +42,7 @@
       <tbody>
         {% for r in runs %}
           <tr>
-            <td class="mono" style="font-size: 11px;">{{ r.started_at[:19] }}</td>
+            <td class="mono" style="font-size: 11px;"><a href="/dream-engine/run/{{ r.id }}">{{ r.started_at[:19] }}</a></td>
             <td>{% if r.duration_ms is not none %}{{ r.duration_ms }} ms{% else %}—{% endif %}</td>
             <td>
               {% if r.status == "success" %}<span class="pill green">success</span>

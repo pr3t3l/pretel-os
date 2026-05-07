@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}lesson: {{ lesson.title[:60] }} — pretel-os admin{% endblock %}
+{% block heading %}{{ lesson.title }}{% endblock %}
+{% block subtitle %}{{ lesson.bucket }}{% if lesson.project %} · {{ lesson.project }}{% endif %} · {{ lesson.category }}{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 320px; gap: 16px;">
+  <div>
+    <div class="panel">
+      <div class="panel-head"><div><h3>Content</h3></div></div>
+      <p style="white-space: pre-wrap; line-height: 1.65; font-size: 14px;">{{ lesson.content }}</p>
+    </div>
+
+    {% if lesson.next_time %}
+      <div class="panel" style="margin-top: 16px;">
+        <div class="panel-head"><div><h3>next_time</h3><p>Imperative clause that gates §5.2 rule 13 auto-approval.</p></div></div>
+        <p style="white-space: pre-wrap; line-height: 1.65; font-size: 14px; color: hsl(var(--primary));">{{ lesson.next_time }}</p>
+      </div>
+    {% else %}
+      <div class="panel" style="margin-top: 16px;">
+        <div class="panel-head"><div><h3>next_time</h3></div><span class="pill red">missing</span></div>
+        <p style="color: hsl(var(--muted-foreground)); font-size: 13px;">No next_time clause. Lesson cannot auto-approve under CONSTITUTION §5.2 rule 13.</p>
+      </div>
+    {% endif %}
+
+    {% if lesson.status == "pending_review" %}
+      <div class="panel" style="margin-top: 16px;">
+        <div class="panel-head"><div><h3>Review actions</h3><p>Routes through approve_lesson / reject_lesson MCP tools.</p></div></div>
+        <div style="display: flex; gap: 10px;">
+          <form method="post" action="/memory/lessons/{{ lesson.id }}/approve">
+            <button class="btn primary" type="submit">Approve</button>
+          </form>
+          <form method="post" action="/memory/lessons/{{ lesson.id }}/reject" onsubmit="this.reason.value = prompt('Razón del reject (opcional):') || 'rejected via admin console'; return true;">
+            <input type="hidden" name="reason" />
+            <button class="btn danger" type="submit">Reject</button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <aside class="panel">
+    <div class="panel-head"><div><h3>Metadata</h3></div></div>
+    <table>
+      <tbody>
+        <tr><td>id</td><td class="mono" style="font-size: 11px;">{{ lesson.id }}</td></tr>
+        <tr><td>status</td><td>
+          {% if lesson.status == "active" %}<span class="pill green">{{ lesson.status }}</span>
+          {% elif lesson.status == "pending_review" %}<span class="pill amber">{{ lesson.status }}</span>
+          {% else %}<span class="pill">{{ lesson.status }}</span>{% endif %}
+        </td></tr>
+        <tr><td>bucket</td><td><span class="pill">{{ lesson.bucket }}</span></td></tr>
+        <tr><td>category</td><td><span class="pill purple">{{ lesson.category }}</span></td></tr>
+        <tr><td>source</td><td style="font-size: 12px;">{{ lesson.source or "—" }}</td></tr>
+        <tr><td>usage_count</td><td>{{ lesson.usage_count }}</td></tr>
+        <tr><td>utility_score</td><td>{{ "%.3f"|format(lesson.utility_score) }}</td></tr>
+        <tr><td>last_used_at</td><td class="mono" style="font-size: 11px;">{{ lesson.last_used_at or "—" }}</td></tr>
+        <tr><td>created_at</td><td class="mono" style="font-size: 11px;">{{ lesson.created_at[:19] }}</td></tr>
+        <tr><td>updated_at</td><td class="mono" style="font-size: 11px;">{{ lesson.updated_at[:19] }}</td></tr>
+        <tr><td>reviewed_at</td><td class="mono" style="font-size: 11px;">{{ lesson.reviewed_at[:19] if lesson.reviewed_at else "—" }}</td></tr>
+        <tr><td>has_embedding</td><td>{% if lesson.has_embedding %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td></tr>
+      </tbody>
+    </table>
+    {% if lesson.tags %}
+      <div style="margin-top: 12px;">
+        <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Tags</div>
+        {% for t in lesson.tags %}<span class="pill" style="margin: 0 2px 2px 0; font-size: 10px;">{{ t }}</span>{% endfor %}
+      </div>
+    {% endif %}
+    {% if lesson.applicable_buckets %}
+      <div style="margin-top: 12px;">
+        <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Applicable buckets</div>
+        {% for b in lesson.applicable_buckets %}<span class="pill purple" style="margin-right: 4px;">{{ b }}</span>{% endfor %}
+      </div>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

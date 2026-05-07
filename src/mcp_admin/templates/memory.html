@@ -53,7 +53,7 @@
         {% for r in rows %}
           <tr>
             {% if tab == "lessons" %}
-              <td>{{ r.title }}</td>
+              <td><a href="/memory/lessons/{{ r.id }}">{{ r.title }}</a></td>
               <td><span class="pill">{{ r.bucket }}</span></td>
               <td>
                 {% if r.status == "active" %}<span class="pill green">{{ r.status }}</span>
@@ -66,7 +66,7 @@
               <td>{{ "%.2f"|format(r.utility_score) }}</td>
               <td style="font-size: 11px;">{{ r.created_at[:10] }}</td>
             {% elif tab == "decisions" %}
-              <td>{{ r.title }}</td>
+              <td><a href="/db/decisions/{{ r.id }}">{{ r.title }}</a></td>
               <td><span class="pill">{{ r.bucket }}</span></td>
               <td>{{ r.project }}</td>
               <td>{% if r.severity == "critical" %}<span class="pill red">{{ r.severity }}</span>{% else %}<span class="pill">{{ r.severity }}</span>{% endif %}</td>
@@ -74,7 +74,7 @@
               <td>{% if r.adr_number %}ADR-{{ r.adr_number }}{% else %}—{% endif %}</td>
               <td style="font-size: 11px;">{{ r.created_at[:10] }}</td>
             {% else %}
-              <td>{{ r.title }}</td>
+              <td><a href="/db/best_practices/{{ r.id }}">{{ r.title }}</a></td>
               <td><span class="pill purple">{{ r.domain }}</span></td>
               <td>{{ r.scope }}</td>
               <td>{% if r.active %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td>

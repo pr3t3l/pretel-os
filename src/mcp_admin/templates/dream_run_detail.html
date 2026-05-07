@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Dream Engine run {{ run.id[:12] }} — pretel-os admin{% endblock %}
+{% block heading %}Dream Engine run <span class="mono" style="font-size: 14px; color: hsl(var(--muted-foreground));">{{ run.id }}</span>{% endblock %}
+{% block subtitle %}Started {{ run.started_at[:19] }} · {% if run.duration_ms %}{{ run.duration_ms }} ms{% else %}in progress{% endif %} · status {{ run.status }}{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-head">
+    <div><h3>Summary</h3></div>
+    <span class="tag {% if run.status == 'success' %}green{% elif run.status == 'failed' %}red{% endif %}">{{ run.status }}</span>
+  </div>
+  <table>
+    <tbody>
+      <tr><td>started_at</td><td class="mono" style="font-size: 12px;">{{ run.started_at }}</td></tr>
+      <tr><td>completed_at</td><td class="mono" style="font-size: 12px;">{{ run.completed_at or "—" }}</td></tr>
+      <tr><td>duration_ms</td><td>{{ run.duration_ms or "—" }}</td></tr>
+      <tr><td>worker_pid</td><td class="mono">{{ run.worker_pid or "—" }}</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>jobs_run</h3><p>Per-job duration + rows_affected JSONB.</p></div></div>
+  <pre class="mono" style="background: hsl(var(--bg-secondary)); padding: 14px; border-radius: 12px; overflow-x: auto; font-size: 12px;">{{ run.jobs_run_json }}</pre>
+</div>
+
+{% if run.failures %}
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>failures</h3><p>Errors per failed job (JSONB).</p></div><span class="tag" style="background: hsl(var(--destructive) / 0.2); color: hsl(var(--destructive));">{{ run.failures|length }}</span></div>
+  <pre class="mono" style="background: hsl(var(--destructive) / 0.05); padding: 14px; border-radius: 12px; overflow-x: auto; font-size: 12px;">{{ run.failures_json }}</pre>
+</div>
+{% endif %}
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>journalctl excerpt</h3><p>Fase 2 — capture from systemd journald around this run's time window.</p></div></div>
+  <p style="color: hsl(var(--muted-foreground)); font-size: 13px;">Manual: <code>journalctl --user -u pretel-os-dream-engine.service --since "{{ run.started_at[:19] }}" --until "{{ run.completed_at[:19] if run.completed_at else 'now' }}"</code></p>
+</div>
+{% endblock %}

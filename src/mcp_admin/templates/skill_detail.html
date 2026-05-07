@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}skill: {{ name }} — pretel-os admin{% endblock %}
+{% block heading %}skill: <span class="mono">{{ name }}</span>{% endblock %}
+{% block subtitle %}{{ metadata.description_short or "" }}{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 320px; gap: 16px;">
+  <div class="panel">
+    <div class="panel-head">
+      <div><h3>Skill content</h3><p>{{ skill_path }}</p></div>
+      <span class="tag">L3</span>
+    </div>
+    <div class="markdown-body">{{ rendered_html | safe }}</div>
+  </div>
+
+  <aside class="panel">
+    <div class="panel-head"><div><h3>Metadata</h3></div></div>
+    <table>
+      <tbody>
+        <tr><td>utility_score</td><td class="mono">{{ "%.3f"|format(metadata.utility_score) }}</td></tr>
+        <tr><td>usage_count</td><td class="mono">{{ metadata.usage_count }}</td></tr>
+        <tr><td>last_used_at</td><td class="mono" style="font-size: 11px;">{{ metadata.last_used_at or "—" }}</td></tr>
+        <tr><td>created_at</td><td class="mono" style="font-size: 11px;">{{ metadata.created_at[:10] if metadata.created_at else "—" }}</td></tr>
+        <tr><td>has_embedding</td><td>{% if metadata.has_embedding %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 12px;">
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Applicable buckets</div>
+      {% for b in metadata.applicable_buckets %}<span class="pill purple" style="margin-right: 4px;">{{ b }}</span>{% endfor %}
+    </div>
+    <div style="margin-top: 12px;">
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Trigger keywords ({{ metadata.trigger_keywords|length }})</div>
+      <div style="font-size: 12px; color: hsl(var(--text-secondary));">
+        {% for k in metadata.trigger_keywords %}<span class="pill" style="margin: 0 2px 2px 0; font-size: 10px;">{{ k }}</span>{% endfor %}
+      </div>
+    </div>
+  </aside>
+</div>
+
+<style>
+  .markdown-body { font-size: 14px; line-height: 1.65; color: hsl(var(--foreground)); }
+  .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+    margin-top: 1.5em; margin-bottom: 0.5em; letter-spacing: -0.01em;
+  }
+  .markdown-body h1 { font-size: 22px; }
+  .markdown-body h2 { font-size: 18px; }
+  .markdown-body h3 { font-size: 15px; color: hsl(var(--primary)); }
+  .markdown-body code {
+    background: hsl(var(--bg-secondary)); padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .markdown-body pre {
+    background: hsl(var(--bg-secondary)); padding: 12px; border-radius: 8px;
+    overflow-x: auto; font-size: 12px;
+  }
+  .markdown-body pre code { background: transparent; padding: 0; }
+  .markdown-body table { margin: 12px 0; }
+  .markdown-body blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    padding-left: 12px; margin: 12px 0; color: hsl(var(--muted-foreground));
+  }
+  .markdown-body a { color: hsl(var(--primary)); }
+</style>
+{% endblock %}
