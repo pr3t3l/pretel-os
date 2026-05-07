@@ -1,16 +1,16 @@
 # Bucket: personal
 
 <!-- pretel:auto:start summary -->
-**Active projects:** 0  
+**Active projects:** 1  
 **Archived projects:** 0  
 **Open tasks:** 1  
-**Last regenerated:** 2026-04-30T19:56:16Z
+**Last regenerated:** 2026-05-07T16:31:18Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start active_projects -->
 ## Active projects
 
-_(none)_
+- [pretel-os](projects/pretel-os/README.md) — Pretel-OS Platform (meta-project) (active) — Permanent home for platform meta-decisions, distinct from engagement-specific projects.
 <!-- pretel:auto:end active_projects -->
 
 <!-- pretel:auto:start archived_projects -->
@@ -29,7 +29,8 @@ _(none)_
 <!-- pretel:auto:start recent_decisions -->
 ## Recent decisions (5 most recent)
 
-_(none)_
+- ADR-29 — ADR-029: Constitutional amendment v5.2 — Dream Engine charter rescoped, §2.6 reduced from 5 to 4 workers, archive thresholds parametrized (2026-05-07)
+- ADR-? — Module 6 (reflection_worker) cancelled before first commit (2026-05-07)
 <!-- pretel:auto:end recent_decisions -->
 
 <!-- pretel:notes:start -->
@@ -42,5 +43,5 @@ Vida personal, familia, viajes, salud.
 - hija-escuela — inscripción Richland One district
 
 ## Notas de contexto
-Bucket de menor urgencia técnica. Lecciones aquí rara vez cruzan a business/scout.
+Bucket de menor urgencia técnica.
 <!-- pretel:notes:end -->
