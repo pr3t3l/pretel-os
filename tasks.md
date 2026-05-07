@@ -120,6 +120,19 @@ Per-module detail: `specs/dream_engine/tasks.md` (full atomic tree). Decision: A
 
 Per-module detail: TBD (created at M9 kickoff per `runbooks/sdd_module_kickoff.md`)
 
+## Module 10 — mcp_admin (admin console) — PENDING execution
+
+Password-protected admin console at `mcp-admin.alfredopretelvargas.com` (Cloudflare Access). FastAPI + Jinja + HTMX server-rendered, calls existing MCP tools internally for every mutation per `CONSTITUTION §2.1`. Visual coherence with `alfredo-ai-factory-guide` (teal/amber/purple HSL tokens, Inter + JetBrains Mono).
+
+- [x] **M10.T1** SDD trinity authored (2026-05-07; `specs/mcp_admin/{spec,plan,tasks}.md`)
+- [ ] **M10.A** Phase A — Scaffolding + Cloudflare Access middleware + first view (preferences) [21 atomic items]
+- [ ] **M10.B** Phase B — 4 remaining MVP views: memory, dream-engine, costs, pending [21 atomic items]
+- [ ] **M10.C** Phase C — 6 drill-down detail views [20 atomic items]
+- [ ] **M10.D** Phase D — Production deploy + Cloudflare Access setup + go-live [19 atomic items]
+- [ ] **M10.E** Phase E — 7-day observation + runbook + tag `module-10-complete` [9 atomic items]
+
+Per-module detail: `specs/mcp_admin/tasks.md` (98 atomic items). Cost: $0 build + $0/mo steady-state (Cloudflare Access free tier). Auth via Cloudflare Access at the edge — no auth code in the app itself.
+
 ---
 
 ## Recurring tasks
