@@ -29,31 +29,31 @@
 
 ## Phase B — Worker core + 3 jobs
 
-- [ ] **M8.B.1** — Create `src/dream_engine/__init__.py` (empty package marker).
-- [ ] **M8.B.2** — Write `src/dream_engine/queries.py` — SQL strings for each job. Keep as `_const` strings so they're testable + readable.
-- [ ] **M8.B.3** — Write `src/dream_engine/config.py` — `load_archive_thresholds()` reads operator_preferences for the 3 keys, raises `RuntimeError` on missing key (no silent fallback).
-- [ ] **M8.B.4** — Write `src/dream_engine/worker.py` — `JobResult` dataclass, `utility_recompute()`, `dedup_pass()`, `archive_low_utility()`, `main(dry_run: bool)`.
-- [ ] **M8.B.5** — Resolve Q4 (top-K for nearest-neighbor query). Document in `specs/dream_engine/phase_b_close.md`.
-- [ ] **M8.B.6** — Resolve Q5 (cosine vs L2 similarity). Document in phase_b_close Q5.
-- [ ] **M8.B.7** — Resolve Q6 (does archival fire readme_dirty trigger). Verify by running an UPDATE on a test row and watching `pg_notify` payload. Document.
-- [ ] **M8.B.8** — Write `tests/dream_engine/__init__.py`.
-- [ ] **M8.B.9** — Write `tests/dream_engine/conftest.py` — fixtures: `dream_engine_test_db` (re-applies 0028a + 0030 + 0037 + 0038 if missing per CLAUDE.md drift watchdog), `seeded_lessons_for_dedup`, `seeded_lessons_for_archive`.
-- [ ] **M8.B.10** — Write unit tests `tests/dream_engine/test_worker.py`:
+- [x] **M8.B.1** — Create `src/dream_engine/__init__.py` (empty package marker).
+- [x] **M8.B.2** — Write `src/dream_engine/queries.py` — SQL strings for each job. Keep as `_const` strings so they're testable + readable.
+- [x] **M8.B.3** — Write `src/dream_engine/config.py` — `load_archive_thresholds()` reads operator_preferences for the 3 keys, raises `RuntimeError` on missing key (no silent fallback).
+- [x] **M8.B.4** — Write `src/dream_engine/worker.py` — `JobResult` dataclass, `utility_recompute()`, `dedup_pass()`, `archive_low_utility()`, `main(dry_run: bool)`.
+- [x] **M8.B.5** — Resolve Q4 (top-K for nearest-neighbor query). Document in `specs/dream_engine/phase_b_close.md`.
+- [x] **M8.B.6** — Resolve Q5 (cosine vs L2 similarity). Document in phase_b_close Q5.
+- [x] **M8.B.7** — Resolve Q6 (does archival fire readme_dirty trigger). Verify by running an UPDATE on a test row and watching `pg_notify` payload. Document.
+- [x] **M8.B.8** — Write `tests/dream_engine/__init__.py`.
+- [x] **M8.B.9** — Write `tests/dream_engine/conftest.py` — fixtures: `dream_engine_test_db` (re-applies 0028a + 0030 + 0037 + 0038 if missing per CLAUDE.md drift watchdog), `seeded_lessons_for_dedup`, `seeded_lessons_for_archive`.
+- [x] **M8.B.10** — Write unit tests `tests/dream_engine/test_worker.py`:
   - utility_recompute calls SQL function and returns rows_affected
   - dedup_pass produces correct INSERT statements + ON CONFLICT
   - archive_low_utility builds correct WHERE clause from preferences
   - JobResult shape on error
   - main() partial-success path (one job raises, others complete)
-- [ ] **M8.B.11** — Write slow integration test `tests/dream_engine/test_e2e.py` (@pytest.mark.slow):
+- [x] **M8.B.11** — Write slow integration test `tests/dream_engine/test_e2e.py` (@pytest.mark.slow):
   - SC2 verification: spot-check utility_score after recompute matches formula
   - SC3 verification: cross_pollination_queue row inserted with proposed_by='dream_engine_dedup'; second run is no-op (UNIQUE conflict)
   - SC4 verification: lesson crossing threshold gets status='archived'
   - SC5 verification: deliberate fault → partial status + other jobs complete
-- [ ] **M8.B.12** — Run `PYTHONPATH=src pytest tests/dream_engine/ -v` — all green (unit + slow).
-- [ ] **M8.B.13** — Run `mypy src/dream_engine/` — clean.
-- [ ] **M8.B.14** — Manual smoke test: `PYTHONPATH=src python -m dream_engine.worker --dry-run` against `pretel_os_test` — output matches expectations.
-- [ ] **M8.B.15** — Phase B close: `specs/dream_engine/phase_b_close.md` documenting Q4/Q5/Q6 + any spec deltas.
-- [ ] **M8.B.16** — Commit Phase B: `[M8.B] Dream Engine worker + 3 jobs + tests`.
+- [x] **M8.B.12** — Run `PYTHONPATH=src pytest tests/dream_engine/ -v` — all green (unit + slow).
+- [x] **M8.B.13** — Run `mypy src/dream_engine/` — clean.
+- [x] **M8.B.14** — Manual smoke test: `PYTHONPATH=src python -m dream_engine.worker --dry-run` against `pretel_os_test` — output matches expectations.
+- [x] **M8.B.15** — Phase B close: `specs/dream_engine/phase_b_close.md` documenting Q4/Q5/Q6 + any spec deltas.
+- [x] **M8.B.16** — Commit Phase B: `[M8.B] Dream Engine worker + 3 jobs + tests`.
 
 ## Phase C — systemd integration + production dry-run
 
