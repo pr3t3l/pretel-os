@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Skills — pretel-os admin{% endblock %}
+{% block heading %}Skills catalog{% endblock %}
+{% block subtitle %}{{ skills|length }} skills registradas. Click en cualquier nombre → drill-down con .md content + metadata.{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <form method="get" action="/skills" style="display: flex; gap: 10px; align-items: end; margin-bottom: 14px;">
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Bucket</div>
+      <input type="text" name="bucket" value="{{ bucket }}" placeholder="personal / business / scout" />
+    </div>
+    <div style="flex: 1; min-width: 200px;">
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search (name / description)</div>
+      <input type="search" name="q" value="{{ q }}" placeholder="..." style="width: 100%;" />
+    </div>
+    <button type="submit" class="btn primary">Filtrar</button>
+  </form>
+
+  {% if skills %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Buckets</th>
+          <th style="text-align: right;">Utility</th>
+          <th style="text-align: right;">Uses</th>
+          <th>Embedding</th>
+          <th>Trigger keys</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in skills %}
+          <tr>
+            <td><a href="/skills/{{ s.name }}" class="mono" style="font-weight: 600;">{{ s.name }}</a></td>
+            <td style="font-size: 12px;">{{ s.description_short or "(no short description)" }}</td>
+            <td>
+              {% for b in s.applicable_buckets %}<span class="pill purple" style="margin-right: 2px; font-size: 10px;">{{ b }}</span>{% endfor %}
+            </td>
+            <td style="text-align: right;">{{ "%.2f"|format(s.utility_score) }}</td>
+            <td style="text-align: right;">{{ s.usage_count }}</td>
+            <td>{% if s.has_embedding %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td>
+            <td><span class="pill">{{ s.kw_count }}</span></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">Sin skills registradas para los filtros actuales.</p>
+  {% endif %}
+</div>
+{% endblock %}

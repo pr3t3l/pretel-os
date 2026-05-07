@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Workers — pretel-os admin{% endblock %}
+{% block heading %}Workers + sibling services{% endblock %}
+{% block subtitle %}4 chartered workers per CONSTITUTION §2.6 v5.2 (post-M6 amendment) + 3 sibling services. Status from <code>systemctl --user is-active</code>.{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-head"><div><h3>Chartered workers</h3><p>Cada worker tiene un trigger fijo, un home, y un charter inmutable sin amendment.</p></div><span class="tag">{{ workers|length }}</span></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Trigger</th>
+        <th>Home</th>
+        <th>Service status</th>
+        <th>Timer status</th>
+        <th>Last activity / signal</th>
+        <th>Constitution</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for w in workers %}
+        <tr>
+          <td>
+            {% if w.details_url %}<a href="{{ w.details_url }}" style="font-weight: 600;">{{ w.name }}</a>
+            {% else %}<span style="font-weight: 600;">{{ w.name }}</span>{% endif %}
+            {% if w.deferred %}<span class="pill amber" style="margin-left: 6px; font-size: 10px;">deferred</span>{% endif %}
+          </td>
+          <td style="font-size: 12px;">{{ w.trigger }}</td>
+          <td style="font-size: 12px;">{{ w.home }}</td>
+          <td>
+            {% if w.service_status == "active" %}<span class="pill green">{{ w.service_status }}</span>
+            {% elif w.service_status == "n/a" %}<span class="pill">n/a</span>
+            {% elif w.service_status == "unknown" %}<span class="pill amber">{{ w.service_status }}</span>
+            {% else %}<span class="pill red">{{ w.service_status }}</span>{% endif %}
+            {% if w.service %}<div class="mono" style="font-size: 10px; color: hsl(var(--muted-foreground));">{{ w.service }}</div>{% endif %}
+          </td>
+          <td>
+            {% if w.timer_status == "active" %}<span class="pill green">{{ w.timer_status }}</span>
+            {% elif w.timer_status == "n/a" %}<span class="pill">n/a</span>
+            {% elif w.timer_status == "unknown" %}<span class="pill amber">{{ w.timer_status }}</span>
+            {% else %}<span class="pill red">{{ w.timer_status }}</span>{% endif %}
+            {% if w.timer %}<div class="mono" style="font-size: 10px; color: hsl(var(--muted-foreground));">{{ w.timer }}</div>{% endif %}
+          </td>
+          <td style="font-size: 12px;">
+            {% if w.name == "Dream Engine" %}
+              {% if last_activity.dream_engine_last_run %}
+                Last run: <span class="mono">{{ last_activity.dream_engine_last_run[:19] }}</span><br/>
+                <span style="color: hsl(var(--muted-foreground)); font-size: 11px;">{{ last_activity.dream_engine_run_count }} runs total</span>
+              {% else %}<span style="color: hsl(var(--muted-foreground));">No runs yet</span>{% endif %}
+            {% elif w.name == "Auto-index on save" %}
+              {% if last_activity.pending_embeddings_count %}
+                <span class="pill amber">{{ last_activity.pending_embeddings_count }} pending</span><br/>
+                <span style="color: hsl(var(--muted-foreground)); font-size: 11px;">oldest: {{ last_activity.pending_embeddings_oldest[:19] if last_activity.pending_embeddings_oldest else "—" }}</span>
+              {% else %}<span class="pill green">queue empty</span>{% endif %}
+            {% elif w.deferred %}
+              <span style="color: hsl(var(--muted-foreground));">{{ w.deferred_reason }}</span>
+            {% else %}
+              <span style="color: hsl(var(--muted-foreground));">—</span>
+            {% endif %}
+          </td>
+          <td class="mono" style="font-size: 11px;">{{ w.constitution_ref }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head"><div><h3>Sibling services</h3><p>No son workers per §2.6 charter, pero corren en sistema y son load-bearing.</p></div><span class="tag">{{ services|length }}</span></div>
+  <table>
+    <thead><tr><th>Name</th><th>Purpose</th><th>Status</th><th>Service</th></tr></thead>
+    <tbody>
+      {% for s in services %}
+        <tr>
+          <td>
+            {% if s.details_url %}<a href="{{ s.details_url }}" style="font-weight: 600;">{{ s.name }}</a>
+            {% else %}<span style="font-weight: 600;">{{ s.name }}</span>{% endif %}
+          </td>
+          <td style="font-size: 12px;">{{ s.purpose }}</td>
+          <td>
+            {% if s.service_status == "active" %}<span class="pill green">{{ s.service_status }}</span>
+            {% elif s.service_status == "unknown" %}<span class="pill amber">{{ s.service_status }}</span>
+            {% else %}<span class="pill red">{{ s.service_status }}</span>{% endif %}
+          </td>
+          <td class="mono" style="font-size: 11px;">{{ s.service }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

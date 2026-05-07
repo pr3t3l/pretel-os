@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Tools catalog — pretel-os admin{% endblock %}
+{% block heading %}Tools catalog{% endblock %}
+{% block subtitle %}{{ total }} tools registradas (kind=tool). Click → row detail. Skills tienen su propia vista en {{ '/skills' }}.{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <form method="get" action="/tools" style="display: flex; gap: 10px; align-items: end; margin-bottom: 14px;">
+    <div>
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Bucket</div>
+      <input type="text" name="bucket" value="{{ bucket }}" placeholder="personal / business / scout" />
+    </div>
+    <div style="flex: 1; min-width: 200px;">
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search</div>
+      <input type="search" name="q" value="{{ q }}" placeholder="..." style="width: 100%;" />
+    </div>
+    <button type="submit" class="btn primary">Filtrar</button>
+  </form>
+
+  {% if tools %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Buckets</th>
+          <th style="text-align: right;">Utility</th>
+          <th style="text-align: right;">Uses</th>
+          <th>Last used</th>
+          <th>Embedding</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tools %}
+          <tr>
+            <td>
+              <a href="/db/tools_catalog/{{ t.id }}" class="mono" style="font-weight: 600;">{{ t.name }}</a>
+              {% if t.mcp_tool_name and t.mcp_tool_name != t.name %}
+                <div class="mono" style="font-size: 10px; color: hsl(var(--muted-foreground));">→ {{ t.mcp_tool_name }}</div>
+              {% endif %}
+            </td>
+            <td style="font-size: 12px;">{{ t.description_short or "(no short description)" }}</td>
+            <td>
+              {% for b in t.applicable_buckets %}<span class="pill purple" style="margin-right: 2px; font-size: 10px;">{{ b }}</span>{% endfor %}
+            </td>
+            <td style="text-align: right;">{{ "%.2f"|format(t.utility_score) }}</td>
+            <td style="text-align: right;">{{ t.usage_count }}</td>
+            <td class="mono" style="font-size: 11px;">{{ t.last_used_at[:10] if t.last_used_at else "—" }}</td>
+            <td>{% if t.has_embedding %}<span class="pill green">yes</span>{% else %}<span class="pill red">no</span>{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: hsl(var(--muted-foreground));">Sin tools registradas para los filtros actuales.</p>
+  {% endif %}
+</div>
+{% endblock %}

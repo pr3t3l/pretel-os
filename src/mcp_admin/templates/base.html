@@ -26,9 +26,21 @@
       <nav>
         <a href="/preferences" class="{% if active_view == 'preferences' %}active{% endif %}"><span class="dot"></span> Operator preferences</a>
         <a href="/memory"      class="{% if active_view == 'memory'      %}active{% endif %}"><span class="dot"></span> Memory browser</a>
-        <a href="/dream-engine" class="{% if active_view == 'dream_engine' %}active{% endif %}"><span class="dot"></span> Dream Engine</a>
-        <a href="/costs"       class="{% if active_view == 'costs'       %}active{% endif %}"><span class="dot"></span> Costs</a>
         <a href="/pending"     class="{% if active_view == 'pending'     %}active{% endif %}"><span class="dot"></span> Pending review</a>
+        <a href="/costs"       class="{% if active_view == 'costs'       %}active{% endif %}"><span class="dot"></span> Costs</a>
+      </nav>
+
+      <div class="nav-title">Catálogo</div>
+      <nav>
+        <a href="/buckets"     class="{% if active_view == 'buckets'     %}active{% endif %}"><span class="dot"></span> Buckets</a>
+        <a href="/skills"      class="{% if active_view == 'skills'      %}active{% endif %}"><span class="dot"></span> Skills</a>
+        <a href="/tools"       class="{% if active_view == 'tools'       %}active{% endif %}"><span class="dot"></span> Tools</a>
+      </nav>
+
+      <div class="nav-title">Sistema</div>
+      <nav>
+        <a href="/workers"     class="{% if active_view == 'workers'     %}active{% endif %}"><span class="dot"></span> Workers + services</a>
+        <a href="/dream-engine" class="{% if active_view == 'dream_engine' %}active{% endif %}"><span class="dot"></span> Dream Engine runs</a>
       </nav>
     </aside>
 

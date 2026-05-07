@@ -48,6 +48,15 @@ from .handlers.projects_detail import attach_templates as projects_detail_attach
 from .handlers.projects_detail import router as projects_detail_router
 from .handlers.skills_detail import attach_templates as skills_detail_attach
 from .handlers.skills_detail import router as skills_detail_router
+# Phase E expansion — list / overview views
+from .handlers.buckets import attach_templates as buckets_attach
+from .handlers.buckets import router as buckets_router
+from .handlers.skills_list import attach_templates as skills_list_attach
+from .handlers.skills_list import router as skills_list_router
+from .handlers.tools_list import attach_templates as tools_list_attach
+from .handlers.tools_list import router as tools_list_router
+from .handlers.workers import attach_templates as workers_attach
+from .handlers.workers import router as workers_router
 from .middleware import AccessIdentityMiddleware
 
 log = logging.getLogger(__name__)
@@ -99,6 +108,11 @@ def build_app() -> FastAPI:
         projects_detail_attach,
         dream_run_detail_attach,
         lesson_detail_attach,
+        # Phase E expansion — list / overview views
+        skills_list_attach,
+        tools_list_attach,
+        buckets_attach,
+        workers_attach,
     ):
         attach(templates)
     for r in (
@@ -113,6 +127,11 @@ def build_app() -> FastAPI:
         projects_detail_router,
         dream_run_detail_router,
         lesson_detail_router,
+        # Phase E expansion
+        skills_list_router,
+        tools_list_router,
+        buckets_router,
+        workers_router,
     ):
         app.include_router(r)
 

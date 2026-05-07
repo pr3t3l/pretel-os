@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Buckets — pretel-os admin{% endblock %}
+{% block heading %}Buckets — vida operativa{% endblock %}
+{% block subtitle %}{{ buckets|length }} buckets activos. Cada bucket es un dominio de aislamiento (CONSTITUTION §3 — Scout es abstract patterns only).{% endblock %}
+
+{% block content %}
+{% for b in buckets %}
+  <div class="panel" style="margin-bottom: 16px;">
+    <div class="panel-head">
+      <div>
+        <h3>
+          {% if b.is_freelance %}<span class="pill amber">freelance</span>{% endif %}
+          <span class="mono">{{ b.name }}</span>
+        </h3>
+        <p>
+          {% if b.readme_path %}
+            <a href="https://github.com/pr3t3l/pretel-os/blob/main/{{ b.readme_path }}" target="_blank">{{ b.readme_path }}</a>
+          {% else %}
+            (no README on disk)
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 16px;">
+      <div class="bucket"><span>Active projects</span><strong>{{ b.stats.active_projects }}</strong></div>
+      <div class="bucket"><span>Active lessons</span><strong>{{ b.stats.active_lessons }}</strong></div>
+      <div class="bucket"><span>Pending lessons</span><strong>{{ b.stats.pending_lessons }}</strong></div>
+      <div class="bucket"><span>Decisions</span><strong>{{ b.stats.decisions }}</strong></div>
+      <div class="bucket"><span>Best practices*</span><strong>{{ b.stats.active_best_practices }}</strong></div>
+      <div class="bucket"><span>Skills</span><strong>{{ b.stats.active_skills }}</strong></div>
+      <div class="bucket"><span>Tools</span><strong>{{ b.stats.active_tools }}</strong></div>
+    </div>
+
+    {% if b.projects %}
+      <table>
+        <thead><tr><th>Project</th><th>Status</th><th>Description</th><th>Created</th></tr></thead>
+        <tbody>
+          {% for p in b.projects %}
+            <tr>
+              <td><a href="/projects/{{ b.name }}/{{ p.slug }}" class="mono" style="font-weight: 600;">{{ p.slug }}</a><br/>
+                  <span style="font-size: 11px; color: hsl(var(--muted-foreground));">{{ p.name }}</span></td>
+              <td>{% if p.status == "active" %}<span class="pill green">{{ p.status }}</span>{% else %}<span class="pill">{{ p.status }}</span>{% endif %}</td>
+              <td style="font-size: 12px;">{{ p.description[:120] }}{% if p.description|length > 120 %}...{% endif %}</td>
+              <td style="font-size: 11px;">{{ p.created_at[:10] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p style="color: hsl(var(--muted-foreground)); margin: 0;">No active projects in this bucket.</p>
+    {% endif %}
+  </div>
+{% endfor %}
+
+<p style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 16px;">
+  *Best practices today share scope across buckets — the table doesn't carry a bucket column, so the count is the global active total per bucket card.
+</p>
+
+<style>
+  .bucket { padding: 12px; border-radius: 12px; background: hsl(var(--bg-secondary)); border: 1px solid hsl(var(--border)); }
+  .bucket span { color: hsl(var(--muted-foreground)); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .bucket strong { display: block; margin-top: 4px; font-size: 22px; }
+</style>
+{% endblock %}
