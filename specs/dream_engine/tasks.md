@@ -6,25 +6,26 @@
 
 ---
 
-## Phase A — Schema prep + observability
+## Phase A — Schema prep + observability — **CLOSED 2026-05-07**
 
-- [ ] **M8.A.1** — Decide Q1 (UNIQUE-key shape on cross_pollination_queue). Document choice in `specs/dream_engine/phase_a_close.md` Q1.
-- [ ] **M8.A.2** — Decide Q2 (target_lesson_id column or derive from text). Document in phase_a_close Q2.
-- [ ] **M8.A.3** — Decide Q3 (`dream_engine_runs` new table vs fold into existing). Document in phase_a_close Q3.
-- [ ] **M8.A.4** — Decide Q7 (seed defaults via migration vs first-run insert). Document in phase_a_close Q7.
-- [ ] **M8.A.5** — Verify `recompute_utility_scores()` runs against current schema: `psql "$TEST_DSN" -c "SELECT recompute_utility_scores();"`. If it errors, escalate before continuing.
-- [ ] **M8.A.6** — Write migration `0038_dream_engine_schema.sql`:
-  - UNIQUE constraint on cross_pollination_queue per Q1 outcome.
-  - (conditional on Q2) ALTER TABLE cross_pollination_queue ADD COLUMN target_lesson_id UUID REFERENCES lessons(id).
-  - CREATE TABLE dream_engine_runs (id UUID PK, started_at, completed_at, status TEXT CHECK IN ('success','partial','failed'), jobs_run JSONB, failures JSONB).
-  - INSERT into operator_preferences (key, value, category) VALUES (...) for `archive.usage_window_days='500'`, `archive.utility_threshold='0.5'`, `archive.utility_lookback_days='90'` with ON CONFLICT DO NOTHING.
-  - INSERT INTO schema_migrations with md5 self-hash per project convention.
-- [ ] **M8.A.7** — Apply 0038 to `pretel_os` via `psql -1 -f`.
-- [ ] **M8.A.8** — Apply 0038 to `pretel_os_test` via `psql -1 -f`.
-- [ ] **M8.A.9** — Verify constraints: `psql "$DATABASE_URL" -c "\d cross_pollination_queue"` shows UNIQUE; `\d dream_engine_runs` shows the new table.
-- [ ] **M8.A.10** — Verify operator_preferences seeded: `SELECT * FROM operator_preferences WHERE key LIKE 'archive.%';` returns 3 rows.
-- [ ] **M8.A.11** — Phase A close: write `specs/dream_engine/phase_a_close.md` answering Q1/Q2/Q3/Q7 with decision rationale.
-- [ ] **M8.A.12** — Commit Phase A: `[M8.A] Schema prep + observability scaffolding (migration 0038)`.
+- [x] **M8.A.1** — Decide Q1 (UNIQUE-key shape) → per-pair `(origin_lesson, target_lesson_id, proposed_by)`. See `phase_a_close.md` Q1.
+- [x] **M8.A.2** — Decide Q2 (target_lesson_id column) → ADD COLUMN, UUID FK NULLable ON DELETE CASCADE. See `phase_a_close.md` Q2.
+- [x] **M8.A.3** — Decide Q3 (dream_engine_runs new table) → new table, slim schema. See `phase_a_close.md` Q3.
+- [x] **M8.A.4** — Decide Q7 (seed via migration) → INSERT in 0039 with ON CONFLICT DO NOTHING. See `phase_a_close.md` Q7.
+- [x] **M8.A.5** — Verified `recompute_utility_scores()` runs against current schema (returns void cleanly).
+- [x] **M8.A.6** — Wrote migration `0039_dream_engine_phase_a_schema.sql` (note: numbered 0039 not 0038 because 0038 was used for the embedding-invalidation fix found mid-Phase-A — see `migrations/0038_fix_embedding_invalidation_app_override.sql`):
+  - target_lesson_id column on cross_pollination_queue
+  - UNIQUE constraint cross_pollination_queue_pair_unique
+  - dream_engine_runs table + 2 indexes + status CHECK + column comments
+  - 3 operator_preferences seeded (archive.usage_window_days=500, archive.utility_threshold=0.5, archive.utility_lookback_days=90; category='workflow', source='migration')
+- [x] **M8.A.7** — Applied 0039 to `pretel_os`.
+- [x] **M8.A.8** — Applied 0039 to `pretel_os_test`.
+- [x] **M8.A.9** — Verified `\d cross_pollination_queue` shows new column + UNIQUE; `\d dream_engine_runs` shows table.
+- [x] **M8.A.10** — Verified `SELECT * FROM operator_preferences WHERE key LIKE 'archive.%'` returns 3 rows.
+- [x] **M8.A.11** — `specs/dream_engine/phase_a_close.md` written.
+- [x] **M8.A.12** — Phase A commit (commit `e3b3da8`, plus precursor commits `464c446` for phase_a_close.md and `3b1f3e0` for migration 0038 mid-phase fix).
+
+**Side trip during Phase A:** test suite caught a bug in migration 0037 (`invalidate_embedding_on_content_change()` was overriding application-supplied embeddings on content+embedding atomic UPDATEs). Fixed in migration 0038. 204 fast + 56 slow = 260 tests green after fix. See commit `3b1f3e0`.
 
 ## Phase B — Worker core + 3 jobs
 
