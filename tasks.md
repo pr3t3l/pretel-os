@@ -69,13 +69,9 @@ Per-module detail: `specs/module-0x-knowledge-architecture/tasks.md`
 Per-module detail: `specs/telegram_bot/tasks.md` (all M5.A–M5.E rows `[x]`).
 Tag: `module-5-complete` on this commit (pushed).
 
-## Module 6 — reflection_worker
+## Module 6 — reflection_worker (CANCELLED 2026-05-07)
 
-- [ ] SDD trinity (M6.T1)
-- [ ] Implementation
-- [ ] Production deployment (unblocked by M7.5 — lessons / tasks / decisions now carry `project_id` FK so M6 outputs are queryable per project)
-
-Per-module detail: TBD (created at M6 kickoff per `runbooks/sdd_module_kickoff.md`)
+Module cancelled before first commit. Rationale: lessons / decisions / best-practices are already captured in-loop by Claude via direct MCP tool calls (`save_lesson`, `decision_record`, `best_practice_record`). A nightly reflection worker that re-extracts the same signals from transcripts solved a gap that operational evidence had already closed. No transcripts existed to consume in the first place (`conversation_sessions.transcript_path` was NULL in 100% of closed sessions). Trinity drafted at `specs/module_6/{spec,plan,tasks}.md` was deleted unmerged. CONSTITUTION §11 unchanged (no `fire_reflection` tool was ever added). Revisitable if a non-Claude client (Telegram bot consumed conversationally, future external agents) creates a real extraction gap.
 
 ## Module 7 — skills_migration (IN PROGRESS — phases A+B closed, ad-hoc per-phase briefs)
 
@@ -104,12 +100,25 @@ Per-module detail: TBD. Open follow-ups carried forward:
 
 Per-module reference: rationale + plan + atomic_tasks + 4-run code briefings live at `~/Downloads/M7_5_*.md`. Demonstration runbook: `runbooks/m7_5_demo.md`. No formal SDD trinity (per-phase operator briefs same pattern as Module 7).
 
-## Module 8 — lessons_migration
+## Module 8 — dream_engine (fase 1) — PENDING execution
 
-- [ ] SDD trinity (M8.T1)
-- [ ] Implementation (89 lessons + 12 ideas)
+Cron 02:00 ET worker chartered in CONSTITUTION §2.6 v5.2 (per ADR-029). Fase 1 covers 3 of the 7 originally-chartered jobs; the other 4 are deferred per ADR-029.
 
-Per-module detail: TBD (created at M8 kickoff per `runbooks/sdd_module_kickoff.md`)
+- [x] **M8.T1** SDD trinity authored (2026-05-07; `specs/dream_engine/{spec,plan,tasks}.md`)
+- [ ] **M8.A** Phase A — Schema prep + observability (migration 0038 + 7 atomic items)
+- [ ] **M8.B** Phase B — Worker core + 3 jobs + tests (16 atomic items)
+- [ ] **M8.C** Phase C — systemd integration + dry-run + first live run
+- [ ] **M8.D** Phase D — 7-day production observation
+- [ ] **M8.E** Phase E — Module exit (runbook + tag `module-8-complete`)
+
+Per-module detail: `specs/dream_engine/tasks.md` (full atomic tree). Decision: ADR-029 (`decisions` row a39bc9b9). Prerequisite: M6 cancellation (`decisions` row 9e8bacad).
+
+## Module 9 — lessons_migration (originally numbered M8; renumbered 2026-05-07 after M8 slot was reassigned to dream_engine)
+
+- [ ] SDD trinity (M9.T1)
+- [ ] Implementation (89 foundation-era lessons + 12 ideas from `docs/LESSONS_LEARNED.md` seed corpus into the live `lessons` table)
+
+Per-module detail: TBD (created at M9 kickoff per `runbooks/sdd_module_kickoff.md`)
 
 ---
 

@@ -1,7 +1,8 @@
 # CONSTITUTION — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-04-30 (v5.1 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker; +list_catalog tool + 3 catalog orphans seeded via migration 0036)
+**Last updated:** 2026-05-07 (v5.2 — M6 reflection_worker cancelled; §2.6 reduced from 5 to 4 workers; Dream Engine charter rescoped to 3 active jobs + 4 deferred; §4 rule 8 stripped of Reflection alias clauses; §5.4 rule 20 reassigns cross_pollination_queue writer to Dream Engine; §5.5 rule 22 archive thresholds parametrized via operator_preferences; §5.5 rule 23 deferred indefinitely; §5.5 rule 24 corrects proposal_type drift to typed proposed_by + UNIQUE idempotency. Decision log: `decisions` table id 9e8bacad (M6 cancellation) + ADR-029 (this amendment, decisions row a39bc9b9).)
+**Previously:** 2026-04-30 (v5.1 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker; +list_catalog tool + 3 catalog orphans seeded via migration 0036)
 **Owner:** Alfredo Pretel Vargas
 
 This document contains the immutable rules of pretel-os. Every module, agent, skill, and human operator must respect these rules without exception. Rules in this document only change through an explicit decision-log entry in `PROJECT_FOUNDATION.md §Decisions`, never silently.
@@ -120,21 +121,22 @@ The system uses `text-embedding-3-large` (OpenAI, 3072 dimensions) for every emb
 
 ### 2.6 Background workers are named and chartered
 
-The system runs exactly five background workers. Each has a fixed charter, a trigger, and a home. No worker operates outside these boundaries.
+The system runs exactly four background workers. Each has a fixed charter, a trigger, and a home. No worker operates outside these boundaries.
 
 | Worker | Trigger | Responsibility | Home |
 |--------|---------|----------------|------|
-| **Reflection** | Event: `close_session` (10 min idle), `task_complete` tool call, fallback every 20 turns, or fallback every 60 minutes of session lifespan (whichever fires first) | Read the transcript. Propose 0–3 lessons, 0–N cross-pollination flags, state updates to the active project. Insert lessons with `status='pending_review'` and `project_id` resolved from classification, write `cross_pollination_queue` and `project_state` rows. If Sonnet unreachable, queue to `reflection_pending` for later replay. | Python script on the Vivobook server, triggered by MCP |
-| **Nightly consolidation (Dream Engine)** | Cron 02:00 America/New_York | Recompute `utility_score` on `tools_catalog` and `lessons`. Detect duplicates and contradictions. Expand pending cross-pollination entries. Archive low-utility lessons per §5.5. Summarize old conversations per §5.5. Reindex changed embeddings. Prepare morning-intelligence brief. | systemd timer on the Vivobook server |
+| **Nightly consolidation (Dream Engine)** | Cron 02:00 America/New_York | **Active jobs (M8 fase 1):** (1) Recompute `utility_score` on `tools_catalog` and `lessons` per §5.3 rule 18 formula. (2) Nightly dedup pass: write `cross_pollination_queue` rows for cross-bucket insights and lesson-merge candidates per §5.4 rule 20 + §5.5 rule 24, idempotency via UNIQUE constraint on (origin_lesson_id, target_lesson_id). (3) Archive low-utility lessons per §5.5 rule 22 with thresholds read from `operator_preferences`. **Deferred jobs (rechartered when prerequisites land):** (a) summarize conversations >90 days — §5.5 rule 23, blocked on transcript pipeline. (b) reindex changed embeddings — superseded by migration 0037 trigger-based invalidation; left as a no-op slot until a future need arises. (c) expand pending cross-pollination — operationally redundant with morning brief; off-charter. (d) prepare morning-intelligence brief — blocked on n8n morning intelligence worker landing. | systemd timer on the Vivobook server |
 | **Morning intelligence** | Cron 06:00 America/New_York | Deliver conversational Spanish voice + written brief via Telegram covering: critical changes, strategic AI news, macro and markets, business opportunities, professional edge. Max 15 items. | n8n workflow |
-| **Auto-index on save** | Postgres trigger `ON INSERT` for rows lacking `embedding` (uses `notify_missing_embedding` function — see DATA_MODEL §6.2) | Compute the missing embedding and populate the column. Listens on `pending_embeddings` queue + `embedding_queue` channel. | Python listener or `pg_cron` on the Vivobook server |
+| **Auto-index on save** | Postgres trigger `ON INSERT OR UPDATE` for rows lacking `embedding` (uses `notify_missing_embedding` function — see DATA_MODEL §6.2; UPDATE-side coverage added by migration 0037 via paired `invalidate_embedding_on_content_change` BEFORE UPDATE trigger that nulls the vector when content columns differ from OLD) | Compute the missing embedding and populate the column. Listens on `pending_embeddings` queue + `embedding_queue` channel. | Python listener or `pg_cron` on the Vivobook server |
 | **README consumer (M7.5)** | Postgres LISTEN on `readme_dirty` channel (fired by 0034 triggers on lessons/tasks/decisions/projects/tools_catalog INSERT or UPDATE) | Debounce 30s, then call `regenerate_bucket_readme` / `regenerate_project_readme` for each dirty target. Projects the live DB state of bucket/project READMEs to disk per §2.4 git/db boundary. Stopping this worker leaves bucket and project READMEs stale until restart or manual MCP-tool call. | systemd user unit `pretel-os-readme.service` (Vivobook) |
+
+**Removed worker (2026-05-07):** Reflection worker (formerly the 1st row of this table) was chartered for `close_session` / `task_complete` event-driven Sonnet-class extraction of lessons + cross-pollination flags + project_state updates from session transcripts. Cancelled before first commit because (1) no transcript pipeline exists — `conversation_sessions.transcript_path` was NULL in 100% of closed sessions; (2) lesson / decision / best-practice extraction is already happening in-loop via direct MCP tool calls from Claude clients. The redundant nightly extraction would have solved a gap that operational evidence had already closed. See `decisions` table id `9e8bacad-eae4-4f08-b926-f79015212646`. Revisitable if a non-tool-calling client (Telegram conversational, future external agent) creates a real extraction gap.
 
 Process-internal helpers that do not count as workers:
 - The MCP server lifespan starts a daemon thread for `LayerBundleCache` LISTEN on `layer_loader_cache` (§2.3 caching, M4 / 0031). It runs inside the MCP process, not as a separate service.
 - The Telegram bot's `idle_close_loop` runs inside the bot's asyncio event loop (Module 5), not as a separate service.
 
-Any desire to add a sixth worker triggers a constitutional amendment. No ad-hoc cron jobs.
+Any desire to add a fifth worker triggers a constitutional amendment. No ad-hoc cron jobs.
 
 ### 2.7 Source priority resolves conflicts between layers
 
@@ -177,7 +179,7 @@ If *any* source contradicts an immutable invariant, the invariant wins silently 
 
 6. **L0 is always loaded. L1–L4 are loaded only when classification demands them.** The Router never loads layers reflexively.
 7. **Layers respect their budgets** per §2.3. Over-budget content is summarized before serving; the Router never silently truncates.
-8. **Classification runs through LiteLLM proxy alias `classifier_default`, never on the client-side reasoning model.** Reasoning runs on the client-side model (Opus 4.7 or equivalent). Reflection runs on a Sonnet-class model; the LiteLLM alias used by the Reflection worker is defined in Module 6 spec. Second opinion runs through LiteLLM proxy alias `second_opinion_default`. The alias-to-model mapping lives in `~/.litellm/config.yaml` and is operator-tunable. The task-to-alias mapping for `classifier_default` and `second_opinion_default` is immutable without amendment; the Reflection alias becomes immutable when Module 6 lands. See ADR-020.
+8. **Classification runs through LiteLLM proxy alias `classifier_default`, never on the client-side reasoning model.** Reasoning runs on the client-side model (Opus 4.7 or equivalent). Second opinion runs through LiteLLM proxy alias `second_opinion_default`. The alias-to-model mapping lives in `~/.litellm/config.yaml` and is operator-tunable. The task-to-alias mapping for `classifier_default` and `second_opinion_default` is immutable without amendment. See ADR-020. (M6 reflection_worker was cancelled 2026-05-07 before first commit; the `reflection_default` alias is unchartered until a non-tool-calling client creates a real extraction gap — see §2.6 "Removed worker".)
 9. **Embeddings model is `text-embedding-3-large`.** Writes and queries use the same model. Per §2.5.
 10. **Monthly API budget is explicit and tracked.** Phase 0–3 target: under $30/month combined (Anthropic + OpenAI). Overruns trigger an immediate audit and a lesson.
 11. **Cloud spend is revenue-gated.** Migration from local Postgres/n8n to managed cloud services only after the associated product (Forge, Declassified, freelance) generates revenue covering the new spend with a 3x margin.
@@ -235,21 +237,21 @@ Conditional means: the Router first runs a cheap lessons-count query filtered by
 
 ### 5.4 Cross-pollination
 
-20. **Cross-pollination is a first-class signal.** When the Reflection worker detects that an insight applies to a bucket other than its origin, it writes to `cross_pollination_queue` with status `pending`, including origin_bucket, target_bucket, idea, and reasoning.
+20. **Cross-pollination is a first-class signal.** When the Dream Engine nightly dedup pass detects that an insight applies to a bucket other than its origin, it writes to `cross_pollination_queue` with status `pending`, including origin_bucket, target_bucket, idea, and reasoning. The queue's `proposed_by` column is typed: `'dream_engine_dedup'` for similarity-based merge candidates, `'dream_engine_cross_bucket'` for cross-bucket idea propagations, `'manual'` for operator-initiated entries. Dream Engine is the sole automated writer; clients writing manually use `'manual'`. (Per migration 0010 the column existed with default `'reflection_worker'` — that default is rendered moot by M6 cancellation and is being phased out.)
 21. **Queue entries never expire silently.** They are reviewed via Telegram `/cross_poll_review` or explicitly dismissed with reason. The Dream Engine highlights items pending more than 14 days in the morning brief.
 
 ### 5.5 Knowledge lifecycle (archival, degradation, retention)
 
 22. **Lessons with sustained low utility are archived, not deleted.** During nightly Dream Engine run, any lesson meeting all three conditions has its `status` set to `archived` (same row, excluded from default retrieval):
-    - `usage_count = 0` after 180 days from creation
-    - `utility_score < 0.5` over the past 90 days
+    - `usage_count = 0` after `archive.usage_window_days` days from creation (default **500**)
+    - `utility_score < archive.utility_threshold` (default **0.5**) over the past `archive.utility_lookback_days` days (default **90**)
     - Not referenced by any active project in `project_state`
 
-    Archived lessons remain queryable via explicit `search_lessons(include_archive=true)` but do not count toward token budgets or default retrieval.
+    The three thresholds are read from `operator_preferences` at run time (keys `archive.usage_window_days`, `archive.utility_threshold`, `archive.utility_lookback_days`); the operator may tune them via `preference_set` without a constitutional amendment. Tightening (smaller window) archives more aggressively; loosening (larger window) keeps lessons longer. Archived lessons remain queryable via explicit `search_lessons(include_archive=true)` but do not count toward token budgets or default retrieval.
 
-23. **Conversations older than 90 days are summarized, not kept raw.** The Dream Engine replaces raw `conversations_indexed` rows with a summary row (original embedding preserved, original text replaced with 200-token summary). This keeps retrieval working while controlling storage and noise.
+23. **Conversations older than 90 days are summarized, not kept raw — *deferred indefinitely (2026-05-07)*.** Originally chartered to the Dream Engine to replace raw `conversations_indexed` rows with a 200-token summary while preserving the embedding. Deferred because no transcript pipeline writes raw conversations to that table today: Claude.ai web, Claude Code, and ChatGPT do not reach the server, and the M6 reflection_worker that would have populated transcripts was cancelled. Rule remains on the books as the canonical answer for *if* a transcript pipeline lands; the Dream Engine job slot is unchartered until then.
 
-24. **Duplicate detection runs nightly, not only on insert.** Pre-save dedup (§5.2 rule 14) catches obvious duplicates. Nightly the Dream Engine runs a deeper pass: any two lessons with similarity ≥ 0.95 generate a merge proposal written to `cross_pollination_queue` with `proposal_type='merge_candidate'`. The operator reviews, approves, or dismisses via Telegram. Approved merges set the losing lesson's `status='merged_into'` and populate `merged_into_id`.
+24. **Duplicate detection runs nightly, not only on insert.** Pre-save dedup (§5.2 rule 14) catches obvious duplicates. Nightly the Dream Engine runs a deeper pass: any two lessons with similarity ≥ 0.95 generate a merge proposal written to `cross_pollination_queue` with `proposed_by='dream_engine_dedup'`. Re-proposing the same pair on subsequent nights is prevented by a UNIQUE constraint on `(origin_lesson, target_bucket, proposed_by)` (or equivalent — exact key shape decided in M8 implementation): a second INSERT for the same merge candidate becomes a no-op via `ON CONFLICT DO NOTHING`. The operator reviews, approves, or dismisses via Telegram. Approved merges set the losing lesson's `status='merged_into'` and populate `merged_into_id`.
 
 25. **Project snapshots preserve history at decision boundaries.** When a major architectural decision changes a project's state (ADR-equivalent inside a project), the MCP tool `snapshot_project(project, reason)` writes the current L2 content to `project_versions` with timestamp and reason. This is called automatically by `add_module`, `change_stack`, and similar structural operations, and can be called manually by the operator. Answers "how did we do this before" without relying on git archaeology.
 
