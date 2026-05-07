@@ -1,0 +1,323 @@
+/*
+ * admin.css — layout + components for the pretel-os admin console.
+ *
+ * Adapted from the V1 mock (Downloads/pretel_os_admin_console_proposal.html)
+ * with the cyan/violet/yellow palette substituted by the brand teal/
+ * amber/purple from tokens.css.
+ *
+ * Conventions:
+ *   - All colors via hsl(var(--token)).
+ *   - Border-radius driven by --radius (0.75rem from tokens).
+ *   - Spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48.
+ *   - Sans: Inter via Google Fonts. Monospace: JetBrains Mono.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, hsl(var(--primary) / 0.10), transparent 32%),
+    radial-gradient(circle at 72% 4%, hsl(var(--accent) / 0.12), transparent 28%),
+    radial-gradient(circle at 55% 82%, hsl(var(--primary) / 0.06), transparent 26%),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+code, pre, .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+a { color: hsl(var(--primary)); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+aside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 24px 18px;
+  background: hsl(var(--bg-secondary) / 0.6);
+  border-right: 1px solid hsl(var(--border));
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 10px 8px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  display: grid;
+  place-items: center;
+  color: hsl(var(--primary-foreground));
+  font-weight: 900;
+  box-shadow: 0 14px 40px hsl(var(--primary) / 0.25);
+}
+
+.brand h1 {
+  font-size: 17px;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  margin: 2px 0 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+}
+
+.nav-title {
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-size: 11px;
+  margin: 22px 10px 8px;
+}
+
+nav { display: grid; gap: 4px; }
+
+nav a, nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  color: hsl(var(--text-secondary));
+  font-size: 14px;
+  text-align: left;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+
+nav a:hover, nav button:hover {
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  text-decoration: none;
+}
+
+nav a.active, nav button.active {
+  background: hsl(var(--primary) / 0.14);
+  color: hsl(var(--foreground));
+}
+
+nav .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--accent));
+}
+
+/* ---------------------------------------------------------------- main */
+
+main { padding: 32px; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.page-title p {
+  margin: 4px 0 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 13px;
+}
+
+.user-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  font-size: 12px;
+  color: hsl(var(--text-secondary));
+}
+
+/* ---------------------------------------------------------------- panels */
+
+.panel {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.panel-head h3 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+.panel-head p {
+  margin: 4px 0 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: hsl(var(--primary) / 0.10);
+  color: hsl(var(--primary));
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- table */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+tbody td {
+  padding: 12px 8px;
+  border-bottom: 1px solid hsl(var(--border));
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: 0; }
+
+.pill {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  display: inline-block;
+}
+
+.pill.green { background: hsl(var(--primary) / 0.18); color: hsl(var(--primary)); }
+.pill.amber { background: hsl(var(--secondary) / 0.18); color: hsl(var(--secondary)); }
+.pill.purple { background: hsl(var(--accent) / 0.20); color: hsl(var(--accent)); }
+.pill.red { background: hsl(var(--destructive) / 0.18); color: hsl(var(--destructive)); }
+
+/* ---------------------------------------------------------------- forms */
+
+input[type="text"],
+input[type="search"],
+input[type="number"],
+textarea,
+select {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: hsl(var(--foreground));
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.20);
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:hover { background: hsl(var(--bg-secondary)); }
+
+.btn.primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.btn.primary:hover { background: hsl(var(--primary) / 0.92); }
+
+.btn.danger {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  border-color: hsl(var(--destructive));
+}
+
+/* ---------------------------------------------------------------- preferences view */
+
+.pref-row { display: flex; align-items: center; gap: 12px; }
+.pref-row .key { flex: 0 0 30%; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.pref-row .desc { flex: 1; color: hsl(var(--muted-foreground)); font-size: 12px; }
+.pref-row .value { flex: 0 0 18%; }
+.pref-row .actions { flex: 0 0 auto; }
+
+.category-section { margin-bottom: 28px; }
+.category-section h4 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 1180px) {
+  .app { grid-template-columns: 1fr; }
+  aside { position: relative; height: auto; }
+  nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+}
+
+@media (max-width: 720px) {
+  main { padding: 18px; }
+  .topbar { flex-direction: column; align-items: flex-start; }
+  nav { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}pretel-os admin{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/tokens.css">
+  <link rel="stylesheet" href="/static/admin.css">
+  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="logo">p</div>
+        <div>
+          <h1>pretel-os</h1>
+          <p>admin console</p>
+        </div>
+      </div>
+
+      <div class="nav-title">Operación</div>
+      <nav>
+        <a href="/preferences" class="{% if active_view == 'preferences' %}active{% endif %}"><span class="dot"></span> Operator preferences</a>
+        {# Phase B will add: Memoria, Dream Engine, Costs, Pending #}
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div class="page-title">
+          <h2>{% block heading %}pretel-os admin{% endblock %}</h2>
+          <p>{% block subtitle %}{% endblock %}</p>
+        </div>
+        <div class="user-pill">{{ user_email or "anonymous" }}</div>
+      </header>
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

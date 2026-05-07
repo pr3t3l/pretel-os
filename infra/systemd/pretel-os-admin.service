@@ -1,0 +1,26 @@
+[Unit]
+Description=pretel-os admin console (Module 10 fase 1)
+Documentation=https://github.com/pr3t3l/pretel-os/blob/main/specs/mcp_admin/spec.md
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pretel/dev/pretel-os
+Environment=PYTHONPATH=/home/pretel/dev/pretel-os/src
+Environment=PRETEL_ADMIN_HOST=127.0.0.1
+Environment=PRETEL_ADMIN_PORT=8088
+EnvironmentFile=/home/pretel/.env.pretel_os
+ExecStart=/home/pretel/.venvs/pretel-os/bin/python -m mcp_admin.main
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# uvicorn binds to 127.0.0.1 only; the only path here is via Cloudflare
+# Tunnel which puts Cloudflare Access in front. The middleware reads
+# the operator email from the Cf-Access-Authenticated-User-Email header
+# that Access populates.
+
+[Install]
+WantedBy=default.target

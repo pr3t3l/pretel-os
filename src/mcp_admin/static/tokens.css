@@ -1,0 +1,73 @@
+/*
+ * tokens.css — design tokens copied from alfredo-ai-factory-guide
+ * Source: https://github.com/pr3t3l/alfredo-ai-factory-guide/blob/main/src/index.css
+ * Last synced: 2026-05-07
+ *
+ * Update procedure when the public site re-themes:
+ *   1. Pull the latest alfredo-ai-factory-guide src/index.css
+ *   2. Replace the :root / .dark blocks below with the new HSL values
+ *   3. Test admin.css against both modes
+ *   4. Note the new sync date
+ *
+ * The brand colors (teal #1D9E75 / amber #EF9F27 / purple #7F77DD) are
+ * the load-bearing identity. Don't substitute generic tones.
+ */
+
+:root {
+  /* Light mode */
+  --background: 40 20% 98%;       /* #fafaf8 warm off-white */
+  --bg-secondary: 40 11% 93%;     /* #f1f0eb */
+  --foreground: 0 0% 10%;         /* #1a1a1a */
+  --text-secondary: 30 3% 36%;    /* #5f5e5a */
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+
+  --primary: 157 74% 34%;         /* #1D9E75 teal */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 37 86% 55%;        /* #EF9F27 amber */
+  --secondary-foreground: 0 0% 100%;
+
+  --accent: 254 48% 66%;          /* #7F77DD purple */
+  --accent-foreground: 0 0% 100%;
+
+  --muted: 40 11% 93%;
+  --muted-foreground: 30 3% 36%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 0 0% 0% / 0.08;
+  --ring: 157 74% 34%;
+
+  --radius: 0.75rem;
+}
+
+:root.dark, [data-theme="dark"] {
+  --background: 240 33% 4%;       /* #0a0a0f deep blue-black */
+  --bg-secondary: 240 21% 8%;     /* #111118 */
+  --foreground: 40 10% 90%;       /* #e8e6e1 warm cream */
+  --text-secondary: 40 4% 59%;    /* #9c9a92 */
+
+  --card: 240 17% 10%;            /* #16161f */
+  --card-foreground: 40 10% 90%;
+
+  --primary: 157 68% 37%;         /* #1D9E75 teal (slightly more saturated in dark) */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 37 86% 55%;
+  --secondary-foreground: 0 0% 100%;
+
+  --accent: 246 53% 67%;          /* #7F77DD purple */
+  --accent-foreground: 0 0% 100%;
+
+  --muted: 240 21% 8%;
+  --muted-foreground: 40 4% 59%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 0 0% 100% / 0.08;
+  --ring: 157 68% 37%;
+}

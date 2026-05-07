@@ -8,27 +8,27 @@
 
 ## Phase A — Scaffolding + auth + first view (preferences)
 
-- [ ] **M10.A.1** — Decide Q1 (JWT validation in middleware now or defer). Document in `phase_a_close.md`.
-- [ ] **M10.A.2** — Decide Q7 (systemd Type=simple vs notify). Document in `phase_a_close.md`.
-- [ ] **M10.A.3** — Verify venv has FastAPI + uvicorn + jinja2 + httpx. If missing, `pip install` and document in `phase_a_close.md`.
-- [ ] **M10.A.4** — Create `src/mcp_admin/__init__.py` (empty package marker with one-line docstring).
-- [ ] **M10.A.5** — Write `src/mcp_admin/static/tokens.css` — copy HSL variables from `alfredo-ai-factory-guide/src/index.css` (`:root` and `.dark` blocks). One-line comment at top noting the source URL + commit SHA at copy time.
-- [ ] **M10.A.6** — Write `src/mcp_admin/static/admin.css` — layout + components adapted from the mock, using `var(--primary)` etc. from tokens.css.
-- [ ] **M10.A.7** — Write `src/mcp_admin/templates/base.html` — sidebar + topbar + main slot, Inter + JetBrains Mono fonts, dark-mode body class.
-- [ ] **M10.A.8** — Write `src/mcp_admin/main.py` — FastAPI app factory, mounts static + templates, lifespan that opens DB pool, lists 5 view nav entries.
-- [ ] **M10.A.9** — Write `src/mcp_admin/middleware.py` — `attach_user` reads `Cf-Access-Authenticated-User-Email`. Conditional JWT validation per Q1 outcome.
-- [ ] **M10.A.10** — Write `src/mcp_admin/handlers/preferences.py` — `GET /preferences` (reads via psycopg), `POST /preferences/{category}/{key}` (calls `mcp_server.tools.preferences.preference_set`).
-- [ ] **M10.A.11** — Write `src/mcp_admin/templates/preferences.html` — table of all prefs grouped by category, inline form per row.
-- [ ] **M10.A.12** — Add nav entry "Operator preferences" to base.html.
-- [ ] **M10.A.13** — Write `infra/systemd/pretel-os-admin.service` per Q7 outcome. Type=simple, EnvironmentFile=$HOME/.env.pretel_os, ExecStart uvicorn main:app on `127.0.0.1:PORT`.
-- [ ] **M10.A.14** — Write `tests/mcp_admin/__init__.py` + `tests/mcp_admin/conftest.py` (fixture: FastAPI test client patched against pretel_os_test).
-- [ ] **M10.A.15** — Write `tests/mcp_admin/test_preferences_handlers.py` — 4 unit tests (GET happy path, POST happy path, POST with invalid key, header extraction).
-- [ ] **M10.A.16** — Write `tests/mcp_admin/test_e2e_phase_a.py` (@pytest.mark.slow) — 2 integration tests against pretel_os_test (full request → DB round-trip).
-- [ ] **M10.A.17** — Run `PYTHONPATH=src pytest tests/mcp_admin/` — all green. Run `pytest tests/` (full suite) — no regression on 277 baseline.
-- [ ] **M10.A.18** — Run `mypy src/mcp_admin/` — clean.
-- [ ] **M10.A.19** — Manual smoke: `PYTHONPATH=src python -m mcp_admin.main` → curl `http://127.0.0.1:PORT/preferences` shows the 3 archive thresholds.
-- [ ] **M10.A.20** — Phase A close: write `specs/mcp_admin/phase_a_close.md` answering Q1/Q7 + any deltas.
-- [ ] **M10.A.21** — Commit Phase A: `[M10.A] mcp_admin scaffolding + Cloudflare Access middleware + first view (preferences)`.
+- [x] **M10.A.1** — Decide Q1 (JWT validation in middleware now or defer). Document in `phase_a_close.md`.
+- [x] **M10.A.2** — Decide Q7 (systemd Type=simple vs notify). Document in `phase_a_close.md`.
+- [x] **M10.A.3** — Verify venv has FastAPI + uvicorn + jinja2 + httpx. If missing, `pip install` and document in `phase_a_close.md`.
+- [x] **M10.A.4** — Create `src/mcp_admin/__init__.py` (empty package marker with one-line docstring).
+- [x] **M10.A.5** — Write `src/mcp_admin/static/tokens.css` — copy HSL variables from `alfredo-ai-factory-guide/src/index.css` (`:root` and `.dark` blocks). One-line comment at top noting the source URL + commit SHA at copy time.
+- [x] **M10.A.6** — Write `src/mcp_admin/static/admin.css` — layout + components adapted from the mock, using `var(--primary)` etc. from tokens.css.
+- [x] **M10.A.7** — Write `src/mcp_admin/templates/base.html` — sidebar + topbar + main slot, Inter + JetBrains Mono fonts, dark-mode body class.
+- [x] **M10.A.8** — Write `src/mcp_admin/main.py` — FastAPI app factory, mounts static + templates, lifespan that opens DB pool, lists 5 view nav entries.
+- [x] **M10.A.9** — Write `src/mcp_admin/middleware.py` — `attach_user` reads `Cf-Access-Authenticated-User-Email`. Conditional JWT validation per Q1 outcome.
+- [x] **M10.A.10** — Write `src/mcp_admin/handlers/preferences.py` — `GET /preferences` (reads via psycopg), `POST /preferences/{category}/{key}` (calls `mcp_server.tools.preferences.preference_set`).
+- [x] **M10.A.11** — Write `src/mcp_admin/templates/preferences.html` — table of all prefs grouped by category, inline form per row.
+- [x] **M10.A.12** — Add nav entry "Operator preferences" to base.html.
+- [x] **M10.A.13** — Write `infra/systemd/pretel-os-admin.service` per Q7 outcome. Type=simple, EnvironmentFile=$HOME/.env.pretel_os, ExecStart uvicorn main:app on `127.0.0.1:PORT`.
+- [x] **M10.A.14** — Write `tests/mcp_admin/__init__.py` + `tests/mcp_admin/conftest.py` (fixture: FastAPI test client patched against pretel_os_test).
+- [x] **M10.A.15** — Write `tests/mcp_admin/test_preferences_handlers.py` — 4 unit tests (GET happy path, POST happy path, POST with invalid key, header extraction).
+- [x] **M10.A.16** — Write `tests/mcp_admin/test_e2e_phase_a.py` (@pytest.mark.slow) — 2 integration tests against pretel_os_test (full request → DB round-trip).
+- [x] **M10.A.17** — Run `PYTHONPATH=src pytest tests/mcp_admin/` — all green. Run `pytest tests/` (full suite) — no regression on 277 baseline.
+- [x] **M10.A.18** — Run `mypy src/mcp_admin/` — clean.
+- [x] **M10.A.19** — Manual smoke: `PYTHONPATH=src python -m mcp_admin.main` → curl `http://127.0.0.1:PORT/preferences` shows the 3 archive thresholds.
+- [x] **M10.A.20** — Phase A close: write `specs/mcp_admin/phase_a_close.md` answering Q1/Q7 + any deltas.
+- [x] **M10.A.21** — Commit Phase A: `[M10.A] mcp_admin scaffolding + Cloudflare Access middleware + first view (preferences)`.
 
 ## Phase B — Remaining 4 MVP views
 

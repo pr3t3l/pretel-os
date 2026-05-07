@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Operator preferences — pretel-os admin{% endblock %}
+
+{% block heading %}Operator preferences{% endblock %}
+{% block subtitle %}{{ total_count }} keys configurables. Las mutations enrutan vía <code>preference_set</code> MCP tool — nunca SQL directo.{% endblock %}
+
+{% block content %}
+{% for category, items in grouped.items() %}
+  <section class="category-section">
+    <h4>{{ category }}</h4>
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">Key</th>
+            <th style="width: 38%">Purpose / source</th>
+            <th style="width: 12%">Value</th>
+            <th style="width: 12%">Scope</th>
+            <th style="width: 8%">Set</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td class="mono">{{ item.key }}</td>
+              <td>
+                <div>{{ item.purpose or "(no purpose set)" }}</div>
+                <div style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 2px;">
+                  source: <span class="pill">{{ item.source }}</span>
+                  {% if not item.active %}<span class="pill red">inactive</span>{% endif %}
+                </div>
+              </td>
+              <td>
+                <form method="post" action="/preferences/{{ item.category }}/{{ item.key }}" style="display: flex; gap: 6px;">
+                  <input type="text" name="value" value="{{ item.value }}" style="width: 100%;" />
+              </td>
+              <td><span class="pill">{{ item.scope }}</span></td>
+              <td>
+                  <button class="btn primary" type="submit">Set</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% else %}
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <h3>No preferences seeded yet</h3>
+        <p>Apply migration 0039 (Dream Engine archive thresholds) or call <code>preference_set</code> via MCP to create the first rows.</p>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}
