@@ -1,0 +1,22 @@
+[Unit]
+Description=pretel-os Dream Engine nightly consolidation worker (Module 8 fase 1)
+Documentation=https://github.com/aprete-os/pretel-os/blob/main/specs/dream_engine/spec.md
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/pretel/dev/pretel-os
+Environment=PYTHONPATH=/home/pretel/dev/pretel-os/src
+EnvironmentFile=/home/pretel/.env.pretel_os
+ExecStart=/home/pretel/.venvs/pretel-os/bin/python -m dream_engine.worker
+StandardOutput=journal
+StandardError=journal
+
+# No Restart= — Type=oneshot is by design fire-and-exit. The .timer
+# unit re-fires nightly. A failed run inserts a 'failed' or 'partial'
+# row in dream_engine_runs; the operator triages via journalctl + that
+# table, not via systemd auto-restart loops.
+
+[Install]
+WantedBy=default.target

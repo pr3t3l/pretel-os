@@ -1,0 +1,23 @@
+[Unit]
+Description=Trigger pretel-os Dream Engine nightly at 02:00 America/New_York
+Documentation=https://github.com/aprete-os/pretel-os/blob/main/specs/dream_engine/spec.md
+
+[Timer]
+# Cron 02:00 ET per CONSTITUTION §2.6 (Dream Engine row).
+OnCalendar=*-*-* 02:00:00 America/New_York
+
+# If the laptop is suspended or the server was off when the timer should
+# have fired, run the missed invocation once on next boot. The Dream
+# Engine is idempotent (UNIQUE on cross_pollination_queue + ON CONFLICT
+# DO NOTHING; archive query is idempotent against re-runs; recompute
+# overwrites scores) so a delayed run is safe.
+Persistent=true
+
+# Jitter 0-60 s to avoid thundering-herd if multiple host timers fire
+# at 02:00. Trivial protection but no downside.
+RandomizedDelaySec=60
+
+Unit=pretel-os-dream-engine.service
+
+[Install]
+WantedBy=timers.target

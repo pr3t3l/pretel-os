@@ -57,20 +57,20 @@
 
 ## Phase C — systemd integration + production dry-run
 
-- [ ] **M8.C.1** — Write `infra/systemd/pretel-os-dream-engine.service` — Type=oneshot, EnvironmentFile=$HOME/.env.pretel_os, ExecStart=python -m dream_engine.worker.
-- [ ] **M8.C.2** — Write `infra/systemd/pretel-os-dream-engine.timer` — OnCalendar=*-*-* 02:00 America/New_York, Persistent=true, RandomizedDelaySec=60.
-- [ ] **M8.C.3** — Install user units: `cp infra/systemd/pretel-os-dream-engine.* ~/.config/systemd/user/`.
-- [ ] **M8.C.4** — Reload + enable timer: `systemctl --user daemon-reload && systemctl --user enable --now pretel-os-dream-engine.timer`.
-- [ ] **M8.C.5** — Verify timer registered: `systemctl --user list-timers | grep dream-engine` shows next firing at 02:00 ET.
-- [ ] **M8.C.6** — Manual dry-run against PRODUCTION: `systemctl --user start pretel-os-dream-engine.service` *with worker invoked in --dry-run mode* (one-time override). Capture stdout to `/tmp/dream_engine_dry_run_$(date +%s).log`. Operator review required before going live.
-- [ ] **M8.C.7** — Operator review of dry-run output. Sign off in commit message of M8.C.10.
-- [ ] **M8.C.8** — Live first manual run (no --dry-run): `systemctl --user start pretel-os-dream-engine.service`. Verify `dream_engine_runs` row inserted, status=success.
-- [ ] **M8.C.9** — Verify SC1–SC4 against production data after first run:
+- [x] **M8.C.1** — Write `infra/systemd/pretel-os-dream-engine.service` — Type=oneshot, EnvironmentFile=$HOME/.env.pretel_os, ExecStart=python -m dream_engine.worker.
+- [x] **M8.C.2** — Write `infra/systemd/pretel-os-dream-engine.timer` — OnCalendar=*-*-* 02:00 America/New_York, Persistent=true, RandomizedDelaySec=60.
+- [x] **M8.C.3** — Install user units: `cp infra/systemd/pretel-os-dream-engine.* ~/.config/systemd/user/`.
+- [x] **M8.C.4** — Reload + enable timer: `systemctl --user daemon-reload && systemctl --user enable --now pretel-os-dream-engine.timer`.
+- [x] **M8.C.5** — Verify timer registered: `systemctl --user list-timers | grep dream-engine` shows next firing at 02:00 ET.
+- [x] **M8.C.6** — Manual dry-run against PRODUCTION: `systemctl --user start pretel-os-dream-engine.service` *with worker invoked in --dry-run mode* (one-time override). Capture stdout to `/tmp/dream_engine_dry_run_$(date +%s).log`. Operator review required before going live.
+- [x] **M8.C.7** — Operator review of dry-run output. Sign off in commit message of M8.C.10.
+- [x] **M8.C.8** — Live first manual run (no --dry-run): `systemctl --user start pretel-os-dream-engine.service`. Verify `dream_engine_runs` row inserted, status=success.
+- [x] **M8.C.9** — Verify SC1–SC4 against production data after first run:
   - SC1: dream_engine_runs row present
   - SC2: spot-check 3 tools_catalog utility_scores
   - SC3: count cross_pollination_queue rows with proposed_by='dream_engine_dedup'; document the burst size
   - SC4: spot-check any newly-archived lessons; if zero, that's expected for a young corpus
-- [ ] **M8.C.10** — Commit Phase C: `[M8.C] systemd timer + dry-run + first live run`.
+- [x] **M8.C.10** — Commit Phase C: `[M8.C] systemd timer + dry-run + first live run`.
 
 ## Phase D — 7-day production observation
 
