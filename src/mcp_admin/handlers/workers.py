@@ -54,9 +54,9 @@ WORKERS: list[dict[str, Any]] = [
     {
         "name": "Auto-index on save",
         "kind": "worker",
-        "trigger": "Postgres LISTEN on `embedding_queue` channel",
-        "home": "MCP server process (daemon thread) + 0037 trigger coverage",
-        "service": "pretel-os-mcp.service",
+        "trigger": "Postgres LISTEN on `embedding_queue` channel + 60s safety scan",
+        "home": "systemd user unit (drains `pending_embeddings` via OpenAI text-embedding-3-large)",
+        "service": "pretel-os-autoindex.service",
         "timer": None,
         "details_url": None,
         "constitution_ref": "§2.6 row 3",
