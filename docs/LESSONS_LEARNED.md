@@ -294,6 +294,8 @@ Per `PROJECT_FOUNDATION §4 Module 8`: `SELECT count(*) FROM lessons WHERE sourc
 
 ## 9. Seed lessons from foundation design (2026-04-16 to 2026-04-18)
 
+> **Status: migrated 2026-05-07 (commit `f3dfa83`).** The 17 lessons in this section are now in the `lessons` table, tagged `foundation-lesson` and titled `LL-*`. The DB is the canonical store; this section is preserved for narrative context only. Edits here do **not** propagate — use `save_lesson` / `decision_record` for new entries, and query via `search_lessons` or the mcp_admin Lessons view. (M9.fu3)
+
 Ten lessons already learned during the four-document foundation cycle of pretel-os itself. These are inserted into `lessons_pending_review` on Module 8 completion (not before — the table must exist first), then promoted to `active` by the operator in batch review. They bootstrap the corpus with real learnings about how to run this kind of project.
 
 ### LL-PROC-001 — Dogfood the methodology before selling it
