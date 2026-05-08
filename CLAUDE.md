@@ -60,7 +60,7 @@ Same pattern for skills: write `skills/<name>.md`, then `register_skill` (or see
 
 Numbered sequentially under `migrations/` (37 files: 0000–0035 + 0028a). `schema_migrations` table is the applied-migration ledger.
 
-**Known runner bug (LL-INFRA-001 / ADR-026):** `infra/db/migrate.py` stores `path.stem` (e.g. `0024_tasks`) as `version` while older rows use 4-digit prefix only (`0024`). Re-running re-attempts already-applied migrations. Sanctioned workaround from M7.B onward:
+**Known runner bug (LL-INFRA-001 / ADR-030, originally drafted as ADR-026):** `infra/db/migrate.py` stores `path.stem` (e.g. `0024_tasks`) as `version` while older rows use 4-digit prefix only (`0024`). Re-running re-attempts already-applied migrations. Sanctioned workaround from M7.B onward:
 
 ```bash
 psql "$DATABASE_URL" -1 -f migrations/<NNNN_name>.sql

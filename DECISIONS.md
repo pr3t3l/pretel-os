@@ -1,12 +1,14 @@
 # DECISIONS — pretel-os
 
-**Status:** Active ADR log
-**Last updated:** 2026-04-30
+**Status:** Active ADR log (DB-canonical since 2026-05-07)
+**Last updated:** 2026-05-07
 **Owner:** Alfredo Pretel Vargas
 
-This file is the canonical record of architectural and process decisions for pretel-os. Every entry is an ADR (Architectural Decision Record) with explicit context, decision, consequences, and alternatives. Decisions here are immutable; if a decision needs to change, a new ADR supersedes it (status flips to `superseded`, `superseded_by` points to the new ADR).
+This file is the human-readable narrative of architectural and process decisions for pretel-os. **The canonical store is the `decisions` table** (queryable via `decision_search` / `mcp_admin`). Every entry below has a corresponding row in the table, keyed by `adr_number`.
 
-When `decisions` table comes online (M0.X Phase A migration 0029), the rows here seed that table. Until then, this file is authoritative.
+When the file and the DB disagree, the DB wins. Operator edits flow: edit here for narrative, then `decision_record` (or `decision_supersede`) for the row.
+
+> **Numbering note (2026-05-07).** Earlier drafts of this file used `ADR-026` for the migrate.py reconciliation decision and `ADR-027` for the projects/projects_indexed split. Those slots had already been claimed in the DB by Module 4 work (Router invariant detector, Telemetry INSERT-early). The two file-only ADRs were renumbered to **ADR-030** and **ADR-031** to align with the DB; the original content is preserved verbatim below under the new numbers.
 
 ## Conventions
 
@@ -38,7 +40,9 @@ What this enables, what this costs, what's now load-bearing.
 What else was on the table and why it was rejected.
 ```
 
-ADRs 001-019 are recorded in `docs/PROJECT_FOUNDATION.md §5` (legacy location, not migrated). ADR-020 onward live here.
+ADRs 001-019 originated in `docs/PROJECT_FOUNDATION.md §5`; they were migrated into the `decisions` table on 2026-05-07 (commit pending — see `scripts/migrate_foundation_adrs.py`) and are now queryable via `decision_search`. The narrative for those 19 ADRs still lives in PROJECT_FOUNDATION.md §5 (preserved for context); the DB is canonical.
+
+ADR-020 through ADR-031 are recorded both here and in the DB. ADR-026 through ADR-029 originated as DB-only inserts during Module 4 / M8 amendment; their narratives are not duplicated here (query the DB or `mcp_admin` for full context).
 
 ---
 
@@ -243,7 +247,9 @@ The contract is the input spec for M4 Phase B. Phase B writes its own spec/plan/
 
 ---
 
-## ADR-026 — `infra/db/migrate.py` version-format reconciliation deferred
+## ADR-030 — `infra/db/migrate.py` version-format reconciliation deferred
+
+> **Renumbered from ADR-026 on 2026-05-07.** Slot 026 was already taken in the DB by the Router invariant-detector decision (Module 4 Phase C). Content below is the verbatim original from when this was drafted as ADR-026.
 
 **Status:** active
 **Scope:** operational
@@ -251,7 +257,7 @@ The contract is the input spec for M4 Phase B. Phase B writes its own spec/plan/
 **Decided:** 2026-04-30
 **Decided by:** operator+claude
 **Applicable buckets:** all
-**Tags:** [migrations, runner, schema_migrations, technical-debt]
+**Tags:** [migrations, runner, schema_migrations, technical-debt, renumbered-from-026]
 **Derived from lessons:** LL-INFRA-001
 
 ### Context
@@ -282,7 +288,9 @@ The proper fix (a one-shot reconciliation migration that backfills full stems in
 
 ---
 
-## ADR-027 — `projects` (live) and `projects_indexed` (closed) are intentionally two tables
+## ADR-031 — `projects` (live) and `projects_indexed` (closed) are intentionally two tables
+
+> **Renumbered from ADR-027 on 2026-05-07.** Slot 027 was already taken in the DB by the Telemetry INSERT-early decision (Module 4 Phase D). Content below is the verbatim original from when this was drafted as ADR-027.
 
 **Status:** active
 **Scope:** architectural
@@ -290,7 +298,7 @@ The proper fix (a one-shot reconciliation migration that backfills full stems in
 **Decided:** 2026-04-30
 **Decided by:** operator+claude
 **Applicable buckets:** all
-**Tags:** [data-model, projects, lifecycle, m7]
+**Tags:** [data-model, projects, lifecycle, m7, renumbered-from-027]
 
 ### Context
 Module 2 shipped `projects_indexed` (DATA_MODEL §2.3) as a historical/closed-project table with `embedding vector(3072)`, narrative columns (`outcome`, `closure_reason`, `final_readme`), and `key_decisions JSONB`. It was designed for semantic recall of finished work, not for active-project state.
