@@ -1,0 +1,17 @@
+[Unit]
+Description=pretel-os hourly git sync (pull --rebase --autostash + push)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/pretel/dev/pretel-os
+ExecStart=/home/pretel/dev/pretel-os/infra/git/git_sync.sh
+StandardOutput=journal
+StandardError=journal
+
+# No Restart= — Type=oneshot is fire-and-exit. The .timer re-fires hourly.
+# Failed runs surface in `journalctl --user -u pretel-os-gitsync.service`.
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=Trigger pretel-os git sync hourly
+
+[Timer]
+OnCalendar=hourly
+
+# If the laptop was suspended / off when the timer should have fired,
+# run the missed invocation once on next boot. The sync script is
+# idempotent (no-op when up-to-date) so a delayed run is safe.
+Persistent=true
+
+# Jitter 0-60 s so the hourly tick doesn't collide with other top-of-hour jobs.
+RandomizedDelaySec=60
+
+Unit=pretel-os-gitsync.service
+
+[Install]
+WantedBy=timers.target
