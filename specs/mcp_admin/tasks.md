@@ -135,3 +135,4 @@
 - [ ] **M10.fu9** — HTMX inline preference edit (no page reload). Plan §M10.C.11 deferred.
 - [ ] **M10.fu10** — Embedded journalctl excerpt in dream_run_detail. Plan §M10.C.9 deferred.
 - [ ] **M10.fu11** — `archive_lesson` MCP tool + lesson detail archive button.
+- [ ] **M10.fu12** — Fix test flake: `tests/mcp_server/tools/test_awareness.py::test_recommend_skills_for_query_empty_when_no_match_above_threshold` is data-state-dependent on `pretel_os_test`. Add a fixture that resets `skill_discovery.usage_count = 0` before the test, OR rewrite the assertion to compute the threshold from actual utility_score state.

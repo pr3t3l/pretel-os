@@ -1,22 +1,26 @@
-# M7.5 Awareness Layer Demo Project
+# Marketing OS
 
 <!-- pretel:auto:start summary -->
-**Bucket:** scout  
-**Slug:** m7-5-demo  
-**Status:** archived  
-**Created:** 2026-04-30  
-**Last regenerated:** 2026-05-06T13:01:43Z
+**Bucket:** business  
+**Slug:** marketing-os  
+**Status:** active  
+**Created:** 2026-05-08  
+**Last regenerated:** 2026-05-08T02:28:19Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start objective -->
 ## Objective
 
-Demonstrate the 7 awareness-layer success criteria end-to-end.
+Construir un sistema híbrido determinístico/agéntico que reciba un product_brief y conduzca todo el ciclo de marketing — desde research hasta optimización — aprendiendo de cada campaña vía pretel-os, validado primero con Declassified y luego generalizado.
 
 ## Stack
 
-- postgres
 - python
+- postgresql
+- pgvector
+- litellm
+- n8n
+- fastmcp
 
 ## Applicable skills
 
@@ -32,7 +36,7 @@ _(none)_
 <!-- pretel:auto:start recent_decisions -->
 ## Recent decisions
 
-_(none)_
+- ADR-? — Marketing OS implementado como módulo dentro del repo pretel-os, no como proyecto cliente externo (2026-05-08)
 <!-- pretel:auto:end recent_decisions -->
 
 <!-- pretel:auto:start applicable_lessons -->

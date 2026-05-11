@@ -44,6 +44,9 @@ It replaces a prior stack called OpenClaw. It is **not** an app — it is a subs
   Reference docs: `~/Downloads/M7_5_{awareness_layer_rationale,plan,atomic_tasks,code_briefings}.md`. Demo runbook: `runbooks/m7_5_demo.md`. The `pretel-os-readme.service` is now production infrastructure — any future write that should regenerate READMEs depends on it being active.
 - Tasks structure migrated to milestone-only at root with per-module trinity rule documented in `runbooks/sdd_module_kickoff.md`.
 - 4 spec drifts caught at scratch test time (LL-M0X-001): request_id type, scope DEFAULT, lessons.status enum, L0 budget interpretation. Zero production damage.
+- **Auto-index worker LIVE 2026-05-07** (commits `2cceead` + `f3d1472`): `pretel-os-autoindex.service` LISTENs on `embedding_queue` and drains `pending_embeddings` via OpenAI text-embedding-3-large. Closes the long-standing gap where CONSTITUTION §2.6 row 3 was declared but never built. Source: `src/auto_index/`. Tests: `tests/auto_index/test_worker.py` (5 cases). INDEXABLE_TABLES mirrors the trigger's TG_TABLE_NAME branches — both move in the same migration.
+- **Foundation ADR migration 2026-05-07** (commit `fd0b643`): 21 ADRs (001–019 from PROJECT_FOUNDATION.md §5 + the two file-only ADRs from DECISIONS.md, renumbered 026→030 and 027→031 because the original slots were claimed in the DB by Module 4 work). `decisions` table is now the canonical store; DECISIONS.md is narrative-only.
+- **LESSONS_LEARNED.md §9 marked migrated 2026-05-07** (commit `111189c`, M9.fu3): the 17 foundation-era seed lessons inserted by M9 (commit `f3dfa83`) are canonical in DB tagged `foundation-lesson`; doc section is preserved for narrative only.
 
 **What is not done:**
 - **Module 6 (Reflection worker) production deployment** — code committed; M7.5 unblock is now done so M6 outputs (lessons + cross_pollination_queue rows) will carry `project_id` FKs and be queryable per project. This is the new top-of-stack.
@@ -910,6 +913,77 @@ Tags unchanged this session arc: foundation-v1.0, module-1-complete,
   module-5-complete (and the M4 phase tags from Module 4's session arc).
   M7 phases tracked by commit hash only — no intermediate tags
   (consistent with the operator pattern from M0.X).
+
+
+Last session: 2026-05-07 (M9.fu3 + Foundation ADR migration + Auto-index daemon live)
+Last task completed: 4 commits closing 3 high-value backlog items + tests
+  - 111189c [M9.fu3]    Mark LESSONS_LEARNED.md §9 as migrated to lessons table
+  - fd0b643 [ADRs]      Migrate 21 foundation-era ADRs into decisions table
+  - 2cceead [Auto-idx]  Build pretel-os-autoindex.service daemon
+  - f3d1472 [Auto-idx]  Integration tests for worker (5 cases, all passing)
+  All pushed to origin/main (f3dfa83..f3d1472).
+Production state changes:
+  - decisions table: 28 → 49 rows; 31 rows now carry adr_number (1–31);
+    every row has a non-null embedding (verified post-drain).
+  - pretel-os-autoindex.service: NEW systemd user unit, enabled+running.
+    Drains pending_embeddings via OpenAI text-embedding-3-large; LISTENs on
+    `embedding_queue`; 60s safety scan; MAX_ATTEMPTS=5 poison-pill guard.
+    Backlog of 25 rows pending since 2026-04-28 fully drained.
+  - mcp_admin worker descriptor corrected: was pointing at pretel-os-mcp.service
+    (incorrect — no daemon thread existed); now points at pretel-os-autoindex.service.
+Decisions captured this session arc (full reasoning in DECISIONS.md):
+  - Numbering reconciliation 026/027 → 030/031: DECISIONS.md ADR-026
+    (migrate.py reconciliation) and ADR-027 (projects/projects_indexed split)
+    were renumbered because slots 026/027 had already been claimed in the DB
+    by Module 4 work (Router invariant detector / Telemetry INSERT-early).
+    File "lost" to the DB per CLAUDE.md doctrine: when file and DB disagree,
+    DB wins. Verbatim content preserved under new headers with
+    `renumbered-from-NNN` banners + tags.
+  - DECISIONS.md is now declared narrative-only; the `decisions` table is
+    the canonical store. New entries flow through `decision_record` MCP tool,
+    not file edits.
+  - LESSONS_LEARNED.md §9 same pattern: marked migrated 2026-05-07; lessons
+    table is canonical. The 17 foundation-era seed lessons are tagged
+    `foundation-lesson` and titled `LL-*` (M9 commit f3dfa83 inserted them).
+Auto-index daemon — what it is and what to know:
+  - Source: src/auto_index/{__init__,__main__,worker}.py
+  - Service: ~/.config/systemd/user/pretel-os-autoindex.service
+              (template at infra/systemd/pretel-os-autoindex.service)
+  - Mirrors the readme_consumer pattern: AsyncConnectionPool + LISTEN +
+    asyncio.Semaphore(4) for bounded OpenAI parallelism.
+  - INDEXABLE_TABLES (mirrors notify_missing_embedding TG_TABLE_NAME branches):
+    lessons, tools_catalog, projects_indexed, conversations_indexed, patterns,
+    decisions, gotchas, contacts, ideas, best_practices.
+    Adding a new embedded table requires editing BOTH the trigger function
+    and INDEXABLE_TABLES in the same migration.
+  - Tests: tests/auto_index/test_worker.py (5 cases, @pytest.mark.slow),
+    runs in <2s against pretel_os_test with patched_embed mock.
+  - Constitutional impact: §2.6 row 3 was always declared but never built;
+    this session closed the gap. CLAUDE.md "Five background workers" line
+    updated to reflect live state (autoindex.service + dream-engine.service
+    + readme.service all systemd-managed; Reflection cancelled per ADR-029
+    chain; Morning Intelligence still planned).
+Lessons captured this session: 0 new (the auto-index gap was a conceptual
+  doctrine miss — daemon was specified but never written — not a runtime
+  failure mode worth a lesson row. The renumbering conflict pattern is
+  also not lesson-worthy on its own; it's documented in the renumbered-from
+  banners themselves.)
+Next:
+  - **Calendar-locked, not actionable today:** M8.D Dream Engine 7-day obs
+    window closes 2026-05-14 → tag module-8-complete. M10.E mcp_admin 7-day
+    obs window also closes 2026-05-14 → tag module-10-complete. Daily check:
+    `journalctl --user -u pretel-os-{admin,dream-engine}.service -p err
+    --since yesterday` — empty = day cumple.
+  - M7.A.fu1 (apply migration 0032_seed_skills_sdd_vett.sql) is now
+    actually safe to do: the auto-index worker will fill the embeddings
+    automatically on first INSERT.
+  - M7.A.fu2 (migrate.py runner version-format reconciliation, ADR-030 in
+    the new numbering) still deferred. Workaround unchanged.
+  - M6 (Reflection worker) status note: cancelled per decision row
+    9e8bacad (NOT in the four-worker count anymore). If restarted, the M7.5
+    FK linkage is in place to make M6 outputs queryable per project.
+Tags unchanged this session: same as prior. No new tag pushed; the four
+  commits are operator-driven cleanup, not a milestone closure.
 ---
 
 **End of SESSION_RESTORE.md.**

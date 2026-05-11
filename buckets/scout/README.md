@@ -1,16 +1,16 @@
 # Bucket: scout
 
 <!-- pretel:auto:start summary -->
-**Active projects:** 0  
+**Active projects:** 1  
 **Archived projects:** 1  
-**Open tasks:** 2  
-**Last regenerated:** 2026-04-30T21:54:09Z
+**Open tasks:** 1  
+**Last regenerated:** 2026-05-07T16:47:43Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start active_projects -->
 ## Active projects
 
-_(none)_
+- [jira](projects/jira/README.md) — Jira (active) — Diseñar e implementar un pipeline que use LLM y Copilot Studio para extraer datos de PDFs y crear objetos Jira (Epics) automáticamente via API Token.
 <!-- pretel:auto:end active_projects -->
 
 <!-- pretel:auto:start archived_projects -->
@@ -22,15 +22,19 @@ _(none)_
 <!-- pretel:auto:start applicable_skills -->
 ## Available skills
 
-- **skill_discovery** — How to discover and use registered skills
 - **sdd** — Spec-Driven Development process
+- **skill_discovery** — How to discover and use registered skills
 - **vett** — Vendor Evaluation & Technology Triage framework
 <!-- pretel:auto:end applicable_skills -->
 
 <!-- pretel:auto:start recent_decisions -->
 ## Recent decisions (5 most recent)
 
-_(none)_
+- ADR-? — Canvas2Epic v1 PRODUCTION arquitectura final con AdaptiveCard dinámico Formula mode (May 5 2026) (2026-05-05)
+- ADR-? — Canvas2Epic v1 UploadToJira topic FULL end-to-end VALIDADO con creación real de Epics (May 5 2026) (2026-05-05)
+- ADR-? — Canvas2Epic v1: ProjectKey siempre se pregunta al usuario, no se infiere (2026-05-02)
+- ADR-? — Hardcoded component AI-Native for Canvas2Epic v1 search and creation (2026-05-01)
+- ADR-? — Canvas2Epic operates at Epic level only — no Initiatives, Stories, or Tasks (2026-05-01)
 <!-- pretel:auto:end recent_decisions -->
 
 <!-- pretel:notes:start -->

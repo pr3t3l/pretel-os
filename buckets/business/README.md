@@ -1,16 +1,16 @@
 # Bucket: business
 
 <!-- pretel:auto:start summary -->
-**Active projects:** 0  
+**Active projects:** 1  
 **Archived projects:** 0  
 **Open tasks:** 14  
-**Last regenerated:** 2026-04-30T19:56:16Z
+**Last regenerated:** 2026-05-08T02:28:19Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start active_projects -->
 ## Active projects
 
-_(none)_
+- [marketing-os](projects/marketing-os/README.md) — Marketing OS (active) — Construir un sistema híbrido determinístico/agéntico que reciba un product_brief y conduzca todo el ciclo de marketing — desde research hasta optimización — aprendiendo de cada campaña vía pretel-os, validado primero con Declassified y luego generalizado.
 <!-- pretel:auto:end active_projects -->
 
 <!-- pretel:auto:start archived_projects -->
@@ -22,19 +22,20 @@ _(none)_
 <!-- pretel:auto:start applicable_skills -->
 ## Available skills
 
-- **skill_discovery** — How to discover and use registered skills
+- **class-knowledge-extraction** — Distill course/lesson content into best_practices, lessons, or skill files
 - **sdd** — Spec-Driven Development process
+- **skill_discovery** — How to discover and use registered skills
 - **vett** — Vendor Evaluation & Technology Triage framework
 <!-- pretel:auto:end applicable_skills -->
 
 <!-- pretel:auto:start recent_decisions -->
 ## Recent decisions (5 most recent)
 
-- ADR-28 — ADR-028: ContextBundle is a plain dict, not a dataclass (2026-04-29)
-- ADR-27 — ADR-027: Telemetry INSERT-early + UPDATE-per-step with silent error swallowing (2026-04-29)
-- ADR-26 — ADR-026: Router invariant detector is passive — detect and report, never block (2026-04-29)
-- ADR-25 — Layer Loader Contract frozen at module-0x-complete (2026-04-29)
-- ADR-24 — HNSW indexes deferred until pgvector >= 0.7 or volume justifies (2026-04-29)
+- ADR-? — Marketing OS implementado como módulo dentro del repo pretel-os, no como proyecto cliente externo (2026-05-08)
+- ADR-31 — projects (live) and projects_indexed (closed) are intentionally two tables (2026-05-08)
+- ADR-30 — infra/db/migrate.py version-format reconciliation deferred (2026-05-08)
+- ADR-19 — Knowledge lifecycle (archive, summarize, nightly dedup) (2026-05-08)
+- ADR-18 — Project snapshots separate from skill versions (2026-05-08)
 <!-- pretel:auto:end recent_decisions -->
 
 <!-- pretel:notes:start -->

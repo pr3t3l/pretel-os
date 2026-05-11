@@ -4,7 +4,7 @@
 **Active projects:** 1  
 **Archived projects:** 0  
 **Open tasks:** 1  
-**Last regenerated:** 2026-05-07T16:31:18Z
+**Last regenerated:** 2026-05-07T17:48:34Z
 <!-- pretel:auto:end summary -->
 
 <!-- pretel:auto:start active_projects -->
@@ -22,8 +22,9 @@ _(none)_
 <!-- pretel:auto:start applicable_skills -->
 ## Available skills
 
-- **skill_discovery** — How to discover and use registered skills
+- **class-knowledge-extraction** — Distill course/lesson content into best_practices, lessons, or skill files
 - **sdd** — Spec-Driven Development process
+- **skill_discovery** — How to discover and use registered skills
 <!-- pretel:auto:end applicable_skills -->
 
 <!-- pretel:auto:start recent_decisions -->
