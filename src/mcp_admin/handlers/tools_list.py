@@ -41,6 +41,7 @@ async def tools_list(
 
     pool = db_mod.get_pool()
     tools: list[dict[str, Any]] = []
+    buckets_available: list[str] = []
     async with pool.connection(timeout=5.0) as conn:
         async with conn.cursor() as cur:
             await cur.execute(
@@ -70,6 +71,14 @@ async def tools_list(
                     }
                 )
 
+            await cur.execute(
+                "SELECT DISTINCT unnest(applicable_buckets) AS b "
+                "FROM tools_catalog "
+                "WHERE kind = 'tool' AND archived_at IS NULL AND deprecated = false "
+                "ORDER BY b"
+            )
+            buckets_available = [str(b[0]) for b in await cur.fetchall()]
+
     templates: Jinja2Templates = router.templates  # type: ignore[attr-defined]
     return templates.TemplateResponse(
         request=request,
@@ -81,5 +90,6 @@ async def tools_list(
             "bucket": bucket or "",
             "q": q or "",
             "total": len(tools),
+            "buckets_available": buckets_available,
         },
     )

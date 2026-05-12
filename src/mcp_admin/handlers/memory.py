@@ -26,6 +26,7 @@ router = APIRouter()
 
 DEFAULT_LIMIT = 50
 TABS = ("lessons", "decisions", "best_practices")
+LESSON_STATUSES = ("active", "pending_review", "archived", "merged_into", "rejected")
 
 
 def attach_templates(templates: Jinja2Templates) -> None:
@@ -58,6 +59,7 @@ async def memory_view(
     else:  # best_practices
         sql_count, sql_list, params = _build_best_practices_query(q)
 
+    buckets_available: list[str] = []
     async with pool.connection(timeout=5.0) as conn:
         async with conn.cursor() as cur:
             await cur.execute(sql_count, params)
@@ -67,6 +69,14 @@ async def memory_view(
             await cur.execute(sql_list, (*params, limit, offset))
             for r in await cur.fetchall():
                 rows.append(_row_to_dict(tab, r))
+
+            await cur.execute(
+                "SELECT DISTINCT bucket FROM ("
+                "  SELECT bucket FROM lessons WHERE deleted_at IS NULL AND bucket IS NOT NULL"
+                "  UNION SELECT bucket FROM decisions WHERE bucket IS NOT NULL"
+                ") b ORDER BY bucket"
+            )
+            buckets_available = [str(b[0]) for b in await cur.fetchall()]
 
     templates: Jinja2Templates = router.templates  # type: ignore[attr-defined]
     return templates.TemplateResponse(
@@ -87,6 +97,8 @@ async def memory_view(
             "next_offset": offset + limit if offset + limit < total else None,
             "prev_offset": max(offset - limit, 0) if offset > 0 else None,
             "tabs": TABS,
+            "buckets_available": buckets_available,
+            "statuses_available": list(LESSON_STATUSES),
         },
     )
 
@@ -101,12 +113,18 @@ def _build_lessons_query(
     if bucket:
         where.append("bucket = %s"); params.append(bucket)
     if tag:
-        where.append("%s = ANY(tags)"); params.append(tag)
+        where.append(
+            "EXISTS (SELECT 1 FROM unnest(tags) AS t WHERE t ILIKE %s)"
+        )
+        params.append(f"%{tag}%")
     if status:
         where.append("status::text = %s"); params.append(status)
     if q:
-        where.append("(title ILIKE %s OR content ILIKE %s)")
-        params.extend([f"%{q}%", f"%{q}%"])
+        where.append(
+            "(title ILIKE %s OR content ILIKE %s "
+            "OR EXISTS (SELECT 1 FROM unnest(tags) AS t WHERE t ILIKE %s))"
+        )
+        params.extend([f"%{q}%", f"%{q}%", f"%{q}%"])
     w = " AND ".join(where)
     sql_count = f"SELECT count(*) FROM lessons WHERE {w}"
     sql_list = (

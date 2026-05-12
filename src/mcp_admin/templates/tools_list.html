@@ -9,11 +9,16 @@
   <form method="get" action="/tools" style="display: flex; gap: 10px; align-items: end; margin-bottom: 14px;">
     <div>
       <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Bucket</div>
-      <input type="text" name="bucket" value="{{ bucket }}" placeholder="personal / business / scout" />
+      <select name="bucket">
+        <option value="">— todos —</option>
+        {% for b in buckets_available %}
+          <option value="{{ b }}" {% if b == bucket %}selected{% endif %}>{{ b }}</option>
+        {% endfor %}
+      </select>
     </div>
     <div style="flex: 1; min-width: 200px;">
-      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search</div>
-      <input type="search" name="q" value="{{ q }}" placeholder="..." style="width: 100%;" />
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search (name + description)</div>
+      <input type="search" name="q" value="{{ q }}" placeholder="palabra clave..." style="width: 100%;" />
     </div>
     <button type="submit" class="btn primary">Filtrar</button>
   </form>
