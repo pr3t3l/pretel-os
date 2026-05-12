@@ -5,6 +5,19 @@
 {% block subtitle %}Últimos {{ days }} días · {{ active_days }} con actividad · total ${{ "%.4f"|format(total_cost) }} · {{ total_calls }} llamadas internas.{% endblock %}
 
 {% block content %}
+{% set any_err = errors.costs or errors.llm_ever or errors.usage or errors.routing %}
+{% if any_err %}
+<div class="panel" style="margin-bottom: 16px; border-color: hsl(var(--destructive)); background: hsl(var(--destructive) / 0.08);">
+  <strong>Queries con error (sección degradada, no fatal):</strong>
+  <ul style="margin: 6px 0 0 18px; font-size: 12px; font-family: monospace;">
+    {% if errors.costs %}<li>v_daily_cost_by_purpose → {{ errors.costs }}</li>{% endif %}
+    {% if errors.llm_ever %}<li>llm_calls min/count → {{ errors.llm_ever }}</li>{% endif %}
+    {% if errors.usage %}<li>usage_logs → {{ errors.usage }}</li>{% endif %}
+    {% if errors.routing %}<li>routing_logs → {{ errors.routing }}</li>{% endif %}
+  </ul>
+</div>
+{% endif %}
+
 <div class="panel" style="margin-bottom: 16px; background: hsl(var(--muted) / 0.4);">
   <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
     <div style="flex: 1; min-width: 280px; font-size: 12px; line-height: 1.55;">

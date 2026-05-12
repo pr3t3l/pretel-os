@@ -9,43 +9,49 @@
   <div class="panel-head"><div><h3>Lessons — pending_review</h3><p>Aprobación de auto-approval falló alguna condición §5.2 rule 13. Revisa y aprueba o rechaza.</p></div><span class="tag">{{ lesson_count }}</span></div>
 
   {% if pending_lessons %}
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      {% for l in pending_lessons %}
-        <details style="border: 1px solid hsl(var(--border)); border-radius: 0.75rem; padding: 12px 16px; background: hsl(var(--card));">
-          <summary style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 600; margin-bottom: 4px;">{{ l.title }}</div>
-              <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; color: hsl(var(--muted-foreground)); align-items: center;">
-                <span class="pill">{{ l.bucket }}</span>
-                {% for t in l.tags %}<span class="pill purple" style="font-size: 10px;">{{ t }}</span>{% endfor %}
-                <span>· {{ l.created_at[:10] }}</span>
-                {% if not l.next_time %}<span class="pill red">next_time missing</span>{% endif %}
-              </div>
-            </div>
-            <div style="white-space: nowrap;">
-              <a class="btn" href="/memory/lessons/{{ l.id }}" style="margin-right: 4px;">Full card ↗</a>
-            </div>
-          </summary>
-          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid hsl(var(--border));">
-            <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Content</div>
-            <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 12px;">{{ l.content }}</div>
-            {% if l.next_time %}
-              <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">next_time</div>
-              <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 12px;">{{ l.next_time }}</div>
-            {% endif %}
-            <div style="display: flex; gap: 6px; margin-top: 8px;">
-              <form method="post" action="/pending/lessons/{{ l.id }}/approve" style="display: inline-block;">
+    <table>
+      <thead>
+        <tr><th></th><th>Title</th><th>Bucket</th><th>Tags</th><th>next_time</th><th>Created</th><th style="width: 220px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for l in pending_lessons %}
+          <tr>
+            <td style="width: 24px;">
+              <button class="btn" style="padding: 2px 8px;" onclick="var r=document.getElementById('l-{{ l.id }}'); r.hidden=!r.hidden; this.textContent=r.hidden?'▸':'▾';">▸</button>
+            </td>
+            <td>
+              <div>{{ l.title }}</div>
+              <div style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 2px;">{{ l.content[:140] }}{% if l.content|length > 140 %}...{% endif %}</div>
+            </td>
+            <td><span class="pill">{{ l.bucket }}</span></td>
+            <td style="font-size: 11px;">{{ l.tags|join(', ') }}</td>
+            <td style="font-size: 12px;">{% if l.next_time %}{{ l.next_time[:80] }}{% if l.next_time|length > 80 %}...{% endif %}{% else %}<span class="pill red">missing</span>{% endif %}</td>
+            <td style="font-size: 11px;">{{ l.created_at[:10] }}</td>
+            <td>
+              <form method="post" action="/pending/lessons/{{ l.id }}/approve" style="display: inline-block; margin-right: 4px;">
                 <button class="btn primary" type="submit">Approve</button>
               </form>
               <form method="post" action="/pending/lessons/{{ l.id }}/reject" style="display: inline-block;" onsubmit="this.reason.value = prompt('Razón del reject (opcional):') || 'rejected via admin console'; return true;">
                 <input type="hidden" name="reason" />
                 <button class="btn danger" type="submit">Reject</button>
               </form>
-            </div>
-          </div>
-        </details>
-      {% endfor %}
-    </div>
+            </td>
+          </tr>
+          <tr id="l-{{ l.id }}" hidden style="background: hsl(var(--muted) / 0.25);">
+            <td></td>
+            <td colspan="6" style="padding: 12px 16px;">
+              <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Content completo</div>
+              <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 12px;">{{ l.content }}</div>
+              {% if l.next_time %}
+                <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">next_time completo</div>
+                <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 8px;">{{ l.next_time }}</div>
+              {% endif %}
+              <a class="btn" href="/memory/lessons/{{ l.id }}">Abrir card completa ↗</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   {% else %}
     <p style="color: hsl(var(--muted-foreground));">No pending lessons. Lo bueno: las que se han guardado pasaron auto-approval (CONSTITUTION §5.2 rule 13).</p>
   {% endif %}
@@ -55,36 +61,46 @@
   <div class="panel-head"><div><h3>Cross-pollination queue — pending</h3><p>Propuestas de merge / cross-bucket. Approve commits, reject discards.</p></div><span class="tag">{{ xpoll_count }}</span></div>
 
   {% if pending_xpoll %}
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      {% for x in pending_xpoll %}
-        <details style="border: 1px solid hsl(var(--border)); border-radius: 0.75rem; padding: 12px 16px; background: hsl(var(--card));">
-          <summary style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-            <div style="flex: 1; min-width: 0;">
-              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
-                <span class="pill">{{ x.origin_bucket }}</span>
-                <span style="color: hsl(var(--muted-foreground));">→</span>
-                <span class="pill purple">{{ x.target_bucket }}</span>
-                <span style="font-size: 11px; color: hsl(var(--muted-foreground)); margin-left: 8px;">conf {% if x.confidence_score is not none %}{{ "%.2f"|format(x.confidence_score) }}{% else %}—{% endif %} · by {{ x.proposed_by }}</span>
-              </div>
-              <div style="font-size: 13px;">{{ x.idea }}</div>
-            </div>
-          </summary>
-          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid hsl(var(--border));">
-            <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Reasoning</div>
-            <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 12px;">{{ x.reasoning }}</div>
-            <div style="display: flex; gap: 6px; margin-top: 8px;">
-              <form method="post" action="/pending/cross-poll/{{ x.id }}/approve" style="display: inline-block;">
+    <table>
+      <thead>
+        <tr><th></th><th>Origin</th><th>Target</th><th>Idea</th><th>Confidence</th><th>By</th><th style="width: 220px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for x in pending_xpoll %}
+          <tr>
+            <td style="width: 24px;">
+              <button class="btn" style="padding: 2px 8px;" onclick="var r=document.getElementById('x-{{ x.id }}'); r.hidden=!r.hidden; this.textContent=r.hidden?'▸':'▾';">▸</button>
+            </td>
+            <td><span class="pill">{{ x.origin_bucket }}</span></td>
+            <td><span class="pill purple">{{ x.target_bucket }}</span></td>
+            <td>
+              <div>{{ x.idea[:120] }}{% if x.idea|length > 120 %}...{% endif %}</div>
+              <div style="color: hsl(var(--muted-foreground)); font-size: 11px; margin-top: 2px;">{{ x.reasoning[:140] }}{% if x.reasoning|length > 140 %}...{% endif %}</div>
+            </td>
+            <td>{% if x.confidence_score is not none %}{{ "%.2f"|format(x.confidence_score) }}{% else %}—{% endif %}</td>
+            <td style="font-size: 11px;"><span class="pill">{{ x.proposed_by }}</span></td>
+            <td>
+              <form method="post" action="/pending/cross-poll/{{ x.id }}/approve" style="display: inline-block; margin-right: 4px;">
                 <button class="btn primary" type="submit">Approve</button>
               </form>
               <form method="post" action="/pending/cross-poll/{{ x.id }}/reject" style="display: inline-block;" onsubmit="this.note.value = prompt('Nota (opcional):') || ''; return true;">
                 <input type="hidden" name="note" />
                 <button class="btn danger" type="submit">Reject</button>
               </form>
-            </div>
-          </div>
-        </details>
-      {% endfor %}
-    </div>
+            </td>
+          </tr>
+          <tr id="x-{{ x.id }}" hidden style="background: hsl(var(--muted) / 0.25);">
+            <td></td>
+            <td colspan="6" style="padding: 12px 16px;">
+              <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Idea completa</div>
+              <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55; margin-bottom: 12px;">{{ x.idea }}</div>
+              <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Reasoning completo</div>
+              <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.55;">{{ x.reasoning }}</div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   {% else %}
     <p style="color: hsl(var(--muted-foreground));">Queue vacía. Dream Engine dedup pass produce 0 proposals al threshold actual (≥0.95 cosine sim).</p>
   {% endif %}
