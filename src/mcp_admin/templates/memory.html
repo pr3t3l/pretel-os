@@ -17,21 +17,31 @@
     </div>
     <div>
       <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Bucket</div>
-      <input type="text" name="bucket" value="{{ bucket }}" placeholder="personal / business / scout" />
+      <select name="bucket">
+        <option value="">— todos —</option>
+        {% for b in buckets_available %}
+          <option value="{{ b }}" {% if b == bucket %}selected{% endif %}>{{ b }}</option>
+        {% endfor %}
+      </select>
     </div>
     {% if tab == "lessons" %}
     <div>
-      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Tag</div>
-      <input type="text" name="tag" value="{{ tag }}" placeholder="ai-engineering" />
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Tag (partial)</div>
+      <input type="text" name="tag" value="{{ tag }}" placeholder="lidr → course:lidr-ai-engineer" />
     </div>
     <div>
       <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Status</div>
-      <input type="text" name="status" value="{{ status_filter }}" placeholder="active / pending_review / archived" />
+      <select name="status">
+        <option value="">— todos —</option>
+        {% for s in statuses_available %}
+          <option value="{{ s }}" {% if s == status_filter %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
     </div>
     {% endif %}
     <div style="flex: 1; min-width: 200px;">
-      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search (ILIKE en title + content)</div>
-      <input type="search" name="q" value="{{ q }}" placeholder="palabra clave..." style="width: 100%;" />
+      <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Search (title + content + tags)</div>
+      <input type="search" name="q" value="{{ q }}" placeholder="palabra clave (busca también en tags)..." style="width: 100%;" />
     </div>
     <button type="submit" class="btn primary">Filtrar</button>
   </form>

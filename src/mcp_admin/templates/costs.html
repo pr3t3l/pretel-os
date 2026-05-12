@@ -2,13 +2,35 @@
 
 {% block title %}Costs — pretel-os admin{% endblock %}
 {% block heading %}Costs dashboard{% endblock %}
-{% block subtitle %}Últimos 30 días desde <code>v_daily_cost_by_purpose</code>. Total ${{ "%.4f"|format(total_cost) }} · {{ total_calls }} llamadas. Charts vienen en fase 2.{% endblock %}
+{% block subtitle %}Últimos {{ days }} días · {{ active_days }} con actividad · total ${{ "%.4f"|format(total_cost) }} · {{ total_calls }} llamadas internas.{% endblock %}
 
 {% block content %}
+<div class="panel" style="margin-bottom: 16px; background: hsl(var(--muted) / 0.4);">
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 280px; font-size: 12px; line-height: 1.55;">
+      <strong>Qué se cuenta aquí:</strong> sólo las llamadas LLM que <em>pretel-os hace internamente</em> (Router classifier vía LiteLLM, Dream Engine nocturno, embeddings). Se loguean en la tabla <code>llm_calls</code>.
+      <br><strong>Qué NO se cuenta:</strong> tu uso de Claude Code en terminal, Claude.ai web, Telegram bot consumiendo Anthropic directo — eso lo cobra Anthropic a tu cuenta y no pasa por esta DB.
+      <br>Si ves pocos días con costo, es porque pretel-os internamente sólo hace LLM calls cuando un cliente invoca <code>get_context()</code> (clasificador) o cuando corre el Dream Engine.
+      {% if first_call_at %}<br><span style="color: hsl(var(--muted-foreground));">Primera llamada registrada: {{ first_call_at }} · {{ total_llm_calls_ever }} llamadas totales en <code>llm_calls</code>.</span>{% endif %}
+    </div>
+    <form method="get" action="/costs" style="display: flex; gap: 8px; align-items: end;">
+      <div>
+        <div style="font-size: 11px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">Ventana</div>
+        <select name="days">
+          {% for d in allowed_windows %}
+            <option value="{{ d }}" {% if d == days %}selected{% endif %}>{{ d }} días</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn primary" type="submit">Aplicar</button>
+    </form>
+  </div>
+</div>
+
 <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
 
   <div class="panel">
-    <div class="panel-head"><div><h3>Por propósito</h3><p>Suma 30 días.</p></div></div>
+    <div class="panel-head"><div><h3>Por propósito</h3><p>Suma {{ days }} días.</p></div></div>
     <table>
       <thead><tr><th>Purpose</th><th style="text-align: right;">Cost USD</th></tr></thead>
       <tbody>
@@ -39,6 +61,69 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <div class="panel-head">
+    <div>
+      <h3>Diagnóstico — ¿está pretel-os recibiendo tráfico?</h3>
+      <p>Distingue tres capas: <strong>tool invocations</strong> (claude.ai/Telegram/Code llaman tu MCP) → <strong>Router classifier</strong> (sólo si llaman <code>get_context</code>) → <strong>LLM calls</strong> ($).</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div>
+      <h4 style="margin: 0 0 6px 0; font-size: 13px;">Tool invocations (<code>usage_logs</code>, top 20 últimos {{ days }}d)</h4>
+      <p style="font-size: 11px; color: hsl(var(--muted-foreground)); margin-top: 0;">Si esto está vacío → ningún cliente está llamando tu MCP. Si tiene filas pero <code>llm_calls</code> está casi vacío → es esperado: la mayoría de tools no usan LLM.</p>
+      {% if usage_by_tool %}
+        <table>
+          <thead><tr><th>Tool</th><th>Client</th><th style="text-align: right;">Calls</th><th>Last</th></tr></thead>
+          <tbody>
+            {% for u in usage_by_tool %}
+              <tr>
+                <td class="mono" style="font-size: 11px;">{{ u.tool_name }}</td>
+                <td style="font-size: 11px;"><span class="pill">{{ u.invoked_by }}</span></td>
+                <td class="mono" style="text-align: right;">{{ u.calls }}</td>
+                <td class="mono" style="font-size: 10px;">{{ u.last_at }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p style="color: hsl(var(--destructive)); font-size: 12px;"><strong>⚠ Cero invocaciones en {{ days }}d.</strong> Tu MCP no está recibiendo tráfico — revisa el connector configurado en claude.ai.</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <h4 style="margin: 0 0 6px 0; font-size: 13px;">Router classifier (<code>routing_logs</code> últimos {{ days }}d)</h4>
+      <p style="font-size: 11px; color: hsl(var(--muted-foreground)); margin-top: 0;">Sólo se llena cuando algún cliente invoca <code>get_context</code>. Si está vacío pero <code>usage_logs</code> tiene actividad → los clientes están llamando tools directas sin pasar por el Router.</p>
+      <table>
+        <tbody>
+          <tr><td>Total calls</td><td class="mono" style="text-align: right;">{{ routing_total }}</td></tr>
+          <tr><td>Degraded mode</td><td class="mono" style="text-align: right;">{% if routing_degraded > 0 %}<span class="pill red">{{ routing_degraded }}</span>{% else %}{{ routing_degraded }}{% endif %}</td></tr>
+          <tr><td>Last call</td><td class="mono" style="font-size: 11px; text-align: right;">{{ routing_last_at or "—" }}</td></tr>
+        </tbody>
+      </table>
+      {% if routing_by_client %}
+        <h5 style="margin: 12px 0 4px 0; font-size: 11px; text-transform: uppercase; color: hsl(var(--muted-foreground));">Por cliente</h5>
+        <table>
+          <thead><tr><th>Origin</th><th style="text-align: right;">Calls</th><th style="text-align: right;">Degraded</th></tr></thead>
+          <tbody>
+            {% for c in routing_by_client %}
+              <tr>
+                <td><span class="pill">{{ c.client_origin }}</span></td>
+                <td class="mono" style="text-align: right;">{{ c.calls }}</td>
+                <td class="mono" style="text-align: right;">{% if c.degraded > 0 %}<span class="pill red">{{ c.degraded }}</span>{% else %}{{ c.degraded }}{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+      {% if routing_total > 0 and total_calls == 0 %}
+        <p style="color: hsl(var(--destructive)); font-size: 12px; margin-top: 8px;"><strong>⚠ Bug de telemetría:</strong> hay {{ routing_total }} classifier calls pero <code>llm_calls</code> no tiene filas. ADR-027 dice "INSERT-early" — revisar router.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
 
