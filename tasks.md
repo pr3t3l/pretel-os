@@ -163,6 +163,14 @@ These are not module tasks. They happen in the background once the relevant modu
 
 - [ ] (Recurring) Key rotation per `control_registry.key_rotation_*`.
 
+## Personal — ai-engineer-course (started 2026-05-11)
+
+- [x] Project registered (`create_project` → b855b630), Trinity scaffolded
+- [ ] First class captured (2–5 lessons + index row)
+- [ ] First skill promotion (trigger: ≥3 lessons in one domain + cross-project + applied)
+
+Per-module detail: `specs/ai-engineer-course/tasks.md`.
+
 ---
 
 **For atomic-level visibility:** open the relevant `specs/<module>/tasks.md`. The per-module tasks.md has every checkbox down to "create idx_X on column Y."
