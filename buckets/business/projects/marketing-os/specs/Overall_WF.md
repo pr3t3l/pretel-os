@@ -161,6 +161,42 @@ The learning loop above (Patterns A/B/C, flag promotion, signal-rule promotion) 
 
 **Why this is reassuring, not novel:** pretel-os already lives this pattern. The **Scout bucket** = "abstract patterns only, never concrete employer data" with defense in depth; **cross-pollination** = abstracted lessons flow across buckets while raw data does not. Sandi's multi-tenant privacy is that same pattern applied to SaaS — define the principle now, implement (encryption, Presidio pipeline, consent UI) at build time.
 
+## Portable Human Connection & Per-Project Agent Memory
+
+**Loyalty thesis:** method *is* connection — *how* Sandi helps (Socratic, one-step, decides-with-reasons, celebrates) is what creates the bond. The moat is the **relationship/memory**, not features. The engine is **Self-Determination Theory** (Deci & Ryan): hit **autonomy** (the user decides), **competence** (they learn and win), and **relatedness** (they feel understood) on every interaction.
+
+### A. Portable Human Connection (model-agnostic)
+Anthropic bakes character *into the model* (Constitutional AI / character work). Sandi can't rely on that across OpenAI / DeepSeek / Kimi / etc. — so the humanity lives in the **system layer**, making the model interchangeable plumbing. Four portable layers:
+1. **Character spec (a SOUL)** — explicit persona: archetype (Sage/Mentor), values, voice, never-dos. In the system prompt + few-shot exemplars, *any* model performs it. Mirrors pretel-os `SOUL.md` (ADR-22). → `specs/SOUL_setup_agent.md`.
+2. **Interaction patterns** — the 5 movements, reflective listening, normalize, celebrate, autonomy-support. Pure orchestration, model-independent.
+3. **Memory** — the model forgets between calls; the *system* remembers. The felt relationship **is** the memory layer (§D).
+4. **Character evals** — calibrated LLM-as-judge (LIDR); run on every model swap so the persona survives the migration.
+
+Named techniques (for the spec): SDT; Motivational Interviewing / Rogerian reflective listening; **rupture-and-repair** (a repaired mistake builds *more* trust than never erring); peak-end rule (end each session on a win); cognitive-load (one thing at a time); glass-box honesty.
+
+### B. Glass-Box (no black box)
+Every conclusion shows **source/method → reasoning → jargon-in-plain-language**; inferences are labeled as inferences; the system states what it could *not* verify. Builds trust. Reconciles with the internal plan in §D: *hidden-by-default ≠ secret* — anything is available on demand.
+
+### C. Adaptive Education + `user_knowledge_profile`
+Profile the user's level per concept (novice/intermediate/expert); teach **just-in-time** (1-line micro-lessons in context); **level up across projects/campaigns**. Education is both the market wedge (46% of SMBs lack a strategy) and a retention engine (the user becomes a better marketer *because of* Sandi).
+
+### D. Per-Project Agent Memory (mirror of pretel-os)
+Each project/run gets a **brain like the one pretel-os gives Claude**:
+
+| Layer | Holds | pretel-os analog | User-visible? |
+|---|---|---|---|
+| Project doc | what this project is | README + CLAUDE.md | yes |
+| **Action plan** (internal, **mutable**) | where we are / what's next / what changed | tasks.md / SESSION_RESTORE / plan.md | **not by default** (progressive disclosure); on demand |
+| Lessons | what we learned | `lessons` | on demand |
+| Best practices | what works (promoted) | `best_practices` | on demand |
+| Decisions | what we decided + why | `decisions` | on demand (glass-box) |
+| Working state | typed brief + history | `ProjectFoundationBrief` | yes (panel) |
+| User profile | knowledge level | (new) | implicit |
+
+Rules (operator-defined): the **action plan is internal** (not pushed at the user — that's what progressive disclosure protects), **mutable** (revised as reality unfolds — ties to the Phase 5 loop, `foundation_drift`, and Pattern C), and **not secret** (glass-box: shown if asked). Everything **typed and persisted**, never a free-text blob the model "remembers" (LIDR memory anti-patterns). This per-project memory feeds the global T3 learning **only** through the privacy boundary (de-identified + cross-tenant).
+
+**Recursive elegance:** Sandi gives every user-project the same memory architecture the operator built for pretel-os. Proven pattern, re-applied.
+
 ## Stack Actual
 
 - **Frontend:** Next.js App Router + TypeScript + Tailwind + shadcn/ui-style local components.
@@ -306,6 +342,7 @@ These specs are now **workflow requirements** for Sandi Marketing. They should b
 - D-011 (2026-06-06) — **Removed the "max 5 avatars" hard cap** from Phase 0 §6. Cap was an artifact of assuming a human operator; it contradicts the parallel-orchestration thesis. The 2-of-3 distinction test is retained as a *quality criterion for creating a distinct avatar*, not as a ceiling. Foundation layer (0.1–0.2.5) confirmed avatar-agnostic, sitting above the buyer persona.
 - D-012 (2026-06-06) — **Living Flag Registry** (replaces hardcoded flag enum). Seed heuristics (fast path) + open-diagnosis branch (`unexplained_anomaly` → reason the root cause) + promotion (validated novel causes become new flags). Producer-binding rule kills orphan flags (advisor M3). Added CONVERSION-001 (advisor critical), CAC-TREND-001 (M3), fixed in-place ambiguity (M1), Foundation re-trigger scope avatar-vs-project (M4), phase_4/phase_5 labels (M2). **Removed all calendar-based refresh** (no `12_months_elapsed`/6-month); Foundation rebuilds on `foundation_drift` evidence only (Coca-Cola principle: review constantly, rebuild on evidence).
 - D-013 (2026-06-06) — **Two extension patterns** to avoid hardcoding the open world: **Extensible Vocabulary** (seed + `other`+description + promotion ≥3×+review) and **Context-Adjusted Threshold** (default-by-segment + evidence adjustment + alarm-stays-on). Unifying test: closed-system states → fixed enum; open-world categories → Pattern A; context-dependent numbers → Pattern B. Governance: promotion has a cost (no bloat); openness sequenced after data exists.
+- D-017 (2026-06-07) — **Portable Human Connection & Per-Project Agent Memory**. Sandi's humanity lives in the system layer (character SOUL + interaction patterns + memory + character evals), not the model — portable across any LLM provider. SDT is the loyalty engine; glass-box + adaptive education (`user_knowledge_profile`) folded in. Each project/run gets a pretel-os-style brain: project doc + **internal mutable action plan** + lessons + best-practices + decisions + typed working state + user profile. Action plan is internal (progressive disclosure), mutable (Phase 5 loop / foundation_drift / Pattern C), not secret (glass-box). New artifact `specs/SOUL_setup_agent.md`. Mirrors pretel-os SOUL.md + memory architecture.
 - D-016 (2026-06-07) — **Data Privacy & the Learning Boundary**. Three tiers (T1 raw client data: tenant-scoped/encrypted/RLS, never leaves; T2 tenant artifacts: private; T3 global learning: de-identified + aggregated only). Promotion to global requires cross-tenant aggregation (≥N distinct tenants) + de-identification — raw data never crosses. Load-bearing for the Pattern A/B/C learning loop. Mechanisms (RLS, PII pseudonymization, defense-in-depth guard, consent, residency) already prototyped in pretel-os (Scout bucket + cross-pollination). Principle now, implementation at build.
 - D-015 (2026-06-07) — **Setup Agent** (conversational guided Phase 0 for non-experts) + **Pattern C — Evolving Schema**. Validated wizard-guided interface against the full LIDR corpus (best practices "Espectro de interfaces", "prompt es artefacto de software", "pre-flight + Step N of M"; lessons transaccional-vs-conversacional, memoria tipada, CAG, costos). 4-movement behavior contract; jargon hidden from user; flag calibration. Per operator: artifact JSON schemas are seeds, not frozen — they evolve via `schema_version` + capture-in-`metadata` + outcome-driven learning loop across ALL phases. New spec `spec_Phase_0_Setup_Agent.md` with the 0.1 script formalized.
 - D-014 (2026-06-06) — Applied D-013 to 7 rigidity zones: trigger `type` (R-1), `hormozi_category` (R-2), `ratio_target` (R-3), LTV:CAC threshold (R-4, table by business model, alarm preserved), Vaynerchuk ratio (R-5, per-channel adjustable by measured fatigue), pillar `kpi_primary` (R-6), brand `archetype` (R-7, primary+secondary hybrids; stays closed — 12 Jungian archetypes are exhaustive). Did NOT touch healthy closed enums (semáforo, machine states, `value|cta|hybrid`, evaluator types, structural minimums).

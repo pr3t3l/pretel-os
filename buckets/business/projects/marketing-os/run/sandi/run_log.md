@@ -7,8 +7,8 @@
 | Fase | Sub-paso | Estado | Artefacto |
 |---|---|---|---|
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
-| Phase 0 | 0.2 Mercado | ⏭️ siguiente | — |
-| Phase 0 | 0.2.5 ICP | pendiente | — |
+| Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
+| Phase 0 | 0.2.5 ICP | ⏭️ siguiente | — |
 | Phase 0 | 0.3 Persona + Avatares | pendiente | — |
 | Phase 0 | 0.4 Competencia | pendiente | — |
 | Phase 1–5 | — | pendiente | — |
@@ -18,6 +18,8 @@
 - **Diferenciador (la joya):** orquestación paralela multi-avatar — N avatares, cada uno con su estrategia versionada y su loop Phase 1→5.
 - **Business context:** híbrido con lead B2C (individuos), ciclo reflexivo, suscripción+créditos, internacional con foco US/inglés, multimodal.
 - **Nombre:** "Sandi" es working name (aleatorio); dudas por competencia/dominio → finalizar en Phase 1.4.
+- **Mercado (0.2):** enorme (36M PYMEs, 5.6M nuevas/año, 29.8M solopreneurs); ~la mitad sin estrategia formal → **educar es la cuña**; espacio "AI marketing tool" saturado; `offer_strategy = create_demand`. Veredicto 🟢/🟡.
+- **Producto (principios definidos):** Setup Agent guiado (no chat libre); glass-box (no caja negra); educación adaptativa + `user_knowledge_profile`; conexión humana portable (SOUL + patrones + memoria + evals, model-agnostic); memoria de agente por proyecto (plan interno mutable + lessons/best-practices/decisions). Privacidad 3-capas.
 
 ## Dependencias parqueadas
 - Modelo de costo de IA por avatar/ciclo → insumo de Phase 1 Pricing y del sistema de créditos.

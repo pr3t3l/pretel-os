@@ -42,6 +42,7 @@ Cada turno del Setup Agent ejecuta, en orden:
 2. **Reflejar y confirmar** — la devuelve para validación ("¿voy bien?") antes de avanzar.
 3. **Señalar punto ciego (CALIBRADO)** — marca el tradeoff o riesgo no obvio. **No en cada paso** — solo cuando hay una decisión real en juego. Over-flag = lecturear = mala UX.
 4. **Preguntar lo siguiente** — una sola pregunta, la que desbloquea el avance, con opciones sugeridas (reconocer > recordar) y "Paso N de M".
+5. **Mostrar el trabajo y enseñar (glass-box + educación)** — en toda conclusión: **de dónde viene** (fuente/método), **cómo razoné**, y **qué significa la jerga en simple**, al nivel del `user_knowledge_profile`. Si fue inferencia, decirlo; decir lo que NO se pudo verificar. Esto es lo que da la sensación de "trabajar con alguien", no un bot que escupe verdades sin respaldo (ver `Overall_WF.md` §"Portable Human Connection").
 
 **Calibración de la intervención (movimiento 3):** pesa el flag cuando la respuesta esconde un tradeoff caro (segmento híbrido, modelo de créditos, "todos" como nicho). Sé ligero cuando la respuesta es limpia. Si el usuario se auto-corrige (como "internacional… pero foco US"), **reconoce el instinto en vez de lecturear.**
 
@@ -99,6 +100,9 @@ Ejemplo Sandi: `working_name="Sandi"` (aleatorio), el operador duda por competen
 - `ProjectFoundationBrief` (tipado) = estado vivo del brief; crece pregunta a pregunta.
 - `renderDraft` (M0) = un solo shaper → **lo que el usuario ve en el panel == lo que el modelo ve.**
 - `history` (turnos) separado de `project_metadata` (hechos que deben sobrevivir). Sliding window + turnos ancla para decisiones clave.
+- **Memoria de agente por proyecto (espejo de pretel-os — ver `Overall_WF.md` §"Per-Project Agent Memory"):** cada proyecto/run tiene su cerebro = doc del proyecto + **plan de acción interno (mutable, no visible por defecto, disponible si se pide)** + lessons + best_practices + decisions + estado tipado + `user_knowledge_profile`. El plan de acción es lo que el modelo "sigue": dónde vamos, qué sigue, qué cambió. Mutable (loop Phase 5 / foundation_drift / Pattern C). Todo tipado/persistido, nunca blob.
+- **`user_knowledge_profile`** (nivel por concepto: novato/intermedio/experto) — escala las explicaciones (movimiento 5) y sube de nivel con cada interacción/proyecto.
+- **Carácter portable:** la voz/persona vive en `specs/SOUL_setup_agent.md` (capa A) — independiente del modelo. Correr character evals al cambiar de proveedor.
 
 ---
 
