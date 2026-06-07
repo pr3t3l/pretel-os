@@ -135,6 +135,32 @@ This makes every artifact JSON a **living contract that improves with usage**, w
 
 Phase specs tag each extensible field as **[Extensible Vocabulary]** or **[Context-Adjusted Threshold]**, and every artifact JSON is governed by **[Evolving Schema]** (seed + `schema_version` + learning loop), so the patterns are explicit at the point of use.
 
+## Data Privacy & the Learning Boundary
+
+The learning loop above (Patterns A/B/C, flag promotion, signal-rule promotion) **requires** a privacy boundary — without it, "the system learns from interactions" is a data leak. This section is load-bearing for everything that promotes knowledge, in every phase.
+
+**The rule:** *only abstracted patterns cross the boundary into global learning. Raw client data never does.*
+
+**Three tiers by sensitivity:**
+
+| Tier | Contents | Rule |
+|---|---|---|
+| **T1 — Raw client data** | the client's idea, *their* customers, numbers, PII, their copy | Tenant-scoped, encrypted, RLS. **Never leaves** the tenant boundary. |
+| **T2 — Tenant artifacts** | their `business_context.json`, avatars, strategies, results | Private to the tenant, typed. Does **not** feed the global model directly. |
+| **T3 — Global learning** | only **de-identified, aggregated** patterns | The only thing that improves the system for everyone. |
+
+- **What rises to T3 (abstract, non-identifying):** "a custom `trigger_type` 'social proof' recurred across N tenants → promote", "for B2C reflexive + subscription, refreshing hooks every 14d worked". **What never rises:** client name, their real customers, their numbers, their copy.
+- **Promotion-to-global rule:** promotion to T3 requires **de-identification + cross-tenant aggregation (≥N distinct tenants)** — NOT ≥N within a single tenant. This stops one client's pattern from leaking as "global learning". (Distinct from the within-project promotion that Patterns A/B/C use for a *tenant's own* schema/vocabulary, which stays in T2.)
+
+**Mechanisms (all already prototyped in pretel-os / present in the stack):**
+- **RLS per tenant** — the Supabase schema already enforces it (`is_project_member`, `project_role_for_user`).
+- **PII pseudonymization** before anything is eligible for T3 — pseudonymize > generic tokens (preserves signal). Spanish needs explicit config (Presidio `es_core_news_md`).
+- **Defense in depth** — a guard that blocks raw client specifics from entering the global store, mirroring the Scout guard (pre-commit hook + MCP denylist + DB trigger).
+- **Consent / opt-in** per tenant for contributing their abstractions to T3.
+- **Data residency / compliance** — international scope (US/Europe/LatAm) ⇒ GDPR applies to Europe; vet provider server locations.
+
+**Why this is reassuring, not novel:** pretel-os already lives this pattern. The **Scout bucket** = "abstract patterns only, never concrete employer data" with defense in depth; **cross-pollination** = abstracted lessons flow across buckets while raw data does not. Sandi's multi-tenant privacy is that same pattern applied to SaaS — define the principle now, implement (encryption, Presidio pipeline, consent UI) at build time.
+
 ## Stack Actual
 
 - **Frontend:** Next.js App Router + TypeScript + Tailwind + shadcn/ui-style local components.
@@ -280,6 +306,7 @@ These specs are now **workflow requirements** for Sandi Marketing. They should b
 - D-011 (2026-06-06) — **Removed the "max 5 avatars" hard cap** from Phase 0 §6. Cap was an artifact of assuming a human operator; it contradicts the parallel-orchestration thesis. The 2-of-3 distinction test is retained as a *quality criterion for creating a distinct avatar*, not as a ceiling. Foundation layer (0.1–0.2.5) confirmed avatar-agnostic, sitting above the buyer persona.
 - D-012 (2026-06-06) — **Living Flag Registry** (replaces hardcoded flag enum). Seed heuristics (fast path) + open-diagnosis branch (`unexplained_anomaly` → reason the root cause) + promotion (validated novel causes become new flags). Producer-binding rule kills orphan flags (advisor M3). Added CONVERSION-001 (advisor critical), CAC-TREND-001 (M3), fixed in-place ambiguity (M1), Foundation re-trigger scope avatar-vs-project (M4), phase_4/phase_5 labels (M2). **Removed all calendar-based refresh** (no `12_months_elapsed`/6-month); Foundation rebuilds on `foundation_drift` evidence only (Coca-Cola principle: review constantly, rebuild on evidence).
 - D-013 (2026-06-06) — **Two extension patterns** to avoid hardcoding the open world: **Extensible Vocabulary** (seed + `other`+description + promotion ≥3×+review) and **Context-Adjusted Threshold** (default-by-segment + evidence adjustment + alarm-stays-on). Unifying test: closed-system states → fixed enum; open-world categories → Pattern A; context-dependent numbers → Pattern B. Governance: promotion has a cost (no bloat); openness sequenced after data exists.
+- D-016 (2026-06-07) — **Data Privacy & the Learning Boundary**. Three tiers (T1 raw client data: tenant-scoped/encrypted/RLS, never leaves; T2 tenant artifacts: private; T3 global learning: de-identified + aggregated only). Promotion to global requires cross-tenant aggregation (≥N distinct tenants) + de-identification — raw data never crosses. Load-bearing for the Pattern A/B/C learning loop. Mechanisms (RLS, PII pseudonymization, defense-in-depth guard, consent, residency) already prototyped in pretel-os (Scout bucket + cross-pollination). Principle now, implementation at build.
 - D-015 (2026-06-07) — **Setup Agent** (conversational guided Phase 0 for non-experts) + **Pattern C — Evolving Schema**. Validated wizard-guided interface against the full LIDR corpus (best practices "Espectro de interfaces", "prompt es artefacto de software", "pre-flight + Step N of M"; lessons transaccional-vs-conversacional, memoria tipada, CAG, costos). 4-movement behavior contract; jargon hidden from user; flag calibration. Per operator: artifact JSON schemas are seeds, not frozen — they evolve via `schema_version` + capture-in-`metadata` + outcome-driven learning loop across ALL phases. New spec `spec_Phase_0_Setup_Agent.md` with the 0.1 script formalized.
 - D-014 (2026-06-06) — Applied D-013 to 7 rigidity zones: trigger `type` (R-1), `hormozi_category` (R-2), `ratio_target` (R-3), LTV:CAC threshold (R-4, table by business model, alarm preserved), Vaynerchuk ratio (R-5, per-channel adjustable by measured fatigue), pillar `kpi_primary` (R-6), brand `archetype` (R-7, primary+secondary hybrids; stays closed — 12 Jungian archetypes are exhaustive). Did NOT touch healthy closed enums (semáforo, machine states, `value|cta|hybrid`, evaluator types, structural minimums).
 
