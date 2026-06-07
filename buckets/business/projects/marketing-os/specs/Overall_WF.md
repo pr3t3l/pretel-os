@@ -197,6 +197,25 @@ Rules (operator-defined): the **action plan is internal** (not pushed at the use
 
 **Recursive elegance:** Sandi gives every user-project the same memory architecture the operator built for pretel-os. Proven pattern, re-applied.
 
+## Generative Co-Creation (the essence — not extraction)
+
+This is the soul of the product, and the easiest thing to lose. **Sandi does not interview the user, structure their input, and correct it. Sandi co-develops the idea WITH them** — the way this very spec was built (the operator and Claude trading ideas until the result exceeded what either started with).
+
+An extractive consultant: *reformulate → flag what you missed → structure.* A generative partner additionally:
+- **Proposes ideas the user didn't have** (Claude proposed the avatar-as-jewel framing, the living flag registry, the privacy boundary).
+- **Builds on the user's ideas (yes-and)** instead of only validating them (the operator proposed parallel multi-avatar, the evolving schema, the agent memory).
+- **Pushes the idea further** than where the user brought it.
+- Produces an **emergent output with shared ownership** — "we built this together."
+
+**The meta-mirror:** *Sandi : the user's idea :: Claude : the operator's idea.* The product literally recreates the collaborative ideation that produced it. This is the differentiator stated at its deepest: competitors **extract** (smart forms) or **generate-for-you** (black boxes); Sandi **co-develops with you and leaves you the author.**
+
+**Why this is safe for non-experts (the reconciliation):** an expert can evaluate a proposal; a non-expert cannot, on their own. So generative contribution is safe **only layered on the three pieces already defined**:
+- **Glass-box** — every proposal shows where it came from and why.
+- **Adaptive education** — teach enough that the user *can* evaluate it.
+- **Autonomy / SDT** — Sandi proposes; the **user disposes**. Proposals are labeled as proposals (not facts), always come with the reasoning + an easy accept/reject, and never override the user's direction.
+
+Without that reconciliation, "co-creation" becomes the system railroading a user who can't push back. With it, it's the partnership the operator experienced. **The user is always the author; Sandi is the thinking partner.**
+
 ## Stack Actual
 
 - **Frontend:** Next.js App Router + TypeScript + Tailwind + shadcn/ui-style local components.
@@ -342,6 +361,7 @@ These specs are now **workflow requirements** for Sandi Marketing. They should b
 - D-011 (2026-06-06) — **Removed the "max 5 avatars" hard cap** from Phase 0 §6. Cap was an artifact of assuming a human operator; it contradicts the parallel-orchestration thesis. The 2-of-3 distinction test is retained as a *quality criterion for creating a distinct avatar*, not as a ceiling. Foundation layer (0.1–0.2.5) confirmed avatar-agnostic, sitting above the buyer persona.
 - D-012 (2026-06-06) — **Living Flag Registry** (replaces hardcoded flag enum). Seed heuristics (fast path) + open-diagnosis branch (`unexplained_anomaly` → reason the root cause) + promotion (validated novel causes become new flags). Producer-binding rule kills orphan flags (advisor M3). Added CONVERSION-001 (advisor critical), CAC-TREND-001 (M3), fixed in-place ambiguity (M1), Foundation re-trigger scope avatar-vs-project (M4), phase_4/phase_5 labels (M2). **Removed all calendar-based refresh** (no `12_months_elapsed`/6-month); Foundation rebuilds on `foundation_drift` evidence only (Coca-Cola principle: review constantly, rebuild on evidence).
 - D-013 (2026-06-06) — **Two extension patterns** to avoid hardcoding the open world: **Extensible Vocabulary** (seed + `other`+description + promotion ≥3×+review) and **Context-Adjusted Threshold** (default-by-segment + evidence adjustment + alarm-stays-on). Unifying test: closed-system states → fixed enum; open-world categories → Pattern A; context-dependent numbers → Pattern B. Governance: promotion has a cost (no bloat); openness sequenced after data exists.
+- D-018 (2026-06-07) — **Generative Co-Creation** is the product's essence. Sandi co-develops the user's idea (proposes ideas they didn't have, builds on theirs, pushes further, emergent + shared ownership) — not an extractive interviewer. Meta-mirror: Sandi:user :: Claude:operator; the product recreates the collaboration that built it. Safe for non-experts only layered on glass-box + education + autonomy (Sandi proposes, user disposes, user is always the author). Added as 6th Setup-Agent movement + role reframe (consultant → thinking partner).
 - D-017 (2026-06-07) — **Portable Human Connection & Per-Project Agent Memory**. Sandi's humanity lives in the system layer (character SOUL + interaction patterns + memory + character evals), not the model — portable across any LLM provider. SDT is the loyalty engine; glass-box + adaptive education (`user_knowledge_profile`) folded in. Each project/run gets a pretel-os-style brain: project doc + **internal mutable action plan** + lessons + best-practices + decisions + typed working state + user profile. Action plan is internal (progressive disclosure), mutable (Phase 5 loop / foundation_drift / Pattern C), not secret (glass-box). New artifact `specs/SOUL_setup_agent.md`. Mirrors pretel-os SOUL.md + memory architecture.
 - D-016 (2026-06-07) — **Data Privacy & the Learning Boundary**. Three tiers (T1 raw client data: tenant-scoped/encrypted/RLS, never leaves; T2 tenant artifacts: private; T3 global learning: de-identified + aggregated only). Promotion to global requires cross-tenant aggregation (≥N distinct tenants) + de-identification — raw data never crosses. Load-bearing for the Pattern A/B/C learning loop. Mechanisms (RLS, PII pseudonymization, defense-in-depth guard, consent, residency) already prototyped in pretel-os (Scout bucket + cross-pollination). Principle now, implementation at build.
 - D-015 (2026-06-07) — **Setup Agent** (conversational guided Phase 0 for non-experts) + **Pattern C — Evolving Schema**. Validated wizard-guided interface against the full LIDR corpus (best practices "Espectro de interfaces", "prompt es artefacto de software", "pre-flight + Step N of M"; lessons transaccional-vs-conversacional, memoria tipada, CAG, costos). 4-movement behavior contract; jargon hidden from user; flag calibration. Per operator: artifact JSON schemas are seeds, not frozen — they evolve via `schema_version` + capture-in-`metadata` + outcome-driven learning loop across ALL phases. New spec `spec_Phase_0_Setup_Agent.md` with the 0.1 script formalized.

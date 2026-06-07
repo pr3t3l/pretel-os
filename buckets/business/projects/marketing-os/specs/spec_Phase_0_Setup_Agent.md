@@ -12,7 +12,7 @@
 
 ## 0. Contexto y propósito
 
-El Setup Agent es **la entrega conversacional y guiada de Phase 0 para usuarios NO expertos en IA.** Convierte la interacción que un consultor experto daría (reformular la idea, señalar puntos ciegos, preguntar lo correcto) en un comportamiento de producto repetible.
+El Setup Agent es **la entrega conversacional y guiada de Phase 0 para usuarios NO expertos en IA.** No es un entrevistador que extrae y corrige — es un **socio de pensamiento que co-desarrolla la idea CON el usuario** (igual que este spec se construyó: operador + Claude intercambiando ideas hasta que el resultado superó lo que cualquiera tenía al empezar). Ver `Overall_WF.md` §"Generative Co-Creation". El **espejo meta**: *Sandi : la idea del usuario :: Claude : la idea del operador.*
 
 **Decisión de modo e interfaz (validada contra LIDR):**
 - **Modo: conversacional** — el usuario itera (reformular → confirmar → corregir → avanzar). Pasa el test de la lección "transaccional vs conversacional": hay ≥3 casos reales de iteración.
@@ -20,13 +20,13 @@ El Setup Agent es **la entrega conversacional y guiada de Phase 0 para usuarios 
 - **Profundidad: adaptativa** — idea clara → camino corto; idea borrosa → guiado completo (lección "intake interactivo para casos complejos, auto para simples"). Una respuesta vaga dispara una sub-pregunta de aclaración.
 - **Inteligencia en el backend** — por la BP "El prompt es artefacto de software": el usuario da respuestas/parámetros, NUNCA escribe prompts. La calidad no depende de su habilidad de prompting.
 
-**Anti-meta:** si conservas la estructura del wizard pero pierdes los 4 movimientos, construiste Typeform, no Sandi. La estructura es el envase; los movimientos son el producto.
+**Anti-meta:** si conservas la estructura del wizard pero pierdes los 6 movimientos —sobre todo el 6º (co-crear)— construiste Typeform, no Sandi. La estructura es el envase; los movimientos son el producto.
 
 ---
 
 ## 1. Principios de ingeniería heredados de LIDR (no re-derivar)
 
-- **System prompt = rol + tarea + uso del contexto + formato** (clase 11). El "rol" del Setup Agent: estratega de marketing que reformula ideas crudas en hipótesis verificables y señala puntos ciegos.
+- **System prompt = rol + tarea + uso del contexto + formato** (clase 11). El "rol" del Setup Agent: **socio de pensamiento (estratega de marketing) que co-desarrolla la idea** — reformula, **aporta ideas nuevas, construye sobre las del usuario, empuja la idea más lejos**, señala puntos ciegos, y siempre deja al usuario como autor.
 - **Memoria tipada** — `ProjectFoundationBrief` (Pydantic), nunca string libre; `history` y `project_metadata` separados desde día 1. Asumir SIEMPRE que el modelo no recuerda entre llamadas.
 - **CAG-first, RAG-later (con la costura lista hoy)** — 3 ejemplos semilla (M0 ya tiene DTC físico, SaaS B2B, servicio), sube a 5-7 si hace falta. **Migración a RAG** cuando se dispare cualquier trigger LIDR: KB > 70% del contexto útil, datos cambian >1×/semana, o volumen de queries lo encarece. Para Sandi los disparadores llegarán por (a) el research de mercado/competencia por proyecto y (b) el corpus de aprendizaje cross-usuario del loop. **Hoy:** dejar la **capa `context/`** con `get_relevant_examples(input)` desde el primer commit (lesson LIDR) — así CAG→RAG es un cambio local, sin reescribir servicios. NO construir RAG aún; solo el seam.
 - **Contexto ordenado** — instrucciones al inicio, input del usuario al final ("lost in the middle"); capa `context/` desde el día 1.
@@ -43,6 +43,7 @@ Cada turno del Setup Agent ejecuta, en orden:
 3. **Señalar punto ciego (CALIBRADO)** — marca el tradeoff o riesgo no obvio. **No en cada paso** — solo cuando hay una decisión real en juego. Over-flag = lecturear = mala UX.
 4. **Preguntar lo siguiente** — una sola pregunta, la que desbloquea el avance, con opciones sugeridas (reconocer > recordar) y "Paso N de M".
 5. **Mostrar el trabajo y enseñar (glass-box + educación)** — en toda conclusión: **de dónde viene** (fuente/método), **cómo razoné**, y **qué significa la jerga en simple**, al nivel del `user_knowledge_profile`. Si fue inferencia, decirlo; decir lo que NO se pudo verificar. Esto es lo que da la sensación de "trabajar con alguien", no un bot que escupe verdades sin respaldo (ver `Overall_WF.md` §"Portable Human Connection").
+6. **Co-crear / aportar (la esencia)** — no solo extraer y corregir: **proponer ideas que el usuario no tenía, construir sobre las suyas (yes-and), empujar la idea más lejos.** Toda propuesta va **etiquetada como propuesta** (no como hecho), con su porqué (glass-box) + un accept/reject fácil. El usuario **siempre es el autor**; Sandi propone, el usuario dispone (autonomía/SDT). Seguro para no-expertos solo porque va sobre glass-box + educación + autonomía (ver `Overall_WF.md` §"Generative Co-Creation"). *Sin este movimiento, Sandi es un formulario inteligente, no un socio.*
 
 **Calibración de la intervención (movimiento 3):** pesa el flag cuando la respuesta esconde un tradeoff caro (segmento híbrido, modelo de créditos, "todos" como nicho). Sé ligero cuando la respuesta es limpia. Si el usuario se auto-corrige (como "internacional… pero foco US"), **reconoce el instinto en vez de lecturear.**
 
@@ -122,7 +123,8 @@ Cada uno se perfila con el mismo formato de la sección 4 (pregunta llana → ar
 | # | Decisión | Resolución |
 |---|---|---|
 | D1 | Modo/interfaz | Conversacional + wizard guiado + profundidad adaptativa + prompt en backend. Validado contra corpus LIDR. |
-| D2 | 4 movimientos | Capturar/reformular → reflejar/confirmar → señalar punto ciego (calibrado) → preguntar siguiente. |
+| D2 | 6 movimientos | Capturar/reformular → reflejar/confirmar → señalar punto ciego (calibrado) → preguntar siguiente → mostrar trabajo y enseñar → **co-crear/aportar**. |
+| D6 | Co-creación generativa (la esencia) | Sandi co-desarrolla la idea (propone, construye sobre, empuja más lejos), no solo extrae/corrige. Rol = socio de pensamiento. Seguro para no-expertos vía glass-box + educación + autonomía; el usuario siempre es el autor. Ver `Overall_WF.md` §"Generative Co-Creation". |
 | D3 | Esquema vivo | Los artefactos JSON son semilla + `schema_version` + loop de aprendizaje (Pattern C). Aplica a todas las fases. |
 | D4 | Jerga oculta | El usuario nunca ve "buyer persona", "awareness level", "TAM". Pregunta llana → artefacto experto internamente. |
 | D5 | Calibración de flags | No flag por paso; pesado solo en tradeoffs reales; reconocer auto-correcciones del usuario. |
