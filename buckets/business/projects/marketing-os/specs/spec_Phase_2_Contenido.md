@@ -104,7 +104,7 @@ Declarar la voz/tono de marca **antes** de delegar generación de contenido a cu
   "voice_id": "voice_v1_YYYYMMDD",
   "linked_to_product": "marketing-os/{product_slug}",
   "archetype_primary": "hero | magician | outlaw | sage | jester | caregiver | ruler | creator | innocent | explorer | lover | everyman",
-  "archetype_secondary": "uno opcional para matiz",
+  "archetype_secondary": "uno opcional para HÍBRIDOS — las marcas reales suelen ser combinaciones ('el sabio rebelde' = sage+outlaw, 'el cuidador mágico' = caregiver+magician). Los 12 arquetipos junguianos SÍ cubren bien el espacio de personalidad (por eso aquí NO se usa `other` — ver Overall_WF §Pattern A: esto es un sistema razonablemente cerrado), pero la combinación primary+secondary es obligatoria cuando la marca no cae limpio en uno solo.",
   "archetype_rationale": "OBLIGATORIO citar buyer_persona.jobs_to_be_done[N].job_id + literal del emotional_job + literal del social_job. El archetype debe ser coherente con esos dos jobs. Sin cita explícita el campo se rechaza (regla dura, audit R4 A1-ISSUE-2)",
   "tone_descriptors": [
     "3-5 adjetivos concretos — ej: 'directo, sin jerga corporativa, irreverente sin grosería, datos por encima de opinión'"
@@ -312,7 +312,8 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
       "format_primary": "comparativo long-form | listicle | how-to",
       "format_secondary": "video embebido | infografía",
       "frequency_per_week_v1": 1,
-      "kpi_primary": "organic_traffic | time_on_page | scroll_depth | ranking_position",
+      "kpi_primary": "organic_traffic | time_on_page | scroll_depth | ranking_position | other  [Extensible Vocabulary]",
+      "kpi_primary_custom": "obligatorio si kpi_primary=other. Los 4 son SEMILLA; el KPI correcto depende del canal — ej: 'saves/bookmarks' (clave en Pinterest/IG: gente que guarda para comprar después), 'shares' (viralidad), 'comentarios cualitativos' (validar mensaje). Un custom que prediga conversión en un canal se promueve (Overall_WF §Pattern A). El set abierto es por-canal.",
       "rationale": "1 oración — por qué esta combinación es válida dada la función del canal"
     }
   ],
@@ -557,7 +558,7 @@ Registrada como `best_practice` en pretel-os con `domain: workflow`, prefijo `LO
 - Cada derivative con `language_pack_id` asignado (si aplica multi-avatar) — el contenido se reescribe en el registro del language_pack, no se traduce literal
 - Cada derivative con `hook_id_assigned` que existe en `hook_library.json` (sub-paso 2.5) — sin esto el derivative no se publica
 - Cada derivative con `content_type ∈ {value, cta, hybrid}` declarado (A1-ISSUE-3 audit R4)
-- **Vaynerchuk jab-jab-jab-right-hook ratio (LOCKED)**: por pilar, en canales orgánicos (RRSS orgánico, email, blog, podcast), `count(content_type=value) : count(content_type=cta) ≥ 3:1`. Hybrid cuenta como 0.5 value + 0.5 cta. VAYNER-001 dispara warning si el ratio cae bajo 3:1. Excepciones declaradas:
+- **Vaynerchuk jab-jab-jab-right-hook ratio [Context-Adjusted Threshold]**: por pilar, en canales orgánicos, `count(content_type=value) : count(content_type=cta) ≥ ratio_objetivo`. Hybrid cuenta como 0.5 value + 0.5 cta. El **3:1 es el DEFAULT por canal**, no una ley global (es heurística de Vaynerchuk de hace ~10 años): LinkedIn B2B / audiencia caliente toleran más CTA (ej. 2:1); IG/TikTok B2C / audiencia fría necesitan más jabs (ej. 5:1). **El ratio objetivo se ajusta por la fatiga REAL que Phase 4 ya mide (CTR decay por canal/avatar)** — la detección de fatiga observada reemplaza la regla teórica. VAYNER-001 dispara warning si el ratio cae bajo el objetivo de ESE canal. Excepciones declaradas:
   - PILLAR_B en paid ads = 100% CTA por naturaleza (paid social, paid search, YouTube paid) — el ratio no aplica al asset-level pero sí al canal-level: si el operador SOLO usa paid en PILLAR_B, debe haber jabs en otros pilares en el mismo canal o el feed se quema.
   - SEO long-form anchor = jab por naturaleza con `anchor_to_offer` suave; cuenta automáticamente como `content_type: hybrid` sin necesidad de rationale extra.
 - No mezclar `target_awareness_level` arbitrariamente: el long-form puede ser Problem Aware y los derivatives Solution Aware, pero el orden Schwartz se respeta (un derivative no puede asumir Most Aware si el long-form es Unaware)
@@ -974,10 +975,10 @@ Reglas heurísticas que disparan contra outputs estructurados. Persistidas como 
     {
       "id": "VAYNER-001",
       "applicable_phase": "phase-2.4",
-      "condition": "for any pillar in {organic channels}: count(content_type=value) / max(count(content_type=cta), 1) < 3.0",
+      "condition": "for any pillar in {organic channels}: value:cta ratio < ratio_objetivo_del_canal (default 3:1 [Context-Adjusted Threshold], ajustado por la fatiga real medida en Phase 4 por canal/avatar)",
       "severity": "warning",
-      "signal": "Pilar bajo el ratio Vaynerchuk 3:1 jab/right-hook en canal orgánico",
-      "implication": "Audiencia se quema en ~4 semanas si >25% del feed orgánico es CTA. Recomponer atomization con más derivatives content_type=value (educacional, entretenimiento, identidad). Excepción PILLAR_B en paid ads no aplica. Audit R4 A1-ISSUE-3.",
+      "signal": "Pilar bajo el ratio jab/right-hook objetivo de ese canal",
+      "implication": "Audiencia se quema si el feed orgánico tiene demasiado CTA — pero el umbral depende del canal/audiencia, no es 3:1 universal. Recomponer atomization con más derivatives content_type=value. El objetivo se recalibra con el CTR decay observado (Phase 4). Excepción PILLAR_B en paid ads no aplica.",
       "auto_action": "warn before Phase 2 close"
     },
     {
@@ -1003,7 +1004,8 @@ Phase 2 se re-ejecuta cuando:
 - Phase 5 detecta engagement rate por pilar cae ≥40% sostenido en 14 días (hook fatigue o cambio de awareness)
 - Phase 5 detecta CTR por hook template cae homogéneamente (saturación de patrón en el feed del avatar)
 - Operador declara cambio de brand_voice (raro, requiere `decision_record` por todos los assets afectados)
-- Pasaron 6 meses desde el último ciclo de Phase 2 (forced refresh por content_fatigue heurística)
+
+**Sin refresh por calendario** (coherente con el principio de Phase 0/5: actuar por evidencia, no por reloj). El contenido se refresca cuando hay **señales reales de fatiga** (engagement/CTR cayendo, saturación de hooks), no por una fecha. Si se quiere una cadencia mínima, que sea un **recordatorio de revisión** barato — no un re-build automático.
 
 Cada re-trigger queda como `decision_record` con motivo + evidencia.
 

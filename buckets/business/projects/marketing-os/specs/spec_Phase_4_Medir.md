@@ -4,7 +4,7 @@
 **Phase ID**: phase-4
 **Status**: spec drafted v1.0
 **Last updated**: 2026-06-06
-**Implementation correction:** Targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase). Persist outputs in `project_phase_artifacts` (`phase = 'review'`), decisions in `project_decisions`, learnings in `project_lessons`. **El output de Phase 4 también escribe `strategies.results_summary`** (la columna jsonb de "Resultados" del diagrama de jerarquía). Cada artefacto/decisión/lección lleva `strategy_id` + `avatar_id`.
+**Implementation correction:** Targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase). Persist outputs in `project_phase_artifacts` (`phase = 'phase_4'`; el legacy `review` queda como alias deprecado — ver `Overall_WF.md` §"Phase ↔ Supabase mapping"). Decisions en `project_decisions`, learnings en `project_lessons`. **El output de Phase 4 también escribe `strategies.results_summary`** (la columna jsonb de "Resultados" del diagrama de jerarquía). Cada artefacto/decisión/lección lleva `strategy_id` + `avatar_id`.
 
 **Reference**: `Overall_WF.md` §"Strategy Lifecycle". `spec_Phase_3_Distribucion.md` §7 (`phase_4_handoff`). Cierra los gates ECONOMICS-001 (Phase 0) y los re-triggers de Phases 0/1/2/3.
 
@@ -107,7 +107,16 @@ Phase 4 mide lo que Phase 3 publicó y lo convierte en **Resultados estructurado
 ```
 
 ### Reglas duras
-- `ltv_cac_ratio` se compara contra 3.0 (ECONOMICS-001 de Phase 0): `< 3.0` → `economics_health: red`
+- **[Context-Adjusted Threshold]** `ltv_cac_ratio` NO se compara contra un 3.0 plano (eso es estándar SaaS y marcaría "red" a un producto físico de compra única perfectamente viable por margen unitario). El umbral es **tabla por modelo de negocio**:
+
+  | modelo (de `product_brief.expected_repeat_rate` + `delivery_format`) | LTV:CAC mínimo default |
+  |---|---|
+  | subscription / recurring | 3.0 |
+  | occasional repeat | 2.5 |
+  | one-shot, margen unitario alto (≥60%) | 2.0 |
+  | one-shot, margen bajo | 3.0 |
+
+- **La alarma no se apaga, solo se razona.** `ratio < umbral_del_modelo` → no es veredicto automático `red`: cerca o bajo el umbral, se razona el contexto con **evidencia dura** (margen unitario real, recurrencia real, etapa) antes del veredicto. Si tras razonar con evidencia sigue insano → `red`. *(Esto suaviza el falso-red sin abrir la puerta al autoengaño — ver Overall_WF §Pattern B y `EVIDENCE-001`.)*
 - `cac_vs_baseline_pct` y `ltv_vs_baseline_pct`: divergencia ≥50% dispara re-trigger candidate flag para Phase 1 (heredado de Phase 1 §11)
 - El funnel se mide por awareness level, no solo total (un funnel total sano puede ocultar un nivel roto)
 
@@ -137,14 +146,17 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
   "ctr_trend": "rising | flat | falling",
   "conversion_trend": "rising | flat | falling",
   "phase_5_flags": [
-    "ctr_falling_30pct_14d | cac_up_40pct | ltv_cac_below_3 | avatar_underperforming"
+    "ctr_falling_30pct_14d", "conversion_falling_30pct", "ltv_cac_below_3",
+    "cac_up_40pct", "avatar_underperforming", "foundation_drift", "unexplained_anomaly"
   ]
 }
 ```
 
 ### Reglas duras
-- `phase_5_flags` es el contrato vinculante hacia Phase 5: cada flag mapea a una condición de re-trigger documentada (Phases 0/1/2/3 §re-trigger)
-- En proyectos multi-avatar, comparar `results_summary` entre estrategias activas: si un avatar rinde <30% del mejor avatar sostenido, flag `avatar_underperforming` (candidato a pausar esa estrategia y reasignar presupuesto)
+- `phase_5_flags` es un **conjunto ABIERTO** (jsonb), no un enum cerrado. Sus valores y su contrato viven en el **registro canónico de banderas** (`Overall_WF.md` §"Flag Registry"). Phase 4 es el **productor** de las banderas de origen métrico; Phase 5 las consume. Ninguna fase mantiene su propia copia del catálogo (evita el drift que causó el orphan M3).
+- **Regla productor-binding**: toda bandera métrica que Phase 4 emite debe tener su signal rule en §8. Si no hay regla que la produzca, la bandera no existe. (Las banderas de origen NO-métrico — `avatar_changed_qualitatively` del operador, etc. — no las emite Phase 4; ver el registro.)
+- Cuando las métricas se mueven materialmente pero **ninguna bandera conocida encaja**, Phase 4 emite `unexplained_anomaly` (ANOMALY-001) — esa es la señal que obliga a Phase 5 a **razonar** la causa raíz en vez de buscar en una lista.
+- En proyectos multi-avatar, comparar `results_summary` entre estrategias activas: si un avatar rinde <30% del mejor avatar sostenido → `avatar_underperforming`; si **todos** caen a la vez → `foundation_drift` (el cimiento compartido se movió, no un avatar).
 - `strategies.results_summary` se actualiza, no se sobrescribe el histórico: cada snapshot incrementa `snapshots_count`; el snapshot fechado completo vive en `metrics_snapshot.json` (artifact)
 
 ### Gate G-Phase-4.3
@@ -166,7 +178,7 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
   "phase_5_handoff": {
     "phase_5_flags": ["..."],
     "economics_health": "green | yellow | red",
-    "recommended_action_hint": "maintain | tune_content | new_offer | pause_avatar | restart_phase_0"
+    "recommended_action_hint": "maintain_and_scale | tune_content | retarget | new_offer | pause_avatar | rebuild_avatar (0.3↓) | rebuild_foundation (0.1-0.2.5) | open_diagnosis"
   },
   "signal_rules_triggered": [],
   "metadata": { "hours_invested": 0, "usd_invested": 0, "completed_at": "ISO date", "operator_signoff": true }
@@ -193,11 +205,11 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
     {
       "id": "ECONOMICS-LIVE-001",
       "applicable_phase": "phase-4.2",
-      "condition": "ltv_cac_ratio < 3.0",
+      "condition": "ltv_cac_ratio < umbral_del_modelo (tabla por modelo de negocio, NO 3.0 plano — ver Reglas duras 4.2 [Context-Adjusted Threshold])",
       "severity": "alert",
-      "signal": "Unit economics reales bajo el umbral 3:1 (valida ECONOMICS-001 de Phase 0 con datos reales)",
-      "implication": "Adquisición pagada insostenible. Phase 5 debe disparar: subir precio (Phase 1), subir retención (LTV), o pasar a organic-only.",
-      "auto_action": "set economics_health=red; flag phase_5 ltv_cac_below_3"
+      "signal": "Unit economics reales bajo el umbral del modelo (valida ECONOMICS-001 de Phase 0 con datos reales)",
+      "implication": "Cerca/bajo el umbral → razonar contexto con evidencia (margen unitario, recurrencia, etapa) ANTES del veredicto red. Si sigue insano tras razonar: adquisición pagada insostenible → Phase 5 dispara subir precio (Phase 1), subir retención (LTV), o pasar a organic-only. La alarma no se apaga; el veredicto se razona.",
+      "auto_action": "if reasoned-insano: set economics_health=red; flag phase_5 ltv_cac_below_3"
     },
     {
       "id": "ECONOMICS-LIVE-002",
@@ -206,7 +218,43 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
       "severity": "warning",
       "signal": "CAC/LTV real diverge ≥50% del estimado en Phase 0",
       "implication": "El supuesto económico de Phase 0 era incorrecto. Candidato a re-trigger de Phase 1 (oferta) — heredado de Phase 1 §11.",
-      "auto_action": "flag phase_5 candidate re-trigger phase-1"
+      "auto_action": "flag phase_5 ltv_cac_below_3"
+    },
+    {
+      "id": "CONVERSION-001",
+      "applicable_phase": "phase-4.3",
+      "condition": "conversion_trend == falling AND conversion_rate drop >= 30% sustained 14d (vs trailing baseline)",
+      "severity": "alert",
+      "signal": "La conversión a venta cae ≥30% sostenido — el punto ciego de negocio que faltaba (advisor crítico)",
+      "implication": "La oferta dejó de convertir. Phase 5 debe re-triggerar Phase 1 (nueva oferta). Sin esta regla, la métrica de negocio más importante no dispara nada.",
+      "auto_action": "flag phase_5 conversion_falling_30pct"
+    },
+    {
+      "id": "CAC-TREND-001",
+      "applicable_phase": "phase-4.2",
+      "condition": "cac sube >= 40% vs el snapshot ANTERIOR (tendencia mes-a-mes, distinto de ECONOMICS-LIVE-002 que compara vs baseline)",
+      "severity": "warning",
+      "signal": "CAC se dispara en tendencia aunque siga bajo el baseline",
+      "implication": "El costo de adquisición empeora rápido. Phase 5 arregla targeting (Phase 3, misma versión) antes de tocar la oferta. Ej: baseline $10, snapshot previo $6, ahora $8.4 (+40%) — sigue < $10 pero subiendo.",
+      "auto_action": "flag phase_5 cac_up_40pct"
+    },
+    {
+      "id": "FOUNDATION-DRIFT-001",
+      "applicable_phase": "phase-4.3",
+      "condition": "decaimiento simultáneo en TODOS los avatars activos del proyecto, O cambio material en los datos de mercado de la Foundation, O competitive shift tier-1",
+      "severity": "alert",
+      "signal": "Los cimientos compartidos (mercado/segmento) se movieron — no es un avatar, es el proyecto",
+      "implication": "Phase 5 re-triggerea Foundation (Phase 0.1–0.2.5) a nivel proyecto. NO confundir con un avatar individual que cae (eso es nivel avatar). Reemplaza el viejo 'refresh cada 12 meses' por evidencia real.",
+      "auto_action": "flag phase_5 foundation_drift"
+    },
+    {
+      "id": "ANOMALY-001",
+      "applicable_phase": "phase-4.3",
+      "condition": "una métrica clave se mueve materialmente (ej: revenue/cliente, retención, mix de awareness) pero NINGUNA bandera conocida del registro encaja",
+      "severity": "warning",
+      "signal": "Movimiento real sin explicación en el catálogo de banderas conocidas",
+      "implication": "Phase 5 NO debe forzar esto en una bandera existente. Emitir unexplained_anomaly obliga a la rama de diagnóstico abierto (Phase 5 §5.1.b): razonar la causa raíz desde datos crudos + historia + lecciones, y si se valida, promoverla al registro como bandera nueva. Esto es lo que hace que el sistema PIENSE en vez de solo mirar 8 banderas.",
+      "auto_action": "flag phase_5 unexplained_anomaly (con el detalle de qué métrica se movió)"
     },
     {
       "id": "FATIGUE-001",
@@ -247,8 +295,12 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
 | D2 | Atribución por avatar | Obligatoria (UTM por avatar de Phase 3). Sin esto no se comparan avatars ni funciona la orquestación paralela. |
 | D3 | Negative-quality leads | Se excluyen ANTES de calcular conversion rates (contrato de honestidad de Phase 0.3). |
 | D4 | LTV:CAC gate con datos reales | ECONOMICS-LIVE-001 valida ECONOMICS-001 de Phase 0. `< 3.0` → red → Phase 5 actúa. |
-| D5 | `phase_5_flags` como contrato | Cada flag mapea a una condición de re-trigger documentada; Phase 5 los consume determinísticamente. |
+| D5 | `phase_5_flags` como contrato | Conjunto ABIERTO (jsonb) cuyo catálogo vive en el registro canónico (`Overall_WF.md`). Phase 4 es el productor de las banderas métricas; cada una con su signal rule (productor-binding, mata el orphan M3). |
 | D6 | Matar avatars perdedores | AVATAR-PERF-001 es feature, no bug: la orquestación paralela permite pausar avatars débiles y concentrar presupuesto. |
+| D7 | Punto ciego de conversión (fix crítico) | CONVERSION-001 emite `conversion_falling_30pct` → Phase 1. Antes la métrica de negocio más importante no disparaba nada. |
+| D8 | Tendencia ≠ baseline (fix M3) | CAC-TREND-001 (mes-a-mes, emite `cac_up_40pct`) es distinto de ECONOMICS-LIVE-002 (vs baseline). Ambos coexisten. |
+| D9 | Foundation drift por evidencia, no calendario | FOUNDATION-DRIFT-001 (decaimiento cross-avatar / mercado / competencia) emite `foundation_drift`. Reemplaza el viejo refresh de 12 meses. |
+| D10 | Pensar cuando nada encaja | ANOMALY-001 emite `unexplained_anomaly` cuando una métrica se mueve sin bandera conocida → fuerza el diagnóstico abierto de Phase 5 (§5.1.b). El sistema razona, no solo mira un catálogo. |
 
 ---
 
@@ -260,8 +312,10 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
 [ ] 4.1 — negative_quality_leads_excluded contado antes de conversion_rate
 [ ] 4.2 — unit economics (CAC, LTV, ratio, payback) vs baseline; economics_health clasificado
 [ ] 4.2 — funnel por awareness con drop_off_stage
-[ ] 4.3 — strategies.results_summary escrito con phase_5_flags
-[ ] 4.3 — comparación cross-avatar si proyecto multi-avatar (AVATAR-PERF-001)
+[ ] 4.3 — strategies.results_summary escrito con phase_5_flags (conjunto abierto)
+[ ] 4.3 — conversión evaluada (CONVERSION-001) — no dejar el punto ciego de negocio
+[ ] 4.3 — comparación cross-avatar: un avatar cae → AVATAR-PERF-001; todos caen → FOUNDATION-DRIFT-001
+[ ] 4.3 — si una métrica se movió sin bandera conocida → emitir unexplained_anomaly (ANOMALY-001)
 [ ] metrics_snapshot.json anclado a strategy_id + avatar_id
 [ ] phase_5_handoff con recommended_action_hint
 [ ] Signal rules evaluadas: ninguna alert sin flag a Phase 5

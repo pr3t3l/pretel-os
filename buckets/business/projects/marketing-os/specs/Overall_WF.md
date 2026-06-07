@@ -64,6 +64,77 @@ For each avatar, Phases 1→5 produce a **Strategy** record:
 
 This preserves the full history per avatar — the substrate the system learns from, and what makes parallel avatars cheap to maintain over time.
 
+## Flag Registry (living contract between Phase 4 and Phase 5)
+
+The loop's contract is a set of **flags**: Phase 4 (the measurer) raises them; Phase 5 (the optimizer) reads them and acts. **This is NOT a hardcoded enum.** Hardcoding a fixed list would train the system to only react to failure modes someone already imagined — and to force novel problems into the wrong bucket. For an AI-first product that is a self-inflicted blind spot (it is exactly what produced advisor issue M3: a flag listed but with no producer).
+
+Instead, flags are a **living registry with three tiers** — the same shape as the `signal_rules` lifecycle already used in Phase 0:
+
+1. **Seed heuristics (the known) — fast deterministic path.** For well-understood failure modes, Phase 4 raises a known flag and Phase 5 applies the mapped action without invoking an LLM. Cheap, auditable, covers the common case.
+2. **Open diagnosis (the unknown) — forced reasoning.** When metrics move materially but **no known flag fires**, that absence is itself the meta-flag `unexplained_anomaly`. It triggers a reasoning step (Phase 5 §5.1.b): an analyst/LLM reads the raw data + the strategy's history + lessons and **hypothesizes a novel root cause**, instead of searching a list. This is how the system "thinks" when the catalog doesn't explain reality.
+3. **Promotion (the bridge) — reasoning becomes structure.** When a novel root cause is validated (its action worked, or the pattern recurs), it is **promoted into the registry as a new flag** with its own producer rule. The seed list grows from observed reality; it is never the ceiling.
+
+**Storage:** flags live inside `strategies.results_summary` (jsonb) — an **open set**, not a DB enum. Adding a new flag needs **no migration**.
+
+**Producer-binding rule (kills M3 orphans):** every flag in the registry MUST declare a producer. A flag with no producer is invalid and cannot be referenced by Phase 5. Each flag declares four fields: `name | producer | action | re-trigger scope`.
+
+### Seed registry (v1)
+
+| flag | producer | action | re-trigger scope | new strategy version? |
+|---|---|---|---|---|
+| `ctr_falling_30pct_14d` | Phase 4 metric (FATIGUE-001) | refresh hooks/content | Phase 2 (that avatar) | yes |
+| `conversion_falling_30pct` | Phase 4 metric (CONVERSION-001) | revise offer | Phase 1 (that avatar) | yes |
+| `ltv_cac_below_3` | Phase 4 metric (ECONOMICS-LIVE-001) | reprice / retention / organic-only | Phase 1 or decision | yes |
+| `cac_up_40pct` | Phase 4 metric (CAC-TREND-001) | fix targeting first | Phase 3, **same active version**; escalate to Phase 1 only if it persists (LOOP-004) | no (Phase 3); yes only on escalation |
+| `avatar_underperforming` | Phase 4 metric (AVATAR-PERF-001) | pause avatar, reallocate budget | archive that strategy | no (archived) |
+| `avatar_changed_qualitatively` | **operator** (manual observation) | re-research that avatar | **Phase 0.3↓ for that avatar only** (Foundation untouched) | yes |
+| `foundation_drift` | Phase 4 metric (FOUNDATION-DRIFT-001: cross-avatar simultaneous decay / market-data shift / competitive shift) | re-research the shared base | **Phase 0.1–0.2.5, project-wide** (affects all avatars) | yes (all avatars) |
+| `unexplained_anomaly` | Phase 4 metric (ANOMALY-001: material move, no known flag) | **open diagnosis** (reason → hypothesize) | depends on diagnosis; may promote a new flag | depends |
+
+Notes:
+- There is **no calendar-based flag** (no `12_months_elapsed`). Foundation is rebuilt on **evidence of drift**, never on a schedule — see Phase 0 §11.
+- `cac_up_40pct` does **not** edit a strategy in place; a Phase 3 re-trigger produces a new `publish_plan` *within the same active strategy version* (the strategy entity is untouched, so D-010 holds). Only escalation to Phase 1 mints a new version.
+- Phase 4 and Phase 5 both reference THIS table — neither maintains its own copy (prevents the drift that caused M3).
+
+## Two extension patterns (so we don't hardcode the open world)
+
+Closed enums are safe only for **states of a closed system** (semáforo `green|yellow|red`, máquina de estados `scheduled|published|failed`, `value|cta|hybrid`). For **categories of an open world** and for **thresholds whose right value depends on context**, every phase spec uses one of these two reusable patterns *by name* instead of freezing a list. The test for which applies:
+
+> **¿Esto enumera los estados de un sistema cerrado, o las categorías de un mundo abierto?** Cerrado → enum fijo. Abierto → Pattern A. Número con valor dependiente del contexto → Pattern B.
+
+### Pattern A — Extensible Vocabulary (for open-world categories)
+Use when a field classifies something that could have members nobody enumerated (trigger types, bonus types, KPI types).
+
+- **Seed** — a short list of the common, well-understood members (the 80%).
+- **Escape** — a literal `other` value + a required `*_custom_description` free-text field. A case that doesn't fit is captured, never forced into the wrong bucket, never orphaned (this is what would have prevented M3).
+- **Promotion** — when the same `other` description recurs **≥3 times across the project AND passes a review** (operator or automated dedup), it is promoted to a named member of the seed. Same lifecycle as Phase-0 `signal_rules` and the Flag Registry above.
+
+Governance (so registries don't bloat — "muerte por mil campos abiertos"):
+- Promotion is **not** automatic on first sight; it costs ≥3 repetitions + a review. Otherwise every one-off becomes a permanent category and the vocabulary rots.
+- **Sequencing:** openness pays off most *once there is data to promote from*. Pre-PMF, `seed + other` (capture only) is enough; promotion runs later when volume exists. Don't ask the LLM to invent categories with no grounding early.
+
+### Pattern B — Context-Adjusted Threshold (for numbers whose right value depends on context)
+Use when a cutoff (a ratio, a percentage) is a reasonable default but the correct value varies by business model / market / channel (ratio_target, LTV:CAC, Vaynerchuk ratio).
+
+- **Default by segment** — the threshold is a *table keyed by the dimension that actually moves it* (business_type, delivery_format, channel), not one global constant.
+- **Evidence adjustment** — the default is adjusted by evidence the system already has (`competitive_landscape` from Phase 0, measured fatigue from Phase 4). If the default contradicts the evidence, that conflict triggers reasoning (the open-diagnosis layer) — it is not applied blind.
+- **Alarm stays on** — near or past the threshold the system *reasons the context with hard evidence* (margin, recurrence, stage) before a verdict, but the alert is never silently switched off. **Softening the verdict ≠ removing the detector.** (Guards against the `EVIDENCE-001` confirmation-bias trap: "let's reason away the red" is exactly what self-deception looks like.)
+
+### Pattern C — Evolving Schema (the artifact JSON shape itself is a seed, not a frozen contract)
+Use for the **structure** of every phase artifact (`business_context.json`, `buyer_persona.json`, `offer_spec.json`, …). Pattern A opens enum *values* and Pattern B opens *thresholds*; Pattern C opens **which fields exist at all**.
+
+Why: the JSON this reference build produces is **v1 of one team's worldview**. Other clients, other models, and the operator's own future learning will bring different focus and improvements. Freezing the schema locks the product to today's blind spots. The schema must improve from real usage — **across all phases**, not just Phase 0.
+
+- **Seed + version** — every artifact carries `schema_version` (already on `project_phase_artifacts` from M0) and a `metadata` jsonb (also from M0) where not-yet-promoted fields live. The documented JSON is the *seed* (v1).
+- **Capture before promote** — a field/question nobody anticipated is captured in `metadata` first (the "other" of schemas). When it recurs **≥N times across projects/users AND passes review**, it is promoted to a first-class field and `schema_version` bumps. Same lifecycle as the Flag Registry and `signal_rules`.
+- **Outcome-driven evolution (the learning loop)** — every interaction in every phase writes lessons; downstream results (Phase 4 `results_summary`) reveal which questions/fields actually predict good strategies. Predictive fields get reinforced/added; dead fields get deprecated. The schema *learns what matters*.
+- **Tenancy** — distinguish a client's **local schema extensions** (their `metadata` fields) from **globally promoted core** fields. Versioned and reconciled, never one frozen shape imposed on everyone.
+- **Governance** — promotion has a cost (≥N + review), sequencing (capture pre-data, promote post-data), and deprecation of unused fields — so the schema grows from reality without bloating.
+
+This makes every artifact JSON a **living contract that improves with usage**, which is the operator's explicit requirement: the system *and* the JSON get better with every user interaction, in every phase.
+
+Phase specs tag each extensible field as **[Extensible Vocabulary]** or **[Context-Adjusted Threshold]**, and every artifact JSON is governed by **[Evolving Schema]** (seed + `schema_version` + learning loop), so the patterns are explicit at the point of use.
+
 ## Stack Actual
 
 - **Frontend:** Next.js App Router + TypeScript + Tailwind + shadcn/ui-style local components.
@@ -148,6 +219,7 @@ The lifecycle remains the product methodology:
 ## Phase Specs
 
 - `spec_Phase_0_Research_ICP.md` — research and ICP (Foundation + persona/avatars).
+- `spec_Phase_0_Setup_Agent.md` — the conversational guided delivery of Phase 0 for non-expert users (4 movements, 0.1 script, [Evolving Schema]).
 - `spec_Phase_1_Oferta.md` — offer construction (+ strategy birth, D-009/010).
 - `spec_Phase_2_Contenido.md` — content planning (anchored to strategy).
 - `spec_Phase_3_Distribucion.md` — publish, tracking, targeting (per strategy).
@@ -206,6 +278,10 @@ These specs are now **workflow requirements** for Sandi Marketing. They should b
 - D-009 (2026-06-06) — **Parallel multi-avatar orchestration is the core differentiator.** The product maintains N avatars in parallel, each with its own Phase 1→5 loop. Per-avatar strategy is the default; unification is an evidence-justified optimization. Reframes Phase 1 §4 multi-avatar logic.
 - D-010 (2026-06-06) — **New `strategies` entity** (versioned per avatar in time). Phase 5 emits Strategy #N+1 rather than overwriting. Results/learnings/decisions/best-practices persist per strategy version. Adds `avatar_id` + `strategy_id` FKs to artifacts/decisions/lessons.
 - D-011 (2026-06-06) — **Removed the "max 5 avatars" hard cap** from Phase 0 §6. Cap was an artifact of assuming a human operator; it contradicts the parallel-orchestration thesis. The 2-of-3 distinction test is retained as a *quality criterion for creating a distinct avatar*, not as a ceiling. Foundation layer (0.1–0.2.5) confirmed avatar-agnostic, sitting above the buyer persona.
+- D-012 (2026-06-06) — **Living Flag Registry** (replaces hardcoded flag enum). Seed heuristics (fast path) + open-diagnosis branch (`unexplained_anomaly` → reason the root cause) + promotion (validated novel causes become new flags). Producer-binding rule kills orphan flags (advisor M3). Added CONVERSION-001 (advisor critical), CAC-TREND-001 (M3), fixed in-place ambiguity (M1), Foundation re-trigger scope avatar-vs-project (M4), phase_4/phase_5 labels (M2). **Removed all calendar-based refresh** (no `12_months_elapsed`/6-month); Foundation rebuilds on `foundation_drift` evidence only (Coca-Cola principle: review constantly, rebuild on evidence).
+- D-013 (2026-06-06) — **Two extension patterns** to avoid hardcoding the open world: **Extensible Vocabulary** (seed + `other`+description + promotion ≥3×+review) and **Context-Adjusted Threshold** (default-by-segment + evidence adjustment + alarm-stays-on). Unifying test: closed-system states → fixed enum; open-world categories → Pattern A; context-dependent numbers → Pattern B. Governance: promotion has a cost (no bloat); openness sequenced after data exists.
+- D-015 (2026-06-07) — **Setup Agent** (conversational guided Phase 0 for non-experts) + **Pattern C — Evolving Schema**. Validated wizard-guided interface against the full LIDR corpus (best practices "Espectro de interfaces", "prompt es artefacto de software", "pre-flight + Step N of M"; lessons transaccional-vs-conversacional, memoria tipada, CAG, costos). 4-movement behavior contract; jargon hidden from user; flag calibration. Per operator: artifact JSON schemas are seeds, not frozen — they evolve via `schema_version` + capture-in-`metadata` + outcome-driven learning loop across ALL phases. New spec `spec_Phase_0_Setup_Agent.md` with the 0.1 script formalized.
+- D-014 (2026-06-06) — Applied D-013 to 7 rigidity zones: trigger `type` (R-1), `hormozi_category` (R-2), `ratio_target` (R-3), LTV:CAC threshold (R-4, table by business model, alarm preserved), Vaynerchuk ratio (R-5, per-channel adjustable by measured fatigue), pillar `kpi_primary` (R-6), brand `archetype` (R-7, primary+secondary hybrids; stays closed — 12 Jungian archetypes are exhaustive). Did NOT touch healthy closed enums (semáforo, machine states, `value|cta|hybrid`, evaluator types, structural minimums).
 
 ## How To Start A New Chat
 

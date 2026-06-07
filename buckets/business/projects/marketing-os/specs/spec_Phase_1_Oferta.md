@@ -294,7 +294,7 @@ Construir el conjunto core + bonuses cuyo valor percibido stackeado cumpla **amb
 | B2C | impulsiva | 7× | Compra emocional, necesita "victoria abrumadora" |
 | Hybrid | cualquiera | 5× | Default conservador |
 
-Override por `decision_record` permitido pero requiere justificación explícita.
+**[Context-Adjusted Threshold]** Esta tabla es el **default por segmento**, no una ley. El múltiplo correcto también depende del panorama competitivo que Phase 0 ya levantó (`competitive_landscape`): un mercado saturado exige un ratio percibido más alto para destacar; un mercado virgen tolera menos. **Regla:** el `offer-stack-builder` lee `competitive_landscape.pricing_tiers` y, si la realidad competitiva contradice el default de la tabla, **eso dispara razonamiento (no se aplica ciego)** y ajusta `ratio_target` con la evidencia. El override por `decision_record` sigue permitido, pero el ajuste preferido es **por evidencia competitiva**, no manual a ciegas (ver Overall_WF §Pattern B).
 
 ### Margin gate (por delivery_format)
 
@@ -327,7 +327,8 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
       "name": "nombre concreto y específico",
       "force_attacked": "pull_amplify | anxiety_reduce | habit_break | weakest_axis_boost",
       "specific_target": "anxiety #2 del avatar OR habit #1 OR pull #3 OR weakest_axis",
-      "hormozi_category": "speed | done_for_you | identity | community_access | results_guarantee",
+      "hormozi_category": "speed | done_for_you | identity | community_access | results_guarantee | other  [Extensible Vocabulary]",
+      "hormozi_category_custom_description": "obligatorio si category=other. Las 5 de Hormozi son la SEMILLA (las escribió para SUS productos); un sistema que mercadea cualquier producto verá tipos que él no enumeró — ej: 'estatus/reconocimiento (hall of fame público)', 'acceso anticipado', 'personalización extrema'. Un custom que aparezca ≥3 veces se promueve (ver Overall_WF §Pattern A).",
       "addresses_objection": "obj_id o null",
       "perceived_value_usd": 0,
       "value_rationale": "comparable de mercado real",
@@ -612,9 +613,11 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
 - Cero adjetivos vacíos ("revolucionario", "increíble", "único") — se reemplazan con specifics
 - Dream outcome statement viene de JTBD, no de pain points (test: ¿la oración apela a aspiración o solo a alivio?)
 
-### Output C: `offer_name`
+### Output C: `offer_name` (+ finalización del nombre de marca/producto)
 
 **Test del nombre**: si el operador no puede pronunciarlo en una frase del tipo *"compré [nombre] y [outcome del JTBD]"*, el nombre falla.
+
+**Finalización del nombre de marca/producto (cierra el concern abierto en Phase 0 Setup Agent §4b):** aquí, con el posicionamiento ya conocido (avatar + diferenciación), se decide el **nombre final** de la empresa/producto — no solo el de la oferta. Promueve `business_context.name_status` de `working` → `final`. Pre-requisito de lanzamiento: dominio disponible + sin conflicto de trademark/competencia (el chequeo temprano se hizo en Phase 0; aquí se confirma sobre el candidato final).
 
 ### Gate G-Phase-1.4
 - Si aplica multi-avatar: 1.4.0 cerrado (`positioning_variants[].language_pack` poblado para cada `language_packs_required`, ≥5 key_phrases y ≥3 avoid_phrases por pack)

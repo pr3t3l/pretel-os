@@ -421,7 +421,8 @@ Si solo 1 de 3 → es el mismo avatar con variante menor; ajusta el existente en
         "triggers": [
           {
             "event": "ej: termina la temporada escolar y tiene 2 semanas libres",
-            "type": "estacional | situacional | emocional | financiero",
+            "type": "estacional | situacional | emocional | financiero | other  [Extensible Vocabulary]",
+            "type_custom_description": "obligatorio si type=other — ej: 'prueba social/FOMO (vi a alguien hacerlo)', 'identitario (quiero ser el tipo de persona que…)', 'regulatorio (nueva ley me obliga)'. Las 4 categorías son la SEMILLA; un type_custom que aparezca ≥3 veces se promueve a categoría nueva (ver Overall_WF §Pattern A).",
             "urgency": "alta | media | baja",
             "channel_implication": "captura via ads en momento exacto"
           }
@@ -697,11 +698,11 @@ Las reglas viven como `best_practice_record` con:
     {
       "id": "ECONOMICS-001",
       "applicable_phase": "phase-0",
-      "condition": "expected_ltv_usd / target_cac_usd < 3.0",
+      "condition": "expected_ltv_usd / target_cac_usd < umbral_del_modelo  [Context-Adjusted Threshold] — umbral por modelo de negocio (subscription 3.0 | occasional 2.5 | one-shot margen≥60% 2.0 | one-shot margen bajo 3.0), NO 3.0 plano. Ver Phase 4 §4.2 tabla.",
       "severity": "alert",
-      "signal": "Unit economics no soportan adquisición pagada saludable",
-      "implication": "El modelo solo funciona vía orgánico (SEO/contenido). SEM/Ads no será sostenible. Reconsiderar precio, retention, o canales.",
-      "auto_action": "block Phase 1 entry until decision_record justifies path (organic-only OR price-up OR retention-up)"
+      "signal": "Unit economics estimados no soportan adquisición pagada saludable para este modelo",
+      "implication": "Cerca/bajo el umbral del modelo → razonar con evidencia (margen unitario alto puede sostener un ratio menor en compra única) antes del veredicto. Si sigue insano: el modelo solo funciona vía orgánico; SEM/Ads no será sostenible. La alarma no se apaga.",
+      "auto_action": "if reasoned-insano: block Phase 1 entry until decision_record justifies path (organic-only OR price-up OR retention-up)"
     }
   ]
 }
@@ -799,17 +800,20 @@ Phase 0 se cierra cuando:
 
 ## 11. Re-trigger de Phase 0
 
-Phase 0 se ejecuta:
-- **Una vez** al inicio de cada producto nuevo
-- **Re-trigger** cuando se cumpla cualquiera de:
-  - CTR cae ≥30% sostenido por 14 días en campañas que antes funcionaban
-  - CPL/CPA sube ≥40% sostenido
-  - Conversiones bajan con mismo tráfico
-  - Operador detecta cambio cualitativo en feedback (señales de que el avatar cambió)
-  - Pasaron 12 meses desde el último Phase 0 (forced refresh)
-  - **GAP-16 (diferido a Cat C)**: competitive shift — competidor tier-1 entra/sale del mercado o pivota material
+Phase 0 se ejecuta **una vez** al inicio de cada producto nuevo. Los re-triggers son **por evidencia, nunca por calendario** (ver `Overall_WF.md` §"Flag Registry"). Hay **dos niveles distintos** de re-trigger, y mezclarlos es un bug (rompe la tesis de Foundation compartida):
 
-Cada re-trigger queda como `decision_record` con motivo + evidencia.
+**A. Re-trigger a nivel AVATAR — solo desde 0.3 hacia abajo, para ESE avatar (Foundation intacta):**
+- Flag `avatar_changed_qualitatively`: el operador detecta un cambio cualitativo en UN avatar (cambió su lenguaje, su trigger, su job). Se re-hace solo la rama de ese avatar (persona/avatar → estrategia). **NO se toca la Foundation (0.1–0.2.5)**, porque es compartida y re-hacerla dañaría a los otros N-1 avatars que están bien.
+
+**B. Re-trigger a nivel FOUNDATION — 0.1–0.2.5, afecta a TODO el proyecto:**
+- Flag `foundation_drift`, disparado por **evidencia de que los cimientos compartidos cambiaron**, no por una fecha:
+  - **Decaimiento simultáneo en TODOS los avatars** a la vez (si solo uno cae, es nivel avatar; si caen todos juntos, el mercado se movió).
+  - **Los datos de mercado** sobre los que se construyó la Foundation (volumen de búsqueda, TAM/SAM, demanda) cambiaron materialmente.
+  - **Competitive shift** (ex-GAP-16, ahora activo): un competidor tier-1 entra/sale del mercado o pivota material.
+
+**No existe "forced refresh cada 12 meses".** Refrescar por reloj contradice el principio de actuar sobre evidencia (Coca-Cola no reconstruye su estrategia cada año porque toque el calendario). Lo que sí es sano: un **recordatorio barato de REVISIÓN periódica** (un humano verifica "¿siguen siendo verdad los supuestos de la Foundation?") — pero eso es *revisar*, no *reconstruir*. La reconstrucción solo la disparan las señales de `foundation_drift` de arriba. *(Esto evita el otro extremo: el decaimiento lento y el sesgo de confirmación que `EVIDENCE-001` ya vigila.)*
+
+Cada re-trigger queda como `decision_record` con motivo + evidencia + nivel (avatar vs foundation).
 
 ---
 

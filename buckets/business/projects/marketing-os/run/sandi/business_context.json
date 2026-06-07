@@ -1,0 +1,40 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1 de ESTE build. Campos nuevos no anticipados van en metadata hasta promoverse (Overall_WF §Pattern C).",
+  "run": "sandi",
+  "phase": "phase_0",
+  "sub_step": "0.1-business-context",
+  "business_type": "hybrid",
+  "lead_segment": "B2C",
+  "lead_segment_detail": "individuos: emprendedores, freelancers, dueños de negocio pequeño",
+  "parked_segment": "B2B",
+  "parked_segment_note": "empresas / equipos de marketing — expansión futura, no descartada",
+  "sales_cycle": "reflexivo",
+  "channel": "online_only",
+  "channel_basis": "inferido (SaaS); confirmar si hay componente offline",
+  "monetization_model": "subscription + usage(credits)",
+  "monetization_note": "créditos mensuales que consumen campañas/avatares/proyectos; límites por definir",
+  "market_scope": "internacional",
+  "geographies_launch": ["US"],
+  "geographies_horizon": ["US", "Europe", "LatAm"],
+  "language_primary": "en",
+  "languages_horizon": ["en", "es"],
+  "name_status": "working",
+  "working_name": "Sandi",
+  "working_name_note": "asignado de forma aleatoria; el operador investigó y duda por competencia + disponibilidad de dominio. Finalizar en Phase 1.4 (post-posicionamiento). Chequear dominio + trademark antes de comprometer.",
+  "implications_acknowledged": [
+    "B2C reflexivo -> marketing de confianza/educacion, NO 'compra-ya'; requiere trial/garantia (Phase 1 risk-reversal, Phase 2 contenido educativo)",
+    "Foco US/ingles -> la investigacion de demanda (0.2) arranca en ingles/US; LatAm/Europe = expansion; ingles = idioma mas barato en tokens",
+    "Suscripcion+creditos -> el pricing depende de un modelo de costo de IA por avatar/ciclo (DEPENDENCIA parqueada -> Phase 1 Pricing)"
+  ],
+  "dmu_required": false,
+  "metadata": {
+    "product_capabilities_noted": ["multimodal"],
+    "parked_dependencies": [
+      "modelo de costo de IA por avatar/ciclo (insumo de Phase 1 Pricing y del sistema de creditos)"
+    ],
+    "_purpose": "campos aun no promovidos al schema de primera clase (Pattern C capture-before-promote)"
+  },
+  "operator_signoff": true,
+  "gate_G_Phase_0_1": "passed"
+}

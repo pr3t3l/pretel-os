@@ -137,7 +137,7 @@ Convertir el `publishing_calendar_skeleton` de Phase 2 en un calendario fechado 
 ```
 
 ### Reglas duras
-- El ratio Vaynerchuk 3:1 value:cta (Phase 2.4) se verifica **a nivel calendario por canal orgánico** (DISTRIB-001) — no solo a nivel plan
+- El ratio value:cta objetivo por canal (Phase 2.4, default 3:1 ajustable por fatiga) se verifica **a nivel calendario por canal orgánico** (DISTRIB-001) — no solo a nivel plan
 - Cada entrada con `utm_resolved` derivado del `tracking_manifest` (no UTMs ad-hoc)
 - `frequency_v1` por pilar respetada (±1 pieza/semana)
 
@@ -221,10 +221,10 @@ El `phase_4_handoff.economics_baseline` traslada el `target_cac_usd` / `expected
     {
       "id": "DISTRIB-001",
       "applicable_phase": "phase-3.3",
-      "condition": "for any organic channel in calendar: count(value)/max(count(cta),1) < 3.0",
+      "condition": "for any organic channel in calendar: value:cta ratio < ratio_objetivo_del_canal (default 3:1 [Context-Adjusted Threshold], ajustado por fatiga real de Phase 4 — mismo objetivo que VAYNER-001)",
       "severity": "warning",
-      "signal": "Calendario rompe ratio Vaynerchuk en canal orgánico",
-      "implication": "El feed se quema en ~4 semanas. Reordenar el calendario con más piezas value.",
+      "signal": "Calendario rompe el ratio jab/right-hook objetivo de ese canal",
+      "implication": "El feed se quema si hay demasiado CTA — umbral por canal, no 3:1 universal. Reordenar el calendario con más piezas value.",
       "auto_action": "warn before go-live"
     },
     {
