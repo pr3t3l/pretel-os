@@ -3,7 +3,9 @@
 **Project**: business/marketing-os
 **Phase ID**: phase-2
 **Status**: spec drafted v1.1 (post audit R4)
-**Last updated**: 2026-05-10
+**Last updated**: 2026-06-01
+**Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. n8n is not part of the MVP; revisit only for Phase 3 distribution/publication.
+
 **Audit references**:
 - Phase 0 v1.5 (R1, decision `7f87df56`) — consume `avatars[].forces_of_progress`, `awareness_distribution`, `negative_personas`, `dmu`, `business_context.channel`, `buyer_persona.jobs_to_be_done`
 - Phase 1 v1.5 (R2, decision `9215573a`) — consume `offer_spec.json`, `offer_statement.md`, `multi_avatar_strategy`, `positioning_variants[].language_pack`, `phase_2_handoff`, `stack.force_coverage`, `risk_urgency_displacement.displacement_framing`
@@ -19,6 +21,14 @@
 Phase 2 convierte la oferta (Phase 1) en piezas de contenido que respetan simultáneamente: (a) el awareness level del prospecto (Schwartz, mapeado en Phase 0.2), (b) la fase del Customer Journey del avatar (5 stages), (c) la función específica de cada canal del `business_context.channel`, (d) las 4 fuerzas del avatar (cada fuerza requiere un formato distinto), (e) las `negative_personas` (auto-rechazo de copy que apele a anti-target), (f) los gaps explícitos de `phase_2_handoff` heredados de Phase 1 (objections / anxieties / habits / pulls uncovered).
 
 **Output canónico**: `content_plan.json` (matriz Customer Journey × awareness level × canal × formato × fuerza_atacada) + `content_assets/` (los assets reales: long-forms, derivatives, hooks library, emails, copy, CTAs).
+
+### Pertenencia a una Estrategia (D-009/D-010, ver `Overall_WF.md`)
+
+Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia versionada por avatar), no al proyecto plano. Esto materializa la jerarquía Project → Avatar → **Strategy** → Contenido.
+
+- **`separate_strategies` (default):** Phase 1 y Phase 2 corren **N veces, una por avatar**. Cada corrida produce su propio `content_plan.json` enganchado a su `strategy_id` (un avatar, una versión). Es el caso limpio de la orquestación paralela.
+- **`unified_C_*`:** un solo `content_plan.json` sirve a varios avatars (`covers_avatars`), enganchado a la estrategia unificada cuyo `covers_avatar_ids` lista todos. La diferenciación por avatar ocurre vía `language_packs` dentro del plan único.
+- El plan declara `linked_to.strategy_id` + `strategy_version`. Decisiones, lessons y `signal_rules_triggered` de Phase 2 se persisten con `strategy_id` (no solo `project_id`), para que el loop de Phase 5 aprenda por estrategia.
 
 **Spine teórico**:
 - Schwartz "Breakthrough Advertising" (5 awareness levels — Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware; este sistema colapsa Product+Most en "Most Aware" siguiendo el mapping ya hecho en Phase 0.2)
@@ -54,13 +64,13 @@ Phase 2 convierte la oferta (Phase 1) en piezas de contenido que respetan simult
 
 ## 2. Pre-condición — Gate de entrada G-Phase-2-PRE
 
-Phase 2 NO arranca a menos que se cumplan los **13 checks**. Si cualquier check falla, el handler responde `{status: 'blocked', reason: '...'}`.
+Phase 2 NO arranca a menos que se cumplan los **14 checks**. Si cualquier check falla, el handler responde `{status: 'blocked', reason: '...'}`.
 
 **Checks de Phase 1 cierre:**
 1. ✅ `offer_spec.json` existe con `metadata.operator_signoff: true`
-2. ✅ `offer_statement.md` existe (uno si `single_avatar` o `unified_C_*`, N si `separate_offers`) y cada uno ≤350 palabras
-3. ✅ `offer_spec.multi_avatar_strategy` ∈ {`single_avatar`, `unified_C_clean`, `unified_C_language_packs`, `unified_C_avatar_specific_bonuses`, `separate_offers`} declarado
-4. ✅ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_offers, unified_C_avatar_specific_bonuses}`: `positioning_variants[]` poblado con `language_pack.vocabulary_register`, ≥5 `key_phrases` y ≥3 `avoid_phrases` por avatar (heredado de G-Phase-1.4)
+2. ✅ `offer_statement.md` existe (uno si `single_avatar` o `unified_C_*`, N si `separate_strategies`) y cada uno ≤350 palabras
+3. ✅ `offer_spec.multi_avatar_strategy` ∈ {`single_avatar`, `unified_C_clean`, `unified_C_language_packs`, `unified_C_avatar_specific_bonuses`, `separate_strategies`} declarado
+4. ✅ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, unified_C_avatar_specific_bonuses}`: `positioning_variants[]` poblado con `language_pack.vocabulary_register`, ≥5 `key_phrases` y ≥3 `avoid_phrases` por avatar (heredado de G-Phase-1.4)
 5. ✅ `offer_spec.metadata.phase_2_handoff` documentado: `objections_uncovered`, `anxieties_uncovered`, `habits_unattacked`, `pulls_underamplified` poblados explícitamente (cero uncovered permitido solo si OFFER-001 acknowledged en Phase 1)
 
 **Checks de Phase 0 todavía válidos:**
@@ -76,6 +86,9 @@ Phase 2 NO arranca a menos que se cumplan los **13 checks**. Si cualquier check 
 
 **Check del sub-paso 2.0 (gate interno propio):**
 13. ✅ `brand_voice.json` declarado y firmado por operador (sub-paso 2.0 cerrado). Sin esto, 2.1–2.5 no arrancan.
+
+**Check de pertenencia a estrategia (D-010):**
+14. ✅ Existe la `strategies` row destino y su `strategy_id` está disponible para `content_plan.linked_to`. En `separate_strategies` se valida que esta corrida de Phase 2 corresponde a UN avatar (el `avatar_id` de la estrategia); en `unified_C_*` se valida que `covers_avatar_ids` de la estrategia == `covers_avatars` del offer_spec. Sin esto, el plan no puede anclarse y STRATEGY-LINK-001 bloquea Phase 2 close.
 
 ---
 
@@ -440,7 +453,7 @@ Sin esta distinción, dos modos de fallo (documentados en audit R4 A1-ISSUE-1):
 - **Cada pilar declara `jtbd_anchor`** con `job_id` + literal de `frustration_with_current` + literal de `social_job` (A1-ISSUE-2 audit R4). El `content_brief` debe citar estos literales — no parafrasear. Sin esto, el contenido pierde anchor aspiracional con el Dream Outcome de Phase 1.1.
 - **PILLAR_D obligatoriamente declara `displacement_inheritance`** con los tres campos heredados literales de `offer_spec.risk_urgency_displacement.displacement_framing` (A1-ISSUE-4 audit R4). El `replacement_narrative_literal` debe aparecer textualmente en ≥1 derivative del pilar por ciclo (consistency cross-asset).
 - Si `business_context.business_type === "B2B"` → cada pilar declara `dmu_role_target` (champion / decision_maker / influencer / end_user) explícito
-- Si `multi_avatar_strategy === "separate_offers"` → cada pilar puede tener `language_pack_assignments` distinto por avatar (statements separados ya producidos en Phase 1.4)
+- Si `multi_avatar_strategy === "separate_strategies"` → cada avatar corre su propia Phase 2 (un `content_plan.json` por estrategia/avatar); el `language_pack_assignments` de cada plan apunta al avatar de esa estrategia
 - PILLAR_B (triggers) DEBE alinearse con `risk_urgency_displacement.urgency.aligned_with_trigger` cuando esa urgency no es `none` — coherencia entre la oferta y la campaña que la captura
 
 ### Sub-workflow `content-pillars-builder`
@@ -729,11 +742,13 @@ Para cada asset (long_form o derivative o hook):
 {
   "plan_id": "plan_v1_YYYYMMDD",
   "linked_to": {
+    "strategy_id": "strategy_uuid",
+    "strategy_version": 1,
     "offer_id": "offer_v1_YYYYMMDD",
     "product_brief_v2_path": "...",
     "primary_avatar_id": "avatar_1",
     "covers_avatars": ["avatar_1", "avatar_2"],
-    "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_offers"
+    "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_strategies"
   },
   "brand_voice": { "...del 2.0..." },
   "content_mix": { "...del 2.1..." },
@@ -964,6 +979,15 @@ Reglas heurísticas que disparan contra outputs estructurados. Persistidas como 
       "signal": "Pilar bajo el ratio Vaynerchuk 3:1 jab/right-hook en canal orgánico",
       "implication": "Audiencia se quema en ~4 semanas si >25% del feed orgánico es CTA. Recomponer atomization con más derivatives content_type=value (educacional, entretenimiento, identidad). Excepción PILLAR_B en paid ads no aplica. Audit R4 A1-ISSUE-3.",
       "auto_action": "warn before Phase 2 close"
+    },
+    {
+      "id": "STRATEGY-LINK-001",
+      "applicable_phase": "phase-2 close",
+      "condition": "content_plan.linked_to.strategy_id is null OR (multi_avatar_strategy == 'unified_C_*' AND strategy.covers_avatar_ids != offer_spec.covers_avatars) OR (multi_avatar_strategy == 'separate_strategies' AND content_plan covers >1 avatar)",
+      "severity": "alert",
+      "signal": "content_plan no está anclado a una estrategia válida, o la granularidad no coincide con multi_avatar_strategy",
+      "implication": "El plan debe pertenecer a una strategies row (D-010). En separate_strategies, un plan = un avatar; en unified_C_*, el covers de la estrategia debe igualar el covers del offer. Sin esto, los resultados/learnings de Phase 5 no se atribuyen a la estrategia correcta.",
+      "auto_action": "block Phase 2 close"
     }
   ]
 }
@@ -1003,6 +1027,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 | D12 | JTBD anclado en brand voice + pilares + hooks (audit R4) | `archetype_rationale` cita `job_id` + `emotional_job` + `social_job` (regla dura, no ejemplo). PILLAR_A `jtbd_anchor` con `frustration_with_current` literal. Hook "identity callout" extrae identidad de `social_job`. |
 | D13 | Vaynerchuk ratio 3:1 jab:right-hook (audit R4) | Cada derivative declara `content_type ∈ {value, cta, hybrid}`. En canales orgánicos, ratio mínimo 3:1 value:cta por pilar. VAYNER-001 dispara warning. PILLAR_B en paid = excepción. SEO long-form anchor = hybrid automático. |
 | D14 | PILLAR_D consume `displacement_framing` literal (audit R4) | `displacement_inheritance` con `habit_being_displaced_id`, `replacement_narrative_literal`, `cost_of_continuing_current_path_literal` heredados de Phase 1.3. `replacement_narrative` debe aparecer textualmente en ≥1 derivative por ciclo. |
+| D15 | Pertenencia a Estrategia (D-009/D-010, 2026-06-06) | Cada `content_plan.json` pertenece a una `strategies` row vía `linked_to.strategy_id` + `strategy_version`. En `separate_strategies` (default) Phase 2 corre una vez por avatar (un plan = un avatar); en `unified_C_*` un plan cubre varios avatars. STRATEGY-LINK-001 bloquea si el plan no se ancla o la granularidad no coincide. `separate_strategies` reemplaza `separate_offers` en todo el spec. |
 
 ---
 
@@ -1033,7 +1058,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 - Skill `content-pillars-builder` registrado en pretel-os (`domain: workflow`)
 - Skill `content-atomizer` registrado en pretel-os
 - Skill `hook-library-generator` registrado en pretel-os
-- 14 signal rules sembradas (VOICE-001, CONTENT-001/002/003/004/005, ATOMIZATION-001, FORCES-001, NEGATIVE-001, COVERAGE-001, TRIGGER-ALIGN-001, HANDOFF-001, REINFORCE-001, VAYNER-001) como `best_practice_record` con `domain: workflow`
+- 15 signal rules sembradas (VOICE-001, CONTENT-001/002/003/004/005, ATOMIZATION-001, FORCES-001, NEGATIVE-001, COVERAGE-001, TRIGGER-ALIGN-001, HANDOFF-001, REINFORCE-001, VAYNER-001, STRATEGY-LINK-001) como `best_practice_record` con `domain: workflow`
 - Lookup table `channel_function` (Sección 5, "función natural de canal") registrada como `best_practice` con `domain: workflow`
 - Lookup table `atomization_ratio_minimum_per_anchor_format` (Sección 7) registrada como `best_practice`
 - Template library inicial de hooks (9 templates de la tabla en 2.5) registrada como best_practices con tags `['hook-template']`
@@ -1052,7 +1077,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 Para el primer ciclo manual de Phase 2 con un producto real:
 
 ```
-[ ] G-Phase-2-PRE: 13 checks de entrada verificados (incluye check 11 force_coverage + check 12 displacement_framing accesibles)
+[ ] G-Phase-2-PRE: 14 checks de entrada verificados (incluye check 11 force_coverage + check 12 displacement_framing + check 14 strategy_id disponible)
 [ ] 2.0 — brand_voice.json declarado (archetype + tone + lexicon + ≥3 consistency_check_rules)
 [ ] 2.0 — archetype_rationale cita JTB job_id + emotional_job + social_job (audit R4)
 [ ] 2.0 — compatibilidad voice ↔ language_packs verificada (conflictos listados o array vacío)
@@ -1084,6 +1109,7 @@ Para el primer ciclo manual de Phase 2 con un producto real:
 [ ] Phase 3 handoff completo: UTM scheme + pixel events + exclusion_lists_needed + audience_targeting_per_channel + calendar_skeleton
 [ ] Signal rules evaluadas: ninguna alert sin resolver
 [ ] content_plan.json consolidado, paths apuntando a content_assets/ reales
+[ ] content_plan.linked_to.strategy_id + strategy_version poblados; granularidad coincide con multi_avatar_strategy (STRATEGY-LINK-001)
 [ ] hours/usd invertidos cuantificados
 [ ] operator_signoff: true
 ```

@@ -3,7 +3,9 @@
 **Project**: business/marketing-os
 **Phase ID**: phase-0
 **Status**: spec drafted, post-audit v1.5 + alignment patches (GAP-AL1, GAP-AL2)
-**Last updated**: 2026-05-10
+**Last updated**: 2026-06-01
+**Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. Legacy references to handlers, n8n, or pretel-os DB writes are methodology/history, not MVP runtime.
+
 **Audit reference**:
 - `audit_marketing_os_phase_0.md` (2026-05-10) — Categoría A integrada
 - Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — GAP-AL1 (`target_cac_usd` persistido), GAP-AL2 (`competitive_landscape.pricing_tiers[]` estructurado)
@@ -15,6 +17,15 @@
 Phase 0 es el cimiento sobre el que descansa el Marketing Lifecycle completo. Su objetivo: producir un conjunto completo de artefactos que cualquier fase posterior necesita para no operar a ciegas. **Sin un Phase 0 honesto, todo el trabajo posterior amplifica suposiciones equivocadas a escala.**
 
 **Output canónico**: `product_brief_v2.json` — input contract de Phase 1 (Oferta).
+
+### Capa Foundation (agnóstica del avatar) vs capa por-avatar
+
+Phase 0 se divide en dos capas conceptuales (ver `Overall_WF.md` §"Canonical Project Hierarchy"):
+
+- **Foundation — agnóstica del avatar (sub-pasos 0.1, 0.2, 0.2.5).** Business Context (La Idea), Demand Quantification (El Mercado) e ICP (El Segmento) describen el proyecto, el mercado y el segmento. Son **idénticos sin importar a qué avatar le hables después** y se calculan **una sola vez por proyecto**, compartidos por todos los avatars. Viven a nivel `projects`, con `avatar_id` null.
+- **Por-avatar — empieza en 0.3.** Buyer Persona (universal del proyecto) + Avatars (unidades de orquestación independientes). Aquí arranca la bifurcación: cada avatar tendrá luego su propia estrategia (Phase 1→5) versionada en el tiempo.
+
+Esta separación es lo que permite la **orquestación paralela de múltiples avatars**: una base común barata + N loops por-avatar encima de ella.
 
 **Principios operacionales**:
 - Hipótesis del operador SE PRESERVAN en `operator_hypotheses_original`; no se sobrescriben con evidencia
@@ -313,14 +324,14 @@ Pasar de "tengo ICP" a "este es el ser humano específico que decide y/o usa". 5
 | Producto con uso situacional variable (educacional, fitness, finanzas) | 2–4 |
 | Producto B2B con compra colectiva | 3–5 (= roles de DMU) |
 
-**Hard cap V1**: máximo 5 avatars totales por producto.
+**Sin cap duro de avatars (D-011, 2026-06-06).** La versión previa imponía un máximo de 5 avatars por producto; ese tope era un artefacto de asumir un operador humano que no puede sostener muchos avatars a mano, y **contradice la tesis de orquestación paralela** (`Overall_WF.md` §"Core Differentiator"). Cada avatar es una **unidad de orquestación independiente** con su propio loop Phase 1→5; el sistema mantiene N en paralelo. El operador puede *priorizar* cuáles activar primero (orden de ejecución), pero no hay límite estructural en cuántos existen. Las tablas de "avatars por persona según tipo de producto" arriba quedan como **guía orientativa de cuántos suelen ser cualitativamente distintos**, no como techo.
 
-**Test operacional para crear un avatar nuevo** (criterio: 2 de 3 deben ser cualitativamente distintos):
+**Test operacional para crear un avatar nuevo** — sigue vigente como **criterio de calidad/distinción** (no como cap). Criterio: 2 de 3 deben ser cualitativamente distintos:
 1. ¿El **trigger de compra o ongoing pain** del avatar nuevo es cualitativamente distinto?
 2. ¿El **canal** donde se encuentran es distinto?
 3. ¿El **lenguaje** que usan para describir el problema es distinto?
 
-Si solo 1 de 3 → es el mismo avatar con variante menor; ajusta el existente.
+Si solo 1 de 3 → es el mismo avatar con variante menor; ajusta el existente en lugar de crear uno nuevo. Esto evita avatars redundantes, pero no limita el número de avatars *genuinamente distintos*.
 
 ### Output A: `buyer_persona.json` — analítico, universals del segmento
 
@@ -814,6 +825,8 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 | D6 | ¿LTV:CAC gate en Phase 0 o solo en Phase 4? | **En Phase 0** vía signal rule ECONOMICS-001 con valores estimados. Phase 4 valida con datos reales. |
 | D7 | ¿Negative persona como prosa o como artefacto estructurado? | **Artefacto estructurado** `negative_personas.json`. Phase 2/3/4 lo leen programáticamente. |
 | D8 | ¿Customer Journey artefacto separado o embebido en avatar? | **Embebido en avatar (sub-paso 0.3) con 5 stages** (consciencia → consideración → decisión → retención → advocacy). Extracción a archivo separado se difiere si Phase 2 lo requiere. |
+| D9 | ¿Hard cap de 5 avatars? | **Eliminado (D-011, 2026-06-06).** Contradecía la orquestación paralela. Sin límite estructural; el test 2-de-3 se mantiene como criterio de distinción, no como techo. |
+| D10 | ¿La capa Foundation (0.1–0.2.5) es agnóstica del avatar? | **Sí.** Business Context, Demand e ICP se calculan una vez por proyecto y se comparten entre todos los avatars (`avatar_id` null). La bifurcación por-avatar empieza en 0.3. |
 
 ---
 

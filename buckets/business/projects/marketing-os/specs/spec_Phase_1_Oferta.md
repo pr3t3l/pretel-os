@@ -3,7 +3,9 @@
 **Project**: business/marketing-os
 **Phase ID**: phase-1
 **Status**: spec drafted v1.5
-**Last updated**: 2026-05-10
+**Last updated**: 2026-06-01
+**Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. FastAPI is future-only for heavy jobs, complex agents, or public API needs.
+
 **Audit references**:
 - Phase 0 v1.5 (Categoría A integrada) — outputs consumidos en G-Phase-1-PRE
 - Auditoría externa Phase 1 (2026-05-10) — 3 regresiones + bug matemático + 6 mediums integrados
@@ -188,29 +190,41 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 
 ## 4. Transversal — Multi-avatar strategy (después de 1.1)
 
+### Default invertido (D-009, 2026-06-06)
+
+**La estrategia por-avatar es el DEFAULT, no la excepción.** El diferenciador central de Sandi es mantener N avatars en paralelo, cada uno con su propia estrategia (ver `Overall_WF.md` §"Core Differentiator"). Por eso este sub-paso **no decide si separar** — asume que cada avatar merece su propia estrategia — sino que decide si existe **evidencia suficiente para *unificar*** dos o más avatars bajo una sola oferta como **optimización** (ahorra trabajo cuando los avatars son casi idénticos).
+
+En otras palabras: la carga de la prueba se invierte. Antes había que justificar separar; ahora hay que **justificar unificar**. Si la evidencia de unificación no se cumple, cada avatar sigue su propia estrategia (Phase 1→5 independiente), que es el comportamiento esperado del sistema.
+
 ### Propósito
-Antes de pasar a 1.2 (stack), decidir si los avatars del producto comparten suficiente para una oferta unificada o requieren ofertas separadas. Decisión basada en evidencia de los `value_equation.json` ya producidos.
+Después de 1.1, evaluar — con evidencia de los `value_equation.json` ya producidos — si dos o más avatars comparten lo suficiente para **colapsar en una oferta unificada** (optimización), o si cada uno conserva su estrategia independiente (default).
 
-### Criterio de decisión (5 condiciones)
+### Criterio de UNIFICACIÓN (5 condiciones)
 
-**Condiciones HARD (deben cumplir las 4):**
-1. Mismo `functional_job` (JTBD) entre todos los avatars
+Estas condiciones miden si dos o más avatars son **lo bastante parecidos como para unificarlos** sin perder efectividad. Si NO se cumplen, el default (estrategia por-avatar) se mantiene.
+
+**Condiciones HARD (deben cumplir las 4 para habilitar cualquier unificación):**
+1. Mismo `functional_job` (JTBD) entre los avatars evaluados
 2. Mismo `weakest_axis` en `value_equation.json`
 3. ≥2 de 3 top anxieties compartidas entre avatars
 4. ≥2 de 3 top habits compartidas entre avatars
 
-**Condición SOFT (modifica forma de C, no la bloquea):**
+**Condición SOFT (modifica la forma de la unificación, no la bloquea):**
 5. ≥70% solapamiento de vocabulario en `buyer_persona.behaviors.online_communities` + `avatars.daily_routine`
 
 ### Regla de decisión
 
+El default es `separate_strategies` (cada avatar su propia estrategia). Solo se *colapsa* hacia una forma unificada si la evidencia lo permite:
+
 | Condiciones | Estrategia | Schema implicación |
 |---|---|---|
-| 4 hard ✅ + soft ✅ | **C limpia**: 1 oferta, 1 stack, 1 statement | `multi_avatar_strategy: "unified_C_clean"` |
-| 4 hard ✅ + soft ❌ | **C con language_packs**: 1 oferta, 1 stack, 1 precio, N statements lingüísticos | `multi_avatar_strategy: "unified_C_language_packs"` |
-| Exactamente 1 hard ❌ | **C con avatar_specific bonuses**: 1 oferta, 1 stack base + 1-2 bonuses específicos por avatar para cerrar gap | `multi_avatar_strategy: "unified_C_avatar_specific_bonuses"` |
-| ≥2 hard ❌ | **B**: ofertas separadas, cada una con `offer_spec.json` independiente | `multi_avatar_strategy: "separate_offers"` |
+| ≥2 hard ❌ | **Default — estrategias separadas**: cada avatar conserva su propio `offer_spec.json` y su propio loop Phase 1→5 | `multi_avatar_strategy: "separate_strategies"` |
+| Exactamente 1 hard ❌ | **Unificación con avatar_specific bonuses**: 1 oferta, 1 stack base + 1-2 bonuses específicos por avatar para cerrar gap | `multi_avatar_strategy: "unified_C_avatar_specific_bonuses"` |
+| 4 hard ✅ + soft ❌ | **Unificación con language_packs**: 1 oferta, 1 stack, 1 precio, N statements lingüísticos | `multi_avatar_strategy: "unified_C_language_packs"` |
+| 4 hard ✅ + soft ✅ | **Unificación limpia**: 1 oferta, 1 stack, 1 statement | `multi_avatar_strategy: "unified_C_clean"` |
 | 1 solo avatar | N/A | `multi_avatar_strategy: "single_avatar"` |
+
+**Nota:** `separate_strategies` (default) reemplaza el antiguo `separate_offers`. El cambio no es solo de nombre: antes "separar" era el fallback indeseado cuando fallaban condiciones; ahora es el **comportamiento base esperado**, alineado con la orquestación paralela. Cada estrategia separada se persiste como un registro `strategies` independiente por avatar (ver `Overall_WF.md`).
 
 ### Output: `multi_avatar_decision.json`
 
@@ -239,15 +253,26 @@ Antes de pasar a 1.2 (stack), decidir si los avatars del producto comparten sufi
 |---|---|
 | Declassified Cases | `unified_C_clean` (1-2 avatars B2C que comparten functional_job) |
 | Velas hija | `single_avatar` |
-| Alfredo-as-freelance B2B | `separate_offers` (DMU comparte functional_job pero weakest_axis muy distintos) |
+| Alfredo-as-freelance B2B | `separate_strategies` (DMU comparte functional_job pero weakest_axis muy distintos) |
 
 ### Escrituras
 - `decision_record` con la elección de `multi_avatar_strategy` y rationale
 
+### Nacimiento de la(s) Estrategia(s) (D-009/D-010)
+
+El `multi_avatar_decision.json` determina **cuántas `strategies` rows se crean** (ver `Overall_WF.md` §"Strategy Lifecycle"). Es aquí — después de 1.1 y la decisión multi-avatar, antes de 1.2 — donde nace la entidad Estrategia:
+
+- **`separate_strategies` (default):** se crea **una `strategies` row por avatar** (`version_number = 1`, `status = 'active'`, `covers_avatar_ids = [avatar_id]`). Los sub-pasos 1.2–1.4 corren N veces, cada corrida anclando su `offer_spec.json` a su `strategy_id`.
+- **`unified_C_*`:** se crea **una sola `strategies` row** con `avatar_id` = primario y `covers_avatar_ids` = todos los avatars cubiertos. Los sub-pasos 1.2–1.4 corren una vez; el `offer_spec.json` se ancla a esa estrategia.
+- **`single_avatar`:** una `strategies` row trivial.
+
+Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `offer_spec`. El `offer_spec.json` declara `linked_to.strategy_id` + `strategy_version` (consumido por Phase 2 check 14 y por toda la cadena Phase 3→5).
+
 ### Gate G-Phase-1-multi-avatar
 - `multi_avatar_decision.json` existe y poblado
-- Si `separate_offers` → sub-pasos 1.2–1.4 se ejecutan N veces (una por avatar)
-- Si cualquier variante de unified_C → sub-pasos 1.2–1.4 se ejecutan una sola vez con outputs adaptados
+- `strategies` row(s) creada(s) según la regla de granularidad de arriba (`version_number=1`, `status='active'`)
+- Si `separate_strategies` (default) → sub-pasos 1.2–1.4 se ejecutan N veces (una por avatar), cada corrida produce un `offer_spec.json` anclado a su `strategy_id` independiente
+- Si cualquier variante de unified_C → sub-pasos 1.2–1.4 se ejecutan una sola vez con outputs adaptados, anclados a la estrategia unificada
 
 ---
 
@@ -477,7 +502,7 @@ Cerrar la oferta en 3 piezas: precio justificado contra competidores Y value equ
 
 ### Sub-paso 1.4.0 — Poblar `language_packs` (pre-requisito de los statements) (ISSUE-A2, audit 2026-05-10)
 
-Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_offers, unified_C_avatar_specific_bonuses}`, **antes** de escribir cualquier `offer_statement.md` el operador debe poblar `positioning_variants[]` con un `language_pack` por avatar.
+Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, unified_C_avatar_specific_bonuses}`, **antes** de escribir cualquier `offer_statement.md` el operador debe poblar `positioning_variants[]` con un `language_pack` por avatar.
 
 **Fuentes (lectura)**:
 - `buyer_persona.behaviors.online_communities` (frases reales del avatar en su hábitat)
@@ -539,7 +564,7 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_offers, unifie
 
 ### Output B: `offer_statement.md` — página única (≤350 palabras)
 
-Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_offers}` → un statement por avatar/language_pack.
+Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}` → un statement por avatar/language_pack.
 
 Estructura obligatoria:
 
@@ -610,11 +635,13 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
 {
   "offer_id": "offer_v1_yyyymmdd",
   "linked_to": {
+    "strategy_id": "strategy_uuid",
+    "strategy_version": 1,
     "product_brief_path": "...",
     "primary_avatar_id": "avatar_1",
     "covers_avatars": ["avatar_1", "avatar_2", "avatar_3"]
   },
-  "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_offers",
+  "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_strategies",
   "value_equation_per_avatar": {
     "avatar_1": { "...del 1.1..." },
     "avatar_2": { "...del 1.1..." }
@@ -752,7 +779,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 |---|---|---|
 | D1 | Stack-to-price ratio default | Tabla derivada por business_type × purchase_type (3× B2B reflexiva → 7× B2C impulsiva). Override por decision_record. |
 | D2 | Composite value score gate mínimo | <100 bloqueo duro, 100–1000 bloqueo blando, 1000+ avanza. Escala 1–10,000. |
-| D3 | Múltiples ofertas simultáneas por avatar | Algoritmo de 5 condiciones decide: 1 oferta unificada (3 variantes) o N ofertas separadas. |
+| D3 | Múltiples ofertas simultáneas por avatar | **Default invertido (D-009, 2026-06-06):** estrategia por-avatar es el default; el algoritmo de 5 condiciones decide si hay evidencia para *unificar* como optimización. `separate_strategies` (default) reemplaza `separate_offers`. Cada estrategia separada = un `strategies` row versionado. |
 | D4 | Convención scoring Value Equation | 10 = óptimo en todos los ejes. Fórmula multiplicativa, sin división. Rango 1–10,000. |
 | D5 | Dream Outcome anclaje | JTBD (emotional + functional) + pull, NO pain points. Oferta aspiracional, no defensiva. |
 | D6 | Bonus mapping | Forces of Progress (pull_amplify, anxiety_reduce, habit_break, weakest_axis_boost), NO solo "objection_n". |
@@ -806,6 +833,8 @@ Para el primer ciclo manual de Phase 1 con un producto real:
 [ ] 1.1 — composite >= 100 (o decision_record si bloqueo blando)
 [ ] 1.1 — weakest_axis identificado y registrado como decision_record
 [ ] Multi-avatar — multi_avatar_decision.json producido con 5 condiciones evaluadas
+[ ] Multi-avatar — strategies row(s) creada(s) (1 por avatar en separate_strategies; 1 unificada en unified_C_*); version_number=1, status=active
+[ ] offer_spec.linked_to.strategy_id + strategy_version poblados
 [ ] 1.2 — core_deliverable con perceived_value y delivery_cost reales
 [ ] 1.2 — bonuses (3-7) con force_attacked y specific_target poblados
 [ ] 1.2 — ≥1 bonus anxiety_reduce, ≥1 bonus habit_break
