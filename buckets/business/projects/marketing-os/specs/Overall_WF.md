@@ -156,20 +156,24 @@ The lifecycle remains the product methodology:
 
 ## Phase ↔ Supabase `artifact_phase` mapping
 
-The implementation (`sandia-marketing`) enum `artifact_phase` maps to methodology phases:
+The implementation (`sandia-marketing`) enum `artifact_phase` maps to methodology phases. The **M0 AI-first rebuild** (`20260602000000_ai_first_extension.sql`) introduced the canonical values below; the legacy values (`discovery`, `strategy`, `production`, `distribution`, `review`) remain valid as **deprecated aliases** — the runtime uses only the canonical ones.
 
-| Methodology phase | `artifact_phase` value |
-|---|---|
-| Phase 0 — Research + ICP | `discovery` |
-| Phase 1 — Oferta | `strategy` |
-| Phase 2 — Contenido | `production` |
-| Phase 3 — Publicar / Distribuir | `distribution` |
-| Phase 4 — Medir / Phase 5 — Ajustar | `review` |
+| Methodology phase | canonical `artifact_phase` | legacy alias |
+|---|---|---|
+| (pre-Phase-0 conversational brief — Setup Agent) | `setup` | — |
+| Phase 0 — Research + ICP | `phase_0` | `discovery` |
+| Phase 1 — Oferta | `phase_1` | `strategy` |
+| Phase 2 — Contenido | `phase_2` | `production` |
+| Phase 3 — Publicar / Distribuir | `phase_3` | `distribution` |
+| Phase 4 — Medir | `phase_4` | `review` |
+| Phase 5 — Ajustar | `phase_5` | `review` |
 
 ## Implementation migrations (`sandia-marketing/supabase/migrations/`)
 
 - `20260531221000_initial_schema.sql` — projects, members, phase_artifacts, decisions, lessons, audit (+ RLS).
-- `20260606120000_avatars_strategies.sql` — **buyer_personas, avatars, strategies** (with `covers_avatar_ids`, versioning, `superseded_by`) + `avatar_id`/`strategy_id` FKs on artifacts/decisions/lessons + RLS + audit triggers. Implements D-009/D-010/D-011.
+- `20260601011000_repair_initial_schema_idempotent.sql` — idempotency repair of the initial schema.
+- `20260602000000_ai_first_extension.sql` — **M0 AI-first rebuild**: canonical `artifact_phase` (`setup`, `phase_0..phase_5`), `artifact_status` + `metadata`/`schema_version`/`supersedes` on `project_phase_artifacts`, and new tables `profiles`, `project_conversations`, `project_llm_calls`, `project_prompt_versions` (conversational Setup Agent plumbing).
+- `20260606120000_avatars_strategies.sql` — **buyer_personas, avatars, strategies** (with `covers_avatar_ids`, versioning, `superseded_by`, `results_summary`) + `avatar_id`/`strategy_id` FKs on artifacts/decisions/lessons + RLS + audit triggers. Runs on top of the AI-first base; additive and reconciled (distinct enum values + columns). Implements D-009/D-010/D-011.
 
 These specs are now **workflow requirements** for Sandi Marketing. They should be translated into app screens, form schemas, API calls, and Supabase artifacts incrementally. References inside those specs to PhaseHandlers, n8n, FastMCP, or pretel-os DB runtime are legacy implementation notes unless explicitly marked current.
 
