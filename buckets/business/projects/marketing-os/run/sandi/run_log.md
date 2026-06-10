@@ -27,3 +27,4 @@
 
 ## Notas
 - Este run se construyó vía la simulación del Setup Agent (formato wizard guiado) — ver `specs/spec_Phase_0_Setup_Agent.md`.
+- **2026-06-10 — giro en 0.3 (pendiente de confirmar):** al abrir el paso de persona, el operador rechazó el corte por profesión (coach/consultor/course creator) y propuso recorte **situacional** del beachhead: dueños de una **oferta propia (producto O servicio)** intentando venderla online sin saber cómo — "empezar" (ej. curso de n8n, sin arrancar) o "escalar" (ej. velas, estancado). Esto **enmienda D-022** (MH-1 exigía expertise + ya monetizando) → v2 propuesta en chat, **no aplicada** hasta confirmación. Los dos ejemplos del operador pasan el test 2-de-3 (trigger + lenguaje distintos) como candidatos a avatares: "Lanzador" / "Estancado".
