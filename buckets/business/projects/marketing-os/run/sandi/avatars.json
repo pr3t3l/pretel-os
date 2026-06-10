@@ -1,0 +1,164 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. DRAFT pre-signoff. 3 avatares del persona_primary (producto de uso situacional => 2-4 per spec). Test 2-de-3 documentado en metadata; decision_record por avatar se registra al signoff. Caras = arquetipos compuestos desde research + evidencia de primera mano (NO retratos de personas reales del entorno del operador).",
+  "run": "sandi",
+  "phase": "phase_0",
+  "sub_step": "0.3-avatars",
+  "linked_to_persona": "persona_primary (buyer_persona.json signed_v1, D-025)",
+  "avatars": [
+    {
+      "id": "avatar_lanzador_digital",
+      "name": "Dana",
+      "age": 38,
+      "occupation": "home baker con cottage license - tortas por encargo desde su cocina (cara gemela: dueno de servicio local formalizandose, ej. landscaping)",
+      "family_context": "casada, dos hijos en primaria; el negocio empezo como side-income y ya importa en la casa",
+      "daily_routine": "Madruga a hornear los encargos del fin de semana. Entregas al mediodia, tardes de familia. De noche contesta DMs de pedidos en su Instagram personal y scrollea reposteras grandes con una mezcla de inspiracion y culpa. Su 'marketing' son fotos al vuelo y el grupo de Facebook del barrio.",
+      "current_goal": "pasar de 3-4 pedidos/mes de conocidos a pedidos constantes de DESCONOCIDOS, cobrando tarifa real",
+      "current_obstacle": "fuera de su circulo nadie la encuentra: sin web, sin Google Business Profile, sin idea de que postear ni donde",
+      "where_we_meet": "googleando a medianoche 'how to get more cake orders' tras un mes flojo, o viendo un reel de 'how I market my home bakery'",
+      "pain_points_contextual": [
+        "los conocidos esperan descuento o gratis; cobrar tarifa real le da pena (CakeCentral: genero de hilos 'get friends to pay')",
+        "su Instagram mezcla familia y tortas; 'hacerse la influencer' le da vergueza ajena",
+        "cada mes flojo duda: 'tal vez esto no es un negocio de verdad'"
+      ],
+      "forces_of_progress": {
+        "push_of_situation": {
+          "ongoing_pains": [
+            {"pain": "pedidos impredecibles - rachas y silencios", "frequency": "cronica", "channel_implication": "captura via SEO local + contenido evergreen 'get more orders'"},
+            {"pain": "invisible en Google/Maps para quien busca 'custom cakes near me'", "frequency": "cronica", "channel_implication": "SEO local / Google Business Profile (cuna educativa)"},
+            {"pain": "se malvende para compensar la invisibilidad", "frequency": "cronica", "channel_implication": "contenido educativo de pricing (puente a Phase 1)"}
+          ],
+          "triggers": [
+            {"event": "un mes entero sin pedidos nuevos", "type": "financiero", "urgency": "alta", "channel_implication": "search ads en 'how to get cake orders' + contenido de rescate"},
+            {"event": "llega temporada alta (bodas, holidays) y quiere capturarla en serio", "type": "estacional", "urgency": "media", "channel_implication": "campanas estacionales anticipadas"},
+            {"event": "una clienta le dice 'deberias cobrar mas / montar esto en serio'", "type": "other", "type_custom_description": "prueba social / validacion externa (vi que esto puede ser negocio de verdad)", "urgency": "media", "channel_implication": "contenido compartible 'turn your craft into a business'"}
+          ]
+        },
+        "pull_of_new_solution": [
+          "alguien que le diga QUE hacer esta semana (plan concreto, no teoria)",
+          "le ensena mientras hace - nunca la hace sentir tonta (educacion adaptativa)",
+          "precio de herramienta, no de agencia ($30/mo vs $1k+/mo retainer)"
+        ],
+        "anxiety_about_new": [
+          "'¿y si pago y no me salen pedidos?' (riesgo de resultado)",
+          "'¿me va a tocar bailar en TikTok?' (miedo a la autopromocion incomoda)",
+          "'¿una IA entendera un negocio tan local y artesanal como el mio?'"
+        ],
+        "habit_of_present": [
+          "el boca a boca 'mas o menos funciona' - suficiente para no morir, insuficiente para crecer",
+          "el Instagram personal ya existe y es comodo",
+          "percepcion de cero tiempo libre para 'una cosa mas'"
+        ]
+      },
+      "purchase_type": "reflexiva",
+      "customer_journey_position": "consciencia"
+    },
+    {
+      "id": "avatar_estancado",
+      "name": "Marcus",
+      "age": 41,
+      "occupation": "consultor de automatizaciones que vende un curso de n8n + servicios done-for-you",
+      "family_context": "en pareja, sin hijos; dejo el empleo hace 2 anos, vive del negocio con margen justo",
+      "daily_routine": "Dia: entregar a clientes y grabar lecciones. Noche: toquetear el funnel, postear en LinkedIn cuando se acuerda, mirar metricas que no terminan de decirle nada. Colecciona tabs y bookmarks de tips de marketing que nunca ejecuta.",
+      "current_goal": "pasar de ingresos serrucho (pico cuando postea, silencio despues) a pipeline estable; duplicar alumnos del curso este trimestre",
+      "current_obstacle": "ya probo 'de todo' a medias (SEO, un mes de ads quemado, newsletter abandonada) y no sabe cual palanca mover ni que funciono",
+      "where_we_meet": "buscando 'why is my course not selling' o comparando herramientas de marketing AI tras otro mes plano; comunidades indie/creator",
+      "pain_points_contextual": [
+        "sabe ENSENAR automatizacion pero su propio marketing le da verguenza profesional (zapatero con zapatos rotos)",
+        "cada tactica nueva = 2 semanas perdidas + culpa por desatender clientes",
+        "sus DOS publicos (freelancers que quieren aprender vs PYMEs que quieren done-for-you) reciben el MISMO mensaje y ninguno conecta del todo - el gancho multi-avatar en estado puro"
+      ],
+      "forces_of_progress": {
+        "push_of_situation": {
+          "ongoing_pains": [
+            {"pain": "ingresos serrucho dependientes de postear manualmente", "frequency": "cronica", "channel_implication": "SEO/evergreen 'course marketing system'"},
+            {"pain": "un solo mensaje diluido para dos publicos distintos", "frequency": "cronica", "channel_implication": "LA JOYA (D-009): estrategia por publico en paralelo - contenido de demo"},
+            {"pain": "no sabe atribuir que genero cada venta", "frequency": "semanal", "channel_implication": "contenido educativo de medicion (KPI=dinero)"}
+          ],
+          "triggers": [
+            {"event": "lanzamiento del curso rinde por debajo de lo esperado", "type": "financiero", "urgency": "alta", "channel_implication": "search ads 'course launch flopped / why is my course not selling'"},
+            {"event": "un competidor visible despega en su nicho", "type": "other", "type_custom_description": "prueba social / FOMO competitivo (si el puede, que estoy haciendo mal yo)", "urgency": "media", "channel_implication": "contenido de comparacion/teardown"},
+            {"event": "el algoritmo de LinkedIn le mata el alcance de un dia a otro", "type": "situacional", "urgency": "media", "channel_implication": "contenido 'own your audience' (email/SEO vs alquiler de alcance)"}
+          ]
+        },
+        "pull_of_new_solution": [
+          "estrategia POR PUBLICO en paralelo - nadie mas se lo ofrece (diferenciador D-009)",
+          "glass-box: le muestra el porque de cada recomendacion (es tecnico, odia cajas negras)",
+          "mide lo que funciono en DINERO, no en likes (KPI primario = revenue)"
+        ],
+        "anxiety_about_new": [
+          "'otra herramienta AI generica que escupe copy malo y me hace perder el tiempo'",
+          "'¿me pedira mas horas de las que me devuelve?'",
+          "'¿mi nicho/datos quedan expuestos o entrenando al competidor?' (privacidad)"
+        ],
+        "habit_of_present": [
+          "refuerzo intermitente: 'cuando posteo, algo entra' - suficiente para no cambiar",
+          "ya paga 4 SaaS; sumar otro le duele por principio",
+          "identidad de experto: 'deberia poder resolver esto solo'"
+        ]
+      },
+      "purchase_type": "reflexiva",
+      "customer_journey_position": "consideracion"
+    },
+    {
+      "id": "avatar_enjaulado_marketplace",
+      "name": "Priya",
+      "age": 35,
+      "occupation": "disenadora de producto con linea propia de home goods, vende via Amazon FBA + Etsy",
+      "family_context": "casada; el negocio ya es el ingreso principal de la casa y eso la asusta tanto como la enorgullece",
+      "daily_routine": "Manana: inventario, fees, responder reviews. Tarde: pelear con el algoritmo y los ads de Amazon viendo su margen encogerse. Noche: mira su Shopify a medio montar - un pueblo fantasma - y se promete que este trimestre si lo levanta.",
+      "current_goal": "que >=30% de las ventas vengan de canal PROPIO este ano (web + email)",
+      "current_obstacle": "en el marketplace el cliente no es suyo (sin email, sin remarketing); fuera del marketplace nadie la conoce y su trafico propio es cero",
+      "where_we_meet": "tras una subida de fees o un susto de suspension; buscando 'how to sell off Amazon build own audience'; foros de sellers",
+      "pain_points_contextual": [
+        "30-70% del precio se va en fees+ads del marketplace (quote real de seller: 'the percentage they take!!! A whopping 70%')",
+        "una suspension o cambio de algoritmo puede matar el negocio de un dia a otro - duerme con ese miedo",
+        "su tienda propia ya la intento una vez y fracaso: la cicatriz pesa mas que la ilusion"
+      ],
+      "forces_of_progress": {
+        "push_of_situation": {
+          "ongoing_pains": [
+            {"pain": "margen comprimido por fees y ads del marketplace", "frequency": "cronica", "channel_implication": "contenido evergreen 'marketplace independence / true margin'"},
+            {"pain": "cero relacion con SU cliente (no email, no comunidad, no recompra directa)", "frequency": "cronica", "channel_implication": "educacion 'own your audience' + email-first"},
+            {"pain": "tienda propia sin trafico (la monto y no llego nadie)", "frequency": "cronica", "channel_implication": "SEO/social para DTC + plan por publico"}
+          ],
+          "triggers": [
+            {"event": "Amazon anuncia subida de fees o cambia reglas", "type": "financiero", "urgency": "alta", "channel_implication": "search/ads exactos en la ventana de rabia ('amazon fee increase 2026 alternatives')"},
+            {"event": "suspension temporal o strike en el listing", "type": "situacional", "urgency": "alta", "channel_implication": "search desesperado 'sell outside amazon now' - contenido de rescate"},
+            {"event": "preparacion Q4: quiere capturar holiday en canal propio", "type": "estacional", "urgency": "media", "channel_implication": "campanas Q3 'own-channel holiday playbook'"}
+          ]
+        },
+        "pull_of_new_solution": [
+          "plan concreto para construir audiencia propia, publico por publico (regalo corporativo vs hogar vs bodas = multi-avatar natural)",
+          "independencia medible en dinero (revenue propio vs revenue alquilado)",
+          "le ensena el marketing directo que el marketplace nunca le exigio aprender"
+        ],
+        "anxiety_about_new": [
+          "'si me distraigo del marketplace, ¿se me cae el ranking que me da de comer?'",
+          "'el DTC es otro deporte (ads, email, web) - ¿podre sola?'",
+          "'ya pague gurus de FBA que no sirvieron - ¿esto es otro humo?'"
+        ],
+        "habit_of_present": [
+          "Amazon 'todavia paga las cuentas' - la jaula es comoda",
+          "toda su operacion (fotos, copy, logistica) esta optimizada para el marketplace",
+          "el intento fallido de Shopify le susurra 'eso no es lo tuyo'"
+        ]
+      },
+      "purchase_type": "reflexiva",
+      "customer_journey_position": "consideracion"
+    }
+  ],
+  "metadata": {
+    "test_2_de_3": {
+      "lanzador_vs_estancado": "trigger DISTINTO (mes sin pedidos local vs lanzamiento flojo online) + canal DISTINTO (FB local/Google Maps vs LinkedIn/comunidades indie) + lenguaje DISTINTO ('get more orders' vs 'grow/scale/funnel') = 3 de 3",
+      "estancado_vs_enjaulado": "trigger DISTINTO (meseta propia vs fee-hike/suspension) + canal DISTINTO (comunidades creator vs seller forums) + lenguaje DISTINTO ('why is my course not selling' vs 'fees/algorithm/off-Amazon') = 3 de 3 -> avatar PROPIO, no variante de Estancado",
+      "lanzador_vs_enjaulado": "3 de 3 (trivialmente distintos)"
+    },
+    "firsthand_mapping": "Dana <- repostera + jardinero (caras compuestas, NO retratos); Marcus <- ejemplo curso n8n del operador; Priya <- amigos disenadores en Amazon. Detalles biograficos alterados deliberadamente",
+    "meta_espejo": "Marcus encarna el gancho multi-avatar (2 publicos, 1 mensaje diluido) - y es exactamente la situacion del propio Sandi (3+ publicos). El producto se vende a quien vive su mismo problema",
+    "priorizacion_pendiente": "decision humana #2 del spec (que avatar activa el primer ciclo) - NO algoritmica, se decide tras signoff de avatares junto a negative_personas",
+    "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
+  },
+  "operator_signoff": false,
+  "status": "draft_v1"
+}

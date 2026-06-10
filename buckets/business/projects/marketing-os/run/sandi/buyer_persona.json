@@ -133,6 +133,7 @@
     ],
     "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
   },
-  "operator_signoff": false,
-  "status": "draft_research_v1"
+  "operator_signoff": true,
+  "signoff_note": "operador 2026-06-10: 'me parece perfecto' - firmado sin cambios sobre draft research v1 (decision D-025)",
+  "status": "signed_v1"
 }
