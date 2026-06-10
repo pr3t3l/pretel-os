@@ -45,8 +45,9 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 - Binarios NO en git (copyright + bloat); solo texto procesado entra a la KB.
 
 ## 6. Trabajo abierto
-- [ ] **EN CURSO:** pase autónomo (workflow) — leer todo el corpus + validar cada spec + flaguear cambios a decisiones locked. (Boundary: corpus enriquece, NO sobrescribe decisiones D-xxx sin revisión.)
-- [ ] Cerrar 0.2.5 (ICP filters) y seguir la simulación (0.3 avatares…).
+- [x] **HECHO:** pase autónomo de corpus — validado (specs = superset, 8.0–9.0, cero contradicciones; `corpus_validation_report.md`) + aplicado (Tanda 0 + enriquecimientos + 10 flags aprobados, D-021). Síntesis en `specs/corpus_knowledge/` (local, IP).
+- [ ] **PENDIENTE:** validar Phase 1 contra corpus (su agente falló); decidir FLAG-7 (test 2-de-5) + FLAG-8-activo.
+- [ ] **RETOMAR:** cerrar 0.2.5 (ICP filters del beachhead confirmado) y seguir la simulación (0.3 avatares — la joya). Ver `HANDOFF.md`.
 - [ ] Spec completo del Módulo A (BMC) tras la simulación.
 - [ ] Build: extracción→estructura→validación→índice del corpus (RAG); especialistas por fase; evals.
 
