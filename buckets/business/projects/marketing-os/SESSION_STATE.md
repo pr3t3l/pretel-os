@@ -49,6 +49,7 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 - [ ] **PENDIENTE:** validar Phase 1 contra corpus (su agente falló); decidir FLAG-7 (test 2-de-5) + FLAG-8-activo.
 - [x] **HECHO:** 0.2.5 ICP cerrado en v2 (D-023 supersede D-022, gate re-firmado): `own_craft_offer_monetized` + `multi_audience` + `diy_going_online`; 2 deal-breakers; B2B parked; cierra BMC bloque 1.
 - [ ] **RETOMAR:** simulación 0.3 (persona + avatares — la joya); incluye `negative_personas` (claims-incompatibles) y priorización de primer ciclo (2 decisiones humanas per spec). Ver `HANDOFF.md`.
+- [ ] **BUILD (`C:\Users\prett\Documents\sandia-marketing`):** la simulación corre en doble carril — valida specs Y prepara el build. Trigger propuesto (2026-06-10, pendiente OK del operador): **codear el slice "Phase 0 wizard" cuando la sim cierre Phase 0 completa** (0.3 + 0.4 + gate global); de ahí en adelante, pipeline con un paso de desfase (se codea fase N mientras se simula N+1). Pre-código: formalizar guiones 0.2–0.4 en §6 del Setup Agent spec + convertir el run en ejemplo CAG #4 real + fixtures de eval (caso D-023 "semantic catch"). Automatización PhaseHandlers (V2+) espera corridas reales (decisión `8b32a77b`: workflow-first + ciclo Declassified + beta 3 oleadas).
 - [ ] Spec completo del Módulo A (BMC) tras la simulación.
 - [ ] Build: extracción→estructura→validación→índice del corpus (RAG); especialistas por fase; evals.
 
