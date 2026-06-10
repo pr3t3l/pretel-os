@@ -9,7 +9,7 @@
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
-| Phase 0 | 0.3 Persona + Avatares | 🔄 en curso | `evidence_firsthand.md` · `buyer_persona.json` ✅ firmado (D-025) · `avatars.json` (draft 3 avatares, pre-signoff) |
+| Phase 0 | 0.3 Persona + Avatares | 🔄 en curso | `evidence_firsthand.md` · `buyer_persona.json` ✅ (D-025) · `avatars.json` draft v2: Dana/Marcus/Priya aprobados + Héctor agregado (confirmar) · priorización ✅ Priya 1ro (D-026) · falta `negative_personas` |
 | Phase 0 | 0.4 Competencia | pendiente | — |
 | Phase 1–5 | — | pendiente | — |
 

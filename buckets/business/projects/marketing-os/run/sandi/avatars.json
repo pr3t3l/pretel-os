@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] seed v1. DRAFT pre-signoff. 3 avatares del persona_primary (producto de uso situacional => 2-4 per spec). Test 2-de-3 documentado en metadata; decision_record por avatar se registra al signoff. Caras = arquetipos compuestos desde research + evidencia de primera mano (NO retratos de personas reales del entorno del operador).",
+  "_note": "[Evolving Schema] seed v1. 4 avatares del persona_primary (producto de uso situacional => 2-4 per spec, D-011 sin cap duro). Test 2-de-3 documentado en metadata; decision_records por avatar al signoff del set. Caras = arquetipos compuestos desde research + evidencia de primera mano (NO retratos de personas reales del entorno del operador).",
   "run": "sandi",
   "phase": "phase_0",
   "sub_step": "0.3-avatars",
@@ -10,7 +10,7 @@
       "id": "avatar_lanzador_digital",
       "name": "Dana",
       "age": 38,
-      "occupation": "home baker con cottage license - tortas por encargo desde su cocina (cara gemela: dueno de servicio local formalizandose, ej. landscaping)",
+      "occupation": "home baker con cottage license - tortas por encargo desde su cocina",
       "family_context": "casada, dos hijos en primaria; el negocio empezo como side-income y ya importa en la casa",
       "daily_routine": "Madruga a hornear los encargos del fin de semana. Entregas al mediodia, tardes de familia. De noche contesta DMs de pedidos en su Instagram personal y scrollea reposteras grandes con una mezcla de inspiracion y culpa. Su 'marketing' son fotos al vuelo y el grupo de Facebook del barrio.",
       "current_goal": "pasar de 3-4 pedidos/mes de conocidos a pedidos constantes de DESCONOCIDOS, cobrando tarifa real",
@@ -146,19 +146,69 @@
       },
       "purchase_type": "reflexiva",
       "customer_journey_position": "consideracion"
+    },
+    {
+      "id": "avatar_ruta_local",
+      "name": "Hector",
+      "age": 45,
+      "occupation": "dueno de servicio de lawn care / paisajismo ligero - el y un ayudante; anos cortando 'de palabra', ahora formalizando la empresa (LLC, seguro)",
+      "family_context": "casado, hijos adolescentes; el negocio empezo como ingreso extra y hoy sostiene la casa EN temporada",
+      "daily_routine": "Ruta de cortes desde temprano; estimados por telefono entre trabajos. Tardes de mantenimiento de equipo. Noches de papeleo de la LLC mirando con envidia sana las camionetas rotuladas de los competidores. Su marketing: boca a boca en la ruta y volantes cuando se acuerda.",
+      "current_goal": "llenar la ruta con cuentas RECURRENTES (semanal/quincenal) y dejar de ser 'el que corta el pasto' para ser una empresa con nombre",
+      "current_obstacle": "invisible mas alla de sus cuadras; no sabe posicionarse ni que lo diferencia; estima precios a ojo y pierde trabajos por caro o se regala por barato",
+      "where_we_meet": "arranque de primavera buscando 'how to get lawn care customers fast'; LawnSite; Nextdoor; viendo los anuncios de Google de competidores",
+      "pain_points_contextual": [
+        "'el que corta el pasto' no suena a empresa: quiere marca y posicion y no sabe construirlas",
+        "estima a ojo: pierde por caro o se regala por barato (sin nocion de su diferencial)",
+        "la temporada manda: si no llena la ruta en primavera, el ano entero cojea"
+      ],
+      "forces_of_progress": {
+        "push_of_situation": {
+          "ongoing_pains": [
+            {"pain": "ruta a medio llenar = ingreso topado por estructura, no por capacidad", "frequency": "cronica", "channel_implication": "SEO local + Google Business Profile (su cliente busca 'lawn care near me')"},
+            {"pain": "cero diferenciacion vs el competidor que cobra menos", "frequency": "cronica", "channel_implication": "contenido de posicionamiento local ('por que cobramos lo que cobramos')"},
+            {"pain": "dependencia total del boca a boca de la ruta actual", "frequency": "cronica", "channel_implication": "audiencia propia local (Nextdoor, reviews, referidos sistematizados)"}
+          ],
+          "triggers": [
+            {"event": "arranque de primavera: la ventana que define el ano", "type": "estacional", "urgency": "alta", "channel_implication": "ads/LSA locales en la ventana exacta (feb-abr)"},
+            {"event": "competidor nuevo regala precios en su barrio", "type": "other", "type_custom_description": "presion competitiva directa (me estan comiendo la ruta)", "urgency": "media", "channel_implication": "contenido de valor-vs-precio + reviews"},
+            {"event": "un cliente grande (HOA, comercial) le pide factura, seguro y presencia seria", "type": "situacional", "urgency": "media", "channel_implication": "contenido 'go legit' - formalizacion como palanca de venta"}
+          ]
+        },
+        "pull_of_new_solution": [
+          "plan LOCAL concreto (Google profile, Nextdoor, ruta de referidos) sin jerga de oficina",
+          "posicionamiento que lo saque de 'uno mas que corta pasto' (marca, no solo volantes)",
+          "precio de herramienta, no de agencia - y que se pague con UNA cuenta nueva recurrente"
+        ],
+        "anxiety_about_new": [
+          "'yo trabajo con las manos, no con computadoras' - friccion digital ALTA (el avatar que mas estresa el onboarding adaptativo)",
+          "'esto debe ser para negocios de oficina, no para los de overol'",
+          "'¿y si pago y la ruta sigue igual?' (riesgo de resultado en temporada corta)"
+        ],
+        "habit_of_present": [
+          "la ruta actual 'da para vivir' - dolor cronico pero no agudo fuera de temporada baja",
+          "EN temporada el telefono suena solo: espejismo de que el marketing sobra",
+          "siempre se trabajo de palabra y asi funciono - la formalidad se siente ajena"
+        ]
+      },
+      "purchase_type": "reflexiva",
+      "customer_journey_position": "consciencia"
     }
   ],
   "metadata": {
     "test_2_de_3": {
       "lanzador_vs_estancado": "trigger DISTINTO (mes sin pedidos local vs lanzamiento flojo online) + canal DISTINTO (FB local/Google Maps vs LinkedIn/comunidades indie) + lenguaje DISTINTO ('get more orders' vs 'grow/scale/funnel') = 3 de 3",
       "estancado_vs_enjaulado": "trigger DISTINTO (meseta propia vs fee-hike/suspension) + canal DISTINTO (comunidades creator vs seller forums) + lenguaje DISTINTO ('why is my course not selling' vs 'fees/algorithm/off-Amazon') = 3 de 3 -> avatar PROPIO, no variante de Estancado",
-      "lanzador_vs_enjaulado": "3 de 3 (trivialmente distintos)"
+      "lanzador_vs_enjaulado": "3 de 3 (trivialmente distintos)",
+      "ruta_vs_lanzador_digital": "LA PAREJA MAS CERCANA - test honesto: trigger = misma familia (estacional/sin clientes) pero evento concreto distinto (arranque primavera/llenar ruta vs mes sin pedidos) = PARCIAL; canal = parcialmente distinto (puerta-a-puerta/LSA/estimados vs FB-IG/pedidos) = PARCIAL-DISTINTO; lenguaje = DISTINTO ('accounts/estimates/per cut/route' vs 'orders/pedidos') = 2 de 3 JUSTO. Refuerza (fuera del test): modelo de ingreso RECURRENTE (cuentas semanales) vs por-pedido -> Phase 1 (oferta/pricing) y Phase 2 (contenido) divergen. Valvula de escape: si en Phase 2 el contenido de ambos solapa >70%, Phase 5 puede fusionarlos por evidencia (D-012, rebuild on evidence)",
+      "ruta_vs_estancado_y_enjaulado": "3 de 3 en ambas (trivialmente distintos)"
     },
-    "firsthand_mapping": "Dana <- repostera + jardinero (caras compuestas, NO retratos); Marcus <- ejemplo curso n8n del operador; Priya <- amigos disenadores en Amazon. Detalles biograficos alterados deliberadamente",
+    "firsthand_mapping": "Dana <- repostera (cara compuesta, NO retrato); Marcus <- ejemplo curso n8n del operador; Priya <- amigos disenadores en Amazon; Hector <- jardinero del operador (agregado a peticion explicita del operador). Detalles biograficos alterados deliberadamente",
     "meta_espejo": "Marcus encarna el gancho multi-avatar (2 publicos, 1 mensaje diluido) - y es exactamente la situacion del propio Sandi (3+ publicos). El producto se vende a quien vive su mismo problema",
-    "priorizacion_pendiente": "decision humana #2 del spec (que avatar activa el primer ciclo) - NO algoritmica, se decide tras signoff de avatares junto a negative_personas",
+    "dimension_nueva_hector": "Hector agrega la dimension que faltaba: friccion digital ALTA ('trabajo con las manos, no con computadoras'). Valor: estresa el onboarding adaptativo y el user_knowledge_profile como ningun otro. Riesgo honesto: el avatar mas dificil de alcanzar/convertir para un SaaS - sus anxieties pelean con la categoria misma. Bien como 4to, mal como 1ro",
+    "priorizacion_decidida": "D-026: el primer ciclo arranca con PRIYA (avatar_enjaulado_marketplace) - decision humana del operador 2026-06-10. Los otros 3 quedan activables despues (D-009: priorizacion = orden de encendido, no descarte). Pendiente de 0.3: solo negative_personas",
     "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
   },
   "operator_signoff": false,
-  "status": "draft_v1"
+  "status": "draft_v2 - Dana/Marcus/Priya aprobados por operador ('me parecen bien'); Hector agregado a peticion suya (lectura por confirmar); priorizacion decidida (D-026: Priya primero); falta negative_personas para cerrar 0.3"
 }
