@@ -1,0 +1,120 @@
+{
+  "schema_version": "v2",
+  "_note": "[Evolving Schema] Output canonico de Phase 0 (spec 9) - input contract de Phase 1 (Oferta). Consolidacion: los objetos grandes van condensados aqui + path al artefacto completo (gate exige paths reales). Pendiente: firma final del operador (gate global 10).",
+  "run": "sandi",
+  "product_brief_v1": {
+    "idea": "SaaS AI-first que guia a NO-expertos de 'tengo una idea' a 'tengo estrategia de marketing accionable'",
+    "diferenciador": "orquestacion paralela multi-avatar: N avatares, cada uno con su estrategia versionada y su loop Phase 1->5 (D-009)",
+    "working_name": "Sandi (name_status=working; finalizar en Phase 1.4 - dominio/trademark pendiente)",
+    "implementacion": "C:/Users/prett/Documents/sandia-marketing (Next.js + Supabase, M0)"
+  },
+  "operator_hypotheses_original": {
+    "h1_beachhead": "solopreneurs/creadores que venden su expertise y le hablan a >1 publico [ENMENDADA en D-023: 'expertise' = experto en LO SUYO/craft]",
+    "h2_persona_cut": "[implicita en candidatos coach/consultor/course-creator] corte por profesion [REFUTADA: corte situacional]",
+    "h3_demanda": "mercado enorme con mitad sin estrategia formal [CONFIRMADA 0.2]",
+    "h4_cuna": "educar es la cuna (create_demand) [CONFIRMADA 0.2 + 0.4]"
+  },
+  "marketing_objective": "Lanzar Sandi al beachhead US/EN (suscripcion+creditos). Referencia ano 1 del math gate 0.2: ~5,000 usuarios pagando x ~$30/mo ~= $1.8M ARR. Primer ciclo: avatar Priya (D-026).",
+  "economics": {
+    "expected_ltv_usd": 500,
+    "expected_ltv_basis": "icp.json: ~$30/mo x 12-24 meses retencion estimada + creditos; rango 360-700, punto conservador. PRE-PMF: sin cohortes reales",
+    "target_cac_usd": 165,
+    "target_cac_basis": "auto:ltv/3 (166.67 redondeado a 165) - resuelto al cierre de Phase 0. ECONOMICS-001: 500/165 = 3.03 >= 3.0 PASA, pero por construccion (auto); la prueba real es el CAC medido en Phase 4"
+  },
+  "business_context": {
+    "summary": "hybrid con lead B2C (individuos; B2B parqueado), sales_cycle reflexivo, online_only, subscription + usage(credits) con patron bait_hook_credits, internacional foco US/ingles, multimodal parqueado",
+    "path": "run/sandi/business_context.json",
+    "gate": "G-Phase-0.1 passed"
+  },
+  "demand": {
+    "validation_status": "green",
+    "tam_population": 30000000,
+    "sam_population": 4500000,
+    "som_population": 20000,
+    "monthly_search_volume_total": 0,
+    "_volume_note": "0 = NO medido (Capa 3 keyword volumes con Keyword Planner/Ahrefs pendiente para construccion; flag no bloqueante del 0.2)",
+    "awareness_distribution": {
+      "most_aware_pct": 5,
+      "solution_aware_pct": 20,
+      "problem_aware_pct": 50,
+      "unaware_pct": 25,
+      "_basis": "[estimaciones desde lectura cualitativa 0.2: problem-aware grande (46-53% stats LocaliQ/MarketingProfs), solution-aware mediano saturado, unaware grande latente]"
+    },
+    "summary_path": "run/sandi/demand_quantification.md",
+    "gate": "G-Phase-0.2 passed"
+  },
+  "icp": {
+    "icp_type": "B2C_cluster",
+    "beachhead": "expertos en lo suyo (velera, gym, n8n, coach) con oferta propia YA monetizando, que no saben empezar o escalar su marketing online, >1 publico, US/EN, DIY",
+    "must_have_filters": ["own_craft_offer_monetized", "multi_audience", "diy_going_online"],
+    "deal_breakers": ["no_own_offer", "marketing_delegated"],
+    "cluster_size_population": 2000000,
+    "ltv_estimated_usd": 500,
+    "path": "run/sandi/icp.json",
+    "decision": "D-023 (supersede D-022)",
+    "gate": "G-Phase-0.2.5 passed (bloque B2C; B2B_only parked por criterio hybrid_gate)"
+  },
+  "buyer_persona": {
+    "id": "persona_primary",
+    "label": "El experto en lo suyo que ya vende y esta perdido en el marketing online",
+    "self_image": "'Soy bueno en LO MIO; el marketing no soy yo' - identidad de artesano/experto, no de vendedor",
+    "jtbd_core": "funcional: flujo predecible de clientes sin agencia ni volverse marketero full-time | emocional: sentirse tan competente vendiendo como haciendo lo suyo | social: negocio serio, no hobby",
+    "pains_sourced": 6,
+    "empathy_incongruences": 3,
+    "path": "run/sandi/buyer_persona.json",
+    "decision": "D-025",
+    "status": "signed_v1"
+  },
+  "avatars": [
+    {"id": "avatar_lanzador_digital", "name": "Dana", "essence": "home baker, vende local 3-4 pedidos/mes a conocidos, marketing online ~cero; '¿como consigo pedidos de desconocidos?'", "journey": "consciencia", "purchase_type": "reflexiva"},
+    {"id": "avatar_estancado", "name": "Marcus", "essence": "consultor n8n con curso, ingresos serrucho, 2 publicos con 1 mensaje diluido; '¿como crezco?' - el gancho multi-avatar puro", "journey": "consideracion", "purchase_type": "reflexiva"},
+    {"id": "avatar_enjaulado_marketplace", "name": "Priya", "essence": "linea propia en Amazon/Etsy, fees 30-70%, cliente no es suyo, Shopify fantasma; 'quiero canal propio' - PRIMER CICLO (D-026)", "journey": "consideracion", "purchase_type": "reflexiva"},
+    {"id": "avatar_ruta_local", "name": "Hector", "essence": "lawn care formalizandose, ruta a medio llenar, ingreso recurrente, friccion digital ALTA; '¿como me posiciono?'", "journey": "consciencia", "purchase_type": "reflexiva"}
+  ],
+  "avatars_path": "run/sandi/avatars.json (Forces of Progress completos; signed_v2; records 40ac869a/f7de5d97/ec84e43f/d8a873d2)",
+  "first_cycle_avatar": "avatar_enjaulado_marketplace (Priya) - D-026",
+  "negative_personas": [
+    {"id": "neg_claims_imposibles", "basis": "etico (honestidad arquitectonica)", "action": "auto-disqualify + ads exclusion"},
+    {"id": "neg_delegador_total", "basis": "high-support-cost (espera agencia por precio de tool)", "action": "redirect a contenido educativo"}
+  ],
+  "negative_personas_path": "run/sandi/negative_personas.json (records 60a64765/68d6b022)",
+  "dmu": "N/A - business_type hybrid con B2B parked (criterio hybrid_gate D-022/D-023); dmu.json se construye si/cuando se abra la puerta B2B",
+  "competitive_landscape": {
+    "differentiation_angle": "D-028: categoria propia 'estratega multi-publico guiado que ensena mientras hace y cierra el loop a dinero' (H1 multi-avatar core + H2 loop guiado). Ciclo 1 manifestado como 'tu salida del marketplace, publico por publico' (H3, Priya). Cuna de entrada: pricing ~$30 con valor de tier $99+ (H4). NUNCA posicionar como 'AI marketing tool' (oceano rojo). Sustituto #1 a desplazar: ChatGPT $20 (se gana con metodologia+memoria+loop, no precio)",
+    "verdict": "rojo en categoria / azul en interseccion (ERRC en scan)",
+    "summary_path": "run/sandi/competitor_scan.md",
+    "pricing_tiers_path": "run/sandi/pricing_tiers.json (17 entradas, embed canonico para Phase 1.2/1.4)",
+    "decision": "D-028",
+    "gate": "G-Phase-0.4 passed (caveat: canal Ads inferido - verificacion Ad Library manual pendiente, no bloqueante)"
+  },
+  "signal_rules_triggered": [
+    "(run manual - sin handler de rules) hybrid_gate: spec hybrid=>ambos bloques vs B2B parqueado - RESUELTO D-022/D-023",
+    "db3_candidate: claims-incompatibles - RESUELTO via negative_personas (D-027)",
+    "pre_launch_cluster: oferta-lista-cero-ventas reaparece (incluido el operador) - ABIERTO no bloqueante (2a ola / Modulo A; evidence_firsthand.md)",
+    "ads_verification_pending: Meta Ad Library/Google Ads Transparency - ABIERTO no bloqueante (manual ~10min/marca)",
+    "jasper_price_drift: dato 0.2 ($39) desactualizado vs 2026 ($59-69) - corregido en 0.4"
+  ],
+  "evidence_findings": {
+    "hypotheses_confirmed": [
+      "demanda enorme con ~mitad sin estrategia formal (SBA/Census/LocaliQ 2025, verificado 0.2)",
+      "educar es la cuna: validada contra mercado en 0.4 (M1 corre 20+ generadores free como funnel; en RRSS el enemigo vende educacion gratis)",
+      "multi-publico tiene demanda pagada: M1 lo cobra $99->1 ICP / $199->3 (0.4) - y NADIE lo orquesta con loop",
+      "compra reflexiva del segmento (0.1 confirmado en los 4 avatares + sustitutos: nadie compra impulsivo aqui)"
+    ],
+    "hypotheses_refuted": [
+      "'beachhead = expertise-sellers (productos de conocimiento)' - refutada por el autor al abrir 0.3; corregida a expertos-en-lo-suyo/craft (D-023). NO critica: cazada pre-build, costo 1 commit",
+      "'corte de persona por profesion (coach/consultor/creator)' - refutada; el corte real es situacional (no sabe empezar/escalar el marketing online). NO critica",
+      "'Jasper $39/mo' (dato 0.2) - desactualizado: $59-69 en 2026. Menor (refresco de dato)"
+    ],
+    "hypotheses_refuted_critical_count": 0,
+    "_health_note": "gate exige >=1 refutada (si todo se confirma, sospecha). 3 refutadas reales, 0 criticas: el proceso esta cazando errores al costo minimo - senal sana"
+  },
+  "research_metadata": {
+    "hours_invested": 8,
+    "usd_invested": 50,
+    "_basis": "[estimaciones] horas: sesiones de simulacion 0.1-0.4 (operador+Claude); usd: uso de Claude/API aprox. Afinar si el operador lleva cuenta real",
+    "completed_at": "2026-06-10",
+    "operator_signoff": false
+  },
+  "gate_G_Phase_0_global": "PENDING - todo verificado salvo la firma final del operador (spec 10 linea 8: 'Operador firma operator_signoff: true')"
+}

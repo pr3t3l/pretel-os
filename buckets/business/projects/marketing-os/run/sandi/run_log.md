@@ -10,8 +10,9 @@
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
 | Phase 0 | 0.3 Persona + Avatares | ✅ cerrado (D-027) | `buyer_persona.json` (D-025) · `avatars.json` signed_v2 (4 avatares) · `negative_personas.json` (2) · `evidence_firsthand.md` · Priya 1er ciclo (D-026) |
-| Phase 0 | 0.4 Competencia | 🔄 scan listo | `competitor_scan.md` (4 canales + ERRC, veredicto 🔴categoría/🔵intersección) · `pricing_tiers.json` · falta: decisión del hueco (operador) + verificación manual Ad Library |
-| Phase 1–5 | — | pendiente | — |
+| Phase 0 | 0.4 Competencia | ✅ cerrado (D-028) | `competitor_scan.md` · `pricing_tiers.json` · hueco = intersección completa (categoría propia) |
+| Phase 0 | **Rollup global** | 🔄 pendiente firma | `product_brief_v2.json` (gate global: todo ✓ salvo firma del operador) |
+| Phase 1–5 | — | pendiente | — (al firmar: dispara build trigger D-024; sim sigue con Phase 1) |
 
 ## Hechos clave capturados
 - **Idea:** SaaS AI-first que guía a no-expertos de "tengo una idea" a "tengo estrategia de marketing accionable".
