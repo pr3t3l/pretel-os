@@ -1,0 +1,138 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. DRAFT pre-signoff: research real 2026-06-10 (foros de oficio + encuestas 2025). Reddit inaccesible para el crawler (robots) - glass-box: comunidades reddit citadas como conocidas, no verificadas hoy. Hipotesis etiquetadas [hipotesis].",
+  "run": "sandi",
+  "phase": "phase_0",
+  "sub_step": "0.3-persona",
+  "id": "persona_primary",
+  "linked_to_icp": "run/sandi/icp.json (B2C_cluster v2, D-023)",
+  "demographics": {
+    "age_range": [28, 55],
+    "age_range_note": "[hipotesis] rango ancho deliberado pre-PMF; el corte del persona es situacional, no etario",
+    "gender_skew": "balanced",
+    "income_range_usd_year": [12000, 120000],
+    "income_note": "[hipotesis] ingreso DEL negocio/craft, muy variable: repostera side-income vs consultor establecido",
+    "geography": ["US (nacional, online); denso en suburbios/ciudades medias [hipotesis]"],
+    "language_primary": "en"
+  },
+  "psychographics": {
+    "values": [
+      "autonomia y control (ser su propio jefe, no depender de un algoritmo o un jefe)",
+      "orgullo de oficio: la calidad de SU producto/servicio es su identidad",
+      "honestidad y trabajo duro; desconfianza del humo y los gurus",
+      "aprender haciendo (DIY por temperamento ademas de por necesidad)"
+    ],
+    "fears": [
+      "invisibilidad: que el negocio muera sin que nadie sepa que existia",
+      "malgastar dinero en marketing que no entiende (ya se quemo o conoce a alguien que se quemo)",
+      "parecer spammer o vendedor baboso al promocionarse",
+      "que la jerga lo haga sentir tonto y lo estafen por no saber"
+    ],
+    "aspirations": [
+      "vivir de su oficio con flujo PREDECIBLE de clientes (no rachas)",
+      "independencia (el jardinero formalizando, el empleado que quiere renunciar)",
+      "ser referente reconocido en su nicho/zona",
+      "que el negocio se sienta profesional, no hobby"
+    ],
+    "self_image": "'Soy bueno en LO MIO; el marketing no soy yo.' Identidad de artesano/experto, no de vendedor. Vender lo propio le resulta incomodo - autopromocion se siente como presumir.",
+    "empathy_map_incongruences": [
+      "DICE 'mi producto es bueno, se vende solo / el boca a boca me sostiene' PERO HACE: pregunta a medianoche en foros como conseguir clientes (genero recurrente de hilos en CakeCentral/LawnSite) [inferencia sobre evidencia de foros]",
+      "DICE 'no tengo tiempo para marketing' PERO consume tips de marketing en redes/YouTube sin ejecutarlos (consumo sin sistema) [inferencia]",
+      "DICE 'no me gusta venderme' PERO suena orgulloso describiendo su craft - la incomodidad es con la VENTA, no con la visibilidad del trabajo [inferencia; palanca de copy]"
+    ]
+  },
+  "behaviors": {
+    "online_communities": [
+      "CakeCentral.com forums (makers de reposteria; genero entero de hilos 'how do I get customers')",
+      "LawnSite.com forums (servicios locales; hilos 'Start up - Getting First Customers')",
+      "Amazon Seller Central forums (sellers de producto propio enjaulados en marketplace)",
+      "r/smallbusiness, r/sweatystartup, r/EtsySellers [conocidas, no verificadas hoy - crawler bloqueado]",
+      "Facebook groups locales de compra-venta + grupos del oficio; Nextdoor para negocios locales"
+    ],
+    "media_consumed": [
+      "YouTube how-to de su oficio + canales de business tips [hipotesis]",
+      "TikTok/IG reels de 'business advice' y del craft [hipotesis]",
+      "newsletters/blogs del nicho (Today's Dietitian, blogs de baking) - consumo pasivo"
+    ],
+    "decision_pattern": "consulta a otros (pares del foro, pareja/familia) + investiga mucho antes de pagar; reflexivo - coherente con sales_cycle=reflexivo de business_context (0.1)"
+  },
+  "economic_capacity": {
+    "discretionary_budget_usd_month": 100,
+    "budget_note": "[hipotesis] rango 50-200/mo para herramientas; ancla: 33% de SMBs tienen presupuesto TOTAL de marketing <$1,000/mo (LocaliQ 2025)",
+    "price_sensitivity": "media-alta: paga si ve camino claro a clientes; huye de retainers de agencia ($1k+/mo)"
+  },
+  "jobs_to_be_done": [
+    {
+      "job_id": "JTB-1",
+      "functional_job": "conseguir un flujo predecible de clientes para mi oferta sin contratar agencia ni convertirme en marketero de tiempo completo",
+      "emotional_job": "sentirme tan competente vendiendo como haciendo lo mio; dejar de sentir que el negocio depende de la suerte",
+      "social_job": "ser visto como un negocio serio y profesional, no como un hobby (CakeCentral: hilo 'How To Get Friends To Pay For Cakes' - hasta los amigos esperan gratis)",
+      "situation": "ya vende (local, boca a boca, marketplace u online flojo) y el canal actual toco techo o depende de terceros",
+      "current_solution": "boca a boca + posteos esporadicos en redes + tips sueltos de YouTube/foros + a veces dinero quemado en ads o un intento de web",
+      "frustration_with_current": "tacticas sueltas sin sistema: no sabe que tocar primero, no mide nada, y el esfuerzo no se acumula"
+    }
+  ],
+  "pain_points_universal": [
+    {
+      "pain": "Asimetria de competencia: 'se hacer lo mio, no se conseguir clientes'",
+      "literal_quote": "'Newly Home Business, How To Get Customers??' / 'Start up - Getting First Customers' (titulos de hilos; el genero entero existe en cada foro de oficio)",
+      "source_1": "https://www.cakecentral.com/forum/t/727448/newly-home-business-how-to-get-customers",
+      "source_2": "https://www.lawnsite.com/threads/start-up-getting-first-customers.506897/",
+      "frequency_observed": ">=10 hilos del mismo genero en UNA busqueda de CakeCentral; replicado en LawnSite"
+    },
+    {
+      "pain": "Tacticas dispersas sin estrategia: ya probo cosas (web, ads, muestras) y no paso nada",
+      "literal_quote": "'I already put some ads in some places... I already have a website and pictures in it as well' - OP con CERO clientes (Bunda, CakeCentral)",
+      "source_1": "https://www.cakecentral.com/forum/t/727448/newly-home-business-how-to-get-customers",
+      "source_2": "LocaliQ/MarketingProfs 2025 (via 0.2): 46% SMB sin estrategia formal; 47% no sabe elegir tactica",
+      "frequency_observed": "patron del hilo completo + estadistica nacional"
+    },
+    {
+      "pain": "No sabe si lo que hace funciona (confidence gap): publica y reza, no mide",
+      "literal_quote": "~3 de 4 duenos de negocio pequeno no estan seguros de si su marketing funciona (agregadores 2025-2026) [cifra de agregadores; encuesta primaria no verificada por mi]",
+      "source_1": "https://www.revenuememo.com/p/marketing-statistics-for-small-business",
+      "source_2": "https://www.postcardmania.com/blog/small-business-marketing-statistics-definitive-guide/",
+      "frequency_observed": "consistente con LocaliQ 2025: insatisfaccion con social organico y listings"
+    },
+    {
+      "pain": "El oficio se come el tiempo: marketing en las grietas, sin staff",
+      "literal_quote": "53% de SMBs dedican 1-10 h/SEMANA a marketing; en negocios de <=10 empleados, 31% mas probable que NO haya nadie de marketing (LocaliQ 2025, 730+ encuestados)",
+      "source_1": "https://localiq.com/blog/small-business-marketing-trends-report/",
+      "source_2": "",
+      "frequency_observed": "encuesta 2025, n=730+"
+    },
+    {
+      "pain": "Inseguridad de precios como sintoma de invisibilidad: se malvende para compensar que nadie lo conoce",
+      "literal_quote": "'I always think my prices a bit too expensive, thats why I always feel like making it cheap to get customers' (Bunda) vs veteranos: 'Don't go cheap to start' / 'If you start out low, you will find it hard to raise your prices later' (CakeCentral)",
+      "source_1": "https://www.cakecentral.com/forum/t/727448/newly-home-business-how-to-get-customers",
+      "source_2": "",
+      "frequency_observed": "patron OP-vs-veteranos en el hilo; puente directo a Phase 1 (pricing + honestidad arquitectonica)"
+    },
+    {
+      "pain": "[sabor Estancado/enjaulado] El marketplace exprime y no hay canal propio: fees + algoritmo ajeno + cero control",
+      "literal_quote": "'Being slowly beaten down by Amazon year after year. And the percentage they take!!! A whopping 70%. With our production costs fixed between 18-20%, our profit is a meager 10%.' (seller, Amazon Seller Forums)",
+      "source_1": "https://sellercentral.amazon.com/seller-forums",
+      "source_2": "https://www.webfx.com/blog/marketing/sell-on-amazon-or-own-website/",
+      "frequency_observed": "genero recurrente en comunidades de sellers; matchea evidencia de primera mano (amigos del operador en Amazon)"
+    }
+  ],
+  "objections_universal": [
+    "confianza/resultado: 'ya queme dinero en ads/una agencia/un curso y no paso nada - por que esto seria distinto'",
+    "tiempo: 'no tengo tiempo para aprender OTRA herramienta' (la herramienta tiene que devolver tiempo, no pedirlo)",
+    "resultado/nicho: 'la IA generica no entiende MI negocio/MI nicho/MI zona'",
+    "precio: 'otra suscripcion mas - que me muestre camino a clientes antes de pedirme la tarjeta'"
+  ],
+  "metadata": {
+    "label": "El experto en lo suyo que ya vende y esta perdido en el marketing online",
+    "avatar_hypotheses": "se formalizan en avatars.json tras signoff del persona: 'Lanzador digital' (vende local/boca-a-boca, marketing online ~cero) / 'Estancado' (vende online, meseta) / sub-variante 'enjaulado del marketplace' (Amazon/Etsy, quiere canal propio) - test 2-de-3 pendiente para la sub-variante",
+    "firsthand_anchor": "los 3 casos dentro de la puerta de evidence_firsthand.md encarnan este persona: repostera (Lanzador), jardinero (Lanzador), amigos-Amazon (Estancado/enjaulado)",
+    "research_gaps_honest": [
+      "Reddit inaccesible (robots) - quotes de r/smallbusiness/r/sweatystartup pendientes de verificacion manual o via otra herramienta",
+      "media_consumed mayormente [hipotesis] - falta evidencia dura de consumo",
+      "demografia ancha [hipotesis] - afinar con primeros usuarios reales (V2 post-PMF sube a >=2 fuentes por pain)"
+    ],
+    "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
+  },
+  "operator_signoff": false,
+  "status": "draft_research_v1"
+}

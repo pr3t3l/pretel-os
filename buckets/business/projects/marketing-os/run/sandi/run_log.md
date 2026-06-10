@@ -9,7 +9,7 @@
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
-| Phase 0 | 0.3 Persona + Avatares | 🔄 en curso | `evidence_firsthand.md`; retrato en research |
+| Phase 0 | 0.3 Persona + Avatares | 🔄 en curso | `evidence_firsthand.md` · `buyer_persona.json` (draft research v1, pre-signoff) |
 | Phase 0 | 0.4 Competencia | pendiente | — |
 | Phase 1–5 | — | pendiente | — |
 
