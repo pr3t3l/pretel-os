@@ -97,9 +97,9 @@ Configurar a quién SÍ y a quién NO se le muestra el contenido pago, honrando 
     { "negative_persona_id": "neg_1", "platform": "Meta", "list_name": "negative_neg_1_excl", "synced": false }
   ],
   "audience_per_channel": {
-    "Meta": "ICP B2C_cluster: behavioral_signals + interests; exclude exclusion_lists",
-    "LinkedIn": "ICP B2B_account: industry + company_size + buying_stage; exclude deal_breakers",
-    "Google Ads": "keywords transactional+comparative (Phase 0.2); negative_keywords desde negative_personas"
+    "Meta": { "demand_type": "generate", "definition": "ICP B2C_cluster: behavioral_signals + interests; exclude exclusion_lists" },
+    "LinkedIn": { "demand_type": "generate", "definition": "ICP B2B_account: industry + company_size + buying_stage; exclude deal_breakers" },
+    "Google Ads": { "demand_type": "capture", "definition": "keywords transactional+comparative (Phase 0.2); negative_keywords desde negative_personas" }
   }
 }
 ```
@@ -107,6 +107,7 @@ Configurar a quién SÍ y a quién NO se le muestra el contenido pago, honrando 
 ### Reglas duras
 - Cada `negative_persona` con `action_when_detected ∈ {auto-disqualify}` produce una exclusion list en cada plataforma paga usada
 - En estrategias multi-avatar separadas: el targeting de una estrategia NO debe solaparse con el avatar de otra estrategia activa (evita canibalización entre avatars del mismo proyecto) — DISTRIB-002
+- **`demand_type` por canal obligatorio** (G1, aprobado vía FLAG-1) — cada entrada de `audience_per_channel` declara `demand_type ∈ {capture, generate, mixed}`: los canales de **demanda capturada** (search/Google Ads — el deseo ya existe, se intercepta intención) convierten MUY distinto a los de **demanda generada** (social/Meta/LinkedIn — se crea el deseo desde cero). Comparar sus CVR directamente es un error: este campo lo previene y hace legible la selección de canal y el flag `cac_up_40pct` aguas abajo. Hereda el `strategies.demand_type` de la estrategia (FLAG-1) y lo desglosa por canal cuando el mix es mezclado *(Cursos 1, 2, 5)*
 
 ### Gate G-Phase-3.2
 - Exclusion lists definidas para cada negative_persona auto-disqualify
@@ -130,7 +131,27 @@ Convertir el `publishing_calendar_skeleton` de Phase 2 en un calendario fechado 
     "asset_id": "asset_pillar_A_001",
     "avatar_id": "avatar_1",
     "content_type": "value | cta | hybrid",
+    "format": "9:16 | 16:9 | 1:1 | article | email",
+    "entry_type": "one_off_post | automated_sequence",
+    "derived_from_asset_id": null,
+    "repurpose_format": null,
     "utm_resolved": "utm_campaign=pillar_a_x&utm_source=blog&utm_medium=article&utm_content=estudiante",
+    "status": "scheduled | published | failed"
+  },
+  {
+    "scheduled_for": "ISO date (trigger date or sequence start)",
+    "channel": "email",
+    "pillar_id": "PILLAR_C",
+    "asset_id": "asset_seq_onboarding_001",
+    "avatar_id": "avatar_1",
+    "content_type": "value | cta | hybrid",
+    "format": "email",
+    "entry_type": "automated_sequence",
+    "sequence_kind": "onboarding | nurturing | sales | evergreen_reimpact",
+    "trigger": "lead_form_submit | tag_added | date | manual",
+    "length": 5,
+    "urgency_window": "bajo: 15min-1h | medio: 48h | alto: 3-7 días",
+    "utm_resolved": "utm_campaign=seq_onboarding&utm_source=email&utm_medium=email&utm_content=estudiante",
     "status": "scheduled | published | failed"
   }
 ]
@@ -140,6 +161,9 @@ Convertir el `publishing_calendar_skeleton` de Phase 2 en un calendario fechado 
 - El ratio value:cta objetivo por canal (Phase 2.4, default 3:1 ajustable por fatiga) se verifica **a nivel calendario por canal orgánico** (DISTRIB-001) — no solo a nivel plan
 - Cada entrada con `utm_resolved` derivado del `tracking_manifest` (no UTMs ad-hoc)
 - `frequency_v1` por pilar respetada (±1 pieza/semana)
+- **`format` (aspect-ratio) obligatorio por entrada** — `9:16 | 16:9 | 1:1 | article | email`. Es una decisión de distribución, no de contenido: declara cómo sale el mismo asset en cada plataforma. Sin `format` el calendario no especifica el formato de salida (un asset puede ir 16:9 en YouTube y 9:16 en Reels) *(Curso 7)*
+- **Reutilización cross-platform (1 asset madre → N filas):** un asset aprobado de Phase 2 puede generar múltiples entradas del calendario vía `derived_from_asset_id` (apunta al `asset_id` madre) + `repurpose_format`. Misma madre, distinto `channel` + `format` + `utm_resolved`. Refleja "video largo → N piezas cortas". **Cada formato derivado cuenta como una entrada propia para DISTRIB-001** (el ratio value:cta se cuenta sobre filas del calendario, no sobre assets madre) *(Curso 7 §6.6)*
+- **Secuencias de email schedulables:** cada entrada declara `entry_type ∈ {one_off_post, automated_sequence}`. El spine "email convierte" se honra agendando secuencias, no solo posts sueltos. Para `entry_type = automated_sequence` (solo canal email) son obligatorios `sequence_kind ∈ {onboarding, nurturing, sales, evergreen_reimpact}`, `trigger` (qué dispara la secuencia) y `length` (nº de emails). La ventana de urgencia por ticket viaja como metadata (`urgency_window`: bajo 15min-1h, medio 48h, alto 3-7 días) *(Curso 6 §2.2)*
 
 ### Gate G-Phase-3.3
 - Calendario fechado para ≥4 semanas (1 ciclo), ratio Vaynerchuk verificado por canal
@@ -221,7 +245,7 @@ El `phase_4_handoff.economics_baseline` traslada el `target_cac_usd` / `expected
     {
       "id": "DISTRIB-001",
       "applicable_phase": "phase-3.3",
-      "condition": "for any organic channel in calendar: value:cta ratio < ratio_objetivo_del_canal (default 3:1 [Context-Adjusted Threshold], ajustado por fatiga real de Phase 4 — mismo objetivo que VAYNER-001)",
+      "condition": "for any organic channel in calendar: value:cta ratio < ratio_objetivo_del_canal (default 3:1 [Context-Adjusted Threshold], ajustado por fatiga real de Phase 4 — mismo objetivo que VAYNER-001). El ratio se cuenta sobre filas del calendario (cada `format` derivado vía `derived_from_asset_id`/`repurpose_format` es una fila propia), no sobre assets madre",
       "severity": "warning",
       "signal": "Calendario rompe el ratio jab/right-hook objetivo de ese canal",
       "implication": "El feed se quema si hay demasiado CTA — umbral por canal, no 3:1 universal. Reordenar el calendario con más piezas value.",
@@ -280,8 +304,12 @@ Cada re-trigger queda como `decision_record` con `strategy_id`.
 [ ] 3.1 — todos los canales verified: true
 [ ] 3.2 — exclusion lists por negative_persona auto-disqualify
 [ ] 3.2 — targeting por canal citando ICP
+[ ] 3.2 — demand_type (capture|generate|mixed) declarado por canal en audience_per_channel (G1/FLAG-1)
 [ ] 3.3 — calendario ≥4 semanas, UTM resuelto por entrada
-[ ] 3.3 — ratio Vaynerchuk verificado por canal orgánico (DISTRIB-001)
+[ ] 3.3 — format (9:16|16:9|1:1|article|email) declarado por entrada
+[ ] 3.3 — entry_type por entrada; automated_sequence con sequence_kind + trigger + length
+[ ] 3.3 — repurposing cross-platform (derived_from_asset_id) si 1 asset madre → N formatos
+[ ] 3.3 — ratio Vaynerchuk verificado por canal orgánico, contado sobre filas del calendario (DISTRIB-001)
 [ ] 3.4 — go_live con operator_signoff
 [ ] phase_4_handoff: conversion event + KPIs + economics_baseline
 [ ] publish_plan.json anclado a strategy_id + strategy_version

@@ -180,6 +180,15 @@ Al final de la tabla, dashboard de distribución:
 
 Este dashboard es input directo a Phase 2 Content para distribuir contenido por awareness.
 
+**Auditoría de AI Overview por keyword prioritaria (FLAG-2 / BigSEO — zero-click).** Para cada keyword prioritaria (las top transaccionales + las informacionales de mayor volumen), auditar si el SERP ya muestra una respuesta IA (AI Overview / featured snippet expandido) que se come el clic. Esto calibra el supuesto de tráfico orgánico **antes** de construir la estrategia de contenido, porque una keyword informacional con AIO presente puede haber perdido su clic aunque rankees Top-10:
+
+| keyword | intención | AIO sí/no | tipo de dominio dominante | viabilidad |
+|---|---|---|---|---|
+| "cómo resolver acertijos" | informacional | sí | foros/agregadores (no e-commerce) | baja — el clic muere en el AIO |
+| "comprar caso detective digital" | transaccional | no | tiendas | alta — tráfico capturable |
+
+Lectura del veredicto: una intención **informacional** con AIO presente y dominio dominante NO-comercial es tráfico erosionado → en Phase 2 conviene mover el mix hacia intención transaccional y construir autoridad Top-10 para *alimentar* (no perder ante) el AI Overview. Esto es especialmente crítico en mercados `create_demand` (alto % Problem Aware vía SEO), cuyo supuesto de tráfico puede estar erosionado. El productor de la bandera `zero_click_informational_decay` vive en Phase 4 (AIO-TRAFFIC-001); aquí solo se levanta la línea base.
+
 **B. Demanda demográfica — TAM / SAM / SOM (GAP-2)**
 
 Trio obligatorio. Cada uno con cita de fuente + método de cálculo (top-down vs bottom-up).
@@ -196,6 +205,16 @@ Trio obligatorio. Cada uno con cita de fuente + método de cálculo (top-down vs
 - 🟡 **Marginal**: hay SOM pero búsquedas bajas (mercado dormido — requiere generar demanda) o viceversa
 - 🔴 **No validada**: SOM < threshold o math gate falla → **STOP**, replantear `product_brief.json`
 
+**Default sourced para `conversion_rate_optimistic` [Context-Adjusted Threshold]** (Curso 2 C4 — Javier Martínez): el math gate de DEMAND-004 (`som_population × price_point_usd × conversion_rate_optimistic < 5000`) multiplica por esta tasa. NO es un valor plano:
+
+| Contexto | Tasa óptimista asumida |
+|---|---|
+| E-commerce US | ~3% |
+| E-commerce ES / LATAM | ~1% |
+| Servicio / B2B | menor (ciclo más largo, ticket alto, menos conversión por visita) |
+
+Ajustable por `business_type` / `delivery_format` (un `digital_download` impulsivo convierte distinto a un `service` reflexivo). **La tasa concreta asumida en cada ejecución se registra en el `decision_record` de la clasificación 🟢/🟡/🔴**, para que el veredicto del math gate sea auditable y no dependa de un número implícito.
+
 ### Fuentes y método: keyword-research-tiered (4 capas)
 
 Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: marketing-research, scope: project:business/marketing-os).
@@ -204,7 +223,7 @@ Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: mar
 |---|---|---|---|
 | 1. Brainstorm semilla | 5–10 seeds del operador desde hipótesis + business_context | $0 | NO (requiere operador) |
 | 2. Expansión gratis | Google autocomplete + PAA + Related searches + YouTube autocomplete + Amazon search bar + Reddit/Quora + TikTok/IG hashtags | $0 | Parcialmente hoy, totalmente en V2 |
-| 3. Validación de volumen | Keyword Planner (gratis) → Ubersuggest ($30/mo) → Semrush/Ahrefs ($130+/mo) | $0–$130+/mo | API en V2 |
+| 3. Validación de volumen | Keyword Planner (free) → SearchVolume.com (free, ~100 kw/lote) → Ubersuggest ($30/mo, paid) → Semrush/Ahrefs ($130+/mo, paid) | $0–$130+/mo | API en V2 |
 | 4. Refinamiento | Filtrar volumen 0, clasificar intención + awareness, documentar fuente | tiempo | Híbrido permanente |
 
 **V1 stack recomendado**: Capa 1 + Capa 2 manual + Keyword Planner. Costo: $0.
@@ -225,8 +244,9 @@ Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: mar
 - ≥5 keywords por intención, ≥3 intenciones cubiertas
 - Cada keyword mapeada a awareness level
 - Dashboard de distribución por awareness level poblado
+- AI Overview auditado por keyword prioritaria (tabla keyword | intención | AIO sí/no | dominio dominante | viabilidad)
 - TAM, SAM, SOM cuantificados con fuente
-- Clasificación 🟢/🟡/🔴 registrada como `decision_record`
+- Clasificación 🟢/🟡/🔴 registrada como `decision_record` (incluye la `conversion_rate_optimistic` asumida)
 - Si 🔴 → STOP
 
 ### V1/V2/V3
@@ -393,6 +413,24 @@ Si solo 1 de 3 → es el mismo avatar con variante menor; ajusta el existente en
 - Mínimo 1 functional + 1 emotional job (GAP-3)
 - 5 pain_points_universal con ≥1 fuente cada uno (V1) — GAP-10 sube a ≥2 fuentes en ciclo 2 post-PMF
 - Hipótesis del operador refutadas se registran como `save_lesson`
+
+**Método para poblar `psychographics` — Empathy Map (XPLANE) [Evolving Schema seed]** (BMC): el spec define los campos de `psychographics` pero no un método para llenarlos honestamente. El Empathy Map de 6 preguntas es ese método:
+
+1. **¿Qué VE?** — su entorno, oferta del mercado, qué miran sus pares.
+2. **¿Qué OYE?** — qué le dicen amigos, jefe, influencers; qué fuentes le importan.
+3. **¿Qué PIENSA y SIENTE?** — lo que realmente le preocupa aunque no lo diga (alimenta `values`, `fears`).
+4. **¿Qué DICE y HACE?** — su discurso público y conducta observable; registrar **incongruencias entre (3) y (4)**.
+5. **¿Cuáles son sus ESFUERZOS/dolores?** → mapea a `pain_points_universal` + `forces_of_progress.anxiety_about_new`.
+6. **¿Cuáles son sus RESULTADOS/aspiraciones?** → mapea a `aspirations` + `jobs_to_be_done`.
+
+La **incongruencia entre lo que PIENSA-SIENTE (3) y lo que DICE-HACE (4)** es el input de mayor señal para el copy: ahí vive la tensión que la oferta de Phase 1 explota. Queda como semilla [Evolving Schema]; un ciclo post-PMF puede ampliar las preguntas con evidencia real.
+
+**Workflow IA de 2 pasos para `pain_points_universal`** (Curso 2 C7 — hace de puente a Phase 1):
+
+- **Step 1** — "Dame los puntos de dolor de [buyer_persona] al comprar/usar [producto]."
+- **Step 2** — "Dame la solución para cada punto de dolor."
+
+Las soluciones del Step 2 se llevan a Phase 1 como **mapa-semilla de objeciones** (cada dolor anticipa una objeción que el offer stack debe responder). **El output de la IA es brainstorm, no verdad**: cada pain que sobreviva al JSON cita ≥1 fuente real (review, hilo de Reddit, entrevista) — la regla de fuentes de arriba sigue mandando sobre el brainstorm.
 
 ### Output B: `avatars.json` — array de avatars (humanización + contextual + Forces of Progress)
 
@@ -573,11 +611,40 @@ La competencia no es homogénea. Quien rankea en SEO no es quien tiene el mejor 
 2. **Competidores RRSS** (3–5) — marcas/influencers/cuentas que ya tienen tu audiencia
 3. **Competidores publicitarios** (3–5) — quién pauta en Meta Ad Library / Google Ads Transparency
 4. **Substitutos** (3–5, GAP-9) — productos/categorías que resuelven el mismo JTBD por mecanismo distinto
-5. **Síntesis cross-canal**: huecos identificados (ángulo nadie cubre, formato nadie usa, geo nadie domina)
+5. **Síntesis cross-canal**: huecos identificados (ángulo nadie cubre, formato nadie usa, geo nadie domina) + **veredicto de posicionamiento Red/Blue Ocean** (ver lente ERRC abajo)
 
 Cada entrada de competidores directos: nombre, URL, **price_point_usd**, posicionamiento en una oración, top-3 fortalezas, top-3 debilidades, **qué se puede modelar (no copiar) y qué se debe evitar**.
 
 Cada entrada de substituto: categoría, ejemplo, por qué los clientes los "contratan" en lugar de tu categoría, qué los hace mejores/peores que tu producto en el JTBD específico.
+
+### Fuentes (Curso 2 §4 + Curso 5)
+El scan se construye con herramientas concretas, no a ojo. Etiquetadas free/paid:
+
+| Fuente | Para qué | free/paid |
+|---|---|---|
+| SimilarWeb | tráfico estimado + demografía + mix de canales del competidor | free (límite) / paid |
+| Social Blade | evolución histórica de seguidores/engagement en RRSS | free / paid |
+| Meta Ads Library | creatividades activas que un competidor pauta en Meta (FB/IG) | free |
+| Google Ads Transparency Center | anuncios activos de un competidor en Google | free |
+| TikTok Creative Center | creatividades y tendencias activas en TikTok | free |
+| Semrush / Ahrefs | keywords orgánicas + backlinks + posiciones del competidor (SEO) | paid |
+
+Cada competidor del scan debe citar de qué fuente salió su dato (tráfico, creatividad o posición), igual que las keywords de 0.2 citan su fuente.
+
+### Lente Red/Blue Ocean (ERRC) — veredicto de posicionamiento (FLAG-9, D-019)
+La síntesis cross-canal cierra con un veredicto de posicionamiento usando el marco ERRC (**E**liminar / **R**educir / **R**aise-incrementar / **C**rear) sobre el panorama competitivo recién mapeado:
+
+- **Eliminar** — qué factores que el sector da por sentados se pueden eliminar.
+- **Reducir** — qué factores se pueden reducir por debajo del estándar del sector.
+- **Incrementar** — qué factores se deben elevar por encima del estándar.
+- **Crear** — qué factores nuevos, que el sector nunca ha ofrecido, se pueden crear.
+
+El veredicto resultante:
+
+- **🔴 Océano rojo** (espacio disputado: muchos competidores directos en los 4 canales, diferenciación marginal) → se compite **en posicionamiento/precio**; el único vector de diferenciación sostenible aquí es el **conocimiento profundo del mercado** (el avatar, su lenguaje, sus Forces). Nombrarlo explícitamente.
+- **🔵 Océano azul** (nicho no disputado: huecos reales en ángulo/formato/geo que el ERRC abre) → se compite **creando categoría**; el hueco a atacar se nombra como el espacio no disputado.
+
+Este veredicto se registra como el `decision_record` del hueco a atacar (ver Escrituras) y alimenta el `differentiation_angle` del rollup. *(D-019 admite la técnica BMC "en su fase natural"; FLAG-9 confirma 0.4 como esa fase para el veredicto Blue-Ocean.)*
 
 ### Pricing tier de competencia
 Cada competidor directo con `price_point_usd` poblado. Esto alimenta directo Phase 1 pricing — sabes en qué tier compites.
@@ -610,6 +677,7 @@ Phase 1.2 (`offer-stack-builder` algoritmo input #3) y Phase 1.4 (`competitive_p
 - `pricing_tiers[]` poblado en el rollup (≥1 entrada por competidor directo, con `tier` clasificado)
 - Substitutos identificados con JTBD justification
 - Síntesis identifica ≥2 huecos accionables
+- Veredicto de posicionamiento Red/Blue Ocean (ERRC) emitido (🔴 océano rojo vs 🔵 océano azul)
 - `decision_record` del hueco a atacar registrado
 
 ### V1/V2/V3
@@ -673,7 +741,7 @@ Las reglas viven como `best_practice_record` con:
     {
       "id": "DEMAND-004",
       "applicable_phase": "phase-0.2",
-      "condition": "som_population * price_point_usd * conversion_rate_optimistic < 5000",
+      "condition": "som_population * price_point_usd * conversion_rate_optimistic < 5000  [Context-Adjusted Threshold] — conversion_rate_optimistic sourced en 0.2 §C (~3% e-commerce US, ~1% ES/LATAM, menor en servicio/B2B; ajustable por business_type/delivery_format); la tasa asumida se registra en el decision_record de la clasificación.",
       "severity": "alert",
       "signal": "Mercado obtenible (SOM) + ticket no soportan negocio viable",
       "implication": "Aunque convirtieras al máximo el SOM al máximo precio: ingreso máximo teórico < $5K en horizonte. Reconsiderar producto, geo, o ticket.",
@@ -896,7 +964,8 @@ Para el primer ciclo manual con un producto real:
 [ ] 0.2 — keywords clasificadas + filtradas + awareness mapping (Capa 4)
 [ ] 0.2 — TAM / SAM / SOM cuantificados con fuente
 [ ] 0.2 — dashboard awareness distribution poblado
-[ ] 0.2 — clasificación 🟢/🟡/🔴 registrada
+[ ] 0.2 — AI Overview auditado por keyword prioritaria (AIO sí/no + viabilidad)
+[ ] 0.2 — clasificación 🟢/🟡/🔴 registrada (con conversion_rate_optimistic asumida)
 [ ] 0.2.5 — icp.json (B2B o B2C según business_context)
 [ ] 0.3 — buyer_persona.json escrito (incluye JTBD ≥1 functional + ≥1 emotional)
 [ ] 0.3 — avatars.json escrito (1-4 según tipo de producto, con Forces of Progress completo)
@@ -905,6 +974,7 @@ Para el primer ciclo manual con un producto real:
 [ ] 0.3 — dmu.json (solo si B2B)
 [ ] 0.4 — 3 competidores por canal (SEO, RRSS, Ads) + 3 substitutos
 [ ] 0.4 — pricing tier de competidores poblado
+[ ] 0.4 — veredicto Red/Blue Ocean (ERRC) emitido
 [ ] 0.4 — síntesis cross-canal con hueco a atacar
 [ ] signal rules evaluadas — DEMAND-004, EVIDENCE-002, ECONOMICS-001 verificadas
 [ ] evidence_findings poblado (hipótesis confirmadas + refutadas + critical count)

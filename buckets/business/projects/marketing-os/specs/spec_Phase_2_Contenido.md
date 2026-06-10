@@ -102,10 +102,12 @@ Declarar la voz/tono de marca **antes** de delegar generación de contenido a cu
 ```json
 {
   "voice_id": "voice_v1_YYYYMMDD",
+  "schema_version": "2.0",
   "linked_to_product": "marketing-os/{product_slug}",
   "archetype_primary": "hero | magician | outlaw | sage | jester | caregiver | ruler | creator | innocent | explorer | lover | everyman",
   "archetype_secondary": "uno opcional para HÍBRIDOS — las marcas reales suelen ser combinaciones ('el sabio rebelde' = sage+outlaw, 'el cuidador mágico' = caregiver+magician). Los 12 arquetipos junguianos SÍ cubren bien el espacio de personalidad (por eso aquí NO se usa `other` — ver Overall_WF §Pattern A: esto es un sistema razonablemente cerrado), pero la combinación primary+secondary es obligatoria cuando la marca no cae limpio en uno solo.",
   "archetype_rationale": "OBLIGATORIO citar buyer_persona.jobs_to_be_done[N].job_id + literal del emotional_job + literal del social_job. El archetype debe ser coherente con esos dos jobs. Sin cita explícita el campo se rechaza (regla dura, audit R4 A1-ISSUE-2)",
+  "brand_promise": "Compromiso Principal de Marca (CPM) en formato: 'Ayudo a [cliente] a [logro] vía [método] sin [dolor]'. Una sola frase que ancla la promesa central de marca; complementa al archetype (no lo reemplaza). FLAG-6 — brand_voice schema_version 2.0.",
   "tone_descriptors": [
     "3-5 adjetivos concretos — ej: 'directo, sin jerga corporativa, irreverente sin grosería, datos por encima de opinión'"
   ],
@@ -151,6 +153,7 @@ Declarar la voz/tono de marca **antes** de delegar generación de contenido a cu
 
 - `archetype_primary` obligatorio (no "mixed", no "ninguno") — decisión de identidad
 - `archetype_rationale` cita `buyer_persona.jobs_to_be_done[N].job_id` + literal del `emotional_job` + literal del `social_job` (A1-ISSUE-2 audit R4). Sin cita explícita, el campo se rechaza — el archetype anclado en JTBD garantiza coherencia con el Dream Outcome de Phase 1.1.
+- `brand_promise` obligatorio en formato CPM "Ayudo a [cliente] a [logro] vía [método] sin [dolor]" (FLAG-6, schema_version 2.0). Complementa al archetype — **no reabre ni reemplaza el enum cerrado de arquetipos** (R-7 se mantiene); es un campo aditivo que ancla la promesa central de marca en una sola frase. Coherente con el Dream Outcome de Phase 1.1 y con `offer_statement`.
 - ≥3 `tone_descriptors`, todos concretos (no "profesional" solo — "profesional pero conversacional, evita jerga MBA")
 - `lexicon.prohibited_terms` debe incluir los adjetivos vacíos clásicos: "revolucionario", "increíble", "único", "innovador" (Phase 1.4 regla del statement los prohíbe; Phase 2 los hereda)
 - `consistency_check_rules` ≥3 reglas, cada una testeable programáticamente (string match, regex, length count) — sin esto VOICE-001 no puede evaluar
@@ -312,8 +315,8 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
       "format_primary": "comparativo long-form | listicle | how-to",
       "format_secondary": "video embebido | infografía",
       "frequency_per_week_v1": 1,
-      "kpi_primary": "organic_traffic | time_on_page | scroll_depth | ranking_position | other  [Extensible Vocabulary]",
-      "kpi_primary_custom": "obligatorio si kpi_primary=other. Los 4 son SEMILLA; el KPI correcto depende del canal — ej: 'saves/bookmarks' (clave en Pinterest/IG: gente que guarda para comprar después), 'shares' (viralidad), 'comentarios cualitativos' (validar mensaje). Un custom que prediga conversión en un canal se promueve (Overall_WF §Pattern A). El set abierto es por-canal.",
+      "kpi_primary": "organic_traffic | time_on_page | scroll_depth | ranking_position | completion_rate | avg_watch_time_s | saves | shares | open_rate | click_rate | avg_position | impressions | other  [Extensible Vocabulary]",
+      "kpi_primary_custom": "obligatorio si kpi_primary=other. La semilla es por-canal (FLAG-4, promovida bajo gobernanza Pattern A): social → completion_rate, avg_watch_time_s, saves, shares; email → open_rate, click_rate; SEO → avg_position, impressions (más los SEO genéricos organic_traffic/time_on_page/scroll_depth/ranking_position). El KPI correcto depende del canal — ej: 'comentarios cualitativos' (validar mensaje). Un custom que prediga conversión en un canal se promueve (Overall_WF §Pattern A). El set abierto sigue siendo por-canal.",
       "rationale": "1 oración — por qué esta combinación es válida dada la función del canal"
     }
   ],
@@ -379,6 +382,14 @@ Sin esta distinción, dos modos de fallo (documentados en audit R4 A1-ISSUE-1):
 1. **Duplicación**: PILLAR_C produce 5 piezas sobre money-back redundantes con lo que el offer_statement ya dice.
 2. **Inconsistencia**: PILLAR_C ataca `anx_1` con un mensaje distinto al del bonus, creando dissonance entre copy y oferta.
 
+### Re-impacto evergreen por cambio de ángulo motivacional (G18, Curso 6)
+
+PILLAR_C (anxiety / fricción de compra) es el hogar natural del **re-impacto a no-convertidores**: leads que consumieron contenido pero no convirtieron. Es una palanca barata porque **no requiere re-build del plan** — reusa los assets existentes con un ángulo distinto.
+
+- **Misma fuerza, distinto beneficio**: el re-impacto ataca la **MISMA** fuerza/anxiety con un **ángulo motivacional distinto** — se cambia el **beneficio** comunicado, **no el producto**. Ejemplo: el mismo curso vendido primero por "ahorra tiempo" se re-impacta por "evita el error caro que comete el 80%".
+- **Urgencia calibrada por ticket** (ventana de re-impacto): ticket **bajo** = 15 min–1 h; ticket **medio** = 48 h; ticket **alto** = 3–7 días. El precio del producto fija qué tan agresiva es la ventana antes de reciclar el ángulo.
+- Estos derivatives de re-impacto se etiquetan en su `content_type` como `cta` o `hybrid` y heredan el `language_pack` del avatar no-convertidor. La ventana de urgencia por ticket viaja como metadata al handoff de Phase 3 (secuencia `evergreen_reimpact`).
+
 ### Output: `pillars.json`
 
 ```json
@@ -423,6 +434,12 @@ Sin esta distinción, dos modos de fallo (documentados en audit R4 A1-ISSUE-1):
       "specific_targets": [
         { "force_id": "trigger_1", "literal": "...", "aligned_with_urgency": "si offer_spec.risk_urgency_displacement.urgency.aligned_with_trigger == trigger_1, este pillar amplifica el momentum de la oferta" }
       ],
+      "char_limits_per_platform": {
+        "google_ads_headline_max": 30,
+        "google_ads_long_headline_max": 90,
+        "google_ads_description_max": 90,
+        "note": "PILLAR_B vive en paid ads + landing pages; el ad copy nace dentro del límite de plataforma (Curso 5, G4) para que Phase 3 no rebote assets. Declarar un sub-objeto por cada plataforma de ads destino (Meta/TikTok tienen sus propios límites)."
+      },
       "forces_already_covered_by_offer": { "reinforces": [], "does_not_address": [] },
       "...": "..."
     },
@@ -517,6 +534,15 @@ Registrada como `best_practice` en pretel-os con `domain: workflow`, prefijo `LO
 | Video YouTube ≥10 min | 2 shorts + 1 thread + 1 email + 1 carrusel + 1 podcast clip (audio) |
 | Episodio podcast ≥20 min | 1 transcript-to-article + 2 shorts + 1 carrusel + 1 email + 1 quote graphic |
 
+### Estructura de guión de video por intervalos (G6, Cursos 5 + 7)
+
+El video es el formato de mayor fricción de producción; sin plantilla de intervalos queda sin guía. Cada derivative de video declara `video_script_structure` con sus intervalos. El `hook_id_assigned` alimenta el **primer intervalo** (el gancho). La plantilla depende de `kind`:
+
+| kind | Intervalos | Uso |
+|---|---|---|
+| **paid** (PILLAR_B — paid social, paid search, YouTube paid) | 0-2s hook / 2-5s producto / 5-8s prueba-o-precio / 8-10s CTA | Ad corto: cada segundo cuenta, CTA explícito al cierre (Curso 5). |
+| **organic** (RRSS orgánico, YouTube/Reels/TikTok orgánico) | gancho 3-5s / cuerpo 15-45s con micro-ganchos / cierre 4-6s | El cuerpo intercala micro-ganchos para sostener retención; cierre suave con `anchor_to_offer` (Curso 7). |
+
 ### Output: `atomization_map.json`
 
 ```json
@@ -531,7 +557,12 @@ Registrada como `best_practice` en pretel-os con `domain: workflow`, prefijo `LO
         "target_keyword": "del Phase 0.2 keyword research",
         "target_awareness_level": "problem_aware",
         "target_journey_stage": "consideracion",
-        "estimated_word_count": 1800
+        "estimated_word_count": 1800,
+        "structured_data": {
+          "schema_type": "Article | HowTo | FAQPage | Product | Review | … (schema.org) — opcional, solo para long-form SEO de PILLAR_A",
+          "jsonld_validated": true,
+          "note": "factor de Rich Results y elegibilidad para AI Overview (BigSEO). Todo long-form SEO de PILLAR_A declara su schema_type y valida el JSON-LD antes de publicar."
+        }
       },
       "derivatives": [
         {
@@ -544,6 +575,56 @@ Registrada como `best_practice` en pretel-os con `domain: workflow`, prefijo `LO
           "parent_long_form": "asset_pillar_A_001",
           "content_type": "value | cta | hybrid",
           "content_type_rationale": "value = sin pedido de venta, hybrid = valor con anchor_to_offer suave, cta = pedido directo (oferta, lead form, demo)"
+        },
+        {
+          "derivative_id": "asset_pillar_A_001_d4",
+          "format": "email",
+          "channel": "email",
+          "target_awareness_level": "solution_aware",
+          "language_pack_id": "language_pack_avatar_1",
+          "hook_id_assigned": "hook_A_07",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value | cta | hybrid",
+          "subject_line": {
+            "variants": ["≤5 variantes, cada una ≤40 chars — el subject line es el HOOK del canal email y decide la tasa de apertura (Curso 6)"],
+            "pre_header": "texto de preview ≤90 chars que complementa el subject (no lo repite)",
+            "one_variant_with_emoji": true,
+            "spam_words_checked": true,
+            "ab_test_pair": ["las 2 mejores variantes a testear"]
+          }
+        },
+        {
+          "derivative_id": "asset_pillar_B_001_d1",
+          "format": "ad_copy",
+          "channel": "Google Ads",
+          "target_awareness_level": "most_aware",
+          "language_pack_id": "language_pack_avatar_1",
+          "hook_id_assigned": "hook_B_03",
+          "parent_long_form": "asset_pillar_B_001",
+          "content_type": "cta",
+          "char_limits_per_platform": {
+            "google_ads_headline_max": 30,
+            "google_ads_long_headline_max": 90,
+            "google_ads_description_max": 90,
+            "note": "el copy nace dentro del límite de plataforma (Curso 5) para que Phase 3 no rebote assets; declarar por cada plataforma de destino del ad"
+          }
+        },
+        {
+          "derivative_id": "asset_pillar_A_001_d3",
+          "format": "short_video",
+          "channel": "TikTok",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "language_pack_avatar_1",
+          "hook_id_assigned": "hook_A_07",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "video_script_structure": {
+            "kind": "paid | organic",
+            "intervals": [
+              { "interval": "0-2s", "role": "hook", "fed_by": "hook_id_assigned alimenta este primer intervalo" }
+            ],
+            "note": "ver tabla de Sección 7 'Estructura de guión de video por intervalos' — la plantilla de intervalos depende de kind (paid PILLAR_B vs orgánico) y del formato"
+          }
         }
       ]
     }
@@ -558,9 +639,14 @@ Registrada como `best_practice` en pretel-os con `domain: workflow`, prefijo `LO
 - Cada derivative con `language_pack_id` asignado (si aplica multi-avatar) — el contenido se reescribe en el registro del language_pack, no se traduce literal
 - Cada derivative con `hook_id_assigned` que existe en `hook_library.json` (sub-paso 2.5) — sin esto el derivative no se publica
 - Cada derivative con `content_type ∈ {value, cta, hybrid}` declarado (A1-ISSUE-3 audit R4)
+- **Subject line como artefacto de primera clase en `format=email`** (G3, Curso 6): cada derivative `format=email` declara `subject_line` con `variants` (≤5, cada una ≤40 chars), `pre_header`, `one_variant_with_emoji: true`, `spam_words_checked: true` y `ab_test_pair` (las 2 mejores). El subject line es el "hook" del canal email (equivalente al `hook_library` para los demás canales) y decide la tasa de apertura. **Regla dura: un derivative `format=email` sin `subject_line` poblado no se publica** (ATOMIZATION-002 bloquea).
+- **Límites de caracteres de ads como restricción estructural en `format=ad_copy`** (G4, Curso 5): cada derivative `format=ad_copy` declara `char_limits_per_platform` por plataforma de destino. Para Google Ads: headlines ≤30 chars, long headlines/descriptions ≤90 chars. El copy nace dentro del límite para que Phase 3 no rebote assets en plataforma. Ver también PILLAR_B (Sección 6), que declara estos límites a nivel pilar.
+- **Estructura de guión de video por intervalos en derivatives de video** (G6, Cursos 5 + 7): cada derivative de video (`format ∈ {short_video, video, reel, …}`) declara `video_script_structure` con `kind ∈ {paid, organic}` y sus `intervals` según la tabla "Estructura de guión de video por intervalos" de arriba. El `hook_id_assigned` alimenta el primer intervalo (el gancho). Paid (PILLAR_B) = 0-2s hook / 2-5s producto / 5-8s prueba-o-precio / 8-10s CTA; orgánico = gancho 3-5s / cuerpo 15-45s con micro-ganchos / cierre 4-6s.
+- **Schema.org / JSON-LD opcional en long-form SEO de PILLAR_A** (G5, BigSEO): el `long_form` de PILLAR_A puede declarar `structured_data: { schema_type, jsonld_validated: true }`. Cuando se declara, **todo long-form SEO de PILLAR_A declara su `schema_type` (schema.org) y valida el JSON-LD antes de publicar** — es factor de Rich Results y elegibilidad para AI Overview. Campo opcional en V1 (no bloqueante); el `entity_coverage_checklist` queda diferido a V2 (Sección 16).
 - **Vaynerchuk jab-jab-jab-right-hook ratio [Context-Adjusted Threshold]**: por pilar, en canales orgánicos, `count(content_type=value) : count(content_type=cta) ≥ ratio_objetivo`. Hybrid cuenta como 0.5 value + 0.5 cta. El **3:1 es el DEFAULT por canal**, no una ley global (es heurística de Vaynerchuk de hace ~10 años): LinkedIn B2B / audiencia caliente toleran más CTA (ej. 2:1); IG/TikTok B2C / audiencia fría necesitan más jabs (ej. 5:1). **El ratio objetivo se ajusta por la fatiga REAL que Phase 4 ya mide (CTR decay por canal/avatar)** — la detección de fatiga observada reemplaza la regla teórica. VAYNER-001 dispara warning si el ratio cae bajo el objetivo de ESE canal. Excepciones declaradas:
   - PILLAR_B en paid ads = 100% CTA por naturaleza (paid social, paid search, YouTube paid) — el ratio no aplica al asset-level pero sí al canal-level: si el operador SOLO usa paid en PILLAR_B, debe haber jabs en otros pilares en el mismo canal o el feed se quema.
   - SEO long-form anchor = jab por naturaleza con `anchor_to_offer` suave; cuenta automáticamente como `content_type: hybrid` sin necesidad de rationale extra.
+- **Default documentado 25/25/50 para RRSS orgánico B2C** (FLAG-5, Curso 7, dentro del marco Pattern B): para RRSS **orgánico B2C** el corpus aporta un reparto de referencia **25% viral / 25% captación / 50% conversión** (más agresivo en CTA que el 3:1). **NO sobrescribe el 3:1 ni el mecanismo per-channel** (que es superior y ya contempla ajuste por canal) ni toca el "alarm-stays-on" de VAYNER-001: es un **valor por defecto documentado** para ese canal/segmento, que el operador puede usar como punto de partida y que sigue recalibrándose por la fatiga real medida en Phase 4. Para los demás canales/segmentos rige el default 3:1 ajustado por canal.
 - No mezclar `target_awareness_level` arbitrariamente: el long-form puede ser Problem Aware y los derivatives Solution Aware, pero el orden Schwartz se respeta (un derivative no puede asumir Most Aware si el long-form es Unaware)
 
 ### Sub-workflow `content-atomizer`
@@ -787,6 +873,16 @@ Para cada asset (long_form o derivative o hook):
     },
     "publishing_calendar_skeleton": [
       { "week": 1, "channel": "blog", "pillar_id": "PILLAR_A", "asset_id": "asset_pillar_A_001", "scheduled_for": "ISO date" }
+    ],
+    "evergreen_reimpact_sequences": [
+      {
+        "pillar_id": "PILLAR_C",
+        "targets": "leads que consumieron pero no convirtieron",
+        "angle_switch": "misma fuerza, distinto beneficio (cambiar beneficio comunicado, no producto)",
+        "ticket_tier": "low | medium | high",
+        "urgency_window": "low: 15min-1h | medium: 48h | high: 3-7d",
+        "note": "G18, Curso 6 — no requiere re-build del plan; reusa assets existentes. Phase 3 lo agenda como secuencia evergreen_reimpact."
+      }
     ]
   },
   "signal_rules_triggered": [],
@@ -919,6 +1015,15 @@ Reglas heurísticas que disparan contra outputs estructurados. Persistidas como 
       "auto_action": "warn before Phase 2.5 entry"
     },
     {
+      "id": "ATOMIZATION-002",
+      "applicable_phase": "phase-2.4",
+      "condition": "any derivative.format == 'email' AND (derivative.subject_line is null OR subject_line.variants is empty OR any subject_line.variants[i].length > 40 OR subject_line.variants.length > 5 OR subject_line.ab_test_pair is empty)",
+      "severity": "alert",
+      "signal": "Derivative de email sin subject_line poblado o fuera de límites (≤5 variantes, cada una ≤40 chars, ab_test_pair presente)",
+      "implication": "El subject line es el hook del canal email y decide la tasa de apertura (Curso 6, G3). Un derivative format=email sin subject_line válido no se publica. Poblar variants (≤5, ≤40 chars c/u), pre_header, one_variant_with_emoji, spam_words_checked y ab_test_pair.",
+      "auto_action": "block email derivative publication"
+    },
+    {
       "id": "FORCES-001",
       "applicable_phase": "phase-2.3",
       "condition": "any force in {ongoing_pain, trigger, anxiety, habit} has zero assets across all pillars",
@@ -1007,6 +1112,8 @@ Phase 2 se re-ejecuta cuando:
 
 **Sin refresh por calendario** (coherente con el principio de Phase 0/5: actuar por evidencia, no por reloj). El contenido se refresca cuando hay **señales reales de fatiga** (engagement/CTR cayendo, saturación de hooks), no por una fecha. Si se quiere una cadencia mínima, que sea un **recordatorio de revisión** barato — no un re-build automático.
 
+**Re-impacto evergreen (no es re-trigger de plan):** distinto de un re-trigger, para leads que consumieron pero **no convirtieron** se generan derivatives de **re-impacto** que atacan la **MISMA fuerza con un ángulo motivacional distinto** (cambiar el beneficio comunicado, no el producto). Vive en PILLAR_C (ver Sección 6) y **no requiere re-build del plan** — reusa assets existentes. Urgencia calibrada por ticket: bajo 15 min–1 h, medio 48 h, alto 3–7 días (Curso 6, G18).
+
 Cada re-trigger queda como `decision_record` con motivo + evidencia.
 
 ---
@@ -1060,7 +1167,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 - Skill `content-pillars-builder` registrado en pretel-os (`domain: workflow`)
 - Skill `content-atomizer` registrado en pretel-os
 - Skill `hook-library-generator` registrado en pretel-os
-- 15 signal rules sembradas (VOICE-001, CONTENT-001/002/003/004/005, ATOMIZATION-001, FORCES-001, NEGATIVE-001, COVERAGE-001, TRIGGER-ALIGN-001, HANDOFF-001, REINFORCE-001, VAYNER-001, STRATEGY-LINK-001) como `best_practice_record` con `domain: workflow`
+- 16 signal rules sembradas (VOICE-001, CONTENT-001/002/003/004/005, ATOMIZATION-001/002, FORCES-001, NEGATIVE-001, COVERAGE-001, TRIGGER-ALIGN-001, HANDOFF-001, REINFORCE-001, VAYNER-001, STRATEGY-LINK-001) como `best_practice_record` con `domain: workflow`
 - Lookup table `channel_function` (Sección 5, "función natural de canal") registrada como `best_practice` con `domain: workflow`
 - Lookup table `atomization_ratio_minimum_per_anchor_format` (Sección 7) registrada como `best_practice`
 - Template library inicial de hooks (9 templates de la tabla en 2.5) registrada como best_practices con tags `['hook-template']`
@@ -1082,6 +1189,7 @@ Para el primer ciclo manual de Phase 2 con un producto real:
 [ ] G-Phase-2-PRE: 14 checks de entrada verificados (incluye check 11 force_coverage + check 12 displacement_framing + check 14 strategy_id disponible)
 [ ] 2.0 — brand_voice.json declarado (archetype + tone + lexicon + ≥3 consistency_check_rules)
 [ ] 2.0 — archetype_rationale cita JTB job_id + emotional_job + social_job (audit R4)
+[ ] 2.0 — brand_promise (CPM "Ayudo a [cliente] a [logro] vía [método] sin [dolor]") declarado — FLAG-6
 [ ] 2.0 — compatibilidad voice ↔ language_packs verificada (conflictos listados o array vacío)
 [ ] 2.0 — decision_record en pretel-os con tag ['brand-voice', '{product_slug}', 'archetype'] registrado
 [ ] 2.0 — operator_signoff: true en brand_voice.json
@@ -1103,6 +1211,10 @@ Para el primer ciclo manual de Phase 2 con un producto real:
 [ ] 2.4 — atomization_map con ≥1 long_form + ≥5 derivatives por pilar
 [ ] 2.4 — cada derivative con hook_id_assigned existente + language_pack_id + content_type ∈ {value, cta, hybrid} — audit R4
 [ ] 2.4 — Vaynerchuk ratio ≥3:1 value:cta por pilar en canales orgánicos (VAYNER-001) — audit R4
+[ ] 2.4 — cada derivative format=email con subject_line poblado (≤5 variantes ≤40 chars + pre_header + 1 con emoji + spam_words_checked + ab_test_pair) — ATOMIZATION-002 (G3)
+[ ] 2.4 — cada derivative format=ad_copy con char_limits_per_platform (Google Ads ≤30/≤90) — G4
+[ ] 2.4 — cada derivative de video con video_script_structure por intervalos (hook_id alimenta el primer intervalo) — G6
+[ ] 2.4 — long_form SEO de PILLAR_A con structured_data (schema_type + jsonld_validated) si aplica — G5
 [ ] 2.4 — PILLAR_D: replacement_narrative_literal aparece textual en ≥1 derivative — audit R4
 [ ] 2.5 — hook_library.json con ≥10 hooks/pilar y ≥4 templates representados
 [ ] 2.5 — 100% hooks con brand_voice_check_passed + negative_persona_safe

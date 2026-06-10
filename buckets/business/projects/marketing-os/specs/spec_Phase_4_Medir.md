@@ -29,7 +29,7 @@ Phase 4 mide lo que Phase 3 publicó y lo convierte en **Resultados estructurado
 
 | Sub-paso | Output | Estimado V1 | V1 | V2 |
 |---|---|---|---|---|
-| 4.1 — Métricas raw por canal/pilar | `metrics_snapshot.raw` | 1 h/snapshot | Manual (operador pega datos de GA4/plataformas) | Sub-workflow pull vía API |
+| 4.1 — Métricas raw por canal/pilar | `metrics_snapshot.raw` | 1 h/snapshot | Manual (operador pega datos de GA4/plataformas) | Pull vía conector multi-plataforma (p.ej. Windsor.ai: GA4 + Google Ads + Meta/TikTok/LinkedIn → URL conector JSON/CSV). Candidato a `tracking_manifest`/V2, no contrato V1 |
 | 4.2 — Unit economics + funnel | `metrics_snapshot.economics` + `funnel` | 1 h | Claude calcula desde raw + baseline | Auto |
 | 4.3 — Results rollup a la estrategia | `strategies.results_summary` | 30 min | Claude consolida + operador firma | Auto |
 
@@ -63,8 +63,15 @@ Phase 4 mide lo que Phase 3 publicó y lo convierte en **Resultados estructurado
       "conversions": 0,
       "conversion_rate": 0,
       "cost_usd": 0,
-      "kpi_primary_value": 0
+      "kpi_primary_value": 0,
+      "completion_rate": 0,
+      "avg_watch_time_s": 0,
+      "saves": 0,
+      "shares": 0
     }
+  ],
+  "per_search_term": [
+    { "term": "ejemplo query", "channel": "google_ads", "avatar_id": "avatar_1", "spend_usd": 0, "conversions": 0, "category": "profitable | informational | out_of_model | non_converting" }
   ],
   "per_hook": [
     { "hook_id": "hook_A_07", "uses": 0, "ctr": 0, "status": "tested | winner | retired" }
@@ -77,6 +84,8 @@ Phase 4 mide lo que Phase 3 publicó y lo convierte en **Resultados estructurado
 - Cada entrada con `avatar_id` (atribución por avatar — sin esto no se puede comparar avatars)
 - `negative_quality_leads_excluded` contado y restado ANTES de `conversion_rate` (honestidad de Phase 0.3)
 - KPI primario de cada pilar (definido en Phase 2.3 / Phase 3 handoff) poblado
+- **Métricas de algoritmo en social (opcionales por canal):** para pilares en canales sociales, poblar `completion_rate`, `avg_watch_time_s`, `saves`, `shares`. Para video corto, `completion_rate` es **indicador LÍDER de fatiga** — su caída precede a la del CTR (indicador tardío). Snapshot **quincenal** (alineado con la revisión cada 15 días). *(Curso 7 Fase 4)*
+- **`per_search_term` (bloque opcional, solo canales de pago):** clasificar cada término con `spend_usd > 0` en una `category` ∈ `{profitable, informational, out_of_model, non_converting}` (`category` es **[Extensible Vocabulary]** — sembrada con estos cuatro miembros + `other`). `non_converting` (`spend_usd > 0 AND conversions == 0`) y `out_of_model` son desperdicio de presupuesto que el funnel agregado oculta y que Phase 5 acciona vía la bandera `paid_search_waste` (ver §8). *(Curso 5 C8)*
 
 ### Gate G-Phase-4.1
 - Raw poblado para cada pilar+canal activo en el calendario, con atribución por avatar
@@ -147,14 +156,15 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
   "conversion_trend": "rising | flat | falling",
   "phase_5_flags": [
     "ctr_falling_30pct_14d", "conversion_falling_30pct", "ltv_cac_below_3",
-    "cac_up_40pct", "avatar_underperforming", "foundation_drift", "unexplained_anomaly"
+    "cac_up_40pct", "avatar_underperforming", "foundation_drift", "unexplained_anomaly",
+    "zero_click_informational_decay", "paid_search_waste"
   ]
 }
 ```
 
 ### Reglas duras
 - `phase_5_flags` es un **conjunto ABIERTO** (jsonb), no un enum cerrado. Sus valores y su contrato viven en el **registro canónico de banderas** (`Overall_WF.md` §"Flag Registry"). Phase 4 es el **productor** de las banderas de origen métrico; Phase 5 las consume. Ninguna fase mantiene su propia copia del catálogo (evita el drift que causó el orphan M3).
-- **Regla productor-binding**: toda bandera métrica que Phase 4 emite debe tener su signal rule en §8. Si no hay regla que la produzca, la bandera no existe. (Las banderas de origen NO-métrico — `avatar_changed_qualitatively` del operador, etc. — no las emite Phase 4; ver el registro.)
+- **Regla productor-binding**: toda bandera métrica que Phase 4 emite debe tener su signal rule en §8. Si no hay regla que la produzca, la bandera no existe. (Las banderas de origen NO-métrico — `avatar_changed_qualitatively` del operador, etc. — no las emite Phase 4; ver el registro.) Las banderas nuevas de origen Phase 4 quedan declaradas producer-bound aquí: `zero_click_informational_decay` (productor AIO-TRAFFIC-001) y `paid_search_waste` (productor PAID-SEARCH-WASTE-001) — ambas con su signal rule en §8 y pendientes de promoción al registro canónico (`Overall_WF.md` §"Flag Registry").
 - Cuando las métricas se mueven materialmente pero **ninguna bandera conocida encaja**, Phase 4 emite `unexplained_anomaly` (ANOMALY-001) — esa es la señal que obliga a Phase 5 a **razonar** la causa raíz en vez de buscar en una lista.
 - En proyectos multi-avatar, comparar `results_summary` entre estrategias activas: si un avatar rinde <30% del mejor avatar sostenido → `avatar_underperforming`; si **todos** caen a la vez → `foundation_drift` (el cimiento compartido se movió, no un avatar).
 - `strategies.results_summary` se actualiza, no se sobrescribe el histórico: cada snapshot incrementa `snapshots_count`; el snapshot fechado completo vive en `metrics_snapshot.json` (artifact)
@@ -262,7 +272,7 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
       "condition": "ctr_trend == falling AND ctr drop >= 30% sustained 14d",
       "severity": "warning",
       "signal": "Fatiga de contenido/hook (CTR cae ≥30% sostenido)",
-      "implication": "Hook fatigue o cambio de awareness. Phase 5 debe re-triggerar Phase 2 (contenido/hooks nuevos).",
+      "implication": "Hook fatigue o cambio de awareness. Phase 5 debe re-triggerar Phase 2 (contenido/hooks nuevos). En social/video corto, `completion_rate` (per_pillar) es el indicador LÍDER y su caída precede a la del CTR — vigilarlo da aviso temprano antes de que esta regla dispare.",
       "auto_action": "flag phase_5 ctr_falling_30pct_14d"
     },
     {
@@ -273,6 +283,24 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
       "signal": "Avatar rinde muy por debajo de otros avatars del proyecto",
       "implication": "Candidato a pausar esta estrategia y reasignar presupuesto a avatars ganadores. No es fracaso del sistema — es la orquestación paralela funcionando (matar perdedores rápido).",
       "auto_action": "flag phase_5 avatar_underperforming"
+    },
+    {
+      "id": "AIO-TRAFFIC-001",
+      "applicable_phase": "phase-4.3",
+      "condition": "impresiones estables AND CTR/clics de query informacional cayendo AND AI Overview presente en SERP",
+      "severity": "warning",
+      "signal": "Decaimiento de tráfico zero-click: la respuesta de IA en el SERP captura el clic de la query informacional aunque el ranking/impresiones se sostengan",
+      "implication": "No es fatiga de contenido ni caída de ranking — es un shift de SERP-feature (AI Overview). Phase 5 mueve el mix de contenido hacia intención transaccional + construye autoridad Top-10 para alimentar (no perder ante) AI Overview, en lugar de forzar la causa a una bandera de ranking. Sin esta regla, una caída de tráfico informacional orgánico por razón ajena al ranking cae a unexplained_anomaly.",
+      "auto_action": "flag phase_5 zero_click_informational_decay"
+    },
+    {
+      "id": "PAID-SEARCH-WASTE-001",
+      "applicable_phase": "phase-4.3",
+      "condition": "en per_search_term existe >= 1 término con category ∈ {non_converting, out_of_model} AND spend_usd > 0",
+      "severity": "warning",
+      "signal": "Presupuesto de búsqueda pagada quemándose en términos que no convierten o quedan fuera del modelo de negocio",
+      "implication": "Desperdicio que el funnel agregado oculta. Phase 5 acciona depuración de términos/negativos en Phase 3 (mismo targeting, misma versión activa) antes de tocar oferta o contenido. La bandera es de origen métrico Phase 4 y queda declarada producer-bound (regla productor-binding de §5).",
+      "auto_action": "flag phase_5 paid_search_waste (con el detalle de los términos out_of_model/non_converting y su spend_usd)"
     }
   ]
 }
@@ -310,11 +338,15 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
 [ ] G-Phase-4-PRE: 4 checks (publish_plan firmado, strategy_id activo, attribution_window cerrada, tracking verificado)
 [ ] 4.1 — metrics_snapshot.raw por pilar+canal con avatar_id
 [ ] 4.1 — negative_quality_leads_excluded contado antes de conversion_rate
+[ ] 4.1 — (social) completion_rate / avg_watch_time_s / saves / shares poblados donde aplique (completion_rate = indicador líder de fatiga)
+[ ] 4.1 — (pago) per_search_term clasificado por category; non_converting/out_of_model con spend>0 marcados
 [ ] 4.2 — unit economics (CAC, LTV, ratio, payback) vs baseline; economics_health clasificado
 [ ] 4.2 — funnel por awareness con drop_off_stage
 [ ] 4.3 — strategies.results_summary escrito con phase_5_flags (conjunto abierto)
 [ ] 4.3 — conversión evaluada (CONVERSION-001) — no dejar el punto ciego de negocio
 [ ] 4.3 — comparación cross-avatar: un avatar cae → AVATAR-PERF-001; todos caen → FOUNDATION-DRIFT-001
+[ ] 4.3 — tráfico informacional zero-click evaluado (AIO-TRAFFIC-001) si hay AI Overview en SERP
+[ ] 4.3 — desperdicio de búsqueda pagada evaluado (PAID-SEARCH-WASTE-001)
 [ ] 4.3 — si una métrica se movió sin bandera conocida → emitir unexplained_anomaly (ANOMALY-001)
 [ ] metrics_snapshot.json anclado a strategy_id + avatar_id
 [ ] phase_5_handoff con recommended_action_hint

@@ -76,10 +76,32 @@ Esta es la rama que hace que el sistema **piense** en vez de solo mirar un catá
 1. Reunir contexto: datos crudos del metrics_snapshot + historia de versiones de
    ESTA estrategia (results_summary de #1..#N) + project_lessons del proyecto +
    results_summary de los otros avatars (¿es solo este avatar o todos?).
+   - **Sensor de evidencia para `foundation_drift` / competitive-shift:** la fuente
+     recomendada es un **benchmark competitivo periódico** (scrape → análisis IA →
+     repositorio fechado acumulativo). El versionado fechado del benchmark separa
+     un `foundation_drift` real (el cimiento compartido se movió) del ruido de un
+     solo avatar (una métrica que fluctúa en una estrategia). Da un instrumento de
+     detección a una condición que antes existía sin sensor, sin romper el principio
+     evidencia-sobre-calendario (D10): el benchmark *alimenta* las banderas, no
+     dispara reconstrucción por fecha.
 2. Hipotetizar 1-3 causas raíz candidatas (LLM razona, no busca en lista).
+   - **Método para hipótesis estructurales (opcional):** cuando la causa raíz no es
+     de canal (no la explican CTR, CAC ni conversión) sino que el **competidor movió
+     su modelo de negocio**, usar una **comparación de canvas BMC bloque-a-bloque**
+     (propio vs competidor) y/o un mini-escenario para razonar la causa. Cubre
+     anomalías que las métricas de canal no explican —p. ej. el competidor lanza
+     gratis el módulo avanzado → se cae el upsell, lo que se ve como un drop de
+     `revenue_per_customer` sin que ningún flag de canal lo justifique. El canvas
+     localiza qué bloque (propuesta de valor, fuentes de ingreso, canales…) cambió.
 3. Por cada candidata: ¿qué nivel de re-trigger resolvería? (mismo árbol Phase 0-3.)
-4. Proponer la acción + un test barato para validar la hipótesis antes de comprometer
-   una versión nueva cara (ej: un cambio de targeting de bajo costo en Phase 3).
+4. Proponer la acción + un test barato (`cheap_validation`) para validar la hipótesis
+   antes de comprometer una versión nueva cara (ej: un cambio de targeting de bajo
+   costo en Phase 3). **Método por defecto: A/B testing** —el primitivo de validación
+   barata más estándar del corpus— cuando la hipótesis es A/B-testable. **Fallback
+   cualitativo** para hipótesis que no se prestan a un A/B (ej: encuesta a 10 clientes
+   recientes, entrevista, comparación de canvas estructural): el campo sigue siendo
+   abierto/free-text y razonado, no un enum cerrado. El default nombra el método más
+   común sin cerrar el registro reasoning-first de 5.1.b.
 5. Operador aprueba la hipótesis y la acción.
 ```
 
@@ -92,6 +114,8 @@ Esta es la rama que hace que el sistema **piense** en vez de solo mirar un catá
     { "hypothesis": "competidor lanzó gratis el módulo avanzado → se cae el upsell",
       "evidence": "...", "proposed_action": "rediseñar upsell", "re_trigger": "phase-1",
       "cheap_validation": "encuesta a 10 clientes recientes antes de versionar" }
+    // cheap_validation: default A/B testing si la hipótesis es A/B-testable;
+    // si no, fallback cualitativo (encuesta/entrevista/canvas). Campo abierto, razonado.
   ],
   "selected_hypothesis": 0,
   "promote_if_validated": true
@@ -132,6 +156,21 @@ El principio sigue siendo: **re-trigger al nivel mínimo que resuelve la causa**
 - `cac_up_40pct` ya **no** permite "edición in-place" ambigua: es un re-trigger de **Phase 3 dentro de la misma versión** (la estrategia no se toca, solo su `publish_plan`), y solo escala a versión nueva si el targeting no lo arregla. Consistente con D-010.
 - `avatar_changed_qualitatively` re-hace **solo la rama del avatar** (0.3↓), nunca la Foundation compartida — antes contaminaba a los otros avatars.
 - **Eliminado `12_months_elapsed`**: no se reconstruye por calendario. La reconstrucción de cimientos la dispara `foundation_drift` (por evidencia).
+
+### Táctica de canal bajo el retarget de `cac_up_40pct` (qué hace Phase 3 al re-correr)
+
+El re-trigger de `cac_up_40pct` "arregla targeting primero" dentro de la **MISMA versión activa** (re-genera `publish_plan`, la estrategia NO se supersede → D-010/D11 intactos; **esto NO dispara versión nueva**). Lo que "arreglar targeting" significa operacionalmente para search de pago es la **taxonomía SEM de 4 categorías** sobre los términos de búsqueda:
+
+| Categoría del término | Definición | Acción táctica |
+|---|---|---|
+| `profitable` | gasto>0, convierte con CAC sano | escalar / proteger puja |
+| `informational` | intención de info, no de compra | mover a contenido orgánico o bajar puja |
+| `out_of_model` | tráfico fuera del modelo de negocio | excluir (negative keyword) |
+| `non_converting` | gasto>0 AND conversiones==0 | pausar / negativizar |
+
+(Se alimenta del bloque `per_search_term` opcional de Phase 4 cuando existe.)
+
+> **`tactica_de_canal` es una capa [Extensible Vocabulary], NO una lista exhaustiva.** Las 4 categorías SEM son el **seed**; el vocabulario admite `other` + descripción y **gobierna su crecimiento con la regla de promoción Pattern A (≥3 repeticiones + review)** antes de promover una táctica nueva al seed. Es decir: la táctica concreta vive como una capa de vocabulario extensible (igual que `kpi_primary`/`category`), no se congela. Esta capa **no cambia la semántica del re-trigger** —sigue siendo Phase 3, misma versión activa— solo nombra qué se hace al re-correr.
 
 ### Output: `optimization_plan.action`
 
@@ -203,6 +242,7 @@ Cada ciclo cerrado produce aprendizaje. Lo que funcionó/falló se persiste **po
 - Best-practices (lessons con tag `best-practice`): patrones que se repiten ≥3 ciclos se promueven (ej: "para B2C impulsivo, refrescar hooks cada 14 días preventivamente")
 - Hooks ganadores (`results_summary.winning_hooks`) se promueven a la hook library con tag `hook-winner` (cierra el loop con Phase 2.5)
 - **Promoción de bandera nueva (el puente del registro vivo):** si una `open_diagnosis` (§5.1.b) validó una causa raíz que no estaba en el registro, se registra como **bandera nueva** en `Overall_WF.md` §"Flag Registry" — con `name | producer | action | re-trigger scope`. A partir de ahí pasa de "razonamiento" (lento) a "vía rápida" (determinística). Así el catálogo de banderas crece desde la realidad y el sistema deja de re-pensar problemas ya resueltos.
+- **Benchmark competitivo fechado (sensor de `foundation_drift`):** el repositorio acumulativo del benchmark (scrape → análisis IA → snapshot fechado) se persiste por proyecto como evidencia consultable. Cada corrida nueva se compara contra las anteriores: el delta fechado es lo que distingue un `foundation_drift` real del ruido de un avatar y lo que justifica (o no) escalar a una reconstrucción 0.1–0.2.5. Es un input de banderas, no un disparador por calendario (D10).
 
 ### Regla
 - Si `action != maintain_and_scale`, al menos 1 `project_lesson` con `strategy_id` debe escribirse (un ciclo que ajustó algo sin aprender nada es sospechoso — paralelo a EVIDENCE-001 de Phase 0)

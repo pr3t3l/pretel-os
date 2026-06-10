@@ -73,11 +73,21 @@ Captura `business_context.json` (seed v1). Las **preguntas son en lenguaje llano
 |---|---|---|---|---|
 | 1 | "¿Quién saca la tarjeta cuando alguien paga?" | persona / empresa / las dos | `business_type` (B2C/B2B/hybrid) | si "las dos" → **flag**: B2C vs B2B no son dos avatares, son dos terrenos (Foundation distinta) → sub-pregunta adaptativa "¿cuál lidera?" |
 | 1b | (adaptativa) "¿Cuál lidera el lanzamiento?" | individuos / empresas / las dos con razón | `lead_segment` + `parked_segment` | si "las dos día 1" sin razón → exigir justificación |
-| 2 | "¿Cómo piensas cobrar?" | suscripción / pago único / freemium / por uso / no sé | `monetization_model` | si "freemium" o "por uso" en producto con IA → **flag**: los usuarios cuestan dinero por llamada; el medidor de créditos = tu costo de IA (dependencia → Phase 1 Pricing + modelo de costo) |
+| 2 | "¿Cómo piensas cobrar?" | suscripción / pago único / freemium / por uso / no sé | `monetization_model` (+ `monetization_pattern` opcional, ver abajo) | si "freemium" o "por uso" en producto con IA → **flag** (glass-box, nombra el patrón): los usuarios cuestan dinero por llamada; el medidor de créditos = tu costo de IA (dependencia → Phase 1 Pricing + modelo de costo). Ver copy del patrón en 4a. |
 | 3 | "¿Cómo deciden comprar — de una o se lo piensan?" | impulso / se lo piensan / depende | `sales_cycle` | si "impulso" en compra cara/recurrente → frenar (incoherente) |
 | 4 | "¿Dónde están y en qué idioma?" | ciudad-país / hispanos / global + idioma | `market_scope` + `geographies` + `language_primary` | si "internacional día 1" → **flag** (multiplica trabajo + costo tokens es/multimodal); proponer foco de lanzamiento |
 
 **Sub-pasos adaptativos** se disparan por respuestas vagas/híbridas (profundidad adaptativa). `channel` se infiere (SaaS → `online_only`) y se confirma, no se pregunta en frío.
+
+### 4a. Step 2 — nombrar el patrón de pricing (glass-box del movimiento 5)
+
+Cuando el flag del Step 2 se dispara (freemium / por uso en producto con IA), el movimiento 5 (mostrar el trabajo y enseñar) **nombra el patrón** en vez de señalar el riesgo en abstracto — el usuario reconoce el modelo y entiende por qué importa:
+
+> "Lo que describes es un patrón conocido: **Freemium** (1-10% paga y financia al resto) o **Cebo-y-Anzuelo** (entrada barata, el margen vive en el consumible recurrente — el modelo Nespresso). En un producto con IA, el **medidor de créditos ES tu costo variable** por llamada: cada uso te cuesta dinero real. Por eso este patrón no es solo cómo cobras — **decide tu Cost Structure** (BMC bloque 9) **y tu pricing de Phase 1.4**. Lo dejo anotado como dependencia para que no lo decidas a ciegas."
+
+Glass-box obligado (movimiento 5): la cifra "1-10% paga" es un rango de referencia del modelo freemium, no una promesa para este negocio; dilo así. Si el usuario no conocía el patrón, sube su `user_knowledge_profile` en el concepto `pricing/monetization`.
+
+**Captura del patrón — `monetization_pattern` (opcional) [Extensible Vocabulary]:** junto al `monetization_model` (B2B/B2C-neutral: *cómo* cobra) se captura, cuando el usuario lo reconoce o Sandi lo infiere, el **patrón de modelo de negocio** que gobierna la estructura de costos. Vocabulario semilla: `subscription | one-shot | freemium | bait_hook_credits | usage | other`. Es semilla, no lista cerrada (esquema vivo, §3): un patrón nuevo entra como `other` + descripción en `metadata` y se promueve a miembro de primera clase si recurre ≥N veces + pasa review. El campo **nunca bloquea** el avance; alimenta la dependencia parqueada hacia Phase 1.4 (pricing) y el Cost Structure (BMC bloque 9).
 
 ### 4b. Naming + dominio (concern que cruza Phase 0 → Phase 1.4)
 
@@ -92,7 +102,7 @@ Ejemplo Sandi: `working_name="Sandi"` (aleatorio), el operador duda por competen
 
 **Output:** `business_context.json` (seed v1) con `implications_acknowledged` (≥2) y dependencias parqueadas explícitas (ej. modelo de costo de créditos → Phase 1). **Gate G-Phase-0.1** = todos los campos poblados + evidencia real + ≥2 implicaciones (heredado de `spec_Phase_0` §3).
 
-**Ejemplo real (Sandi-onboarding-Sandi):** ver el `business_context.json` consolidado en la simulación — `hybrid` con `lead_segment=B2C`, `sales_cycle=reflexivo`, `monetization=subscription+usage(credits)`, `market_scope=internacional` foco US/inglés, `multimodal` parqueado como capacidad de producto.
+**Ejemplo real (Sandi-onboarding-Sandi):** ver el `business_context.json` consolidado en la simulación — `hybrid` con `lead_segment=B2C`, `sales_cycle=reflexivo`, `monetization=subscription+usage(credits)` (`monetization_pattern=bait_hook_credits` — el medidor de créditos es el consumible recurrente), `market_scope=internacional` foco US/inglés, `multimodal` parqueado como capacidad de producto.
 
 ---
 
