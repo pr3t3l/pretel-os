@@ -9,8 +9,8 @@
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
-| Phase 0 | 0.3 Persona + Avatares | 🔄 en curso | `evidence_firsthand.md` · `buyer_persona.json` ✅ (D-025) · `avatars.json` draft v2: Dana/Marcus/Priya aprobados + Héctor agregado (confirmar) · priorización ✅ Priya 1ro (D-026) · falta `negative_personas` |
-| Phase 0 | 0.4 Competencia | pendiente | — |
+| Phase 0 | 0.3 Persona + Avatares | ✅ cerrado (D-027) | `buyer_persona.json` (D-025) · `avatars.json` signed_v2 (4 avatares) · `negative_personas.json` (2) · `evidence_firsthand.md` · Priya 1er ciclo (D-026) |
+| Phase 0 | 0.4 Competencia | ⏭️ siguiente | — (scan 4 canales + ERRC + pricing_tiers) |
 | Phase 1–5 | — | pendiente | — |
 
 ## Hechos clave capturados
@@ -27,4 +27,5 @@
 
 ## Notas
 - Este run se construyó vía la simulación del Setup Agent (formato wizard guiado) — ver `specs/spec_Phase_0_Setup_Agent.md`.
+- **0.3 (cerrado — D-025/026/027):** persona primario = "el experto en lo suyo que ya vende y está perdido en el marketing online" (6 dolores con fuente real). 4 avatares: 🧁 Dana (Lanzadora digital) · ⚙️ Marcus (Estancado, 2 públicos) · 📦 Priya (Enjaulada del marketplace) · 🚜 Héctor (Ruta local, fricción digital alta). **Priya enciende el primer ciclo.** 2 anti-personas: claims-imposibles (ético) + delegador total (high-support-cost). Cluster pre-launch ≠ anti-target (2ª ola / Módulo A).
 - **2026-06-10 — giro en 0.3, RESUELTO (D-023):** al abrir el paso de persona, el corte por profesión no le cuadró al operador y emergió el malentendido semántico de "expertise". Aclaración del operador: experto en LO SUYO (craft), monetización requerida se mantiene, "empezar/escalar" refiere al marketing online. Enmienda firmada vía `decision_supersede` (D-022 → D-023). Avatares candidatos (ambos ya monetizan; eje = madurez del marketing online): **Lanzador digital** (vende local, "¿cómo empiezo online?") / **Estancado** (vende online, "¿cómo crezco?").

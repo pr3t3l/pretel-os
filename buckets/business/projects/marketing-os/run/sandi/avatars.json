@@ -209,6 +209,14 @@
     "priorizacion_decidida": "D-026: el primer ciclo arranca con PRIYA (avatar_enjaulado_marketplace) - decision humana del operador 2026-06-10. Los otros 3 quedan activables despues (D-009: priorizacion = orden de encendido, no descarte). Pendiente de 0.3: solo negative_personas",
     "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
   },
-  "operator_signoff": false,
-  "status": "draft_v2 - Dana/Marcus/Priya aprobados por operador ('me parecen bien'); Hector agregado a peticion suya (lectura por confirmar); priorizacion decidida (D-026: Priya primero); falta negative_personas para cerrar 0.3"
+  "decision_refs": {
+    "dana": "DB 40ac869a",
+    "marcus": "DB f7de5d97",
+    "priya": "DB ec84e43f",
+    "hector": "DB d8a873d2",
+    "priorizacion": "D-026 (DB 9f9bdb3d)"
+  },
+  "operator_signoff": true,
+  "signoff_note": "set completo aprobado por el operador 2026-06-10 ('me parecen bien' + Hector a peticion suya + 'aprovado' del paquete final)",
+  "status": "signed_v2"
 }

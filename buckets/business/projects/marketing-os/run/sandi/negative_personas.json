@@ -1,0 +1,43 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Aprobado por el operador 2026-06-10 ('aprovado'). Spec Output C (GAP-6).",
+  "run": "sandi",
+  "phase": "phase_0",
+  "sub_step": "0.3-negative-personas",
+  "linked_to_persona": "persona_primary (buyer_persona.json signed_v1, D-025)",
+  "negative_personas": [
+    {
+      "id": "neg_claims_imposibles",
+      "description": "quien vive de claims que Sandi no sostendra: get-rich-quick, 'gana $X en 30 dias', salud-milagro. Pide fabricar urgencia y promesas sin evidencia - el sistema lo tiene prohibido por diseno (honestidad arquitectonica)",
+      "exclusion_basis": "etico",
+      "signals_to_detect": [
+        "nicho o copy solicitado incluye ingreso garantizado / curas / resultados imposibles",
+        "lenguaje en onboarding: 'guaranteed income', 'get rich', 'cure', 'overnight'",
+        "rechaza suavizar claims cuando el sistema los marca sin evidencia"
+      ],
+      "action_when_detected": "auto-disqualify",
+      "downstream": "Phase 2: rechazar copy que les apele; Phase 3: sus terminos en exclusion lists de ads; Phase 4: flagear como low-quality si se cuela",
+      "decision_ref": "DB 60a64765"
+    },
+    {
+      "id": "neg_delegador_total",
+      "description": "quien espera que una herramienta de ~$30/mo sea una agencia que lo haga TODO sin tocar nada. Sandi guia al que hace (DIY); la expectativa es estructuralmente imposible de cumplir",
+      "exclusion_basis": "high-support-cost",
+      "signals_to_detect": [
+        "en onboarding pide 'haganmelo todo' / rechaza toda tarea propia",
+        "compara explicitamente contra agencia full-service como expectativa",
+        "abandono inmediato al ver el primer paso accionable propio"
+      ],
+      "action_when_detected": "redirect to free content",
+      "downstream": "copy de Phase 2 nunca promete 'sin mover un dedo' (coherencia con honestidad); manual review si llega a trial pagado",
+      "decision_ref": "DB 68d6b022"
+    }
+  ],
+  "metadata": {
+    "relacion_con_icp": "neg_delegador_total complementa (no duplica) el deal-breaker marketing_delegated del ICP: el deal-breaker filtra LEADS; la negative persona instruye a Phase 2/3 a no apelarle en copy/targeting",
+    "cluster_pre_launch_NO_es_negative": "el cluster pre-launch (oferta lista, cero ventas - apps del operador, nutriologo, politologa) NO es anti-target: es segmento futuro (2a ola / Modulo A), flagueado en evidence_firsthand.md",
+    "_purpose": "campos no anticipados van aqui hasta promoverse (Pattern C)"
+  },
+  "operator_signoff": true,
+  "status": "signed_v1"
+}

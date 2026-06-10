@@ -36,7 +36,8 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 
 ## 4. Run de Sandi (`run/sandi/`)
 - 0.1 Business Context ✅ (`business_context.json`) · 0.2 Mercado ✅ (`demand_quantification.md`, research web real) · 0.2.5 ICP ✅ v2 (`icp.json`, D-023 / DB `05ec4413`, supersede D-022 — beachhead: expertos en lo suyo, oferta propia ya monetizando, no saben empezar/escalar su marketing online, >1 público).
-- **0.3 Persona + Avatares — EN CURSO (la joya).** Pre-PMF ⇒ 1 persona primario (spec §6). Hipótesis de avatares: Lanzador digital / Estancado (ambos monetizan; eje = madurez del marketing online). Arrastra: `negative_personas` (claims-incompatibles) + priorización de primer ciclo.
+- 0.3 ✅ **CERRADO (D-027):** persona (D-025) + 4 avatares signed (Dana/Marcus/Priya/Héctor, records con test 2-de-3) + 2 negative personas + **Priya 1er ciclo (D-026)**. `dmu.json` n/a (B2B parked, criterio D-022/23).
+- **0.4 Competencia — SIGUIENTE (último paso de Phase 0).** Scan 4 canales (SEO/RRSS/Ads/Substitutos, ≥3 c/u con price_point) + síntesis ERRC (veredicto Red/Blue Ocean) + `pricing_tiers[]` + decision del hueco a atacar. Al cerrar: gate global Phase 0 → **dispara build trigger D-024**.
 - Sirve de ejemplo CAG + fixture de eval.
 
 ## 5. Corpus de conocimiento (en `docs/`, copia worktree `C:\Users\prett\Pretel-OS\...`)
