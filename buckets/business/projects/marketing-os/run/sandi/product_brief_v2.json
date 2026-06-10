@@ -114,7 +114,8 @@
     "usd_invested": 50,
     "_basis": "[estimaciones] horas: sesiones de simulacion 0.1-0.4 (operador+Claude); usd: uso de Claude/API aprox. Afinar si el operador lleva cuenta real",
     "completed_at": "2026-06-10",
-    "operator_signoff": false
+    "operator_signoff": true,
+    "signoff_note": "operador 2026-06-10: 'aprovado' tras revision de economics (CAC auto ltv/3), evidence findings (3 refutadas, 0 criticas) y metadata estimada (D-029)"
   },
-  "gate_G_Phase_0_global": "PENDING - todo verificado salvo la firma final del operador (spec 10 linea 8: 'Operador firma operator_signoff: true')"
+  "gate_G_Phase_0_global": "PASSED 2026-06-10 (D-029) - sub-gates 0.1/0.2/0.2.5/0.3/0.4 cerrados, rollup consolidado con paths reales, >=1 hipotesis refutada (3), criticas <2 (0), ECONOMICS-001 3.03>=3.0 (por construccion, prueba real en Phase 4), metadata cuantificada, sin alerts bloqueando, firma del operador. BUILD TRIGGER D-024 DISPARADO"
 }

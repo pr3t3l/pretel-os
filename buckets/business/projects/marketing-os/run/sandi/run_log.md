@@ -11,8 +11,8 @@
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
 | Phase 0 | 0.3 Persona + Avatares | ✅ cerrado (D-027) | `buyer_persona.json` (D-025) · `avatars.json` signed_v2 (4 avatares) · `negative_personas.json` (2) · `evidence_firsthand.md` · Priya 1er ciclo (D-026) |
 | Phase 0 | 0.4 Competencia | ✅ cerrado (D-028) | `competitor_scan.md` · `pricing_tiers.json` · hueco = intersección completa (categoría propia) |
-| Phase 0 | **Rollup global** | 🔄 pendiente firma | `product_brief_v2.json` (gate global: todo ✓ salvo firma del operador) |
-| Phase 1–5 | — | pendiente | — (al firmar: dispara build trigger D-024; sim sigue con Phase 1) |
+| Phase 0 | **Rollup global** | ✅ **FIRMADO (D-029)** | `product_brief_v2.json` — **PHASE 0 CERRADA**; build trigger D-024 disparado |
+| Phase 1–5 | — | ⏭️ Phase 1 siguiente en sim | brief firmado = input contract; build de Phase 0 wizard corre en paralelo en `sandia-marketing` |
 
 ## Hechos clave capturados
 - **Idea:** SaaS AI-first que guía a no-expertos de "tengo una idea" a "tengo estrategia de marketing accionable".

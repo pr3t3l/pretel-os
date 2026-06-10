@@ -36,8 +36,9 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 
 ## 4. Run de Sandi (`run/sandi/`)
 - 0.1 Business Context ✅ (`business_context.json`) · 0.2 Mercado ✅ (`demand_quantification.md`, research web real) · 0.2.5 ICP ✅ v2 (`icp.json`, D-023 / DB `05ec4413`, supersede D-022 — beachhead: expertos en lo suyo, oferta propia ya monetizando, no saben empezar/escalar su marketing online, >1 público).
-- 0.3 ✅ **CERRADO (D-027):** persona (D-025) + 4 avatares signed (Dana/Marcus/Priya/Héctor, records con test 2-de-3) + 2 negative personas + **Priya 1er ciclo (D-026)**. `dmu.json` n/a (B2B parked, criterio D-022/23).
-- **0.4 Competencia — SIGUIENTE (último paso de Phase 0).** Scan 4 canales (SEO/RRSS/Ads/Substitutos, ≥3 c/u con price_point) + síntesis ERRC (veredicto Red/Blue Ocean) + `pricing_tiers[]` + decision del hueco a atacar. Al cerrar: gate global Phase 0 → **dispara build trigger D-024**.
+- 0.3 ✅ (D-025/026/027): persona + 4 avatares (Dana/Marcus/Priya/Héctor) + 2 negative personas + Priya 1er ciclo. 0.4 ✅ (D-028): scan 4 canales, hueco = categoría propia (multi-público core + loop guiado; ciclo 1 = "marketplace independence"; nunca "AI marketing tool").
+- 🏁 **PHASE 0 CERRADA (D-029, 2026-06-10):** `product_brief_v2.json` firmado (gate global passed; LTV 500/CAC 165; 3 hipótesis refutadas, 0 críticas). **Build trigger D-024 DISPARADO.** 2 lessons auto-aprobadas (`076747df`, `d88bf6b5`). Flags abiertos no bloqueantes: pre-launch cluster, Ad Library manual, keyword volumes Capa 3.
+- **SIGUIENTE (3 carriles):** (a) build slice "Phase 0 wizard" en `sandia-marketing` (chat nuevo per Overall_WF §How-To-Start); (b) pre-código en pretel-os: formalizar guiones 0.2–0.4 en §6 Setup Agent + run→CAG #4 + eval fixtures; (c) sim Phase 1 (Oferta: value equation desde anxieties de avatares, pricing créditos con dependencia parqueada del modelo de costo IA, naming 1.4).
 - Sirve de ejemplo CAG + fixture de eval.
 
 ## 5. Corpus de conocimiento (en `docs/`, copia worktree `C:\Users\prett\Pretel-OS\...`)
