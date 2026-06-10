@@ -36,7 +36,8 @@ Estamos haciendo **"Sandi onboarding Sandi"** (el sistema usándose a sí mismo)
 
 - ✅ **Phase 0.1** cerrado (`run/sandi/business_context.json`): híbrido, lead B2C, suscripción+créditos, internacional foco US/inglés.
 - ✅ **Phase 0.2** cerrado (`run/sandi/demand_quantification.md`): mercado enorme, ~mitad sin estrategia → **educar es la cuña**; `offer_strategy = create_demand`.
-- ⏭️ **Phase 0.2.5 (ICP) — RETOMAR AQUÍ.** Beachhead confirmado por el operador: **"solopreneurs/creadores que venden su expertise y le hablan a >1 público"** (coaches, consultores, course creators; US, con ingreso, online-native, abrumados con marketing — el multi-avatar les brilla). **Falta:** co-crear los **must-have filters (3) + deal-breakers (2)** del `icp.json` (cierra también el bloque 1 del BMC). Luego seguir a 0.3 (persona + avatares, la joya).
+- ✅ **Phase 0.2.5 (ICP)** cerrado (`run/sandi/icp.json`, **D-022** / DB `ebd54668`): 3 must-have (expertise propia monetizando · ≥2 públicos · online-native DIY) + 2 deal-breakers (sin oferta propia · marketing delegado). Gate firmado sobre el bloque B2C; `B2B_only` parked explícito. Cierra también el bloque 1 del BMC.
+- ⏭️ **Phase 0.3 (Persona + Avatares) — RETOMAR AQUÍ.** El paso más conversacional; aquí nace la joya (D-009). Reglas spec §6: pre-PMF ⇒ **1 buyer persona primario**; avatares 2–4 como variantes contextuales; test de distinción 2-de-3 (trigger/canal/lenguaje). Pregunta abierta al operador: ¿quién es EL humano #1 — coach / consultor / course creator? Arrastra: `negative_personas` (claims-incompatibles: get-rich-quick, salud-milagro) + priorización de primer ciclo (las 2 decisiones humanas del spec).
 
 ---
 

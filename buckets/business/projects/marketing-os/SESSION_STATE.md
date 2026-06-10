@@ -1,6 +1,6 @@
 # Sandi / Marketing-OS — SESSION STATE (handoff)
 
-**Última actualización:** 2026-06-07
+**Última actualización:** 2026-06-10
 **Propósito:** doc de retoma. Si una sesión futura (o Claude tras perder contexto) llega aquí, esto dice qué es el proyecto, qué specs existen, qué se decidió, y qué falta. **El trabajo real vive en git (`pretel-os/main`); este doc es el índice.**
 
 ---
@@ -35,8 +35,8 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 - **Quality at Depth**: especialistas + retrieval + corpus-audit + gates + evals + profundidad adaptativa (no un mega-prompt).
 
 ## 4. Run de Sandi (`run/sandi/`)
-- 0.1 Business Context ✅ (`business_context.json`) · 0.2 Mercado ✅ (`demand_quantification.md`, research web real).
-- **0.2.5 ICP — EN CURSO:** beachhead confirmado = "solopreneurs/creadores que venden expertise y le hablan a >1 público" (US, ingreso, online-native). Falta: must-have filters + deal-breakers.
+- 0.1 Business Context ✅ (`business_context.json`) · 0.2 Mercado ✅ (`demand_quantification.md`, research web real) · 0.2.5 ICP ✅ (`icp.json`, D-022 / DB `ebd54668`).
+- **0.3 Persona + Avatares — SIGUIENTE (la joya).** Pre-PMF ⇒ 1 persona primario (spec §6); arrastra: decidir claims-incompatibles (get-rich-quick, salud-milagro) como `negative_personas` aquí.
 - Sirve de ejemplo CAG + fixture de eval.
 
 ## 5. Corpus de conocimiento (en `docs/`, copia worktree `C:\Users\prett\Pretel-OS\...`)
@@ -47,7 +47,8 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 ## 6. Trabajo abierto
 - [x] **HECHO:** pase autónomo de corpus — validado (specs = superset, 8.0–9.0, cero contradicciones; `corpus_validation_report.md`) + aplicado (Tanda 0 + enriquecimientos + 10 flags aprobados, D-021). Síntesis en `specs/corpus_knowledge/` (local, IP).
 - [ ] **PENDIENTE:** validar Phase 1 contra corpus (su agente falló); decidir FLAG-7 (test 2-de-5) + FLAG-8-activo.
-- [ ] **RETOMAR:** cerrar 0.2.5 (ICP filters del beachhead confirmado) y seguir la simulación (0.3 avatares — la joya). Ver `HANDOFF.md`.
+- [x] **HECHO:** 0.2.5 ICP cerrado (D-022, gate passed): 3 must-have + 2 deal-breakers; B2B parked; cierra BMC bloque 1.
+- [ ] **RETOMAR:** simulación 0.3 (persona + avatares — la joya); incluye `negative_personas` (claims-incompatibles) y priorización de primer ciclo (2 decisiones humanas per spec). Ver `HANDOFF.md`.
 - [ ] Spec completo del Módulo A (BMC) tras la simulación.
 - [ ] Build: extracción→estructura→validación→índice del corpus (RAG); especialistas por fase; evals.
 

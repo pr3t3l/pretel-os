@@ -37,11 +37,12 @@
     "multi_audience_double_duty": "[propuesta co-creacion] multi_audience no es solo targeting: es pregunta de onboarding que predice quien recibe mas valor del diferenciador -> candidata a senal de activacion en Phase 4",
     "must_have_de_beachhead_no_de_producto": "multi_audience es must-have del BEACHHEAD (primera cuna), no gate del producto: usuarios de 1 solo publico no son rechazados por el producto, solo no son la primera cuna",
     "flags": {
-      "hybrid_gate": "PENDIENTE OPERADOR: spec 0.2.5 dice business_type=hybrid => llenar B2B_only y B2C_only; business_context parqueo B2B en 0.1. Propuesta: el gate evalua el bloque del lead_segment (B2C) y B2B_only queda parked explicito. Conflicto doc-vs-decision flagueado, no reconciliado en silencio",
-      "db3_candidate": "PENDIENTE OPERADOR: categorias de claims incompatibles con honestidad arquitectonica (get-rich-quick, 'gana $X en 30 dias', salud-milagro): deal-breaker #3 aqui, negative_persona (exclusion permanente) en 0.3, o ambos"
+      "hybrid_gate": "RESUELTO (signoff del operador, D-022): el gate se evalua sobre el bloque del lead_segment (B2C); B2B_only queda parked explicito. El conflicto doc-vs-decision (spec dice hybrid => ambos bloques) se firmo asi, no se reconcilio en silencio",
+      "db3_candidate": "ROUTED -> 0.3: categorias de claims incompatibles con honestidad arquitectonica (get-rich-quick, 'gana $X en 30 dias', salud-milagro) NO entran como deal-breaker del ICP v1; se deciden en 0.3 como negative_personas (exclusion permanente, decision humana per spec)"
     },
+    "decision_ref": "D-022 (DB: ebd54668-4fdf-49ec-b12a-1a61f73b3fd9; log: Overall_WF.md Historical Decisions)",
     "_purpose": "campos aun no promovidos al schema de primera clase (Pattern C capture-before-promote)"
   },
-  "operator_signoff": false,
-  "gate_G_Phase_0_2_5": "pending"
+  "operator_signoff": true,
+  "gate_G_Phase_0_2_5": "passed"
 }

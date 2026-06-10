@@ -8,8 +8,8 @@
 |---|---|---|---|
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
-| Phase 0 | 0.2.5 ICP | 🔄 en curso | `icp.json` (draft, pre-signoff) |
-| Phase 0 | 0.3 Persona + Avatares | pendiente | — |
+| Phase 0 | 0.2.5 ICP | ✅ cerrado | `icp.json` (D-022) |
+| Phase 0 | 0.3 Persona + Avatares | ⏭️ siguiente | — |
 | Phase 0 | 0.4 Competencia | pendiente | — |
 | Phase 1–5 | — | pendiente | — |
 
@@ -19,7 +19,7 @@
 - **Business context:** híbrido con lead B2C (individuos), ciclo reflexivo, suscripción+créditos, internacional con foco US/inglés, multimodal.
 - **Nombre:** "Sandi" es working name (aleatorio); dudas por competencia/dominio → finalizar en Phase 1.4.
 - **Mercado (0.2):** enorme (36M PYMEs, 5.6M nuevas/año, 29.8M solopreneurs); ~la mitad sin estrategia formal → **educar es la cuña**; espacio "AI marketing tool" saturado; `offer_strategy = create_demand`. Veredicto 🟢/🟡.
-- **ICP (0.2.5, en curso):** beachhead confirmado por el operador = solopreneurs/creadores que venden su expertise y le hablan a >1 público (US, con ingreso, online-native — el multi-avatar les brilla). Draft de 3 must-have + 2 deal-breakers en `icp.json`, pendiente signoff + 2 flags chicos (hybrid_gate, db3_candidate).
+- **ICP (0.2.5, cerrado — D-022):** beachhead = solopreneurs/creadores que venden su expertise y le hablan a >1 público (US, con ingreso, online-native). 3 must-have: expertise propia monetizando · ≥2 públicos (el selector de la joya D-009) · online-native DIY. 2 deal-breakers: sin oferta propia (afiliado/dropship/MLM) · marketing delegado (agencia = puerta B2B futura). Gate passed sobre bloque B2C; `B2B_only` parked explícito. Claims-incompatibles (get-rich-quick, salud-milagro) → se deciden en 0.3 como `negative_personas`. Cierra también el bloque 1 del BMC (Customer Segments).
 - **Producto (principios definidos):** Setup Agent guiado (no chat libre); glass-box (no caja negra); educación adaptativa + `user_knowledge_profile`; conexión humana portable (SOUL + patrones + memoria + evals, model-agnostic); memoria de agente por proyecto (plan interno mutable + lessons/best-practices/decisions). Privacidad 3-capas.
 
 ## Dependencias parqueadas
