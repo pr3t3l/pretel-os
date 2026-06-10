@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Phase 0 | 0.1 Business Context | ✅ cerrado | `business_context.json` |
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
-| Phase 0 | 0.2.5 ICP | ✅ cerrado | `icp.json` (D-022) |
+| Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
 | Phase 0 | 0.3 Persona + Avatares | ⏭️ siguiente | — |
 | Phase 0 | 0.4 Competencia | pendiente | — |
 | Phase 1–5 | — | pendiente | — |
@@ -19,7 +19,7 @@
 - **Business context:** híbrido con lead B2C (individuos), ciclo reflexivo, suscripción+créditos, internacional con foco US/inglés, multimodal.
 - **Nombre:** "Sandi" es working name (aleatorio); dudas por competencia/dominio → finalizar en Phase 1.4.
 - **Mercado (0.2):** enorme (36M PYMEs, 5.6M nuevas/año, 29.8M solopreneurs); ~la mitad sin estrategia formal → **educar es la cuña**; espacio "AI marketing tool" saturado; `offer_strategy = create_demand`. Veredicto 🟢/🟡.
-- **ICP (0.2.5, cerrado — D-022):** beachhead = solopreneurs/creadores que venden su expertise y le hablan a >1 público (US, con ingreso, online-native). 3 must-have: expertise propia monetizando · ≥2 públicos (el selector de la joya D-009) · online-native DIY. 2 deal-breakers: sin oferta propia (afiliado/dropship/MLM) · marketing delegado (agencia = puerta B2B futura). Gate passed sobre bloque B2C; `B2B_only` parked explícito. Claims-incompatibles (get-rich-quick, salud-milagro) → se deciden en 0.3 como `negative_personas`. Cierra también el bloque 1 del BMC (Customer Segments).
+- **ICP (0.2.5, cerrado v2 — D-023, supersede D-022):** beachhead = **expertos en lo suyo** (la velera, el del gym, el de n8n, el coach) con **oferta propia ya monetizando** (local/boca-a-boca/marketplace/online cuentan), que **no saben empezar o escalar su marketing online**, con >1 público. 3 must-have: `own_craft_offer_monetized` · `multi_audience` (selector de la joya D-009) · `diy_going_online`. 2 deal-breakers: `no_own_offer` (afiliado/dropship/MLM) · `marketing_delegated` (agencia = puerta B2B futura). Gate passed sobre bloque B2C; `B2B_only` parked. Claims-incompatibles → `negative_personas` en 0.3. Cierra el bloque 1 del BMC. **Nota de método:** D-022 cayó el mismo día por un malentendido semántico ("expertise" ≠ solo productos de conocimiento) que el paso 0.3 destapó — el wizard reformula exactamente para esto.
 - **Producto (principios definidos):** Setup Agent guiado (no chat libre); glass-box (no caja negra); educación adaptativa + `user_knowledge_profile`; conexión humana portable (SOUL + patrones + memoria + evals, model-agnostic); memoria de agente por proyecto (plan interno mutable + lessons/best-practices/decisions). Privacidad 3-capas.
 
 ## Dependencias parqueadas
@@ -27,4 +27,4 @@
 
 ## Notas
 - Este run se construyó vía la simulación del Setup Agent (formato wizard guiado) — ver `specs/spec_Phase_0_Setup_Agent.md`.
-- **2026-06-10 — giro en 0.3 (pendiente de confirmar):** al abrir el paso de persona, el operador rechazó el corte por profesión (coach/consultor/course creator) y propuso recorte **situacional** del beachhead: dueños de una **oferta propia (producto O servicio)** intentando venderla online sin saber cómo — "empezar" (ej. curso de n8n, sin arrancar) o "escalar" (ej. velas, estancado). Esto **enmienda D-022** (MH-1 exigía expertise + ya monetizando) → v2 propuesta en chat, **no aplicada** hasta confirmación. Los dos ejemplos del operador pasan el test 2-de-3 (trigger + lenguaje distintos) como candidatos a avatares: "Lanzador" / "Estancado".
+- **2026-06-10 — giro en 0.3, RESUELTO (D-023):** al abrir el paso de persona, el corte por profesión no le cuadró al operador y emergió el malentendido semántico de "expertise". Aclaración del operador: experto en LO SUYO (craft), monetización requerida se mantiene, "empezar/escalar" refiere al marketing online. Enmienda firmada vía `decision_supersede` (D-022 → D-023). Avatares candidatos (ambos ya monetizan; eje = madurez del marketing online): **Lanzador digital** (vende local, "¿cómo empiezo online?") / **Estancado** (vende online, "¿cómo crezco?").

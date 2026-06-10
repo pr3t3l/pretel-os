@@ -1,46 +1,52 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] seed v1 de ESTE build. Campos nuevos no anticipados van en metadata hasta promoverse (Overall_WF Pattern C).",
+  "_note": "[Evolving Schema] seed v1 de ESTE build. Campos nuevos no anticipados van en metadata hasta promoverse (Overall_WF Pattern C). Contenido en revision v2 (D-023, ver metadata.revision_history).",
   "run": "sandi",
   "phase": "phase_0",
   "sub_step": "0.2.5-icp",
   "icp_type": "B2C_cluster",
   "B2C_only": {
-    "demographic_cluster": "solopreneurs/creadores en US que monetizan su expertise: coaches, consultores, course creators, freelancers expertos; sin equipo de marketing; ya facturando (post primeras ventas)",
-    "psychographic_cluster": "problem-aware: saben que necesitan marketing y no saben como (46% PYMEs sin estrategia formal - LocaliQ 2025); abrumados; DIY por necesidad; dispuestos a aprender-mientras-hacen; valoran control y autonomia",
+    "demographic_cluster": "expertos-en-lo-suyo en US con oferta propia ya monetizando: makers/artesanos (ej. velas), entrenadores, coaches, consultores, expertos tecnicos (ej. n8n), course creators, freelancers expertos; sin equipo de marketing; venden local, boca a boca, marketplace u online",
+    "psychographic_cluster": "problem-aware: saben que necesitan marketing online y no saben como empezarlo o escalarlo (46% PYMEs sin estrategia formal - LocaliQ 2025); abrumados; DIY por necesidad; quieren dar el salto online o romper la meseta; dispuestos a aprender-mientras-hacen; valoran control y autonomia",
     "behavioral_signals": [
-      "crea contenido o construye audiencia activamente (newsletter/redes/web)",
-      "consume contenido educativo de 'como hacer marketing' (coherente con offer_strategy=create_demand de 0.2)",
-      "ya paga >=1 herramienta SaaS para su negocio (senal de disposicion a pagar)"
+      "ya vende y cobra por su oferta (local, boca a boca, marketplace u online)",
+      "busca/consume contenido educativo de 'como vender online / conseguir clientes' (coherente con offer_strategy=create_demand de 0.2)",
+      "ya paga >=1 herramienta para su negocio (senal de disposicion a pagar)"
     ],
     "ltv_estimated_usd": 500,
-    "cluster_size_population": 1000000,
+    "cluster_size_population": 2000000,
     "must_have_filters": [
-      "sells_own_expertise_monetized - vende una oferta PROPIA construida sobre su conocimiento (coaching, consultoria, curso, servicio experto) y ya genera ingresos con ella (aunque sean primeras ventas)",
+      "own_craft_offer_monetized - es experto/a en LO SUYO (maker, entrenador, coach, experto tecnico, creador) y vende una oferta PROPIA nacida de ese saber-hacer (producto fisico, servicio o conocimiento), YA generando ingresos (local, boca a boca, marketplace u online cuentan)",
       "multi_audience - le vende (o quiere vender) a >=2 publicos claramente distintos; la senal que enciende la orquestacion multi-avatar (D-009)",
-      "online_native_diy - el negocio vive online (vende/entrega por internet) y hace su propio marketing hoy; US/ingles heredado de business_context.geographies_launch, no es decision nueva"
+      "diy_going_online - hace su propio marketing y quiere EMPEZAR o CRECER su venta online (el negocio puede ser local hoy); US/ingles heredado de business_context.geographies_launch, no es decision nueva"
     ],
     "deal_breakers": [
-      "no_own_offer - no vende nada propio: afiliado puro, dropshipping, MLM, reventa; sin expertise propia no hay avatares que orquestar y el LTV esperado es bajo [inferencia]",
+      "no_own_offer - no vende nada propio nacido de su saber-hacer: afiliado puro, dropshipping, MLM, reventa; sin craft propio no hay avatares que orquestar y el LTV esperado es bajo [inferencia]",
       "marketing_delegated - ya tiene agencia o equipo de marketing; el usuario de Sandi V1 es el dueno DIY (nota: agencias/equipos = la puerta B2B parqueada en 0.1, no un descarte permanente)"
     ]
   },
-  "B2B_only": "PARKED - business_context.parked_segment=B2B; ver metadata.flags.hybrid_gate (pendiente operador)",
-  "evidence_basis": "secondary research (SBA/Census/MBO/LocaliQ 2025 via demand_quantification 0.2) + decision de beachhead del operador; pre-PMF: sin CRM data ni entrevistas top-customer aun",
+  "B2B_only": "PARKED - business_context.parked_segment=B2B; ver metadata.flags.hybrid_gate (resuelto en D-022, criterio sobrevive en D-023)",
+  "evidence_basis": "secondary research (SBA/Census/MBO/LocaliQ 2025 via demand_quantification 0.2) + decision de beachhead del operador (corregida semanticamente en D-023); pre-PMF: sin CRM data ni entrevistas top-customer aun",
   "metadata": {
-    "beachhead_label": "solopreneurs/creadores que venden su expertise y le hablan a >1 publico",
+    "beachhead_label": "expertos en lo suyo con oferta propia ya monetizando, que no saben empezar o escalar su marketing online (>1 publico)",
     "estimates_glass_box": {
-      "cluster_size_population": "rango 0.5M-1.5M, top-down: SAM 3-6M (0.2) x fraccion expertise-sellers (30-50%, supuesto propio) x fraccion multi-publico (40-60%, supuesto propio); el 1.0M es punto medio, NO dato",
+      "cluster_size_population": "rango 1.5M-3M, top-down: la puerta v2 suma craft-sellers locales queriendo saltar online a los ya-online; fracciones = supuestos propios sobre SAM 3-6M (0.2); el 2.0M es punto medio, NO dato",
       "ltv_estimated_usd": "rango 360-700: ~$30/mo (math gate 0.2) x 12-24 meses retencion estimada + creditos; pre-PMF, sin cohortes; alimenta target_cac_usd de Phase 1"
     },
     "abrumado_no_es_filtro": "el rasgo 'abrumado con marketing' del beachhead no es filtrable en lead forms ni targeting; vive en psychographic_cluster y se alcanza via angulo de contenido (ICP vs persona en accion)",
     "multi_audience_double_duty": "[propuesta co-creacion] multi_audience no es solo targeting: es pregunta de onboarding que predice quien recibe mas valor del diferenciador -> candidata a senal de activacion en Phase 4",
     "must_have_de_beachhead_no_de_producto": "multi_audience es must-have del BEACHHEAD (primera cuna), no gate del producto: usuarios de 1 solo publico no son rechazados por el producto, solo no son la primera cuna",
+    "avatars_candidates": "[hipotesis para 0.3, ambos YA monetizan; el eje es madurez del marketing online] 'Lanzador digital': vende local/boca-a-boca, marketing online ~cero, pregunta '¿como empiezo online?' (ej. velera local) / 'Estancado': vende online con marketing caotico, pregunta '¿como crezco?' (ej. creador curso n8n en meseta). Test 2-de-3: trigger + lenguaje distintos, canal parecido -> avatares genuinos",
+    "idea_stage_boundary": "quien SOLO tiene la idea (sin oferta armada ni ventas) no es la primera carta: el Modulo A (caso de negocio) lo atiende dentro del producto y el contenido educativo lo trae organicamente",
     "flags": {
-      "hybrid_gate": "RESUELTO (signoff del operador, D-022): el gate se evalua sobre el bloque del lead_segment (B2C); B2B_only queda parked explicito. El conflicto doc-vs-decision (spec dice hybrid => ambos bloques) se firmo asi, no se reconcilio en silencio",
-      "db3_candidate": "ROUTED -> 0.3: categorias de claims incompatibles con honestidad arquitectonica (get-rich-quick, 'gana $X en 30 dias', salud-milagro) NO entran como deal-breaker del ICP v1; se deciden en 0.3 como negative_personas (exclusion permanente, decision humana per spec)"
+      "hybrid_gate": "RESUELTO (D-022, sobrevive en D-023): el gate se evalua sobre el bloque del lead_segment (B2C); B2B_only queda parked explicito. El conflicto doc-vs-decision (spec dice hybrid => ambos bloques) se firmo asi, no se reconcilio en silencio",
+      "db3_candidate": "ROUTED -> 0.3: categorias de claims incompatibles con honestidad arquitectonica (get-rich-quick, 'gana $X en 30 dias', salud-milagro) NO entran como deal-breaker del ICP; se deciden en 0.3 como negative_personas (exclusion permanente, decision humana per spec)"
     },
-    "decision_ref": "D-022 (DB: ebd54668-4fdf-49ec-b12a-1a61f73b3fd9; log: Overall_WF.md Historical Decisions)",
+    "revision_history": [
+      "v1 (D-022, DB ebd54668): expertise-sellers ya online y monetizando; firmada y superseded el mismo dia",
+      "v2 (D-023, DB 05ec4413): enmienda semantica - 'expertise' = experto en LO SUYO (craft: velas, gym, n8n, coaching), no solo productos de conocimiento; 'ya monetizando' SE MANTIENE (acuerdo explicito del operador); 'online' pasa de estado-actual a direccion (empezar/crecer online; la unica clausula reformulada por Sandi para honrar el ejemplo de la velera local); avatares candidatos recalibrados Lanzador-digital/Estancado"
+    ],
+    "decision_ref": "D-023 (DB: 05ec4413-53f7-450b-a726-d7dd1115eac6, supersede de D-022 ebd54668; log: Overall_WF.md Historical Decisions)",
     "_purpose": "campos aun no promovidos al schema de primera clase (Pattern C capture-before-promote)"
   },
   "operator_signoff": true,
