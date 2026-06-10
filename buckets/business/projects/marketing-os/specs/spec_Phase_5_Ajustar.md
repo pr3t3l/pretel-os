@@ -324,7 +324,7 @@ Phase 5 corre cada vez que Phase 4 produce un snapshot con `phase_5_flags`. Es e
 | D7 | Causa raíz recurrente | LOOP-004: si un flag reaparece ≥3 versiones, escalar nivel de re-trigger o pausar avatar. |
 | D8 | Diagnóstico abierto (no solo catálogo) | `unexplained_anomaly` (P4 ANOMALY-001) obliga a §5.1.b: razonar la causa raíz, no buscar en lista. LOOP-005 lo enforce. El sistema PIENSA cuando las banderas conocidas no explican. |
 | D9 | Registro vivo (promoción) | Causas raíz validadas en §5.1.b se promueven a banderas nuevas (lifecycle tipo signal-rule de Phase 0). El catálogo crece desde la realidad; las 8 semilla no son el techo. |
-| D10 | Sin refresh por calendario (Coca-Cola) | Eliminado `12_months_elapsed`. La Foundation se reconstruye por `foundation_drift` (evidencia), no por fecha. Revisar ≠ reconstruir. |
+| D10 | Sin refresh por calendario (Coca-Cola) | Eliminado `12_months_elapsed`. La Foundation se reconstruye por `foundation_drift` (evidencia), no por fecha. **Revisar ≠ reconstruir:** *revisar* es continuo (freshness SEO, revisión quincenal de RRSS, benchmark competitivo periódico) y **alimenta las banderas**; *reconstruir* el cimiento (0.1–0.2.5) solo lo dispara `foundation_drift`. Eliminar el calendario no elimina el mantenimiento continuo — lo separa del versionado. *(Resuelve la tensión aparente con el corpus que insiste en freshness continuo.)* |
 | D11 | `cac_up_40pct` no edita in-place (fix M1) | Re-trigger de Phase 3 dentro de la MISMA versión activa (re-genera publish_plan, la estrategia no se supersede → D-010 intacto). Solo escala a Phase 1 (versión nueva) si persiste. |
 
 ---

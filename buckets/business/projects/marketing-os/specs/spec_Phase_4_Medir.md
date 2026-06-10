@@ -294,7 +294,7 @@ Consolidar el snapshot en `strategies.results_summary` — el campo "Resultados"
 | D1 | ¿Dónde viven los "Resultados"? | En `strategies.results_summary` (rollup vivo) + `metrics_snapshot.json` (histórico fechado). Materializa el nodo "Resultados" del diagrama. |
 | D2 | Atribución por avatar | Obligatoria (UTM por avatar de Phase 3). Sin esto no se comparan avatars ni funciona la orquestación paralela. |
 | D3 | Negative-quality leads | Se excluyen ANTES de calcular conversion rates (contrato de honestidad de Phase 0.3). |
-| D4 | LTV:CAC gate con datos reales | ECONOMICS-LIVE-001 valida ECONOMICS-001 de Phase 0. `< 3.0` → red → Phase 5 actúa. |
+| D4 | LTV:CAC gate con datos reales | ECONOMICS-LIVE-001 valida ECONOMICS-001 de Phase 0. El umbral **NO es `< 3.0` plano** sino la **tabla por modelo de negocio** (§4.2 [Context-Adjusted Threshold]); bajo el umbral del modelo y tras razonar el contexto → red → Phase 5 actúa. *(El flag canónico sigue siendo `ltv_cac_below_3` — la clave del registro no cambia; el corpus C1 respalda "CPA < margen", viabilidad atada al margen real, no a un ratio SaaS fijo.)* |
 | D5 | `phase_5_flags` como contrato | Conjunto ABIERTO (jsonb) cuyo catálogo vive en el registro canónico (`Overall_WF.md`). Phase 4 es el productor de las banderas métricas; cada una con su signal rule (productor-binding, mata el orphan M3). |
 | D6 | Matar avatars perdedores | AVATAR-PERF-001 es feature, no bug: la orquestación paralela permite pausar avatars débiles y concentrar presupuesto. |
 | D7 | Punto ciego de conversión (fix crítico) | CONVERSION-001 emite `conversion_falling_30pct` → Phase 1. Antes la métrica de negocio más importante no disparaba nada. |

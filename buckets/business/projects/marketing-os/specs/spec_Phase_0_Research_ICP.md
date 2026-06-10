@@ -18,6 +18,8 @@ Phase 0 es el cimiento sobre el que descansa el Marketing Lifecycle completo. Su
 
 **Output canónico**: `product_brief_v2.json` — input contract de Phase 1 (Oferta).
 
+> **Nota de ordenamiento (decisión trazable, no omisión):** el corpus (Curso 2 C7) coloca la **propuesta de valor** como pilar previo a los pain points. Sandi la **reubica intencionalmente a Phase 1** (value equation Hormozi por avatar), porque en nuestra arquitectura el JTBD (`current_solution` + `frustration_with_current`) y las Forces of Progress sustituyen ese pilar a nivel Foundation, y el customer journey ya vive embebido en el avatar. Esto es divergencia **consciente** de la secuencia del Curso 2, no un hueco. *(Un cambio activo a esto —ej. añadir una "hipótesis de valor" a nivel proyecto— tocaría D-009/D-010 → FLAG-8, decisión del operador.)*
+
 ### Capa Foundation (agnóstica del avatar) vs capa por-avatar
 
 Phase 0 se divide en dos capas conceptuales (ver `Overall_WF.md` §"Canonical Project Hierarchy"):
