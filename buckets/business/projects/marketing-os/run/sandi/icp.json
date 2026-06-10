@@ -26,7 +26,7 @@
     ]
   },
   "B2B_only": "PARKED - business_context.parked_segment=B2B; ver metadata.flags.hybrid_gate (resuelto en D-022, criterio sobrevive en D-023)",
-  "evidence_basis": "secondary research (SBA/Census/MBO/LocaliQ 2025 via demand_quantification 0.2) + decision de beachhead del operador (corregida semanticamente en D-023); pre-PMF: sin CRM data ni entrevistas top-customer aun",
+  "evidence_basis": "secondary research (SBA/Census/MBO/LocaliQ 2025 via demand_quantification 0.2) + decision de beachhead del operador (corregida semanticamente en D-023) + evidencia anecdotica de primera mano del entorno del operador (run/sandi/evidence_firsthand.md, 2026-06-10: 6 casos, 3 dentro de la puerta); pre-PMF: sin CRM data ni entrevistas formales aun",
   "metadata": {
     "beachhead_label": "expertos en lo suyo con oferta propia ya monetizando, que no saben empezar o escalar su marketing online (>1 publico)",
     "estimates_glass_box": {
