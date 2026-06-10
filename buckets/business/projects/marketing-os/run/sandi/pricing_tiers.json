@@ -1,0 +1,29 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Semilla del array product_brief_v2.competitive_landscape.pricing_tiers[] (GAP-AL2: prohibido parsear competitor_scan.md en runtime). Se promueve al rollup al cerrar el gate global de Phase 0. Precios 2026 con fuente en competitor_scan.md.",
+  "run": "sandi",
+  "phase": "phase_0",
+  "sub_step": "0.4-competencia",
+  "pricing_tiers": [
+    {"competitor_name": "M1-Project (Elsa AI)", "channel": "SEO", "price_usd": 99, "their_stack_estimate_usd": 99, "tier": "mid", "note": "Startup 1 ICP; Pro $199 (3 ICPs); Agency $399 (9) - multi-publico como upsell"},
+    {"competitor_name": "Piktochart", "channel": "SEO", "price_usd": 0, "their_stack_estimate_usd": 25, "tier": "low", "note": "freemium 60 cr/mes; tiers pagos"},
+    {"competitor_name": "Venngage", "channel": "SEO", "price_usd": 0, "their_stack_estimate_usd": 20, "tier": "low", "note": "freemium"},
+    {"competitor_name": "HubSpot Marketing Hub", "channel": "SEO", "price_usd": 20, "their_stack_estimate_usd": 50, "tier": "low", "note": "free tier -> ~$20 entrada; suite crece rapido de precio"},
+    {"competitor_name": "Taskade", "channel": "SEO", "price_usd": 10, "their_stack_estimate_usd": 15, "tier": "low", "note": "freemium -> ~$8-20"},
+    {"competitor_name": "Jasper", "channel": "Ads", "price_usd": 59, "their_stack_estimate_usd": 69, "tier": "mid", "note": "2026: $59 anual / $69 mensual (subio desde $39 de 0.2)"},
+    {"competitor_name": "Copy.ai", "channel": "Ads", "price_usd": 36, "their_stack_estimate_usd": 49, "tier": "low", "note": "$36 anual / $49 mensual"},
+    {"competitor_name": "Mailchimp", "channel": "Ads", "price_usd": 13, "their_stack_estimate_usd": 30, "tier": "low", "note": "canal email; pauta pesada [verificar Ad Library]"},
+    {"competitor_name": "Constant Contact", "channel": "Ads", "price_usd": 12, "their_stack_estimate_usd": 30, "tier": "low", "note": "canal email/social; pauta pesada [verificar]"},
+    {"competitor_name": "Semrush", "channel": "Ads", "price_usd": 139.95, "their_stack_estimate_usd": 199, "tier": "premium", "note": "tools-para-marketers; ONE $199"},
+    {"competitor_name": "HighLevel", "channel": "Ads", "price_usd": 97, "their_stack_estimate_usd": 297, "tier": "premium", "note": "agencia-in-a-box [verificar pauta]"},
+    {"competitor_name": "Agencia full-service SMB", "channel": "Substitute", "price_usd": 5000, "their_stack_estimate_usd": 8000, "tier": "premium", "note": "retainer mediana $5-8k/mo; entrada $1.5-2.5k"},
+    {"competitor_name": "Freelancer Fiverr (plan one-shot)", "channel": "Substitute", "price_usd": 150, "their_stack_estimate_usd": 165, "tier": "mid", "note": "$144-165 por plan, sin ejecucion"},
+    {"competitor_name": "ChatGPT/Claude a mano", "channel": "Substitute", "price_usd": 20, "their_stack_estimate_usd": 20, "tier": "low", "note": "el substituto #1 a desplazar"},
+    {"competitor_name": "Cursos/gurus", "channel": "Substitute", "price_usd": 500, "their_stack_estimate_usd": 2000, "tier": "mid", "note": "HubSpot Academy free; certs $50-2k; gurus FBA $500-2k (quemada de Priya)"},
+    {"competitor_name": "Helium 10", "channel": "Substitute", "price_usd": 129, "their_stack_estimate_usd": 129, "tier": "premium", "note": "terreno Priya; starter eliminado en 2026"},
+    {"competitor_name": "Jungle Scout", "channel": "Substitute", "price_usd": 49, "their_stack_estimate_usd": 79, "tier": "mid", "note": "terreno Priya"}
+  ],
+  "lectura_para_phase_1": "Sandi a ~$30/mo entra: debajo de M1 (3.3x), debajo del entry serio de seller tools (Helium $129), 100-250x debajo de agencia, y apenas arriba del substituto #1 (ChatGPT $20) - la diferencia con ChatGPT se justifica por metodologia+loop+memoria, no por precio. Tier objetivo: low-mid con valor de premium.",
+  "operator_signoff": false,
+  "status": "draft - se promueve al rollup en gate global Phase 0"
+}

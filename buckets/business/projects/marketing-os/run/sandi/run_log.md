@@ -10,7 +10,7 @@
 | Phase 0 | 0.2 Mercado | ✅ cerrado | `demand_quantification.md` |
 | Phase 0 | 0.2.5 ICP | ✅ cerrado (v2) | `icp.json` (D-023, supersede D-022) |
 | Phase 0 | 0.3 Persona + Avatares | ✅ cerrado (D-027) | `buyer_persona.json` (D-025) · `avatars.json` signed_v2 (4 avatares) · `negative_personas.json` (2) · `evidence_firsthand.md` · Priya 1er ciclo (D-026) |
-| Phase 0 | 0.4 Competencia | ⏭️ siguiente | — (scan 4 canales + ERRC + pricing_tiers) |
+| Phase 0 | 0.4 Competencia | 🔄 scan listo | `competitor_scan.md` (4 canales + ERRC, veredicto 🔴categoría/🔵intersección) · `pricing_tiers.json` · falta: decisión del hueco (operador) + verificación manual Ad Library |
 | Phase 1–5 | — | pendiente | — |
 
 ## Hechos clave capturados
