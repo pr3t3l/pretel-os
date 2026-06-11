@@ -69,3 +69,8 @@ Se ensamblan **entretejidos e invisibles** (el usuario solo conversa; el BMC se 
 1. Lee este doc + `Overall_WF.md` (§decisiones).
 2. Mira `run/sandi/run_log.md` para dónde va la simulación.
 3. Si hay un reporte de validación del corpus, aplícalo respetando el boundary.
+
+## 8. Prod dogfood nocturno 2026-06-10/11 (resumen rapido)
+- Operador corrio EN PRODUCCION (sandia-marketing.vercel.app) el flujo completo: cowork de idea (HF: "cuida el grafo entero" - posicionamiento real co-creado) -> re-firma 0.1 -> research 0.2 con web search REAL firmado -> puerta 0.2.5 firmada.
+- 6 fixes mismo dia via pipeline push->autodeploy (sandia 6af4f9a..221ea9a): haiku id invalido, errores visibles, ids-numericos (Postel), Ajustar en diferenciadores, correcciones-del-usuario MANDAN en prompts downstream (original preservado), reparador JSON tolerante en las 3 rutas LLM + brevedad research.
+- M4a SHIPPED (221ea9a): 0.3 "Tus personas" in-app - persona primario + avatares 2-de-3 + anti-personas + eleccion de primer ciclo + gate G-0.3. Falta: dogfood de 0.3 por operador + M5 (0.4 Tu cancha) + rollup gate global in-app.
