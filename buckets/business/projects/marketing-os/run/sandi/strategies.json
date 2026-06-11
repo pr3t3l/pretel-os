@@ -1,0 +1,34 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Espejo-sim de la tabla `strategies` (migracion 20260606120000, D-010) - en el run manual las rows viven aqui; en el producto nacen en Supabase al firmar G-Phase-1-multi-avatar. DRAFT: nace al firmarse el set.",
+  "run": "sandi",
+  "phase": "phase_1",
+  "sub_step": "transversal-strategy-birth",
+  "strategies": [
+    {
+      "strategy_id": "strat_priya_v1",
+      "avatar_id": "avatar_enjaulado_marketplace",
+      "avatar_name": "Priya",
+      "covers_avatar_ids": ["avatar_enjaulado_marketplace"],
+      "multi_avatar_strategy": "separate_strategies",
+      "demand_type": "mixed",
+      "demand_type_rationale": "E1 (spec v1.6): hereda generate_demand del offer_strategy create_demand de Phase 0.2, AJUSTADO a mixed por evidencia per-avatar firmada - D-026/D-028: Priya es mas solution-aware y sus ventanas de rabia tienen BUSQUEDA EXACTA ('amazon fee increase 2026 alternatives', 'sell outside amazon now') = demanda capturable; la educacion 'marketplace independence playbook' = demanda generada. Primer uso real de la clausula E1. Requiere decision_record al firmar el set",
+      "version_number": 1,
+      "status": "active_on_signoff",
+      "created_at": "2026-06-11",
+      "offer_spec_id": null,
+      "offer_spec_note": "se ancla al cerrar 1.2-1.4 del ciclo 1",
+      "content_plan_id": null,
+      "results_summary": null,
+      "superseded_by": null
+    }
+  ],
+  "pending_activation": [
+    {"avatar_id": "avatar_lanzador_digital", "avatar_name": "Dana", "note": "estrategia nace al encender su ciclo; demand_type tentativo mixed (busqueda local existente = capture + educacion = generate) - se decide al activar"},
+    {"avatar_id": "avatar_estancado", "avatar_name": "Marcus", "note": "idem; tentativo generate_demand (comunidades creator/indie, contenido own-your-audience) con capture en lanzamientos - se decide al activar"},
+    {"avatar_id": "avatar_ruta_local", "avatar_name": "Hector", "note": "idem; tentativo capture_demand fuerte ('lawn care near me' + LSA en ventana de primavera) - se decide al activar; su bloqueo blando VALUE-002 (672) se sanciona con decision_record en ese momento"}
+  ],
+  "invariant_note": "cada avatar ACTIVO es servido por exactamente 1 estrategia activa (Overall_WF); los no-activados aun no tienen row - D-026: priorizacion = orden de encendido, no descarte",
+  "operator_signoff": false,
+  "status": "draft - nace al firmar G-Phase-1-multi-avatar"
+}

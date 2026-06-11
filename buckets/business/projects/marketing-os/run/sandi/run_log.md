@@ -13,8 +13,9 @@
 | Phase 0 | 0.4 Competencia | ✅ cerrado (D-028) | `competitor_scan.md` · `pricing_tiers.json` · hueco = intersección completa (categoría propia) |
 | Phase 0 | **Rollup global** | ✅ **FIRMADO (D-029)** | `product_brief_v2.json` — **PHASE 0 CERRADA**; build trigger D-024 disparado |
 | Phase 1 | G-Phase-1-PRE | ✅ passed 2026-06-11 (10/10) | registrado en `value_equations.json.gate_pre_check` (check 10: dmu N/A por criterio hybrid-gate D-023) |
-| Phase 1 | 1.1 Value Equation | 🔄 EN CURSO | `value_equations.json` — draft Priya (1er ciclo, D-026): 8×4×5×6=960, weakest=likelihood; esperando puntuación del operador; Dana/Marcus/Héctor tras calibrar |
-| Phase 1 | 1.2–1.4 | ⏳ pendientes | 1.2 stack (ataca likelihood) · pricing créditos + modelo de costo IA (dependencia parqueada 0.1; insumo real: `project_llm_calls` en prod) · 1.3 risk/urgency · 1.4 naming DEFINITIVO |
+| Phase 1 | 1.1 Value Equation | 🔄 Priya ✅ FIRMADA (D-031) · Dana/Marcus/Héctor draft | `value_equations.json` — Priya 960 (débil, bloqueo blando sancionado D-031, weakest=likelihood) · Dana 1260 · Marcus 1680 · Héctor 672 (todos weakest=likelihood salvo Héctor=effort); **esperando firma del SET** |
+| Phase 1 | Multi-avatar transversal | 🔄 draft propuesto | `multi_avatar_decision.json` — **separate_strategies** (3 de 4 hard fallan; la evidencia confirma D-009) · `strategies.json` — strat_priya_v1 lista para nacer (demand_type=**mixed** propuesto, primer uso de E1); **esperando firma del set** |
+| Phase 1 | 1.2–1.4 | ⏳ pendientes | 1.2 stack (ataca likelihood — el gap es estructural: pre-PMF sin prueba ×3 avatares) · pricing créditos + modelo de costo IA (dependencia parqueada 0.1; insumo real: `project_llm_calls` en prod) · 1.3 risk/urgency · 1.4 naming DEFINITIVO |
 | Phase 2–5 | — | ⏳ | spec Phase 1 validada vs corpus 2026-06-11 (v1.6, D-030) — cabo suelto R5 cerrado |
 
 ## Hechos clave capturados
