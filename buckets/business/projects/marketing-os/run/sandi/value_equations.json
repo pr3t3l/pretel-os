@@ -1,0 +1,94 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Value equations por avatar (Phase 1.1, spec v1.6). Convencion LOCKED: 10=optimo en los 4 ejes; composite = dream*likelihood*time*effort, rango 1-10.000. DRAFT: scores PROPUESTOS por Sandi desde artefactos firmados de Phase 0 (V1 per spec: el operador puntua, Sandi reta) - el operador ajusta y firma. Priya primero (D-026, primer ciclo); Dana/Marcus/Hector se puntuan despues de calibrar el criterio con el operador sobre Priya (mismo patron que 0.3: primero una, la correccion ensena el criterio del batch).",
+  "run": "sandi",
+  "phase": "phase_1",
+  "sub_step": "1.1-value-equation",
+  "gate_pre_check": {
+    "G-Phase-1-PRE": "PASSED 2026-06-11 (10/10)",
+    "detail": [
+      "1. product_brief_v2.json existe + operator_signoff true (D-029)",
+      "2. demand.validation_status = green",
+      "3. hypotheses_refuted = 3 (>=1)",
+      "4. hypotheses_refuted_critical_count = 0 (<2)",
+      "5. ECONOMICS-001: 500/165 = 3.03 >= 3.0 (auto:ltv/3; prueba real en Phase 4)",
+      "6. icp.json con bloque B2C_cluster poblado (v2, D-023)",
+      "7. los 4 avatares con forces_of_progress completo (3/3/3/3/3 cada uno; verificado contra avatars.json signed_v2)",
+      "8. buyer_persona JTB-1 con functional + emotional + social job",
+      "9. negative_personas.json existe (2: claims-imposibles 60a64765, delegador-total 68d6b022)",
+      "10. dmu.json N/A - hybrid con B2B parked: mismo criterio hybrid-gate firmado en D-022/D-023/D-027 (el gate evalua el bloque lead_segment)"
+    ]
+  },
+  "value_equations": {
+    "avatar_enjaulado_marketplace": {
+      "avatar_id": "avatar_enjaulado_marketplace",
+      "avatar_name": "Priya",
+      "first_cycle": true,
+      "aim_instruction_d026": "mas solution-aware que la cuna 0.2 -> create_demand aplica como 'marketplace independence playbook', no como educacion generica",
+      "dream_outcome": {
+        "statement": "Mi negocio vive de una audiencia que es MIA: se cuanto vendi este mes por mi web y mi lista, y una mala noticia de Amazon ya no decide si mi familia come.",
+        "jtbd_source": "JTB-1 (functional: flujo predecible de clientes sin agencia ni volverse marketera full-time | emotional: dejar de sentir que el negocio depende de la suerte/del algoritmo | social: negocio serio)",
+        "pull_amplified": "pull #2 de Priya: 'independencia medible en dinero (revenue propio vs revenue alquilado)' + pull #1: 'plan concreto para construir audiencia propia, publico por publico' (la joya D-009: regalo corporativo / hogar / bodas)",
+        "evidence_path": "buyer_persona.jobs_to_be_done[JTB-1] + avatars[priya].forces_of_progress.pull_of_new_solution[0,1] + avatars[priya].current_goal ('>=30% de las ventas de canal PROPIO este ano')",
+        "score": 8,
+        "score_rationale": "PROPUESTO 8: el sueno es identitario y existencial - el negocio es el ingreso principal de la casa y duerme con el miedo a la suspension (avatars.json: family_context + pain #2). No 10 porque su meta firmada es 30% de canal propio, no exodo: Amazon 'todavia paga las cuentas' (habit #1) y el dream honesto respeta esa realidad - independencia creciente, no quemar la jaula."
+      },
+      "likelihood_of_achievement": {
+        "objections_addressed": [
+          "'ya pague gurus de FBA que no sirvieron - esto es otro humo?' (anxiety #3 + objections_universal #1) -> glass-box: cada recomendacion muestra fuente y porque; KPI primario = dinero atribuido (revenue propio vs alquilado), no likes",
+          "'la IA generica no entiende MI negocio' (objections_universal #3) -> la estrategia sale de SU Phase 0 (sus publicos reales: regalo corporativo / hogar / bodas), no de plantillas"
+        ],
+        "anxieties_addressed": [
+          "anxiety #1 'si me distraigo del marketplace se me cae el ranking que me da de comer' -> el plan es EN PARALELO y dosificado por semana: el marketplace no se toca, se construye al lado",
+          "anxiety #2 'el DTC es otro deporte - podre sola?' -> educacion adaptativa: ensena mientras hace (pull #3: 'el marketing directo que el marketplace nunca le exigio aprender')"
+        ],
+        "proof_assets_available": [
+          "HOY: demo glass-box (el metodo mostrando fuentes en vivo), el run de Sandi como caso trabajado publico (la sim fundacional vive dentro del producto), free door / trial posible",
+          "FALTAN: testimonios reales, casos de sellers con numeros, track record - pre-PMF puro"
+        ],
+        "score": 4,
+        "score_rationale": "PROPUESTO 4 (honesto): D-026 nombra el riesgo #1 del avatar - escepticismo post-guru-FBA, 'exige prueba rapida y honesta' - y somos pre-PMF sin testimonios (product_brief: research_metadata pre-PMF, evidence_findings). El metodo glass-box mitiga pero no sustituye prueba social. Subir a 7-9 exige: primer win rapido DISENADO en el stack (1.2) + garantia honrable (1.3) + casos reales con dinero atribuido (post-launch). ESTE es el eje que el offer stack debe atacar."
+      },
+      "time_delay": {
+        "current_time_to_outcome": "meta completa (>=30% canal propio): 6-12 meses. Senales honestas intermedias: primeros emails capturados (activo que YA es suyo) semana 1-2; primera venta de canal propio 4-8 semanas.",
+        "reduction_levers": [
+          "timing de ventana de rabia (triggers #1/#2: fee hike / suspension = busqueda exacta YA) - entrar cuando el dolor es agudo acorta la decision, no el outcome",
+          "plan por publico desde dia 1 (multi-avatar D-009): evita los 2-3 meses de prueba-y-error de 'a quien le hablo primero'",
+          "hitos medibles semanales (lista creciendo, primera venta propia) en vez de esperar el 30% - el progreso visible ES la reduccion percibida del time delay"
+        ],
+        "score": 5,
+        "score_rationale": "PROPUESTO 5: el outcome completo toma meses - esa es la verdad del DTC y no se maquilla (honestidad arquitectural, regla de sistema). No 3: el sistema SI entrega senales reales en semanas (emails propios = activo inmediato; cicatriz del Shopify fantasma se ataca con win temprano). Reframe del optimizer: vender el CAMINO medible, no el destino instantaneo."
+      },
+      "effort_sacrifice": {
+        "what_avatar_must_do": [
+          "sesiones acotadas siguiendo el plan semanal (su agenda ya esta llena de ops del marketplace: inventario, fees, reviews)",
+          "decidir sobre tarjetas (aprobar/ajustar lo que Sandi propone - autoria suya, no formularios en blanco)",
+          "ejecutar lo no-automatizable: fotos/identidad de marca propia, atender a SU comunidad naciente"
+        ],
+        "what_avatar_must_give_up": [
+          "2-4 h/semana que hoy van a pelear con el algoritmo y los ads del marketplace (daily_routine: 'tarde: pelear con el algoritmo viendo su margen encogerse')",
+          "la comodidad de la jaula ('Amazon todavia paga las cuentas' - habit #1) y la proteccion de la cicatriz ('el intento fallido de Shopify le susurra eso no es lo tuyo' - habit #3)"
+        ],
+        "done_for_you_levers": [
+          "estrategia, plan por publico, borradores de contenido/copy y medicion vienen HECHOS - ella dispone, no redacta de cero",
+          "el loop Phase 4-5 le dice que funciono EN DINERO sin que ella arme dashboards (pull #2 + pain #3 de Marcus generalizado: nadie sabe atribuir)"
+        ],
+        "score": 6,
+        "score_rationale": "PROPUESTO 6: guiado y con borradores hechos, pero ella ejecuta con su activo mas escaso (tiempo) y debe romper habit #1 (jaula comoda) + habit #3 (cicatriz). No 8-9: prometerle 'sin esfuerzo' a una operadora solo seria deshonesto - y el avatar huele el humo a kilometros (post-guru)."
+      },
+      "composite_value_score": 960,
+      "composite_math": "8 * 4 * 5 * 6 = 960",
+      "weakest_axis": "likelihood",
+      "weakest_axis_tiebreak": "likelihood (4) < time (5). Ademas del numero: D-026 nombra el escepticismo post-guru como riesgo #1 del avatar - el eje confianza manda en el diseno del stack",
+      "phase_1_focus": "subir likelihood: el offer stack (1.2) se disena para atacar prueba/confianza - primer win rapido medible, garantia honrable (1.3), glass-box como feature de venta. time sube de rebote con hitos semanales visibles",
+      "category": "debil",
+      "category_note": "960 < 1000 = bloqueo blando per spec (VALUE-002): pasa SOLO con decision_record + plan de optimizacion documentado. Lectura honesta: un producto pre-PMF frente al avatar mas quemado-por-gurus DEBE puntuar bajo en likelihood ANTES del stack - la equation evalua el camino crudo; 1.2/1.3 existen exactamente para subir este eje. Si el stack no lo sube al re-puntuar, ESO seria la senal de alarma real.",
+      "optimizer_pass": "sesgo Hormozi (denominador primero): time 5 y effort 6 ya estan razonables para un outcome DTC honesto - inflarlos seria mentir. El gap real esta en el numerador likelihood (4): prueba social inexistente pre-PMF. Plan: 1.2 disena el primer-win-rapido + 1.3 garantia honrable; re-puntuar likelihood al cerrar el stack y recalcular composite antes del gate global G-Phase-1.",
+      "status": "draft - scores propuestos por Sandi, esperando puntuacion/ajuste y firma del operador"
+    }
+  },
+  "pending_avatars": ["avatar_lanzador_digital", "avatar_estancado", "avatar_ruta_local"],
+  "pending_note": "Dana / Marcus / Hector se puntuan tras calibrar con el operador sobre Priya. G-Phase-1.1 exige las 4 ecuaciones antes de la decision multi-avatar transversal (las 4 condiciones hard se evaluan entre TODOS los avatares).",
+  "operator_signoff": false,
+  "status": "draft"
+}

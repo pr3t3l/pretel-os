@@ -12,7 +12,10 @@
 | Phase 0 | 0.3 Persona + Avatares | ✅ cerrado (D-027) | `buyer_persona.json` (D-025) · `avatars.json` signed_v2 (4 avatares) · `negative_personas.json` (2) · `evidence_firsthand.md` · Priya 1er ciclo (D-026) |
 | Phase 0 | 0.4 Competencia | ✅ cerrado (D-028) | `competitor_scan.md` · `pricing_tiers.json` · hueco = intersección completa (categoría propia) |
 | Phase 0 | **Rollup global** | ✅ **FIRMADO (D-029)** | `product_brief_v2.json` — **PHASE 0 CERRADA**; build trigger D-024 disparado |
-| Phase 1–5 | — | ⏭️ Phase 1 siguiente en sim | brief firmado = input contract; build de Phase 0 wizard corre en paralelo en `sandia-marketing` |
+| Phase 1 | G-Phase-1-PRE | ✅ passed 2026-06-11 (10/10) | registrado en `value_equations.json.gate_pre_check` (check 10: dmu N/A por criterio hybrid-gate D-023) |
+| Phase 1 | 1.1 Value Equation | 🔄 EN CURSO | `value_equations.json` — draft Priya (1er ciclo, D-026): 8×4×5×6=960, weakest=likelihood; esperando puntuación del operador; Dana/Marcus/Héctor tras calibrar |
+| Phase 1 | 1.2–1.4 | ⏳ pendientes | 1.2 stack (ataca likelihood) · pricing créditos + modelo de costo IA (dependencia parqueada 0.1; insumo real: `project_llm_calls` en prod) · 1.3 risk/urgency · 1.4 naming DEFINITIVO |
+| Phase 2–5 | — | ⏳ | spec Phase 1 validada vs corpus 2026-06-11 (v1.6, D-030) — cabo suelto R5 cerrado |
 
 ## Hechos clave capturados
 - **Idea:** SaaS AI-first que guía a no-expertos de "tengo una idea" a "tengo estrategia de marketing accionable".

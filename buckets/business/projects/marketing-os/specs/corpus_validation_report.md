@@ -17,6 +17,7 @@
 | `spec_Phase_4_Medir.md` | **8.5** | Rechazo de vanidad operacionalizado (leads sucios restados ANTES de conversion), CPA<margen, funnel por awareness, atribucion por avatar. Tiene 1 errata interna (ver seccion 4). |
 | `spec_Phase_3_Distribucion.md` | **8.0** | Spine de 4 canales con funcion diferenciada, tracking-first, exclusion lists, permission marketing. Le falta la dicotomia captacion-vs-generacion de demanda a nivel arquitectura. |
 | `spec_Phase_0_Setup_Agent.md` | **8.0** | Gate-before-research validado por el principio fundacional mas fuerte del corpus ("ficha antes de cualquier IA"). Question set 1:1 con las 5 dimensiones del Curso 2. |
+| `spec_Phase_1_Oferta.md` | **8.5** | Validada 2026-06-11 (el agente del pase original fallo — cabo suelto R5, cerrado). Ver **Addendum 2026-06-11** al final de este reporte. |
 
 **Promedio: ~8.5/10.** Diagnostico global: la **metodologia** esta solidamente anclada al corpus; lo que falta es **tactica de canal** (el corpus la tiene muy operacionalizada y los specs estrategicos la omiten o difieren a V2) y **dos variables modernas** que el corpus enfatiza pero el overview no nombra: (a) **captacion vs generacion de demanda** y (b) **AI Overview / zero-click**.
 
@@ -290,3 +291,48 @@ Mas en Phase 0 Foundation: auditar presencia de AI Overview por keyword priorita
 ### Nota de cierre
 
 El patron es consistente: **la metodologia de los specs esta solidamente anclada al corpus** (scores 8.0-9.0, cero contradicciones de fondo). El trabajo pendiente es de dos tipos: (1) **bajar la tactica de canal** que el corpus ya tiene operacionalizada al nivel donde el spec la consume (subject lines, limites de ads, guiones de video, secuencias de email, playbooks de Phase 5), y (2) **nombrar dos variables modernas** que el corpus enfatiza y el overview no eleva a primitivo — **captacion vs generacion de demanda** y **AI Overview / zero-click**. Lo primero es seguro y aditivo; lo segundo toca schema/registro impresos y por tanto pasa por la mesa del operador (FLAG-1, FLAG-2).
+
+---
+
+## Addendum 2026-06-11 — Validacion de `spec_Phase_1_Oferta.md` (cierra el cabo suelto R5)
+
+**Contexto:** el pase del 2026-06-09 cubrio 7 de los 8 specs; el agente asignado a Phase 1 fallo y quedo registrado como pendiente (SESSION_STATE §6). Esta validacion lo cierra, contra las mismas fuentes que mapean a Phase 1: **Curso 2** (C5 propuesta de valor, C6 activadores de compra, C7 puntos de dolor), **BMC** (bloque Propuesta de Valor con 11 elementos, bloque Fuentes de Ingresos con mecanismos de precio, patrones FREE, ideacion/prototipos) y **Curso 1** (pain points como barreras, Lead Magnet como oferta de entrada, CPA<margen). Ejecutada en sesion de cowork (no autonoma), mismo criterio del pase original: corpus = piso, specs = superset esperado; el corpus enriquece, no sobrescribe decisiones locked.
+
+**Score: 8.5.** Superset del corpus en todos los ejes evaluados. Cero contradicciones duras. Una desalineacion cross-doc real cazada (E1, drift posterior a la redaccion del spec). Aplicados 6 enriquecimientos seguros como **v1.6** del spec.
+
+### Alineaciones fuertes (el corpus respalda el spec)
+
+1. **Urgency anclada a trigger (ISSUE-A4) = C6 "el activador no es la necesidad — es el momento en que resolverla se vuelve prioritaria".** El spec exige `urgency.aligned_with_trigger` apuntando a un `trigger_id` real del avatar; es exactamente la distincion necesidad-vs-activador del corpus, operacionalizada como ancla evidencial contra urgency fabricada. La alineacion mas profunda del spec.
+2. **Drive 3-traits check (G-1.4) = C5 relevante / diferente / creible.** Convergencia de dos fuentes independientes (Drive Big School en el spec, Javier Martinez en el corpus) en la MISMA triada de auditoria final. Refuerza ambas.
+3. **Margin gate + ratio gate (1.2) = Curso 1 "CPA < margen" como condicion inamovible de viabilidad.** El spec lo extiende a dos gates simultaneos (ratio percibido + margen bruto por delivery_format) — superset estricto.
+4. **Separacion stack (1.2) vs pricing (1.4) = BMC separacion bloque Propuesta de Valor vs bloque Fuentes de Ingresos.** El corpus senala que un spec generico confunde oferta con precio; este spec los trata como sub-pasos separados con gates propios.
+5. **Workflow C7 (pain→solucion por perfil) = bonuses con `addresses_objection` + `risk_reversal.anxieties_addressed`**, y la "estrategia proactiva" del corpus (responder objeciones antes de que se formulen) = `phase_2_handoff.objections_uncovered` (lo no cubierto viaja explicito al copy de Phase 2).
+6. **C5 advertencia "el output de la IA es lluvia de ideas, no verdad cerrada; filtrar por identidad real del negocio" = principio operador-autor + honestidad arquitectural** (risk reversal/urgency manuales V1-V3, decision etica irreductible). El spec lo lleva mas lejos que el corpus.
+7. **Compra reflexiva vs impulsiva (C6) = tabla `ratio_target` por business_type × purchase_type.** El corpus da la distincion; el spec la convierte en multiplicador de pricing [Context-Adjusted Threshold].
+
+### Enriquecimientos SEGUROS aplicados (v1.6 — aditivos, gobernados por Pattern A/C)
+
+| # | Enriquecimiento | Donde | Fuente |
+|---|---|---|---|
+| E1 | **`demand_type` se puebla al nacer la `strategies` row** (§4 + gate multi-avatar). Drift cross-doc real: FLAG-1/D-021 aprobo `demand_type` como columna de primera clase del schema `strategies` DESPUES de que Phase 1 v1.5 se escribiera (2026-06-01); el spec creaba las rows sin poblarlo. Hereda `offer_strategy` de Phase 0, ajustable per-avatar con `decision_record`. No es flag nuevo: propaga una aprobacion ya firmada a su punto de uso. | §4 | D-021 / Curso 1+5 (captacion vs generacion) |
+| E2 | **Checklist de los 11 elementos de valor de Osterwalder** como lente de diseno del stack (detectar valor no cobrado; vocabulario candidato para `hormozi_category` custom → promocion Pattern A). Hormozi escribio sus 5 semillas para SUS productos; Osterwalder enumero el espacio. | §5 | BMC §2.2 |
+| E3 | **Menu de mecanismos de precio del BMC** como campo `price_mechanism` [Extensible Vocabulary] (fijo: lista/caracteristicas/segmento/volumen; dinamico: negociacion/yield/tiempo-real/subasta). Componibles (suscripcion+creditos = lista_fija + por_volumen). | §7 | BMC §2.5 |
+| E4 | **`monetization_pattern_echo` en el bloque pricing** con la economia del patron (freemium: 1-10% financia al resto; bait&hook: margen en el consumible recurrente). Cierra el circuito con el `monetization_pattern` que el Setup Agent captura en 0.1 (enrich 2.7.1 del pase original). | §7 | BMC §4.4 |
+| E5 | **Puerta gratuita / lead magnet como tier de entrada declarado** (`tiers[]` con `price_usd: 0` + job explicito). La arquitectura de la oferta de entrada se DECIDE en Phase 1; sus assets se PRODUCEN en Phase 2. Cubre el unico concepto del mapping Phase-1 de Curso 1 que el spec no nombraba. | §7 | Curso 1 (paso 10, Lead Magnet) |
+| E6 | **Nota de palanca barata en §0** (C5: optimizar propuesta de valor sube CR sin subir gasto de adquisicion) + **mineria de resenas como fuente complementaria de `value_rationale`** (C5: "propuestas ocultas" en reviews). | §0, §5 | Curso 2 C5 |
+
+Tambien corregida una **errata cosmetica interna**: el JSON ejemplo de pricing decia `anchor_statement: "...$480...por $97"` junto a `your_price_usd: 47` — ejemplos incoherentes entre si en un artefacto que sirve de CAG. Armonizado a $235/$47 (ratio 5×, coherente con la fila B2C reflexiva de la tabla).
+
+### Gaps (ninguno critico)
+
+- **G-P1.1 — Variantes de prototipo de oferta (BMC ideacion/prototipos):** el optimizer itera UNA oferta; el corpus sugiere esbozar 2-3 variantes antes de comprometer. Diferible a V2 (el loop Phase 5 ya versiona estrategias — el costo de equivocarse esta acotado).
+- **G-P1.2 — Producto-vs-servicio en la comunicacion del statement** (Curso 1: producto vende caracteristicas, servicio vende confianza+transformacion): matiz de copy que pertenece mas a Phase 2 (brand voice); no se fuerza aqui.
+- **G-P1.3 — "Better than money back"** ya estaba en §14 diferidos. Sin cambio.
+
+### Contradicciones
+
+**Cero contradicciones duras.** La unica tension es la ya documentada C2 del reporte original (propuesta de valor reubicada de Phase 0 a Phase 1) — que es precisamente la razon por la que ESTE spec existe como fase propia; FLAG-8 (hipotesis de valor liviana en Phase 0) sigue en la mesa del operador, sin cambio.
+
+### FLAGS nuevos
+
+**Ninguno.** E1 propaga una aprobacion existente (FLAG-1/D-021); E2-E6 son aditivos puros bajo los patrones de extension ya sancionados. FLAG-7 y FLAG-8 del pase original siguen pendientes de decision del operador (sin presion de tiempo).

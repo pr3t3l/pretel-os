@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-1
-**Status**: spec drafted v1.5
-**Last updated**: 2026-06-01
+**Status**: spec drafted v1.6 (validada vs corpus)
+**Last updated**: 2026-06-11
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. FastAPI is future-only for heavy jobs, complex agents, or public API needs.
 
 **Audit references**:
@@ -11,6 +11,7 @@
 - Auditoría externa Phase 1 (2026-05-10) — 3 regresiones + bug matemático + 6 mediums integrados
 - Mejoras operador 2026-05-10 — tabla ratio derivada, margin gate, sub-workflows, condición 5 multi-avatar, escala 1-10000
 - Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — ISSUE-A1 (G-PRE check 7 a "TODOS los avatars"), ISSUE-A2 (sub-paso 1.4.0 language_packs), ISSUE-A3 (comparable obligatorio en core_deliverable.value_rationale), ISSUE-A4 (urgency.aligned_with_trigger)
+- Validación corpus (2026-06-11, cierra el pendiente R5 del pase D-021) — vs Curso 2 (C5 propuesta de valor / C6 activadores / C7 puntos de dolor), BMC (bloque PV 11 elementos, Fuentes de Ingresos, patrones FREE) y Curso 1 (lead magnet, CPA<margen). Veredicto: superset 8.5, cero contradicciones duras. Enriquecimientos E1–E6 integrados en esta v1.6; detalle en `corpus_validation_report.md` §Addendum 2026-06-11
 
 ---
 
@@ -30,6 +31,7 @@ Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimét
 - Risk reversal y urgency 100% manuales en todas las versiones (decisión ética irreductible)
 - Ambos gates obligatorios: perceived_value_ratio + gross_margin_pct
 - Composite value score con escala 1–10000 (más legible que 0.01–100)
+- Por qué esta fase es la palanca barata (Curso 2 C5): optimizar la propuesta de valor mejora el ratio de conversión sin aumentar gasto de adquisición — frecuentemente más rentable que comprar más tráfico. Phase 1 es donde se gana conversión antes de pagar por ella.
 
 ---
 
@@ -268,9 +270,12 @@ El `multi_avatar_decision.json` determina **cuántas `strategies` rows se crean*
 
 Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `offer_spec`. El `offer_spec.json` declara `linked_to.strategy_id` + `strategy_version` (consumido por Phase 2 check 14 y por toda la cadena Phase 3→5).
 
+**`demand_type` se puebla al nacer la estrategia** (columna de primera clase del schema `strategies` per FLAG-1 / D-021 — esta cláusula propaga esa aprobación al punto de uso, que es aquí): cada row nace con `demand_type ∈ {capture_demand, generate_demand, mixed}` heredado del `offer_strategy` de Phase 0 (0.2), salvo evidencia per-avatar que lo ajuste (con `decision_record`; ej. un avatar solution-aware con búsqueda exacta puede ser `capture_demand` aunque el proyecto sea `generate_demand`). Gobierna la selección de canal en Phase 3 y la legibilidad de `cac_up_40pct` — los canales de demanda capturada convierten muy distinto a los de demanda generada.
+
 ### Gate G-Phase-1-multi-avatar
 - `multi_avatar_decision.json` existe y poblado
 - `strategies` row(s) creada(s) según la regla de granularidad de arriba (`version_number=1`, `status='active'`)
+- `demand_type` poblado en cada `strategies` row (heredado de Phase 0 o ajustado con `decision_record`)
 - Si `separate_strategies` (default) → sub-pasos 1.2–1.4 se ejecutan N veces (una por avatar), cada corrida produce un `offer_spec.json` anclado a su `strategy_id` independiente
 - Si cualquier variante de unified_C → sub-pasos 1.2–1.4 se ejecutan una sola vez con outputs adaptados, anclados a la estrategia unificada
 
@@ -369,10 +374,12 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
 - **≥1 bonus debe tener `force_attacked: anxiety_reduce`** (sin esto la oferta solo amplifica pull → no convierte indecisos)
 - **≥1 bonus debe tener `force_attacked: habit_break`** (sin esto la oferta no rompe inercia → status quo gana)
 - Cada bonus mapea a `specific_target` concreto (no "objection_n" abstracto)
-- `value_rationale` con comparable de mercado real (citado), no inventado
+- `value_rationale` con comparable de mercado real (citado), no inventado. Fuente complementaria sancionada (Curso 2 C5, "propuestas ocultas"): minería de reseñas de competidores/sustitutos — qué valoran y qué echan de menos los usuarios en reviews reales es evidencia de perceived value que el precio de lista no captura.
 - **`core_deliverable.value_rationale` debe citar ≥1 comparable de mercado real** (mismo estándar que bonuses; ISSUE-A3, audit 2026-05-10). Sin esto, `core_deliverable.perceived_value_usd` es la base inflable de toda la stack economics y el `ratio_gate` pasa engañosamente. Comparable preferido: precio listado de competidor de `competitive_landscape.pricing_tiers[]` que entrega un deliverable equivalente.
 - Bonuses con `delivery_cost_to_us_usd > 30% de perceived_value_usd` se flaguean como ineficientes
 - `avatar_specific` ≠ null solo si `multi_avatar_strategy === "unified_C_avatar_specific_bonuses"`
+
+**Checklist de tipos de valor (BMC, bloque Propuesta de Valor — lente de diseño, no gate):** al redactar core + bonuses, contrastar contra los 11 elementos de valor de Osterwalder: novedad · mejora de rendimiento · personalización · "el trabajo, hecho" · diseño · marca/estatus · precio · reducción de costes · reducción de riesgos · accesibilidad · comodidad/utilidad. Dos usos: (a) detectar tipos de valor que el producto YA entrega y el stack no está cobrando; (b) cuando un bonus no cae en las 5 semillas de Hormozi, los 11 de Osterwalder son vocabulario candidato para `hormozi_category_custom_description` (y para la promoción Pattern A si recurren ≥3×). Hormozi escribió sus 5 para SUS productos; Osterwalder enumeró el espacio completo.
 
 ### Sub-workflow `offer-stack-builder`
 
@@ -524,9 +531,12 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 ```json
 {
   "price_point_usd": 0,
+  "price_mechanism": "lista_fija | por_caracteristicas | por_segmento | por_volumen | negociacion | yield_management | tiempo_real | subasta | other  [Extensible Vocabulary]",
+  "price_mechanism_note": "menú BMC Fuentes de Ingresos (fijo: lista / características / segmento / volumen — dinámico: negociación / yield / tiempo real / subasta). Componibles: suscripción+créditos = lista_fija (cuota) + por_volumen (créditos).",
+  "monetization_pattern_echo": "espejo de business_context.monetization_pattern (subscription | freemium | bait_hook_credits | usage | one_shot | other). Si freemium: economía BMC — solo 1-10% convierte a pago y financia al resto; el free tier se diseña para ESO, no como producto completo regalado. Si bait_hook: el margen vive en el consumible recurrente, no en la entrada.",
   "price_anchor": {
     "anchor_type": "dream_outcome_value | competitor_higher | total_stack | cost_of_inaction",
-    "anchor_statement": "ej: 'el valor del stack es $480, lo entregamos por $97'"
+    "anchor_statement": "ej: 'el valor del stack es $235, lo entregamos por $47'"
   },
   "price_rationale": "por qué este precio. Cita value_equation, stack ratio, Y competitive_position.",
   "competitive_position": {
@@ -558,6 +568,8 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 - No competir por precio bajo (excepto en estrategia explícita de market entry con `decision_record`)
 - Si `composite_value_score >= 3000`, el precio puede subir; bajar precio solo cuando `likelihood` (eje 2) es débil
 - `good_better_best` aumenta ticket promedio ~30% para productos digitales (heurística, no ley)
+- `price_mechanism` declarado (no implícito): nombrar el mecanismo obliga a decidir QUÉ se cobra (cuota plana vs uso vs ambos) antes de decidir CUÁNTO
+- Si el producto tiene puerta gratuita (free tier / trial / lead magnet — Curso 1, paso 10 del workflow): se declara como tier de entrada en `tiers[]` (`price_usd: 0`) con su job explícito (capturar email / activar / demostrar método). El lead magnet pertenece a la **arquitectura de la oferta** (se decide aquí); sus assets se **producen** en Phase 2. Una puerta gratis sin job declarado es costo sin estrategia.
 - Validación cruzada `tier_strategy` ↔ `tiers.length`:
   - `single_tier` → `tiers.length === 1`
   - `good_better_best` → `tiers.length === 3`
