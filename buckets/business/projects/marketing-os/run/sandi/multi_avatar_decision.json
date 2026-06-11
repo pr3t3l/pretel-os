@@ -1,10 +1,15 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] seed v1. Decision multi-avatar transversal (spec v1.6 seccion 4, post-1.1). Default invertido D-009: por-avatar es el comportamiento base; estas 5 condiciones miden si hay evidencia para UNIFICAR como optimizacion. DRAFT algoritmico propuesto por Sandi - espera firma del set (gate G-Phase-1-multi-avatar) junto con las 3 equations nuevas.",
+  "_note": "[Evolving Schema] seed v1. Decision multi-avatar transversal (spec v1.6 seccion 4, post-1.1). Default invertido D-009: por-avatar es el comportamiento base; estas 5 condiciones miden si hay evidencia para UNIFICAR como optimizacion. FIRMADO por el operador 2026-06-11 (D-032). Gate G-Phase-1-multi-avatar PASSED.",
   "run": "sandi",
   "phase": "phase_1",
   "sub_step": "transversal-multi-avatar",
-  "evaluated_avatars": ["avatar_enjaulado_marketplace", "avatar_lanzador_digital", "avatar_estancado", "avatar_ruta_local"],
+  "evaluated_avatars": [
+    "avatar_enjaulado_marketplace",
+    "avatar_lanzador_digital",
+    "avatar_estancado",
+    "avatar_ruta_local"
+  ],
   "hard_conditions": {
     "functional_job_match": true,
     "functional_job_note": "los 4 comparten JTB-1 functional ('flujo predecible de clientes sin agencia ni volverse marketero full-time') - esperado: hay UN persona primario (D-025) y los avatares son sus variantes contextuales",
@@ -24,12 +29,18 @@
   "decision_rule_applied": ">=2 condiciones hard fallan (weakest_axis NO match + anxieties 1<2 + habits 1<2) => DEFAULT: estrategias separadas. Aplica tambien al trio Priya/Dana/Marcus (pasan 1 y 2, fallan 3 y 4)",
   "rationale": "La evidencia CONFIRMA la tesis arquitectonica D-009 con datos del propio run: mismo job funcional (un persona), pero anxieties, habits y lenguaje divergen por contexto - exactamente el caso 'un problema compartido, estrategias 100% distintas' que motiva la orquestacion paralela. No hay evidencia para unificar; cada avatar mantiene su loop Phase 1->5 propio. La unificacion queda como optimizacion futura por evidencia (ej: si Phase 2 muestra solape de contenido >70% entre Hector y Dana - valvula ya documentada en avatars.json metadata).",
   "meta_note": "el sistema valida su propio diferenciador: si estas 5 condiciones hubieran dado 'unified_clean', la joya D-009 tendria un contraejemplo en su PRIMER run. Dieron separate - la arquitectura y la evidencia convergen",
-  "language_packs_required": ["avatar_enjaulado_marketplace", "avatar_lanzador_digital", "avatar_estancado", "avatar_ruta_local"],
+  "language_packs_required": [
+    "avatar_enjaulado_marketplace",
+    "avatar_lanzador_digital",
+    "avatar_estancado",
+    "avatar_ruta_local"
+  ],
   "language_packs_note": "per spec 1.4.0: separate_strategies exige language_pack por avatar ANTES de escribir su statement. Ciclo 1 solo escribe el de Priya (los otros 3 al activar sus ciclos, D-026: priorizacion = orden de encendido)",
   "strategy_birth": {
     "rows_to_create": "1 por avatar al ACTIVAR su ciclo (D-009 + D-026): hoy nace solo la de Priya (version 1, active). Dana/Marcus/Hector nacen al encender - el invariante 'cada avatar servido por exactamente 1 estrategia activa' aplica a avatares ACTIVOS",
     "first_row": "ver strategies.json - strat_priya_v1 (demand_type=mixed propuesto, decision_record al firmar)"
   },
-  "operator_signoff": false,
-  "status": "draft - propuesto, espera firma del set (G-Phase-1.1 completo + G-Phase-1-multi-avatar)"
+  "operator_signoff": true,
+  "status": "signed_v1 (D-032) - G-Phase-1-multi-avatar PASSED",
+  "decision_ref": "D-032 (DB 3bac3de4)"
 }

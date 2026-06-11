@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] seed v1. Value equations por avatar (Phase 1.1, spec v1.6). Convencion LOCKED: 10=optimo en los 4 ejes; composite = dream*likelihood*time*effort, rango 1-10.000. Priya FIRMADA (operador 'procede' 2026-06-11, D-031). Dana/Marcus/Hector: PROPUESTOS con el criterio calibrado en Priya (honestidad pre-PMF en likelihood; time = verdad del canal; effort sin humo) - esperan firma del set junto con multi_avatar_decision.json.",
+  "_note": "[Evolving Schema] seed v1. Value equations por avatar (Phase 1.1, spec v1.6). Convencion LOCKED: 10=optimo en los 4 ejes; composite = dream*likelihood*time*effort, rango 1-10.000. SET COMPLETO FIRMADO 2026-06-11: Priya via D-031, Dana/Marcus/Hector via D-032 (DB 3bac3de4). G-Phase-1.1 PASSED.",
   "run": "sandi",
   "phase": "phase_1",
   "sub_step": "1.1-value-equation",
@@ -148,7 +148,9 @@
       "phase_1_focus": "subir likelihood: primer-pedido-de-desconocido como hito disenado del stack + prueba de makers reales en cuanto exista; el eje verguenza/autopromocion se ataca con el angulo 'visibilidad del craft, no de la persona'",
       "category": "estandar_operativo",
       "category_note": "1000-3000 = OK con flag: avanza, registrada como oferta promedio - primer candidato a iterar en Phase 5 cuando su ciclo encienda",
-      "status": "draft - propuesto, espera firma del set"
+      "status": "signed_v1",
+      "decision_ref": "D-032 (DB 3bac3de4)",
+      "operator_signoff": true
     },
     "avatar_estancado": {
       "avatar_id": "avatar_estancado",
@@ -211,7 +213,9 @@
       "phase_1_focus": "subir likelihood: trial donde VERIFIQUE el diferenciador con sus propios 2 publicos (el avatar mas auto-convencible: darle las herramientas de auditoria es venderle) + privacidad explicita en el stack",
       "category": "estandar_operativo",
       "category_note": "1000-3000 = OK con flag. Nota glass-box: Marcus puntua MAS ALTO que Priya (1680 vs 960) y aun asi el primer ciclo es de ella - correcto: la equation mide valor-de-oferta-para-el-avatar; D-026 decidio por timing de triggers (ventanas de rabia con busqueda exacta), willingness-to-pay probada y atribucion limpia - criterios de go-to-market que viven fuera de esta formula. La formula no contradice la decision humana; miden cosas distintas.",
-      "status": "draft - propuesto, espera firma del set"
+      "status": "signed_v1",
+      "decision_ref": "D-032 (DB 3bac3de4)",
+      "operator_signoff": true
     },
     "avatar_ruta_local": {
       "avatar_id": "avatar_ruta_local",
@@ -273,7 +277,9 @@
       "phase_1_focus": "reducir effort: stack para Hector = done-for-you al maximo + onboarding adaptativo de friccion alta + prueba de pares (otro de overol). Su bloqueo blando (672 < 1000) se sanciona con decision_record AL ACTIVAR su ciclo - no bloquea el ciclo 1 (Priya)",
       "category": "debil",
       "category_note": "672 = bloqueo blando VALUE-002 cuando su ciclo encienda. Lectura glass-box: el numero CONFIRMA D-026 con matematica - 'bien como 4to, mal como 1ro' ahora tiene formula: 672 vs 960/1260/1680. La decision humana y la equation convergen.",
-      "status": "draft - propuesto, espera firma del set"
+      "status": "signed_v1",
+      "decision_ref": "D-032 (DB 3bac3de4)",
+      "operator_signoff": true
     }
   },
   "set_reading": {
@@ -283,6 +289,7 @@
     "equation_vs_prioritization": "la equation NO contradice D-026 (Priya primero pese a 960 < 1680 de Marcus): mide valor-de-oferta, no prioridad go-to-market (timing de triggers, willingness-to-pay, atribucion limpia viven fuera de la formula)"
   },
   "pending_avatars": [],
-  "operator_signoff": false,
-  "status": "priya signed_v1 (D-031) - dana/marcus/hector draft, esperando firma del set junto con multi_avatar_decision"
+  "operator_signoff": true,
+  "status": "signed_v1 completo (4/4) - G-Phase-1.1 PASSED (D-031 + D-032)",
+  "signoff_note": "operador 2026-06-11: 'firmo, me parece perfecto lo que propones' - set completo sobre scores propuestos; ademas eleva a mandato la educacion literal del instrumento en el sistema (ver D-032)"
 }

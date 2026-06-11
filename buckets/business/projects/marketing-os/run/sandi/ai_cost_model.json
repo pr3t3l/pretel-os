@@ -1,0 +1,69 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Modelo de costo de IA por avatar/ciclo - LA DEPENDENCIA PARQUEADA desde 0.1 (business_context.metadata.parked_dependencies), convergida en Phase 1.2/1.4 con datos REALES de produccion. Insumo del margin gate (1.2), del pricing de creditos (1.4) y del Cost Structure (BMC bloque 9, Modulo A). DRAFT: medido vs estimado SEPARADOS y etiquetados.",
+  "run": "sandi",
+  "phase": "phase_1",
+  "sub_step": "1.2-insumo-costos",
+  "measured_phase_0": {
+    "source": "project_llm_calls en prod (qxhfmsojpjmnlzaduzao), run Healthy Families del operador - Phase 0 COMPLETA con los 5 gates firmados, 2026-06-10/11",
+    "sample_caveat": "n=1 run (el proyecto sim sembrado no tiene llamadas; fue data, no ejecucion). Operador experto = menos iteraciones que un novato; prompts v1 sin optimizar",
+    "total": {"calls": 13, "cost_usd": 1.0594, "input_tokens": 23333, "output_tokens": 18405, "cache_read_tokens": 180645, "cache_write_tokens": 194834, "fallbacks": 0, "errors": 0},
+    "headline": "UNA Phase 0 completa (con research web real y 1 re-run de mercado) cuesta ~$1.06 de IA",
+    "by_prompt": [
+      {"prompt": "mercado_research v1 (0.2, web search)", "model": "claude-sonnet-4-6", "calls": 2, "cost_usd": 0.6663, "avg_per_call_usd": 0.333},
+      {"prompt": "cancha_research v1 (0.4, web search)", "model": "claude-sonnet-4-6", "calls": 1, "cost_usd": 0.2845, "avg_per_call_usd": 0.285},
+      {"prompt": "idea_cowork_questions (0.1)", "model": "claude-haiku-4-5", "calls": 7, "cost_usd": 0.0357, "avg_per_call_usd": 0.0051},
+      {"prompt": "personas_proposal (0.3)", "model": "claude-sonnet-4-6", "calls": 1, "cost_usd": 0.0266, "avg_per_call_usd": 0.0266},
+      {"prompt": "idea_cowork_differentiators (0.1)", "model": "claude-sonnet-4-6", "calls": 1, "cost_usd": 0.0243, "avg_per_call_usd": 0.0243},
+      {"prompt": "puerta_proposal (0.2.5)", "model": "claude-sonnet-4-6", "calls": 1, "cost_usd": 0.022, "avg_per_call_usd": 0.022}
+    ],
+    "structure_insight": "el research con web search es el 89.7% del costo ($0.95 de $1.06); cowork + propuestas estrategicas = 10.3%. El costo NO se reparte uniforme entre acciones"
+  },
+  "unit_economics_by_action_class": {
+    "_basis": "MEDIDO (promedios reales de arriba). Esta es la base del diseno de creditos",
+    "classes": [
+      {"class": "beat_ligero", "examples": "preguntas de cowork, extraccion, reformulaciones", "model_tier": "haiku (candidatos: Kimi K2.5 / DeepSeek - evals pendientes)", "cost_per_action_usd": 0.005, "relative_weight": 1},
+      {"class": "propuesta_estrategica", "examples": "personas, puerta/ICP, diferenciadores, value equation, offer stack", "model_tier": "sonnet (techo LOCKED: nunca Opus - mandato de costos)", "cost_per_action_usd": 0.025, "relative_weight": 5},
+      {"class": "research_web", "examples": "mercado 0.2, competencia 0.4, pricing check 1.4", "model_tier": "sonnet + web_search server tool", "cost_per_action_usd": 0.31, "relative_weight": 60}
+    ],
+    "design_implication": "un esquema '1 credito = 1 accion' plana esta ROTO por diseno: una accion research cuesta ~60x un beat. Los creditos deben pesar por clase de accion (1 / 5 / 60) o el pricing pierde el margen en los usuarios research-heavy y regala valor en los chat-heavy"
+  },
+  "estimated_phases_1_5": {
+    "_basis": "[ESTIMACIONES] pre-build, derivadas de las clases medidas + conteo de acciones esperado por spec. Se reemplazan con medicion real cuando cada fase se construya (mismo mecanismo project_llm_calls)",
+    "per_cycle_one_avatar": [
+      {"phase": "1 Oferta", "est_usd": [0.25, 0.5], "assumption": "6-10 propuestas estrategicas (equation, stack, pricing) + 1 research check de precios competitivos + beats"},
+      {"phase": "2 Contenido", "est_usd": [0.3, 0.9], "assumption": "el driver de volumen: 20-40 generaciones (pilares, hooks, derivados) MAYORMENTE en tier beat/copy barato; sube si el usuario regenera mucho"},
+      {"phase": "3 Publicar", "est_usd": [0.05, 0.15], "assumption": "orquestacion ligera (calendario, utm); poca IA"},
+      {"phase": "4 Medir", "est_usd": [0.2, 0.5], "assumption": "analisis de snapshot quincenal x2/mes, tier estrategico"},
+      {"phase": "5 Ajustar", "est_usd": [0.15, 0.4], "assumption": "diagnostico + emision de estrategia N+1, tier estrategico"}
+    ],
+    "totals": {
+      "setup_per_avatar_cycle_usd": [1.0, 2.5], "setup_note": "Phase 1-5 primera pasada de UN avatar [estimacion]",
+      "ongoing_monthly_per_active_avatar_usd": [1.0, 2.5], "ongoing_note": "loop vivo mensual (contenido + medir + ajustar) [estimacion]",
+      "phase_0_shared_usd": 1.06, "phase_0_note": "MEDIDO; se paga 1 vez por proyecto (Foundation compartida, no por avatar) + re-runs por foundation_drift"
+    }
+  },
+  "margin_readout_at_30usd": {
+    "price_point_hypothesis_usd_month": 30,
+    "margin_gate_target": ">=70% (spec 1.2, delivery_format digital) => presupuesto COGS de IA <= $9/mes/usuario",
+    "scenarios": [
+      {"name": "tipico", "assumption": "2-3 avatares activos, uso normal", "cogs_usd_month": [3, 6], "gross_margin_pct": [80, 90], "verdict": "PASA con holgura"},
+      {"name": "intensivo", "assumption": "4 avatares activos + regeneraciones frecuentes + re-research", "cogs_usd_month": [6, 10], "gross_margin_pct": [67, 80], "verdict": "borde del gate: el techo lo ponen los pesos de credito por clase, no la suerte"},
+      {"name": "abusivo_sin_limites", "assumption": "research ilimitado sin pesos de credito", "cogs_usd_month": [15, 30], "gross_margin_pct": [0, 50], "verdict": "FALLA - exactamente lo que el sistema de creditos pesados previene"}
+    ],
+    "fixed_costs_note": "infra fija (Supabase/Vercel) y embeddings son costo de plataforma, no COGS por usuario a esta escala; van al Cost Structure del Modulo A",
+    "optimization_headroom": [
+      "caching ya activo y sano (180k tokens leidos de cache en el run medido) - el costo medido YA incluye ese ahorro",
+      "evals multi-modelo pendientes: Kimi K2.5 ($0.60/M) / DeepSeek V4 Flash ($0.14/M) candidatos a bajar la clase beat/copy 3-8x (docs/model-selection.md)",
+      "prompts v1 sin presupuesto de brevedad afinado (output cuesta 3-6x input)"
+    ]
+  },
+  "credit_design_seed": {
+    "_status": "PROPUESTA para 1.4 (el operador dispone)",
+    "principle": "bait_hook_credits (0.1): el margen vive en el consumible recurrente. Los creditos son la unidad de valor visible; su peso refleja el costo real por clase",
+    "seed_weights": {"beat_ligero": "incluido/simbolico", "propuesta_estrategica": "1 credito", "research_web": "10-12 creditos"},
+    "monthly_allowance_sizing": "la mensualidad de $30 incluye creditos para ~1 Foundation o ~2-3 ciclos de avatar/mes de uso tipico (COGS $4-6) - se calibra con medicion real post-launch (Phase 4)"
+  },
+  "operator_signoff": false,
+  "status": "draft - insumo de 1.2 (delivery_cost) y 1.4 (pricing creditos); medido=real, estimado=etiquetado"
+}

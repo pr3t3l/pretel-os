@@ -13,9 +13,10 @@
 | Phase 0 | 0.4 Competencia | ✅ cerrado (D-028) | `competitor_scan.md` · `pricing_tiers.json` · hueco = intersección completa (categoría propia) |
 | Phase 0 | **Rollup global** | ✅ **FIRMADO (D-029)** | `product_brief_v2.json` — **PHASE 0 CERRADA**; build trigger D-024 disparado |
 | Phase 1 | G-Phase-1-PRE | ✅ passed 2026-06-11 (10/10) | registrado en `value_equations.json.gate_pre_check` (check 10: dmu N/A por criterio hybrid-gate D-023) |
-| Phase 1 | 1.1 Value Equation | 🔄 Priya ✅ FIRMADA (D-031) · Dana/Marcus/Héctor draft | `value_equations.json` — Priya 960 (débil, bloqueo blando sancionado D-031, weakest=likelihood) · Dana 1260 · Marcus 1680 · Héctor 672 (todos weakest=likelihood salvo Héctor=effort); **esperando firma del SET** |
-| Phase 1 | Multi-avatar transversal | 🔄 draft propuesto | `multi_avatar_decision.json` — **separate_strategies** (3 de 4 hard fallan; la evidencia confirma D-009) · `strategies.json` — strat_priya_v1 lista para nacer (demand_type=**mixed** propuesto, primer uso de E1); **esperando firma del set** |
-| Phase 1 | 1.2–1.4 | ⏳ pendientes | 1.2 stack (ataca likelihood — el gap es estructural: pre-PMF sin prueba ×3 avatares) · pricing créditos + modelo de costo IA (dependencia parqueada 0.1; insumo real: `project_llm_calls` en prod) · 1.3 risk/urgency · 1.4 naming DEFINITIVO |
+| Phase 1 | 1.1 Value Equation | ✅ **CERRADO (D-031 + D-032)** | `value_equations.json` signed_v1 ×4 — Priya 960 (bloqueo blando sancionado) · Dana 1260 · Marcus 1680 · Héctor 672; weakest = likelihood ×3 + effort (Héctor). Educación del instrumento → canon LITERAL (mandato operador): spec §3 + sandia `value-equation-education.ts` |
+| Phase 1 | Multi-avatar transversal | ✅ **CERRADO (D-032)** | `multi_avatar_decision.json` signed — **separate_strategies** (la evidencia confirma D-009) · `strategies.json` — **strat_priya_v1 ACTIVA** (primera estrategia del sistema; demand_type=mixed, 1er uso E1) |
+| Phase 1 | 1.2 Offer Stack | 🔄 EN CURSO | `ai_cost_model.json` draft — dependencia parqueada de 0.1 convergida con DATOS REALES: Phase 0 completa = **$1.06 de IA medido** (research web = 89.7%); clases de acción 1/5/60 → créditos pesados; margen a $30: típico 80-90% PASA. Esperando del operador: core_deliverable + price target + esquema de créditos |
+| Phase 1 | 1.3–1.4 | ⏳ pendientes | 1.3 risk/urgency/displacement · 1.4 pricing final + naming DEFINITIVO + statement |
 | Phase 2–5 | — | ⏳ | spec Phase 1 validada vs corpus 2026-06-11 (v1.6, D-030) — cabo suelto R5 cerrado |
 
 ## Hechos clave capturados

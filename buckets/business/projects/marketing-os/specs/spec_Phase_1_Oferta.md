@@ -72,18 +72,45 @@ Phase 1 NO arranca a menos que se cumplan los **10 checks** (vs 4 anteriores). S
 ### Propósito
 Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del avatar (no en pain points).
 
-### Guion de educación del instrumento (canon wizard/HelpPanel — regla §2b del Setup Agent: nunca un número antes que su instrumento)
+### Guion de educación del instrumento (canon LITERAL — mandato del operador D-032: este copy entra al sistema tal cual, no parafraseado. Regla §2b del Setup Agent: nunca un número antes que su instrumento)
 
-Antes de mostrar CUALQUIER score, el wizard enseña la ecuación. Versión beat (corta):
+**Versión beat (corta — se muestra ANTES del primer score):**
 
-> "Para diseñar tu oferta, primero medimos cuánto vale **el camino crudo** que ofreces hoy — sin garantías ni extras todavía. Lo medimos con 4 preguntas, cada una de 1 a 10 (10 = perfecto):
+> "Para diseñar tu oferta, primero medimos cuánto vale **el camino crudo** que ofreces hoy — el producto tal cual, sin garantías ni extras todavía. Lo medimos con 4 preguntas, cada una de 1 a 10 (10 = perfecto):
 > 🌟 **Sueño** — ¿qué tan grande es el resultado que prometes, para ESTA persona?
 > 🤝 **Probabilidad** — ¿cuánto cree ella que esto le funcionará *a ella*?
 > ⏱️ **Tiempo** — ¿qué tan rápido ve resultados? (10 = inmediato)
 > 💪 **Esfuerzo** — ¿qué tan poco le cuesta? (10 = se lo damos hecho)
 > Las 4 se **multiplican** (no se suman): un solo eje por el suelo arruina la oferta entera aunque los demás sean perfectos — igual que en la realidad. El total va de 1 a 10.000; debajo de ~1.000 la oferta es débil y el siguiente paso existe para arreglarla. El eje más bajo se vuelve la orden de trabajo del stack."
 
-Versión panel (añade): la convención 10=óptimo invierte tiempo/esfuerzo respecto a la fórmula original de Hormozi (donde dividen como fricción) para que más-alto-siempre-sea-mejor; los umbrales completos (tabla abajo); y que los scores que Sandi propone salen de los artefactos firmados de Phase 0 (cada uno cita su fuente) — el usuario puntúa/ajusta, Sandi reta.
+**Versión panel (completa — "¿Cómo se calcula?", fija en el HelpPanel del paso):**
+
+> Los 4 ejes, con lo que significa cada extremo:
+>
+> | Eje | La pregunta que hace | 10 significa | 1 significa |
+> |---|---|---|---|
+> | 🌟 **Sueño** | ¿Qué tan grande/deseado es el resultado que prometes, para ESTA persona? | El sueño de su vida | Un beneficio marginal |
+> | 🤝 **Probabilidad** | ¿Cuánto cree ELLA que esto le funcionará *a ella*? | Certeza casi total | Apuesta a ciegas |
+> | ⏱️ **Tiempo** | ¿Qué tan rápido ve resultados? | Inmediato | Años de espera |
+> | 💪 **Esfuerzo** | ¿Qué tan poco le cuesta en trabajo/sacrificio? | Se lo damos hecho | Sacrificio enorme |
+>
+> *Nota glass-box: en la fórmula original de Hormozi, tiempo y esfuerzo **dividen** — son fricción. Nosotros los puntuamos invertidos (10 = sin fricción) para que más alto siempre sea mejor. Misma matemática, escala más legible.*
+>
+> **El composite:** las 4 se **multiplican** — no se suman. Por qué: un solo eje por el suelo arruina la oferta entera aunque los demás sean perfectos (10×10×10×1 = 1.000, no 7.750) — igual que en la realidad: nadie compra el sueño perfecto en el que no cree. Rango resultante: **1 a 10.000**.
+>
+> **Los umbrales** (qué significa el número):
+>
+> | Composite | Lectura | Qué pasa |
+> |---|---|---|
+> | < 100 | Inaceptable | Bloqueo duro — la fricción supera el beneficio |
+> | 100 – 1.000 | Débil | Pasa solo con plan de optimización firmado |
+> | 1.000 – 3.000 | Estándar | Avanza, marcada para iterar |
+> | 3.000 – 6.000 | Sólida | Avanza limpia |
+> | > 6.000 | Excepcional | Nivel Hormozi |
+>
+> **Y de dónde salen los números:** cada score lo propone Sandi leyendo tus artefactos firmados de la fase anterior (los miedos, hábitos y metas de cada persona citan su campo exacto) — y **tú puntúas**: aceptas, ajustas, o la retas. Su propuesta nunca es el dato.
+
+Implementación: este copy vive como datos del wizard en sandia (`lib/wizard/value-equation-education.ts`) — beat antes del primer score, panel como sección fija del paso 1.1.
 
 ### Convención de scoring (LOCKED — no se altera)
 
