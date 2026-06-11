@@ -7,7 +7,7 @@
 
 ## 1. Qué es
 
-**Sandi** = SaaS AI-first que guía a NO-expertos de "tengo una idea" a "tengo estrategia de marketing accionable". Implementación en `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase; M0 AI-first rebuild + migración avatars/strategies).
+**PROD: https://sandia-marketing.vercel.app** (Vercel git-integration: cada push a main despliega solo; env vars + Supabase Auth URLs configurados por el operador 2026-06-10). **Sandi** = SaaS AI-first que guía a NO-expertos de "tengo una idea" a "tengo estrategia de marketing accionable". Implementación en `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase; M0 AI-first rebuild + migración avatars/strategies).
 
 **Diferenciador (la joya):** orquestación paralela multi-avatar — N avatares, cada uno con su estrategia versionada y su loop Phase 1→5.
 
