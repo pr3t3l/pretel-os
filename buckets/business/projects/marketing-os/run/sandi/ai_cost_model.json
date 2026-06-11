@@ -30,6 +30,7 @@
   },
   "estimated_phases_1_5": {
     "_basis": "[ESTIMACIONES] pre-build, derivadas de las clases medidas + conteo de acciones esperado por spec. Se reemplazan con medicion real cuando cada fase se construya (mismo mecanismo project_llm_calls)",
+    "scope_clarification_d034": "USER-CORRECTED 2026-06-11: el 'ciclo completo 0-5' cubre ESTRATEGIA + TEXTO (copy de posts, captions, emails, guiones y briefs para visuales). NO incluye generacion de imagenes ni video - esos son (a) assets propios del usuario (las fotos de sus tortas/productos) o (b) capacidad futura (multimodal parqueado en 0.1; candidato premium con su propio modelo de costo). La oferta (1.2/1.4) y el copy de venta NUNCA prometen 'posts listos' implicando visuales terminados - honestidad arquitectural",
     "per_cycle_one_avatar": [
       {"phase": "1 Oferta", "est_usd": [0.25, 0.5], "assumption": "6-10 propuestas estrategicas (equation, stack, pricing) + 1 research check de precios competitivos + beats"},
       {"phase": "2 Contenido", "est_usd": [0.3, 0.9], "assumption": "el driver de volumen: 20-40 generaciones (pilares, hooks, derivados) MAYORMENTE en tier beat/copy barato; sube si el usuario regenera mucho"},

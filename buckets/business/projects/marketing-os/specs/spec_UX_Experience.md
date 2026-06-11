@@ -67,6 +67,19 @@ Toda pantalla de fase responde 4 preguntas SIN scroll: **¿dónde estoy?** (rail
 - **Capas de audiencia (USER-CORRECTED 2026-06-11):** tres capas, sin fugas entre ellas. (1) **Flujo principal** = lenguaje llano, una decisión — lo que TODO usuario entiende sin diccionario. (2) **Panel de apoyo** = profundidad opcional para el curioso ("¿Qué es esta fase?", "¿De dónde sale?", "¿Cómo se calcula?") — sigue siendo lenguaje de usuario, nunca obligatorio. (3) **Admin** (Módulo C) = la maquinaria técnica: modelos, costos por llamada, prompts, tablas. **Nombres de archivos, tablas, modelos e infraestructura NUNCA aparecen en las capas 1-2.** Regla de prueba: si Dana (la repostera) no lo entendería, no va en capa 1; si no le sirve para decidir mejor, tampoco en capa 2.
 - El mockup de Claude Design (zip) aporta el chrome (rail/topbar/panel/tokens); este patrón aporta el ALMA conversacional. **Fusión, no reemplazo.** Anti-meta del Setup Agent spec: estructura sin los 6 movimientos = Typeform, no Sandi.
 
+## 2c. El hub del proyecto (dashboard — mandato del operador 2026-06-11, D-034)
+
+Hoy el proyecto aterriza directo en el wizard de fase — las cosas importantes quedan "enterradas" dentro de los pasos. **El proyecto necesita un hub**: una pantalla home donde el usuario ve su negocio completo de un vistazo y navega a todo. Contenido mandatado:
+
+1. **Tus avatares, al frente** — tarjeta por avatar con su estado (🟢 activo y en qué fase va · ⚪ en banca con su trabajo de Fase 0 intacto) y la acción **"Encender este público"** visible AHÍ (no enterrada en el paso 0.3). El avatar activo enlaza a su loop (oferta→contenido→publicar→medir→ajustar).
+2. **Puntos importantes siempre a la vista** — las decisiones clave firmadas, sin re-navegar los pasos: tu cliente ideal (beachhead), el precio sugerido (cuando 1.4 lo firme), el posicionamiento elegido, el nombre. Son el "resumen ejecutivo" vivo del proyecto.
+3. **Métricas y resultados de las fases siguientes** — cuando Phase 3-5 corran: analíticas, resultados por avatar/estrategia, señales abiertas. El hub es donde el dueño VE su marketing funcionar (KPI primario = dinero, no likes).
+4. La **Fundación (Fase 0)** queda accesible como sección cerrada/firmada (revisitable, enmendable — nunca trampa).
+
+Regla de jerarquía: el hub responde "¿cómo va mi negocio y qué sigue?"; el wizard responde "¿qué decido ahora?". No se mezclan.
+
+**Naming (doctrina del operador, mismo D-034):** nombres comunes del marketing > metáforas inventadas — "Tu cliente ideal" (no "Tu puerta"), "Tus avatares" (no "Tus personas"), "Tu competencia" (no "Tu cancha", ya renombrado). La jerga PROFUNDA sigue oculta (TAM/SAM, awareness levels); el término común del oficio sí se usa y se enseña.
+
 ## 3. Anti-patrones (never-dos de UX)
 
 - ❌ Dos preguntas activas en una pantalla. ❌ Muro de texto (>4 frases por beat).
