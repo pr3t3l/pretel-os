@@ -326,6 +326,20 @@ Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `
 ### Propósito
 Construir el conjunto core + bonuses cuyo valor percibido stackeado cumpla **ambos** gates: ratio adecuado al business_type × purchase_type **Y** gross margin saludable según delivery_format.
 
+### Guion de educación del instrumento (canon LITERAL — regla §2b: el concepto de stack se enseña ANTES de mostrar valores)
+
+**Versión beat (se muestra ANTES de la primera tarjeta con valor):**
+
+> "Vamos a armar tu oferta como un **paquete**. Cada pieza tiene un **valor** — lo que costaría conseguirla por separado, probado con precios reales de tu competencia — y el paquete entero tiene **UN precio**, mucho menor. Esa distancia entre lo que vale y lo que cuesta es lo que hace que decir que no se sienta tonto.
+> Ojo, lo más importante: **los valores NO son precios que alguien paga.** Son el 'esto es lo que recibes' de tu página de venta. Tu cliente paga solo el precio final — los valores existen para que VEA cuánto se lleva por ese precio."
+
+**Versión panel ("¿Cómo se arma el paquete?"):**
+
+> - Cada pieza declara su valor con un **comparable real citado** (un competidor que cobra eso por algo equivalente) — nunca un número inventado.
+> - La forma final en la página de venta es siempre: lista de piezas con su valor → **"Valor total: $X. Tu inversión hoy: $Y."** La resta la hace el cliente solo.
+> - Dos candados protegen el paquete: el valor total debe ser **≥N× el precio** (N según tu tipo de negocio) y el margen debe ser **≥M%** (según lo que cuesta entregarlo). Si un candado falla, el paquete se rediseña — no se publica.
+> - Si el producto tendrá **niveles de precio** (básico/medio/premium), eso se decide en el paso de pricing (1.4, `tier_strategy`) — el stack define QUÉ se entrega; los niveles definen CÓMO se escalona.
+
 ### Tabla derivada de ratio_target (no hardcoded, calculada)
 
 `ratio_target` se calcula desde `business_context`:

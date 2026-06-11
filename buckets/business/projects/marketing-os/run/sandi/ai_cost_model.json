@@ -62,8 +62,10 @@
   "credit_design_seed": {
     "_status": "PROPUESTA para 1.4 (el operador dispone)",
     "principle": "bait_hook_credits (0.1): el margen vive en el consumible recurrente. Los creditos son la unidad de valor visible; su peso refleja el costo real por clase",
+    "unit_name_candidate": "Beats - acunado por el operador en sesion 3 ronda 6 ('eso daria un numero de Beats... consumo de los beats'). Ratificar como nombre user-facing del credito en 1.4 (naming)",
     "seed_weights": {"beat_ligero": "incluido/simbolico", "propuesta_estrategica": "1 credito", "research_web": "10-12 creditos"},
-    "monthly_allowance_sizing": "la mensualidad de $30 incluye creditos para ~1 Foundation o ~2-3 ciclos de avatar/mes de uso tipico (COGS $4-6) - se calibra con medicion real post-launch (Phase 4)"
+    "monthly_allowance_sizing": "la mensualidad de $30 incluye creditos para ~1 Foundation o ~2-3 ciclos de avatar/mes de uso tipico (COGS $4-6) - se calibra con medicion real post-launch (Phase 4)",
+    "suggestion_loop_guardrail": "entendimiento del operador validado: las sugerencias/notificaciones ayudan al usuario Y empujan consumo de Beats - LEGITIMO solo si cada sugerencia es genuinamente util (valor primero, consumo como consecuencia). Sugerencias disenadas para quemar creditos sin valor = dark pattern = prohibido por honestidad arquitectural"
   },
   "operator_signoff": false,
   "status": "draft - insumo de 1.2 (delivery_cost) y 1.4 (pricing creditos); medido=real, estimado=etiquetado"
