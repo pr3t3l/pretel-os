@@ -1,0 +1,107 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. OUTPUT CANONICO de Phase 1 (spec v1.6 seccion 8) - consolidacion del ciclo 1. Los bloques grandes ya firmados se referencian por path (mismo patron que product_brief_v2). DRAFT: 1.4 en curso (language_pack + pricing propuestos; naming + statement pendientes).",
+  "offer_id": "offer_priya_v1_20260611",
+  "run": "sandi",
+  "phase": "phase_1",
+  "linked_to": {
+    "strategy_id": "strat_priya_v1",
+    "strategy_version": 1,
+    "product_brief_path": "run/sandi/product_brief_v2.json",
+    "primary_avatar_id": "avatar_enjaulado_marketplace",
+    "covers_avatars": ["avatar_enjaulado_marketplace"]
+  },
+  "multi_avatar_strategy": "separate_strategies",
+  "value_equation_per_avatar": {
+    "path": "run/sandi/value_equations.json (signed_v1 x4; Priya re-score D-036: likelihood 6, composite 1440 estandar_operativo)"
+  },
+  "stack": {
+    "path": "run/sandi/offer_stack.json (signed_v1 D-035: valor $333 / precio $30 / ratio 11.1x / margen 76%)"
+  },
+  "risk_urgency_displacement": {
+    "path": "run/sandi/risk_urgency.json (signed_v1 D-036: money_back incondicional 30d + deadline-Q4 con regla de retiro + sin escasez + displacement)"
+  },
+  "pricing": {
+    "_status": "PROPUESTA 1.4 - el operador dispone",
+    "price_point_usd": 30,
+    "price_mechanism": "lista_fija + por_volumen",
+    "price_mechanism_note": "suscripcion $30/mes (lista fija) que incluye una bolsa mensual de Beats; acciones consumen Beats por peso de clase (por volumen). Menu BMC E3",
+    "monetization_pattern_echo": "bait_hook_credits (business_context 0.1): el margen vive en el consumible recurrente (Beats). Economia firmada en ai_cost_model: COGS tipico $3-6 => margen 80-90%",
+    "credits_unit_name": "Beats - acunado por el operador; RATIFICAR aqui como nombre user-facing",
+    "credits_seed": {
+      "allowance_monthly": "bolsa de Beats del plan $30 dimensionada para ~1 Fundacion completa O 2-3 ciclos de avatar/mes de uso tipico (ai_cost_model.credit_design_seed)",
+      "weights": "acciones ligeras incluidas/simbolicas - propuesta estrategica 1 Beat - research con web 10-12 Beats",
+      "calibration": "pesos y bolsa se calibran con telemetria real (Modulo C); estos son seed"
+    },
+    "price_anchor": {
+      "anchor_type": "total_stack",
+      "anchor_statement": "Todo esto vale $333. Tu inversion: $30/mes."
+    },
+    "price_rationale": "cita los tres pilares: (1) value_equation re-scored 1440 (estandar operativo - precio de entrada coherente, no premium); (2) stack ratio 11.1x >= 5x (el paquete sostiene el precio con holgura); (3) competitive_position: entrada bajo M1 ($99 = 1 ICP) y bajo el entry serio de seller tools (Helium $129), 100-250x bajo agencia, apenas sobre el sustituto #1 ChatGPT $20 - la diferencia se justifica por metodologia+memoria+loop, no por precio (lectura firmada de pricing_tiers.json)",
+    "competitive_position": {
+      "competitors_referenced": [
+        {"name": "M1-Project (Elsa AI)", "price_usd": 99, "their_stack_estimate_usd": 99, "note": "1 ICP; $199 = 3 ICPs sin loop"},
+        {"name": "ChatGPT/Claude a mano (sustituto #1)", "price_usd": 20, "their_stack_estimate_usd": 20, "note": "se desplaza con metodologia+memoria+loop, no con precio"},
+        {"name": "Jasper", "price_usd": 59, "their_stack_estimate_usd": 69, "note": "copy sin estrategia"},
+        {"name": "Agencia full-service SMB", "price_usd": 5000, "their_stack_estimate_usd": 8000, "note": "el techo del mercado"}
+      ],
+      "your_price_usd": 30,
+      "your_tier_chosen": "below_market",
+      "tier_rationale": "cuna de entrada D-028 (H4): ~$30 con valor de tier $99+ - below_market en precio, premium en valor percibido (11.1x). No competimos por precio contra ChatGPT $20: competimos por sistema completo"
+    },
+    "tiers": [
+      {"tier_name": "puerta_gratis", "price_usd": 0, "delta_value": "PROPUESTA free door (E5): el primer paso de la Fundacion (0.1 'Tu negocio' con cowork de idea) gratis - vive la co-creacion con SU idea + captura email + firma su primer gate; el resto de la Fundacion y el loop requieren plan. Job: demostrar el metodo + lead magnet estructural. NO computa para validacion de tier_strategy (tiers de pago)", "is_decoy": false},
+      {"tier_name": "base", "price_usd": 30, "delta_value": "todo el sistema: Fundacion completa + N avatares (encendido bajo politica D-034) + loop 1-5 + bolsa mensual de Beats", "is_decoy": false}
+    ],
+    "tier_strategy": "single_tier",
+    "tier_strategy_note": "1 tier de pago (validacion: puerta gratis no computa - aclaracion spec 2026-06-11). good_better_best y founders-price (urgency B diferida) son candidatos post-PMF con datos del Modulo C"
+  },
+  "name": null,
+  "name_status": "PENDIENTE - 1.4 output C: decision del nombre DEFINITIVO (working 'Sandi' desde 0.1; dominio/trademark a verificar). LA decision del operador",
+  "positioning_variants": [
+    {
+      "avatar_id": "avatar_enjaulado_marketplace",
+      "angle": "tu salida del marketplace, publico por publico - el plan que construye el canal que SI es tuyo sin soltar Amazon (D-028 ciclo 1)",
+      "language_pack": {
+        "_status": "PROPUESTA 1.4.0 - fuentes: avatars.json (where_we_meet, pains literales, triggers) + buyer_persona.online_communities (seller forums) + quote real del 0.3",
+        "vocabulary_register": "profesional",
+        "vocabulary_register_note": "pragmatica de seller forum: numeros, fees, margenes - emocional SOLO en los momentos de rabia (fee hike, suspension)",
+        "key_phrases": [
+          "the percentage they take (quote literal de seller, 0.3)",
+          "fees eating my margin",
+          "own my audience / own your audience",
+          "off-Amazon sales",
+          "my customer, not Amazon's",
+          "one suspension away (from zero)",
+          "build my own channel without tanking my ranking"
+        ],
+        "avoid_phrases": [
+          "AI marketing tool (NUNCA - D-028: oceano rojo)",
+          "guru / secret / hack / blueprint (vocabulario de los que la quemaron)",
+          "passive income / get rich",
+          "quit Amazon / leave Amazon overnight (ella NO quiere irse: quiere dejar de depender)",
+          "influencer / go viral"
+        ]
+      }
+    }
+  ],
+  "statement_paths_by_avatar": {
+    "avatar_enjaulado_marketplace": "PENDIENTE - offer_statement_priya.md se escribe tras el naming (1.4 output B, <=350 palabras, usa el language_pack)"
+  },
+  "signal_rules_triggered": [
+    "VALUE-002 (Priya 960 debil) - RESUELTO: D-031 sanciono bloqueo blando + re-score D-036 a 1440",
+    "PRICING-001 no dispara: competitive_position poblado con 4 referencias de pricing_tiers"
+  ],
+  "metadata": {
+    "hours_invested": 0,
+    "usd_invested": 0,
+    "_metadata_note": "se cuantifica al cierre del gate global G-Phase-1",
+    "completed_at": null,
+    "operator_signoff": false,
+    "phase_2_handoff": {
+      "path": "run/sandi/offer_stack.json#phase_2_handoff (objecion precio -> copy ROI; residuo anxiety podre-sola -> onboarding; habit jaula -> displacement como copy central)"
+    }
+  },
+  "operator_signoff": false,
+  "status": "draft - pricing + language_pack propuestos; PENDIENTES: ratificar Beats, naming definitivo, statement, gate global"
+}

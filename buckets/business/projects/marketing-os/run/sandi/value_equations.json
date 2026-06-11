@@ -87,7 +87,17 @@
       "decision_ref": "D-031 (DB 00d0cd0c)",
       "operator_signoff": true,
       "signoff_note": "operador 2026-06-11: 'procede' - scores firmados tal cual sobre draft propuesto. Juicios abiertos enmendables documentados en D-031: HF-dogfood = demo, no prueba social; dream statement sin cambio",
-      "status": "signed_v1"
+      "status": "signed_v1",
+      "re_score_post_stack": {
+        "applied": true,
+        "decision_ref": "D-036 (DB 206ba1cc) - per plan D-031/D-035",
+        "likelihood": 6,
+        "likelihood_rationale": "FIRMADO 4->6: el stack convierte creeme en verificalo (Ruta al primer dolar = hito medible 30d; Medidor = numeros semanales) + garantia INCONDICIONAL 30d firmada en 1.3. No 7-9: casos reales con dinero atribuido llegan post-launch",
+        "composite_value_score": 1440,
+        "composite_math": "8 * 6 * 5 * 6 = 1440",
+        "category": "estandar_operativo",
+        "note": "la oferta SALE del bloqueo blando VALUE-002 por diseno (stack+garantia), no por maquillaje. Primer candidato a iterar en Phase 5 (banda 1000-3000)"
+      }
     },
     "avatar_lanzador_digital": {
       "avatar_id": "avatar_lanzador_digital",

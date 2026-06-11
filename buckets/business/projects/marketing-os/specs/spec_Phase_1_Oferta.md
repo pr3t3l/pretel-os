@@ -640,10 +640,10 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 - `good_better_best` aumenta ticket promedio ~30% para productos digitales (heurística, no ley)
 - `price_mechanism` declarado (no implícito): nombrar el mecanismo obliga a decidir QUÉ se cobra (cuota plana vs uso vs ambos) antes de decidir CUÁNTO
 - Si el producto tiene puerta gratuita (free tier / trial / lead magnet — Curso 1, paso 10 del workflow): se declara como tier de entrada en `tiers[]` (`price_usd: 0`) con su job explícito (capturar email / activar / demostrar método). El lead magnet pertenece a la **arquitectura de la oferta** (se decide aquí); sus assets se **producen** en Phase 2. Una puerta gratis sin job declarado es costo sin estrategia.
-- Validación cruzada `tier_strategy` ↔ `tiers.length`:
-  - `single_tier` → `tiers.length === 1`
-  - `good_better_best` → `tiers.length === 3`
-  - `anchor_decoy` → `tiers.length >= 2`, primer tier marcado `is_decoy: true`
+- Validación cruzada `tier_strategy` ↔ `tiers.length` — **cuenta solo tiers DE PAGO** (`price_usd > 0`); la puerta gratuita (E5) se declara en `tiers[]` pero no computa para esta validación (aclaración 2026-06-11: E5 creó el caso borde free-door + single_tier):
+  - `single_tier` → 1 tier de pago
+  - `good_better_best` → 3 tiers de pago
+  - `anchor_decoy` → ≥2 tiers de pago, primer tier de pago marcado `is_decoy: true`
 
 ### Output B: `offer_statement.md` — página única (≤350 palabras)
 
