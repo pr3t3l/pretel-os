@@ -499,6 +499,22 @@ Skill registrado en pretel-os.
 ### Propósito
 Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia del momento (urgency genuina), inercia del status quo (displacement framing ataca habit).
 
+### Guion de educación del instrumento (canon LITERAL — regla §2b: las tres piezas se enseñan ANTES de proponer nada)
+
+**Versión beat:**
+
+> "Este paso baja las tres últimas barreras de tu oferta — y es 100% tuyo: el sistema no decide ética por ti.
+> 🛡️ **La garantía** — le quitas el riesgo al cliente y lo asumes tú. Solo se publica si la honrarías de verdad: una garantía que no cumplirías vale menos que ninguna.
+> ⏰ **La urgencia** — una razón REAL para actuar hoy y no en 30 días. Si no existe una razón real, se deja en blanco: las cuentas regresivas inventadas son el sello de los que ya quemaron a tu cliente.
+> 🔄 **El reemplazo** — tu oferta debe REEMPLAZAR algo que tu cliente ya hace, no sumarse encima. Contra la inercia, 'una cosa más' siempre pierde."
+
+**Versión panel ("¿Por qué estas tres?"):**
+
+> - La garantía ataca un miedo concreto de tu cliente (se nombra cuál); su prueba ácida es una sola pregunta: *¿la honrarías sin dudar?* Si dudas, no se publica.
+> - La urgencia debe conectar con un **disparador real de tu cliente** (su temporada, su ventana, su evento) — no con tu necesidad de vender. Cuando el calendario deja de hacerla verdad, se retira.
+> - La escasez solo existe si es físicamente verdad (cupos reales, capacidad real). Fabricarla está prohibido por el sistema, no es una opción configurable.
+> - El reemplazo nombra el **hábito desplazado** y el **costo de seguir igual** — esa frase se vuelve copy central en la fase de contenido.
+
 ### Output: `risk_urgency.json`
 
 ```json

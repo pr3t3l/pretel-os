@@ -1,0 +1,82 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] seed v1. Risk Reversal + Urgency + Displacement del ciclo 1 (strat_priya_v1), spec v1.6 seccion 6. DRAFT: propuestas de Sandi con honesty checks - LA DECISION ES 100% DEL OPERADOR (V1-V3 manual permanente, decision etica irreductible). Cada pieza requiere su eleccion explicita.",
+  "run": "sandi",
+  "phase": "phase_1",
+  "sub_step": "1.3-risk-urgency-displacement",
+  "strategy_id": "strat_priya_v1",
+  "risk_reversal": {
+    "_options_for_operator": [
+      {
+        "option": "A (RECOMENDADA por Sandi)",
+        "type": "money_back",
+        "statement": "Si en tus primeros 30 dias sientes que esto es otro humo, escribenos y te devolvemos el mes. Sin formularios, sin letra pequena.",
+        "conditions": "ninguna - pedirlo basta (primeros 30 dias de la primera suscripcion)",
+        "why_recommended": "el avatar es post-quemadura de gurus: la letra pequena y las condiciones le huelen a escape de estafador. Incondicional = la senal de confianza mas fuerte para ESTE avatar. Ataca directo el eje debil (likelihood)",
+        "honesty_check": "costo real de honrarla: $30 + ~$1-3 de COGS por usuario que la pida; a $30/mes el abuso esperable es bajo y cada reembolso pre-PMF es una conversacion de aprendizaje. VEREDICTO PENDIENTE DEL OPERADOR: la honraria sin dudar?"
+      },
+      {
+        "option": "B (alternativa)",
+        "type": "conditional_money_back",
+        "statement": "Sigue el plan 30 dias - si completas tus sesiones y no terminas con tu plan por publico y tus primeros suscriptores propios, te devolvemos el mes.",
+        "conditions": "completar las sesiones del primer mes (el sistema lo registra)",
+        "why_alternative": "mas Hormozi (condiciona al compromiso) y el sistema PUEDE verificar la condicion honestamente - pero introduce exactamente la letra pequena que el avatar castiga",
+        "honesty_check": "verificable en producto (gates/checkins); riesgo: percepcion de condicion-trampa en avatar post-guru"
+      }
+    ],
+    "anxieties_addressed": ["anxiety #3 'ya pague gurus de FBA que no sirvieron - esto es otro humo?' + objections_universal #1 (confianza/resultado)"],
+    "operator_choice": null,
+    "status": "ESPERANDO eleccion del operador (A / B / ajustar / none con justificacion)"
+  },
+  "urgency": {
+    "_options_for_operator": [
+      {
+        "option": "A (RECOMENDADA por Sandi - solo valida EN ventana)",
+        "type": "deadline",
+        "statement": "Para llegar a las fiestas de fin de ano vendiendo por tu propio canal, tu plan necesita arrancar con 8-12 semanas de ventaja. Empezar hoy es llegar a Q4 con audiencia; empezar en octubre es llegar tarde.",
+        "is_genuine": true,
+        "genuine_reason": "matematica de runway, no presion inventada: construir lista + primeras ventas propias toma 8-12 semanas (time_delay firmado en la value equation). El deadline lo pone el calendario de Q4, no nosotros",
+        "aligned_with_trigger": "trigger #3 de Priya: 'preparacion Q4: quiere capturar holiday en canal propio' (estacional, urgencia media)",
+        "alignment_rationale": "la urgencia monta la ventana REAL del avatar (su Q4), no una oferta-relampago nuestra. Regla de retiro: fuera de la ventana jun-sep esta urgencia SE RETIRA del copy (cuando el calendario deja de hacerla verdad, mentirla seria fabricarla)"
+      },
+      {
+        "option": "B (requiere COMPROMISO real del operador)",
+        "type": "price_increase",
+        "statement": "Precio de fundadores: $30/mes para la primera cohorte; al salir de beta sube.",
+        "is_genuine": "SOLO si el operador se compromete de verdad a subir el precio post-beta - si no hay compromiso firme, esta opcion es urgency fabricada y queda PROHIBIDA",
+        "genuine_reason": "pendiente del compromiso del operador (decision de pricing de largo plazo, cruza con 1.4)",
+        "aligned_with_trigger": null,
+        "alignment_rationale": "no se ancla a trigger del avatar sino a la economia del producto - valida solo con compromiso real"
+      },
+      {
+        "option": "C",
+        "type": "none",
+        "statement": "sin urgencia activa - la oferta se sostiene sola con ratio 11x + garantia",
+        "is_genuine": true,
+        "genuine_reason": "no usar urgencia tambien es una opcion honesta"
+      }
+    ],
+    "operator_choice": null,
+    "status": "ESPERANDO eleccion del operador (A / B requiere su compromiso / C / combinacion A+B)"
+  },
+  "scarcity": {
+    "_recommendation": "NONE para V1 - no apilar mecanismos de presion sobre un avatar post-guru; la honestidad ES el diferenciador. Opcion disponible si el operador la quiere Y la honra: access_limited 'cohorte fundadora con soporte directo del fundador' (genuinamente limitada por su tiempo - seria verdad fisica)",
+    "type": "none",
+    "statement": null,
+    "is_genuine": true,
+    "genuine_reason": "sin escasez real que declarar a esta escala; fabricarla esta prohibido por sistema",
+    "operator_choice": null,
+    "status": "ESPERANDO confirmacion del operador (none recomendado / access_limited si lo honra)"
+  },
+  "displacement_framing": {
+    "_note": "OBLIGATORIO per spec (no skippable) - el habit #1 que el stack dejo declaradamente sin atacar se ataca AQUI",
+    "habit_being_displaced": "habit #1 de Priya: 'Amazon todavia paga las cuentas - la jaula es comoda' + las horas nocturnas de 'pelear con el algoritmo y los ads viendo su margen encogerse' (daily_routine)",
+    "replacement_narrative": "Esto no es una cosa MAS encima de Amazon: reemplaza las horas que cada semana le regalas al algoritmo - peleando ads y viendo tu margen encogerse - por construir el canal que si es tuyo.",
+    "cost_of_continuing_current_path": "cada mes igual = 30-70% del precio en fees y ads, cero clientes propios, y el negocio entero a una suspension de distancia. Sigues construyendo el negocio de Amazon, no el tuyo.",
+    "habits_attacked_by_framing": ["habit #1 (jaula comoda)", "habit #2 (operacion optimizada para el marketplace - refuerzo del bonus_3)"],
+    "operator_choice": null,
+    "status": "ESPERANDO aprobacion/ajuste del operador (la pieza es obligatoria; el texto es propuesta)"
+  },
+  "operator_signoff": false,
+  "status": "draft - 4 decisiones del operador pendientes (garantia A/B, urgencia A/B/C, escasez none/limited, displacement aprobar/ajustar)"
+}
