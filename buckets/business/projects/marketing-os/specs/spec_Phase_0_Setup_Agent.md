@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-0-setup-agent
-**Status**: spec drafted v1.0 (guion 0.1 perfilado; 0.2–0.4 stub)
-**Last updated**: 2026-06-07
+**Status**: spec drafted v1.1 (guion 0.1 perfilado; 0.2–0.4 stub; aperturas de fase 0–5 canónicas)
+**Last updated**: 2026-06-11
 **Implementation correction:** Targets `C:\Users\prett\Documents\sandia-marketing`. La plomería ya existe en M0 (`setup_agent` prompt versionado, `ProjectFoundationBrief` schema, `renderDraft` single shaper, 3 ejemplos anonimizados). Esto es el **contrato de comportamiento**, no código.
 
 **Reference**: `Overall_WF.md` §"Two extension patterns" + §"Flag Registry". Validado contra el corpus LIDR (tag `LIDR`) en pretel-os: best practices "Espectro de interfaces", "El prompt es artefacto de software", "Educational pre-flight + Step N of M"; lessons "transaccional vs conversacional" (clase 08), memoria conversacional tipada, CAG 3-7 ejemplos, costos multi-turno, prompt-inglés/salida-español.
@@ -46,6 +46,38 @@ Cada turno del Setup Agent ejecuta, en orden:
 6. **Co-crear / aportar (la esencia)** — no solo extraer y corregir: **proponer ideas que el usuario no tenía, construir sobre las suyas (yes-and), empujar la idea más lejos.** Toda propuesta va **etiquetada como propuesta** (no como hecho), con su porqué (glass-box) + un accept/reject fácil. El usuario **siempre es el autor**; Sandi propone, el usuario dispone (autonomía/SDT). Seguro para no-expertos solo porque va sobre glass-box + educación + autonomía (ver `Overall_WF.md` §"Generative Co-Creation"). *Sin este movimiento, Sandi es un formulario inteligente, no un socio.*
 
 **Calibración de la intervención (movimiento 3):** pesa el flag cuando la respuesta esconde un tradeoff caro (segmento híbrido, modelo de créditos, "todos" como nicho). Sé ligero cuando la respuesta es limpia. Si el usuario se auto-corrige (como "internacional… pero foco US"), **reconoce el instinto en vez de lecturear.**
+
+---
+
+## 2b. Apertura de fase + educación del instrumento (USER-CORRECTED 2026-06-11, manda sobre inferencia previa)
+
+Dos reglas que la sim de Phase 1 destapó (el operador recibió una tabla de scores sin contexto y no significó nada — violación del principio claridad/educación):
+
+**Regla 1 — Apertura de fase obligatoria.** Al ENTRAR a cada fase (la primera vez), Sandi entrega la apertura: *de dónde venimos → qué responde esta fase, en simple → por qué importa (qué consume esto después) → qué decides tú aquí.* Es un beat propio (no se mezcla con la primera pregunta) y queda **permanente en el panel glass-box** como "¿Qué es esta fase?" — el usuario puede volver a leerla siempre. Cumple el pre-flight de LIDR a nivel fase (el de §4 lo cumple a nivel sub-paso).
+
+**Regla 2 — Nunca un número antes que su instrumento.** Antes de mostrar cualquier puntuación, fórmula o score (value equation, composite, ratios, semáforos), el wizard **enseña el instrumento**: qué mide cada eje (en pregunta llana), la escala (y qué significa el tope), cómo se combina (y por qué así), y qué significan los umbrales. Versión corta en el beat; versión completa en el panel. Un score sin instrumento es jerga numérica — exactamente lo que el NUNCA #2 del SOUL prohíbe con palabras.
+
+### Aperturas canónicas (seed v1 — [Evolving Schema]: el wording se refina con uso)
+
+**Phase 0 — Tu fundación:**
+> "Todo lo que construyamos después se apoya en lo que descubramos aquí. Phase 0 responde **quién compra y por qué**: tu negocio (el terreno), cuánta gente busca esto (el mercado), por qué puerta entras (tu segmento), quiénes son exactamente (tus personas) y contra quién juegas (tu competencia). Por qué importa: un error aquí se multiplica en cada fase siguiente — cazarlo hoy cuesta una corrección; cazarlo con anuncios pagados cuesta presupuesto. Tú decides: cada pieza se firma, y nada avanza sin tu visto bueno."
+
+**Phase 1 — Tu oferta:**
+> "Phase 0 respondió quién compra y por qué (tus avatares, sus miedos, sus hábitos). Phase 1 responde **qué le ponemos enfrente exactamente**: qué incluye, a qué precio, con qué garantía, y con qué nombre. La meta: construir una oferta tan desbalanceada en valor-percibido vs precio que rechazarla se sienta tonto. Por qué importa: es la última fase de planificación antes de producir nada — todo lo que viene después (el contenido, los anuncios, los emails) cita lo que se decide aquí. Si la oferta es floja, un contenido brillante solo amplifica una promesa floja. Y es la palanca barata: mejorar la oferta sube la conversión sin pagar un dólar más de tráfico."
+
+**Phase 2 — Tu contenido:**
+> "Phase 1 decidió QUÉ pones enfrente (tu oferta, su precio, su nombre). Phase 2 responde **cómo la cuentas**: los temas que te hacen visible, los ganchos que detienen el scroll, y las piezas concretas por canal — en el idioma de cada público, no en el del producto. Por qué importa: el contenido no inventa la promesa, la traduce; aquí se fabrica todo el material que después se publica. Una oferta fuerte mal contada se queda invisible."
+
+**Phase 3 — Publicar:**
+> "Phase 2 fabricó el material. Phase 3 responde **dónde, cuándo y a quién se lo mostramos**: el calendario, los canales, y la fontanería de medición — que cada clic y cada venta dejen rastro de dónde vinieron. Por qué importa: aquí el plan toca el mundo real, y aquí se empieza a gastar dinero. Publicar sin medición montada es regar sin saber qué planta creció."
+
+**Phase 4 — Medir:**
+> "Phase 3 publicó. Phase 4 responde **qué funcionó EN DINERO**: no likes, no visitas — ventas atribuidas, cuánto costó conseguir cada cliente, y si la economía real se parece a la que estimamos. Por qué importa: es el detector de mentiras de todo lo anterior; estas cifras son las únicas que pueden contradecir nuestras hipótesis — y queremos que lo hagan pronto. De aquí salen las señales que disparan los ajustes."
+
+**Phase 5 — Ajustar:**
+> "Phase 4 levantó señales. Phase 5 responde **qué cambiamos y qué no**: cada señal va a la fase mínima que la arregla — un anuncio fatigado pide contenido nuevo, no rehacer tu investigación. Y tu estrategia no se edita: se versiona — la #2 nace aprendiendo de la #1 y el historial se conserva. Por qué importa: este loop convierte una campaña en un sistema que mejora solo. Sin él, todo lo anterior es un disparo único."
+
+**Implementación:** las aperturas viven como datos del wizard (`lib/wizard/phase-intros.ts` en sandia) — beat al entrar + sección fija del panel. Los guiones de cada fase añaden su educación-de-instrumento donde aparezca el primer score (ej: value equation en `spec_Phase_1_Oferta.md` §3).
 
 ---
 
@@ -138,3 +170,4 @@ Cada uno se perfila con el mismo formato de la sección 4 (pregunta llana → ar
 | D3 | Esquema vivo | Los artefactos JSON son semilla + `schema_version` + loop de aprendizaje (Pattern C). Aplica a todas las fases. |
 | D4 | Jerga oculta | El usuario nunca ve "buyer persona", "awareness level", "TAM". Pregunta llana → artefacto experto internamente. |
 | D5 | Calibración de flags | No flag por paso; pesado solo en tradeoffs reales; reconocer auto-correcciones del usuario. |
+| D7 | Apertura de fase + educación del instrumento (USER-CORRECTED 2026-06-11) | Toda fase abre con su apertura canónica (§2b) — beat propio + permanente en panel. Nunca se muestra un score sin enseñar antes el instrumento (ejes, escala, combinación, umbrales). Origen: feedback del operador en la sim de Phase 1 (tabla de scores sin contexto = nada). |

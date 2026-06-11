@@ -72,6 +72,19 @@ Phase 1 NO arranca a menos que se cumplan los **10 checks** (vs 4 anteriores). S
 ### Propósito
 Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del avatar (no en pain points).
 
+### Guion de educación del instrumento (canon wizard/HelpPanel — regla §2b del Setup Agent: nunca un número antes que su instrumento)
+
+Antes de mostrar CUALQUIER score, el wizard enseña la ecuación. Versión beat (corta):
+
+> "Para diseñar tu oferta, primero medimos cuánto vale **el camino crudo** que ofreces hoy — sin garantías ni extras todavía. Lo medimos con 4 preguntas, cada una de 1 a 10 (10 = perfecto):
+> 🌟 **Sueño** — ¿qué tan grande es el resultado que prometes, para ESTA persona?
+> 🤝 **Probabilidad** — ¿cuánto cree ella que esto le funcionará *a ella*?
+> ⏱️ **Tiempo** — ¿qué tan rápido ve resultados? (10 = inmediato)
+> 💪 **Esfuerzo** — ¿qué tan poco le cuesta? (10 = se lo damos hecho)
+> Las 4 se **multiplican** (no se suman): un solo eje por el suelo arruina la oferta entera aunque los demás sean perfectos — igual que en la realidad. El total va de 1 a 10.000; debajo de ~1.000 la oferta es débil y el siguiente paso existe para arreglarla. El eje más bajo se vuelve la orden de trabajo del stack."
+
+Versión panel (añade): la convención 10=óptimo invierte tiempo/esfuerzo respecto a la fórmula original de Hormozi (donde dividen como fricción) para que más-alto-siempre-sea-mejor; los umbrales completos (tabla abajo); y que los scores que Sandi propone salen de los artefactos firmados de Phase 0 (cada uno cita su fuente) — el usuario puntúa/ajusta, Sandi reta.
+
 ### Convención de scoring (LOCKED — no se altera)
 
 **Todos los ejes: 10 = óptimo, 1 = pésimo.**

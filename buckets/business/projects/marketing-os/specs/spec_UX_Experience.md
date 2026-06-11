@@ -63,6 +63,7 @@ Toda pantalla de fase responde 4 preguntas SIN scroll: **¿dónde estoy?** (rail
 ```
 
 - **Beat de Sandi** = los 6 movimientos en UI: captura/reflejo (texto corto), punto ciego (tarjeta flag SOLO si lo hay — calibrado), pregunta (controles), mostrar trabajo (chips fuente + panel), co-crear (tarjeta de propuesta).
+- **Apertura de fase (USER-CORRECTED 2026-06-11):** al entrar a una fase por primera vez, el primer beat es su apertura canónica (Setup Agent spec §2b: de dónde venimos → qué responde esta fase → por qué importa → qué decides tú) — pantalla/beat propio, sin pregunta encima. La apertura queda **fija en el panel glass-box** como "¿Qué es esta fase?". Misma regla a nivel instrumento: si la pantalla muestra un score, el panel lleva su sección "¿Cómo se calcula?" y el beat lo introduce ANTES de mostrar números.
 - El mockup de Claude Design (zip) aporta el chrome (rail/topbar/panel/tokens); este patrón aporta el ALMA conversacional. **Fusión, no reemplazo.** Anti-meta del Setup Agent spec: estructura sin los 6 movimientos = Typeform, no Sandi.
 
 ## 3. Anti-patrones (never-dos de UX)
@@ -72,6 +73,7 @@ Toda pantalla de fase responde 4 preguntas SIN scroll: **¿dónde estoy?** (rail
 - ❌ Modal que interrumpe el flow para pedir algo que puede esperar. ❌ Perder trabajo del usuario (todo es draft persistente).
 - ❌ Urgencia/escasez fabricada, badges falsos, confirmshaming — **prohibido por sistema** (honestidad arquitectónica, CONSTITUTION del producto).
 - ❌ Animación >300ms fuera del momento celebrate. ❌ Movimiento que contradice la dirección del flow.
+- ❌ Mostrar un score/puntuación antes de enseñar el instrumento que lo produce (qué mide, escala, cómo se combina, umbrales). Un número sin instrumento es jerga numérica.
 
 ## 4. Métricas de que la UX funciona (se miden desde V1)
 
