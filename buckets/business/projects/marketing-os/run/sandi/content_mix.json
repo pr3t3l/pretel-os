@@ -1,0 +1,30 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 2.1 - Awareness Mapping & Content Mix (spec Phase 2 v1.1 seccion 4). DRAFT propuesto por Sandi - el operador firma. Corre POR ESTRATEGIA (strat_priya_v1): la heuristica base usa offer_strategy del proyecto (create_demand, Caso B LOCKED) modulada por demand_type=mixed de la estrategia (D-032/E1).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.1-content-mix",
+  "strategy_id": "strat_priya_v1",
+  "linked_to_demand_dashboard": "product_brief_v2.demand.awareness_distribution (5/20/50/25, suma 100 - medido en 0.2)",
+  "offer_strategy_tag": "create_demand",
+  "offer_strategy_basis": "DEMAND-002 en 0.2 (alta informational, baja transactional: ~la mitad de las PYMEs sin estrategia formal -> educar es la cuna) - registrado en demand_quantification.md y D-028",
+  "demand_type_modulation": "strat_priya_v1.demand_type = mixed (D-032, 1er uso E1): las ventanas de rabia de Priya (fee hikes, suspensiones) tienen BUSQUEDA EXACTA -> sube Most/Solution Aware dentro de las bandas del Caso B para capturarlas; la educacion 'marketplace independence' sigue siendo el grueso",
+  "target_mix": {
+    "most_aware_pct": 15,
+    "solution_aware_pct": 30,
+    "problem_aware_pct": 40,
+    "unaware_pct": 15
+  },
+  "case_b_bands_check": "Most 15 en [10,20] OK - Solution 30 en [25,35] OK - Problem 40 en [35,45] OK - Unaware 15 en [10,20] OK (todas dentro de las bandas LOCKED del Caso B)",
+  "demand_alignment_delta": {
+    "most_aware_delta_pct": 10,
+    "solution_aware_delta_pct": 10,
+    "problem_aware_delta_pct": -10,
+    "unaware_delta_pct": -10,
+    "max_abs_delta_pct": 10,
+    "justification_if_max_delta_gt_30": null
+  },
+  "rationale": "Caso B (create_demand) porque la cuna firmada es educar; modulado +10 hacia Most/Solution por el demand_type mixed de Priya - cuando Amazon sube fees ella BUSCA con palabras exactas y ese intent se captura, no se educa. Problem Aware sigue siendo el grueso (40%): el playbook de independencia ES la educacion. Unaware 15%: la pista de prospectos nuevos (regla: nunca 0% en create_demand). Delta maximo 10 <= 30 -> CONTENT-004 no dispara.",
+  "operator_signoff": false,
+  "status": "draft - PROPUESTA esperando firma (G-Phase-2.1)"
+}
