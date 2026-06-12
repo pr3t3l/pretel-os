@@ -173,6 +173,28 @@
         "getcultora.com": "$11.25/yr"
       },
       "learning": "el .ai de palabras simples pronunciables esta arrasado - la ruta es acunacion mas propia o marca+.com con prefijo (get/try) o TLD .marketing"
+    },
+    "exploration_round_2": {
+      "date": "2026-06-12",
+      "operator_inputs": "sandia = significado con su hija; papaya = como su hija LO llama a el; cultivar/crecer resuena; mercado EN => foneticamente facil (leccion Alfredo->Alfred); preferencia nombre-de-persona o muy facil y pegajoso; candidatos propios: Papandi / Sapandi; abierto a no-frutas. Aporto 2 conceptos de logo (sandia sonriente dentro de papaya)",
+      "domains_checked": {
+        "papandi.com": "DISPONIBLE $11.25/yr",
+        "papandi.ai": "DISPONIBLE $160/2yr",
+        "trypandi.com": "DISPONIBLE $11.25",
+        "pandi.marketing": "DISPONIBLE $9.99",
+        "pandi.ai": "tomado",
+        "getpandi.com": "tomado",
+        "grova.ai": "tomado",
+        "getgrova.com": "tomado",
+        "pandia.ai": "tomado",
+        "ripely.ai": "tomado"
+      },
+      "conflict_screen_papandi": "busqueda web 'Papandi company/brand/app/software': CERO resultados - nombre virgen (2026-06-12). Screen formal USPTO + abogado sigue como gate pre-launch",
+      "evaluation": {
+        "papandi": "FRONTRUNNER - acunado por el operador: PAPaya + sANDIa (las dos frutas de su hija), foneticamente trivial en EN (pa-PAN-dee, fonemas comunes), energia de nombre-apodo carinoso (lo que ES), .com Y .ai libres, cero conflictos, el logo ya existe",
+        "sapandi": "DESCARTAR (flag honesto): 'sap' en slang EN = tonto/ingenuo ('don't be a sap') - regalo para el enemigo en mercado EN",
+        "pandi": "viable pero mas debil: raices tomadas (pandi.ai/getpandi.com), uso nicho 'P&I clubs' en seguros maritimos"
+      }
     }
   }
 }
