@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.1 - Awareness Mapping & Content Mix (spec Phase 2 v1.1 seccion 4). DRAFT propuesto por Sandi - el operador firma. Corre POR ESTRATEGIA (strat_priya_v1): la heuristica base usa offer_strategy del proyecto (create_demand, Caso B LOCKED) modulada por demand_type=mixed de la estrategia (D-032/E1).",
+  "_note": "[Evolving Schema] Sub-paso 2.1 - Awareness Mapping & Content Mix (spec Phase 2 v1.1 seccion 4). FIRMADO 2026-06-12 (D-041): 'todo perfecto'. Corre POR ESTRATEGIA (strat_priya_v1): la heuristica base usa offer_strategy del proyecto (create_demand, Caso B LOCKED) modulada por demand_type=mixed de la estrategia (D-032/E1).",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.1-content-mix",
@@ -25,6 +25,6 @@
     "justification_if_max_delta_gt_30": null
   },
   "rationale": "Caso B (create_demand) porque la cuna firmada es educar; modulado +10 hacia Most/Solution por el demand_type mixed de Priya - cuando Amazon sube fees ella BUSCA con palabras exactas y ese intent se captura, no se educa. Problem Aware sigue siendo el grueso (40%): el playbook de independencia ES la educacion. Unaware 15%: la pista de prospectos nuevos (regla: nunca 0% en create_demand). Delta maximo 10 <= 30 -> CONTENT-004 no dispara.",
-  "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando firma (G-Phase-2.1)"
+  "operator_signoff": true,
+  "status": "signed_v1 (D-041, DB 106635f3) - G-Phase-2.1 PASSED"
 }

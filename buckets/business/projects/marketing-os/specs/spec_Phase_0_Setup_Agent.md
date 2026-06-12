@@ -79,6 +79,8 @@ Dos reglas que la sim de Phase 1 destapó (el operador recibió una tabla de sco
 
 **Implementación:** las aperturas viven como datos del wizard (`lib/wizard/phase-intros.ts` en sandia) — beat al entrar + sección fija del panel. Los guiones de cada fase añaden su educación-de-instrumento donde aparezca el primer score (ej: value equation en `spec_Phase_1_Oferta.md` §3).
 
+**Regla 3 — Capa usuario sin maquinaria (USER-CORRECTED 2026-06-12).** Los códigos de decisión (D-xxx), nombres de señal (CONTENT-004) e IDs de sistema NUNCA aparecen en el beat de capa usuario: se dice "como ya firmaste" / "el sistema te pedirá justificación"; la referencia exacta vive en el panel ("Tus decisiones") y el registro. **El beat de paso completo tiene anatomía canónica de 8 movimientos** — ejemplo CAG LOCKED en `specs/cag_step_beat_canonical.md` ("el mensaje 1000 de 10"): instrumento en llano → dato propio citado → regla del paso → propuesta con desviación glass-box → tabla con porqués → candados a la vista con margen → traducción "en cristiano" → ask con autonomía y guardarraíl visible.
+
 ---
 
 ## 3. El esquema es VIVO — [Evolving Schema] (requisito del operador)

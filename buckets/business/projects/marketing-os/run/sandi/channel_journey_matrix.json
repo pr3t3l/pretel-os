@@ -1,0 +1,119 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.2-channel-journey-matrix",
+  "strategy_id": "strat_priya_v1",
+  "avatar_habits_basis": "where_we_meet firmado (0.3): 'tras una subida de fees o un susto de suspension; buscando how to sell off Amazon build own audience; foros de sellers'",
+  "channels_declared": [
+    "seo_blog",
+    "comunidades_sellers",
+    "email",
+    "paid_search_ventana"
+  ],
+  "matrix": [
+    {
+      "channel": "seo_blog",
+      "journey_stage": "consciencia",
+      "awareness_level": "problem_aware",
+      "format_primary": "guia/how-to del playbook (why fees eat your margin; build your own channel without tanking your ranking)",
+      "format_secondary": "checklist descargable (lead magnet -> puerta gratis)",
+      "frequency_per_week_v1": 1,
+      "kpi_primary": "organic_traffic",
+      "rationale": "funcion del canal: captura cronica + educacion - exactamente donde Priya busca (where_we_meet literal)"
+    },
+    {
+      "channel": "seo_blog",
+      "journey_stage": "consideracion",
+      "awareness_level": "solution_aware",
+      "format_primary": "comparativo long-form (marketplace-only vs own channel: the math; plan guiado vs DIY con ChatGPT)",
+      "format_secondary": "calculadora de fees embebida",
+      "frequency_per_week_v1": 0,
+      "frequency_note": "alterna con la guia semanal (1 pieza SEO/semana total, 60/40 problem/solution)",
+      "kpi_primary": "ranking_position",
+      "rationale": "el que compara busca numeros lado a lado; el comparativo es el formato de decision del canal"
+    },
+    {
+      "channel": "seo_blog",
+      "journey_stage": "decision",
+      "awareness_level": "most_aware",
+      "format_primary": "landing evergreen por busqueda exacta de ventana (amazon fee increase what to do -> el plan)",
+      "format_secondary": null,
+      "frequency_per_week_v1": 0,
+      "frequency_note": "1 pieza por trigger conocido (fee hike / suspension / Q4), evergreen re-impactable - no semanal",
+      "kpi_primary": "other",
+      "kpi_primary_custom": "free-door signups desde la landing (conversion a puerta gratis) - candidato a promocion Pattern A",
+      "rationale": "la busqueda exacta de la ventana de rabia aterriza aqui; la landing captura el intent caliente sin esperar ads"
+    },
+    {
+      "channel": "comunidades_sellers",
+      "journey_stage": "consciencia",
+      "awareness_level": "unaware_problem_aware",
+      "format_primary": "participacion value-first en hilos de fees/suspensiones (responder con sustancia, cero pitch)",
+      "format_secondary": "AMA/post propio ocasional cuando la comunidad lo permita",
+      "frequency_per_week_v1": 2,
+      "kpi_primary": "other",
+      "kpi_primary_custom": "respuestas/menciones cualitativas (validar mensaje) - el ejemplo canonico del custom en la spec",
+      "rationale": "foros de sellers = where_we_meet literal; funcion amplificacion/identidad. REGLA: value-first - las comunidades castigan marcas que llegan a vender",
+      "policy_note": "sin links promocionales salvo donde las reglas del foro lo permitan; la firma/perfil hace el trabajo"
+    },
+    {
+      "channel": "email",
+      "journey_stage": "decision",
+      "awareness_level": "solution_aware_most_aware",
+      "format_primary": "secuencia de bienvenida desde la puerta gratis (5 correos: metodo -> prueba -> plan) + nota semanal",
+      "format_secondary": null,
+      "frequency_per_week_v1": 1,
+      "kpi_primary": "open_rate",
+      "rationale": "funcion del canal: conversion - permission marketing (solo opted-in de la puerta gratis/lead magnet); el email convierte lo que SEO/comunidades capturan"
+    },
+    {
+      "channel": "email",
+      "journey_stage": "retencion",
+      "awareness_level": "most_aware",
+      "format_primary": "onboarding educativo del producto (suscripcion: el mes 2 se gana en el mes 1)",
+      "format_secondary": null,
+      "frequency_per_week_v1": 0,
+      "frequency_note": "quincenal dentro de la nota semanal post-launch",
+      "kpi_primary": "click_rate",
+      "rationale": "somos suscripcion (no one-shot): retencion entra a la matriz desde el dia 1"
+    },
+    {
+      "channel": "paid_search_ventana",
+      "journey_stage": "decision",
+      "awareness_level": "most_aware",
+      "format_primary": "campana de busqueda SOLO en ventana de rabia (anuncio de fee hike) apuntando a la landing evergreen",
+      "format_secondary": null,
+      "frequency_per_week_v1": 0,
+      "frequency_note": "DEFERRED a post-beta: por ventana de trigger, no calendario; presupuesto por definir en la sesion de costos",
+      "kpi_primary": "other",
+      "kpi_primary_custom": "costo por free-door signup en ventana",
+      "rationale": "funcion del canal: captura intent caliente; la ventana es real (la misma del deadline firmado) - el gasto espera al launch"
+    }
+  ],
+  "channels_unused_explanation": [
+    {
+      "channel": "youtube_long_form",
+      "reason": "natural del espacio seller PERO video excede la capacidad solo-operator de V1 y el alcance firmado (texto si, video no); los GUIONES quedan listos en 2.4 para activarlo en V2 sin re-plan"
+    },
+    {
+      "channel": "rrss_visual (IG/TikTok/Pinterest)",
+      "reason": "TRAMPA DE MARCO evitada: ahi viven los CLIENTES de Priya (compradores de home decor), no Priya (la sellera). El contenido de Papandi va donde vive la sellera"
+    },
+    {
+      "channel": "linkedin",
+      "reason": "puerta B2B parked desde el ICP (agencias/equipos) - se abre con esa ola, no antes"
+    }
+  ],
+  "journey_coverage": {
+    "consciencia": "seo + comunidades",
+    "consideracion": "seo comparativos",
+    "decision": "email + landing + paid-ventana",
+    "retencion": "email (suscripcion: desde dia 1)",
+    "advocacy": "DEFERRED pre-PMF: nace de clientes reales post-launch (comunidades como canal natural cuando existan casos) - excepcion documentada"
+  },
+  "weekly_load_check": "carga total V1: 1 pieza SEO + 2 participaciones de foro + 1 email = ~4 acciones/semana, todas con borrador hecho por Papandi - bajo el limite de 5/canal y realista para operador solo",
+  "operator_signoff": false,
+  "status": "draft - PROPUESTA esperando validacion del operador (G-Phase-2.2)"
+}
