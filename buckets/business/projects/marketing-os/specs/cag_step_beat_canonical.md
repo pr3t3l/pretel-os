@@ -22,6 +22,19 @@
 - Nombres de señal/alarma (CONTENT-004): en el beat se describen en llano ("el sistema te pedirá justificación"); el código puede vivir en el panel para el curioso. *(Inferencia de la doctrina de capas — el operador no lo corrigió explícitamente.)*
 - Los términos técnicos del oficio (awareness, etc.) pueden aparecer UNA vez entre paréntesis como educación; jamás como vocabulario portador.
 
+## Variante B — El beat de corrección con research (LOCKED 2026-06-12, mismo mandato)
+
+Cuando el usuario objeta un dato/propuesta y pide investigación, el beat cambia de anatomía (origen: la ronda de cadencias de 2.2, también calificada "Perfecto" + "guarda el formato"):
+
+1. **Reconocer la cazada, decompuesta.** Si hubo error propio, separar SUS capas glass-box ("mi notación era ambigua Y el número era bajo igual") — nunca defensiva, nunca auto-flagelación.
+2. **El corpus/lo propio PRIMERO.** Buscar en las fuentes del proyecto antes que en internet, y reportar honesto qué hay y qué falta ("tu corpus no trae números, pero trae la regla que te da la razón: 7-11-4").
+3. **Los estudios con cifras y escala.** Investigación externa con magnitudes que dan autoridad ("Buffer analizó 11M+ posts; Sprout ~2 mil millones de interacciones") — nunca "los expertos dicen".
+4. **Tabla operativa con matices.** Piso → meta → techo/alerta → ventanas. Los datos contradictorios se muestran, no se esconden ("sábado mejor día en TikTok, pero findes débiles en IG").
+5. **La jugada de eficiencia.** Cómo el sistema hace viable el número para ESTE usuario ("el mismo carrusel sirve 2 redes; te llega hecho").
+6. **El mandato del usuario capturado como requisito.** Si pidió una capacidad ("que sea trigger de notificaciones"), confirmarla convertida en tarea/spec con su esencia citada.
+7. **En cristiano + ask** (igual que la variante A).
+8. **Fuentes al pie, linkeadas.** Toda cifra externa con su link — el research sin fuentes es opinión.
+
 ## El ejemplo íntegro (limpio de capa usuario)
 
 > **El instrumento primero:** cuando alguien se cruza con tu contenido, está en uno de 4 momentos mentales: 😴 no sabe que le duele · 😣 sabe que duele, no que hay salida · 🔍 compara salidas · 🎯 busca esto exacto, hoy.

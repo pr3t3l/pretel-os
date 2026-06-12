@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8). ENMENDADA por D-042 (USER-CORRECTED): grandes superficies ON por defecto - rrss_social entra con formato texto-primero. ENMENDADA 2da vez por D-043 (USER-CORRECTED): cadencias con datos de estudios 2026 + escalera de cadencia (floor->target) + ventanas optimas + trigger de notificaciones (task 7493e337).",
+  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8). ENMENDADA por D-042 (USER-CORRECTED): grandes superficies ON por defecto - rrss_social entra con formato texto-primero. ENMENDADA 2da vez por D-043 (USER-CORRECTED): cadencias con datos de estudios 2026 + escalera de cadencia (floor->target) + ventanas optimas + trigger de notificaciones (task 7493e337). FIRMADA 2026-06-12 (D-044): 'Perfecto'.",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.2-channel-journey-matrix",
@@ -128,8 +128,8 @@
     "advocacy": "DEFERRED pre-PMF: nace de clientes reales post-launch (comunidades como canal natural cuando existan casos) - excepcion documentada"
   },
   "weekly_load_check": "carga V1 (floor): 1 blog + 3 carruseles cross-platform + stories ligeras + 2-3 foros + 1 email = ~8-10 acciones/sem, todas con pieza LISTA de Papandi. Escalera: subir hacia target cuando el flujo ruede. Valvula: bajar al floor antes que excluir (D-042a)",
-  "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando validacion del operador (G-Phase-2.2)",
+  "operator_signoff": true,
+  "status": "signed_v1 (D-044, DB 9c9ea65b) - G-Phase-2.2 PASSED",
   "posting_schedule": {
     "_basis": "operador 2026-06-12: '2 por semana es poco para IG/TikTok' -> research profundo. Corpus (curso 7): SIN numeros de cadencia, pero 7-11-4 (FLAG-3: confianza = 7h exposicion + 11 interacciones + 4 impactos - exige VOLUMEN, respalda al operador), watch-time rey, calendario+metricas como habito, hora LOCAL de la audiencia. Numeros: estudios 2026 citados por entrada.",
     "cadence_ladder_principle": "escalera de cadencia (Pattern B): FLOOR de lanzamiento (sostenible dia 1 con plantillas de Papandi) -> TARGET (al rodar el flujo) -> los datos propios del usuario calibran (Phase 4). Consistencia > rachas: mejor 3/sem sostenidas que 7 una semana y 0 la siguiente (consenso de todos los estudios).",
