@@ -364,6 +364,16 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
 ### Propósito
 4 pilares de contenido, **uno por fuerza** de Christensen (ongoing_pains, triggers, anxiety, habit). El error clásico es agrupar pilares por tema ("blog de SEO", "Reels de TikTok") — esto descubre canal pero no estrategia. Pilares por fuerza garantizan que cada palanca psicológica del avatar recibe contenido específico.
 
+### Guion de educación del instrumento (canon LITERAL — mandato del operador 2026-06-12, D-045: "me gusta mucho toda la explicación, debemos mantenerla")
+
+> "**El instrumento primero:** un *pilar* es un territorio de contenido — de qué habla todo tu volumen. El error clásico es organizarlos por tema o canal ('el blog', 'los reels'): eso produce contenido, no estrategia. Nuestro método los organiza **por fuerza psicológica**: las 4 palancas que ya mapeaste en tu Fundación — sus dolores crónicos, sus momentos de rabia, sus miedos y sus hábitos. Así NINGUNA palanca queda sin contenido, y cada pieza sabe exactamente qué músculo empuja.
+>
+> Y hay una distinción fina que heredamos de tu oferta firmada — cada pilar trabaja en uno de dos modos:
+> - **REFORZAR**: la fuerza YA la cubre tu paquete (la garantía ataca el miedo al humo) → el contenido **amplifica las palabras exactas de tu oferta**, no inventa narrativa paralela.
+> - **RESOLVER**: tu oferta la delegó explícitamente al copy (la objeción 'otra suscripción más') → el contenido es el ÚNICO que la ataca.
+>
+> Sin esta distinción pasan dos accidentes: piezas duplicadas que repiten lo que la oferta ya dice, o peor — un mensaje DISTINTO al de la oferta (disonancia que el cliente huele)."
+
 ### Los 4 pilares obligatorios
 
 | Pillar ID | Fuerza atacada | Función | Canal primario sugerido | Formato típico |

@@ -1,0 +1,128 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 2.3 - Forces-aware Content Pillars (spec Phase 2 v1.1 seccion 6). FIRMADO 2026-06-12 (D-045): 'Firmo' + mandato de conservar la educacion del instrumento (ahora canon LITERAL en la spec). Un pilar por fuerza de Christensen; modos REINFORCE (amplifica palabras exactas de la oferta) vs RESOLVE (lo delegado al copy).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.3-pillars",
+  "strategy_id": "strat_priya_v1",
+  "pillars": [
+    {
+      "id": "PILLAR_A",
+      "name": "La matematica de la jaula",
+      "force_attacked": "ongoing_pains",
+      "mode": "resolve",
+      "mode_basis": "los dolores cronicos (fees comiendose el margen, dependencia del algoritmo) son territorio del contenido evergreen - la oferta los NOMBRA pero el contenido los captura en busqueda cronica",
+      "what_it_says": "el costo real de vender en Amazon, con numeros y fuentes: anatomia de las fees, margen real post-comisiones, que % del precio es renta - educacion que captura la busqueda cronica de Priya",
+      "channels": [
+        "seo_blog",
+        "rrss_social (carruseles)"
+      ],
+      "formats": [
+        "guia long-form",
+        "how-to",
+        "calculadora de fees",
+        "carrusel educativo"
+      ],
+      "awareness_levels": [
+        "problem_aware",
+        "solution_aware"
+      ],
+      "jtbd_anchor": "JTB-1 functional: flujo predecible de clientes sin volverse marketera full-time",
+      "evidence_rule": "todo numero con fuente (VR-4) - los claims de fees citan las tablas publicas de Amazon"
+    },
+    {
+      "id": "PILLAR_B",
+      "name": "Ventanas de rabia",
+      "force_attacked": "triggers",
+      "mode": "reinforce",
+      "mode_basis": "refuerza la urgencia HONESTA firmada (deadline Q4 con regla de retiro) + la landing evergreen de la matriz - el contenido monta la ventana real del avatar, nunca fabrica una",
+      "what_it_says": "respuesta RAPIDA cuando Amazon anuncia algo (fee hike, cambio de politica, suspensiones): que significa en dolares, que hacer esta semana, y el camino de salida - la landing esperando + carrusel del momento + hilo en foros calientes",
+      "channels": [
+        "seo_blog (landing evergreen)",
+        "rrss_social",
+        "comunidades_sellers",
+        "paid_search_ventana (deferred)"
+      ],
+      "formats": [
+        "landing por trigger",
+        "carrusel de respuesta rapida",
+        "respuesta de foro con sustancia"
+      ],
+      "awareness_levels": [
+        "most_aware",
+        "solution_aware"
+      ],
+      "jtbd_anchor": "trigger #1 fee hike / #2 suspension / #3 preparacion Q4 (firmados 0.3)",
+      "protocol_note": "protocolo de respuesta rapida: la ventana del hilo/anuncio manda sobre el calendario (posting_schedule.comunidades)"
+    },
+    {
+      "id": "PILLAR_C",
+      "name": "Prueba, no promesas",
+      "force_attacked": "anxiety",
+      "mode": "mixto",
+      "mode_basis": "REINFORCE para lo que el paquete YA cubre + RESOLVE para lo delegado al copy (phase_2_handoff)",
+      "reinforce_elements": [
+        "anxiety humo -> reusar LITERAL la garantia: 'Si en tus primeros 30 dias sientes que esto es otro humo, escribenos y te devolvemos el mes. Sin formularios, sin letra pequena.'",
+        "anxiety humo -> el hito verificable: 'Ruta al primer dolar propio - tu primera venta fuera de Amazon en 30 dias, medida'",
+        "anxiety otro-deporte -> 'Escuela en el camino: mini-lecciones justo cuando las necesitas - nunca homework'"
+      ],
+      "resolve_elements": [
+        "objecion precio ('otra suscripcion mas') -> ROI visible: 'una venta propia de $40 paga el mes' (delegado explicito del handoff)",
+        "residuo 'podre sola?' -> behind-the-scenes del acompanamiento + demos glass-box (el copy promete compania, no elimina el miedo - honesto)"
+      ],
+      "channels": [
+        "email",
+        "rrss_social (carruseles)",
+        "comunidades_sellers"
+      ],
+      "formats": [
+        "secuencia de bienvenida",
+        "carrusel de prueba/demo",
+        "caso trabajado (el run fundacional como ejemplo publico)"
+      ],
+      "awareness_levels": [
+        "solution_aware",
+        "most_aware"
+      ],
+      "jtbd_anchor": "anxieties firmadas 0.3 + phase_2_handoff firmado 1.2",
+      "reimpact_home": "hogar del re-impacto evergreen (G18): mismo asset, angulo motivacional distinto a no-convertidores; ventana por ticket bajo ($30) = 15min-1h"
+    },
+    {
+      "id": "PILLAR_D",
+      "name": "Reemplaza, no agregues",
+      "force_attacked": "habit",
+      "mode": "reinforce",
+      "mode_basis": "hereda LITERAL el displacement firmado (campos obligatorios per A1-ISSUE-4) - sin reinventar framing",
+      "displacement_inherited": {
+        "habit_being_displaced": "habit #1: 'Amazon todavia paga las cuentas - la jaula es comoda' + las horas nocturnas de pelear con el algoritmo",
+        "replacement_narrative": "Esto no es una cosa MAS encima de Amazon: reemplaza las horas que cada semana le regalas al algoritmo - peleando ads y viendo tu margen encogerse - por construir el canal que si es tuyo.",
+        "cost_of_continuing_current_path": "cada mes igual = 30-70% del precio en fees y ads, cero clientes propios, y el negocio entero a una suspension de distancia. Sigues construyendo el negocio de Amazon, no el tuyo."
+      },
+      "what_it_says": "comparativos seguir-igual vs plan ('un ano mas de fees vs un ano de canal propio: la cuenta'), historias de costo-de-no-actuar, 'X vs no-hacer-nada'",
+      "channels": [
+        "seo_blog (comparativos)",
+        "rrss_social",
+        "email"
+      ],
+      "formats": [
+        "comparativo long-form",
+        "carrusel antes/despues de la cuenta",
+        "email de displacement"
+      ],
+      "awareness_levels": [
+        "problem_aware",
+        "solution_aware"
+      ],
+      "jtbd_anchor": "habits firmados 0.3 + displacement_framing firmado 1.3"
+    }
+  ],
+  "coverage_check": {
+    "forces_covered": "4/4 (ongoing_pains A, triggers B, anxiety C, habit D) - ninguna palanca huerfana",
+    "reinforce_uses_offer_words": "los elementos REINFORCE citan el statement/garantia/displacement LITERALES - anti-disonancia por diseno",
+    "resolve_covers_handoff": "phase_2_handoff 100% asignado: objecion precio -> C; residuo podre-sola -> C; habit jaula -> D (via displacement heredado); pulls_underamplified vacio",
+    "feeds_atomization": "cada pilar produce pieza larga -> multiplicador cross-platform (2.4)"
+  },
+  "operator_signoff": true,
+  "signed_at": "2026-06-12",
+  "status": "signed_v1 (D-045) - G-Phase-2.3 PASSED"
+}
