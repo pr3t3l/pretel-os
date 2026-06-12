@@ -302,6 +302,8 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
 
 **Nota de extensión** (A1-ISSUE-8 audit R4): si un canal declarado en `business_context.channel` no aparece en esta tabla, registrar `decision_record` con la función asignada por el operador, basada en hábitos del avatar de Phase 0.3 (`buyer_persona.behaviors.online_communities` + `media_consumed`). El `decision_record` se promueve a entrada permanente de la lookup table tras ≥3 productos que lo usen — patrón cross-pollination de pretel-os.
 
+**Regla de grandes superficies (USER-CORRECTED 2026-06-12, D-042):** las redes de atención general (Instagram, TikTok y equivalentes) están **ON por defecto en toda matriz** — "aquí vive todo: todos los mercados, todos los humanos" (operador; sus ejemplos: vendedores de llaveros de calle en Guatemala en TikTok; un asilo de ancianos debe estar — no por los ancianos, por los hijos y nietos que lo encontrarán). El interest graph encuentra a tu público si el contenido habla su lengua. **Excluirlas exige `decision_record` con caso específico.** Casos legítimos de exclusión/degradación documentados: (a) **capacidad de producción** → primero DEGRADAR el formato (carrusel de texto/quote cards desde plantilla — minutos, no edición de video; los guiones de video quedan listos para activar después), nunca excluir por defecto; (b) **categoría restringida por la plataforma** (lo que sus políticas no dejan anunciar/mostrar); (c) **superficie de comprador-del-cliente** (la red donde compra el cliente DE tu usuario, no tu usuario — ej. Pinterest para una herramienta de sellers cuyos browsers son los compradores de decoración) — y aun este caso se documenta, no se asume.
+
 ### Output: `channel_journey_matrix.json`
 
 ```json

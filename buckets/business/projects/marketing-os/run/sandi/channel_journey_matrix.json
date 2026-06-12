@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8).",
+  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8). ENMENDADA por D-042 (USER-CORRECTED): grandes superficies ON por defecto - rrss_social entra con formato texto-primero.",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.2-channel-journey-matrix",
@@ -10,6 +10,7 @@
     "seo_blog",
     "comunidades_sellers",
     "email",
+    "rrss_social",
     "paid_search_ventana"
   ],
   "matrix": [
@@ -59,6 +60,18 @@
       "policy_note": "sin links promocionales salvo donde las reglas del foro lo permitan; la firma/perfil hace el trabajo"
     },
     {
+      "channel": "rrss_social (IG/TikTok organico)",
+      "journey_stage": "consciencia",
+      "awareness_level": "unaware_problem_aware",
+      "format_primary": "carrusel educativo de texto + quote cards desde plantilla (Papandi genera el texto completo del carrusel; produccion en minutos, no edicion de video)",
+      "format_secondary": "scripts de reel/green-screen LISTOS (texto) para activar video cuando haya capacidad (V2)",
+      "frequency_per_week_v1": 2,
+      "kpi_primary": "saves",
+      "kpi_secondary": "shares",
+      "rationale": "REGLA D-042 (grandes superficies ON por defecto): aqui vive todo - incluida Priya. Ironia probatoria del research: los gurus que la quemaron construyeron sus imperios AQUI - su atencion esta validada y la voz sin-humo destaca por contraste. Motor nativo del 15% unaware del mix",
+      "policy_note": "el registro anti-guru del brand voice aplica DOBLE en este canal (es su territorio): cero hype, cero urgencia fabricada, numeros con fuente"
+    },
+    {
       "channel": "email",
       "journey_stage": "decision",
       "awareness_level": "solution_aware_most_aware",
@@ -94,12 +107,12 @@
   ],
   "channels_unused_explanation": [
     {
-      "channel": "youtube_long_form",
-      "reason": "natural del espacio seller PERO video excede la capacidad solo-operator de V1 y el alcance firmado (texto si, video no); los GUIONES quedan listos en 2.4 para activarlo en V2 sin re-plan"
+      "channel": "pinterest",
+      "reason": "caso especifico D-042(c) DOCUMENTADO: superficie del comprador-de-Priya (browsers de home decor), no de Priya la sellera - PARA ESTE PRODUCTO. Nota importante: en las matrices de los propios usuarios (ej. Priya vendiendo decor), Pinterest sera core - el caso es por-producto, no doctrina"
     },
     {
-      "channel": "rrss_visual (IG/TikTok/Pinterest)",
-      "reason": "TRAMPA DE MARCO evitada: ahi viven los CLIENTES de Priya (compradores de home decor), no Priya (la sellera). El contenido de Papandi va donde vive la sellera"
+      "channel": "youtube_long_form",
+      "reason": "caso D-042(a) capacidad: video excede al operador solo en V1; DEGRADADO no excluido - los guiones quedan listos en 2.4 para activar sin re-plan"
     },
     {
       "channel": "linkedin",
@@ -107,13 +120,13 @@
     }
   ],
   "journey_coverage": {
-    "consciencia": "seo + comunidades",
+    "consciencia": "seo + comunidades + rrss_social (motor nativo del unaware)",
     "consideracion": "seo comparativos",
     "decision": "email + landing + paid-ventana",
     "retencion": "email (suscripcion: desde dia 1)",
     "advocacy": "DEFERRED pre-PMF: nace de clientes reales post-launch (comunidades como canal natural cuando existan casos) - excepcion documentada"
   },
-  "weekly_load_check": "carga total V1: 1 pieza SEO + 2 participaciones de foro + 1 email = ~4 acciones/semana, todas con borrador hecho por Papandi - bajo el limite de 5/canal y realista para operador solo",
+  "weekly_load_check": "carga V1 enmendada: 1 pieza SEO + 2 participaciones foro + 1 email + 2 carruseles social = ~6 acciones/semana, todas con borrador/plantilla hechos por Papandi. Valvula D-042(a): si aprieta, social baja a 1/sem - DEGRADAR > excluir. Bajo el limite de 5/canal",
   "operator_signoff": false,
   "status": "draft - PROPUESTA esperando validacion del operador (G-Phase-2.2)"
 }
