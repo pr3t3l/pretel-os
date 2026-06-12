@@ -51,7 +51,7 @@ etapas: [
 2. El paso abre heredando el diagnóstico del anterior ("el paso 1 diagnosticó X — este construye la respuesta").
 3. El instrumento primero, con el **error clásico nombrado** ("el error clásico es organizarlos por tema o canal"). Nunca un número antes que su instrumento.
 4. TU dato citado, con el número medido ("tu Fase 0 midió: 25 · 50 · 20 · 5").
-5. **Pre-decisiones** cuando la propuesta las necesita ("con esas tres, te traigo el stack completo") — el usuario participa ANTES de ver la propuesta.
+5. **El usuario alimenta la propuesta ANTES de verla** (cazada del operador sobre el plan v2: "¿se hace sola? ¿solo firmo?" — NUNCA). Dos formas: pre-decisiones ("con esas tres, te traigo el stack completo") o preguntas de reflexión cuya respuesta es INPUT de la lectura ("¿tu cliente escribe en Google algo cuando le duele? ¿qué, literal?"). La propuesta aterriza SOBRE sus respuestas — si su instinto y su dato medido coinciden, se le dice (confianza); si chocan, la tensión se muestra y se reconcilia. Y al enseñar algo nuevo: chequeo de entendimiento ("¿cómo vas con el entendimiento?"). Un paso donde el usuario solo firma está roto por diseño.
 6. La propuesta completa en tarjetas/tabla: porqué + comparable REAL por fila; desviaciones glass-box ancladas a lo firmado ("como ya firmaste").
 7. Candados a la vista CON margen, calculados en código.
 8. **"Lo que dejo honestamente descubierto"** — lo no resuelto viaja declarado a su fase dueña, no se barre.
@@ -68,9 +68,10 @@ etapas: [
 
 ### Fase 1 (1.1 queda como está; 1.x, 1.2, 1.3, 1.4 se reconstruyen)
 
-**1.x — Tus estrategias** *(el transcript no lo trae; su canon viene de D-032 + lo construido hoy, que se MONTA al hilo)*
-- Etapa A: apertura (nace la entidad, versionado) + instrumento demanda con ejemplos del avatar + dato (0.2 midió `offer_strategy` + esencia del avatar) + **lectura PROACTIVA de Sandi** (ruta `strategy-proposal`, ya construida: recomendación con porqué citando lo medido + lecturas por-opción) → decisión (responder "capturar"/"mixta"/tap; la recomendada marcada 💡).
-- Etapa B: en-cristiano específico a la elección → firma (gate código) → puente a 1.2.
+**1.x — Tus estrategias** *(el transcript no lo trae; su canon viene de D-032 + la ley 5 — corregido tras la cazada del operador al plan v2: como estaba, "se hacía solo")*
+- Etapa A — **la pregunta antes que la lectura**: apertura (nace la entidad, versionado) + instrumento en llano → Sandi le pregunta a ÉL sobre SU cliente (la educación ES la pregunta): "cuando le duele esto, ¿abre Google y escribe algo? ¿qué escribiría, literal? ¿o lo vive como 'así es la vida'?" — responde en sus palabras (texto libre o quick-replies: "busca exacto" / "ni sabe que hay salida" / "las dos").
+- Etapa B — **la lectura SOBRE sus respuestas**: Sandi cruza lo que él dijo con lo MEDIDO en su 0.2 (`offer_strategy` + nota) + la esencia del avatar. Coinciden → "tu instinto y tu estudio dicen lo mismo"; chocan → la tensión a la vista con el porqué y la reconciliación (a menudo = mixta: ventanas de búsqueda + sueño el resto). Recién entonces: recomendación con porqué + ejemplo de búsqueda + las 3 opciones con la lectura de SU caso en cada una (la recomendada marcada 💡). La ruta `strategy-proposal` construida se conserva — gana un input: las respuestas del usuario.
+- Etapa C: decisión → en-cristiano específico a la elección → firma (gate código) → puente a 1.2.
 - Conversación libre en todo momento (intérprete).
 
 **1.2 — Tu paquete** *(el paso de REFERENCIA — el transcript lo muestra entero, con reparación incluida)*
