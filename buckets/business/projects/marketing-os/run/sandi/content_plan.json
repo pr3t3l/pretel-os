@@ -71,5 +71,16 @@
     "hours_invested": 3,
     "usd_invested": 8,
     "_note": "[estimado] sub-sesion Phase 2 completa"
+  },
+  "phase_3_ready": true,
+  "phase_3_handoff": {
+    "_amendment_note": "ANADIDO 2026-06-12 al abrir Phase 3: el PRE-gate (check 3) cazo que la consolidacion omitio este bloque. Enmienda visible, derivacion pura de artefactos firmados (matriz D-044 + posting_schedule D-043 + negative_personas + brief) - sin contenido nuevo",
+    "tracking_requirements": "conversion event = dinero (subscription_started $30) + leading event free_door_signup; UTM por pilar + por avatar; canales: GA4+UTM blog, ESP email, native insights + UTM-en-destino para IG/TikTok, foros cualitativo",
+    "exclusion_lists_needed": [
+      "claims-imposibles (auto-disqualify) -> exclusion list en toda plataforma paga futura",
+      "delegador-total (manual review)"
+    ],
+    "audience_targeting_per_channel": "de la matriz firmada: organico por habitos (seo intent-cronico, foros value-first, rrss interest-graph texto-primero); paid_search SOLO-ventana con negative keywords de anti-personas",
+    "publishing_calendar_skeleton": "posting_schedule D-043: blog 1/sem · carruseles 3/sem cross (IG mar/mie + TikTok mar-vie 14-18h + sab) · stories diarias ligeras · foros 2-3/sem (ventana del hilo) · email 1/sem mar-jue AM · ritmo floor->target"
   }
 }

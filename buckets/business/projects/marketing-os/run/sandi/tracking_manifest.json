@@ -1,0 +1,76 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 3.1 - Tracking setup (spec Phase 3 v1.0 seccion 3). DRAFT propuesto - el operador firma. Regla de fase: NADA se publica sin UTM + conversion event (TRACKING-001 bloquea go-live por canal no verificado). La instrumentacion REAL (GA4/eventos) se construye con el build de Phase 3 (junto a notificaciones 7493e337); este manifest es el CONTRATO que Phase 4 consume.",
+  "run": "sandi",
+  "phase": "phase_3",
+  "sub_step": "3.1-tracking",
+  "linked_to": {
+    "strategy_id": "strat_priya_v1",
+    "strategy_version": 1,
+    "plan_id": "plan_priya_v1_20260612"
+  },
+  "utm_scheme": {
+    "per_pillar": {
+      "PILLAR_A": "utm_campaign=pillar_a_{slug}&utm_source={channel}&utm_medium={format}",
+      "PILLAR_B": "utm_campaign=pillar_b_{trigger}&utm_source={channel}&utm_medium={format}",
+      "PILLAR_C": "utm_campaign=pillar_c_{slug}&utm_source={channel}&utm_medium={format}",
+      "PILLAR_D": "utm_campaign=pillar_d_{slug}&utm_source={channel}&utm_medium={format}"
+    },
+    "per_avatar": {
+      "avatar_enjaulado_marketplace": "utm_content=priya"
+    },
+    "per_avatar_note": "obligatorio aunque hoy hay 1 avatar activo: cuando Dana/Marcus/Hector enciendan, la atribucion por avatar YA esta cableada (comparacion entre estrategias = el loop D-009)"
+  },
+  "pixel_events": [
+    "page_view",
+    "scroll_50",
+    "cta_click",
+    "free_door_signup",
+    "first_gate_signed",
+    "subscription_started"
+  ],
+  "conversion_event": {
+    "definition": "subscription_started (suscripcion $30 iniciada) - EL evento de dinero (KPI primario = dinero, doctrina). Leading indicator: free_door_signup (email valido via puerta gratis) - mide el embudo, no sustituye al dinero",
+    "value_usd": 30,
+    "attribution_window_days": 7
+  },
+  "channels_instrumented": [
+    {
+      "channel": "seo_blog",
+      "tracking_method": "GA4 + UTM en todo link interno hacia la puerta",
+      "verified": false,
+      "verification_plan": "evento free_door_signup disparado end-to-end desde un articulo en prod"
+    },
+    {
+      "channel": "email",
+      "tracking_method": "ESP (opens/clicks) + UTM en cada link",
+      "verified": false,
+      "verification_plan": "click de prueba -> evento en analytics con utm_source=email"
+    },
+    {
+      "channel": "rrss_social (IG/TikTok)",
+      "tracking_method": "native insights (saves/shares/watch) + UTM en link-in-bio y landing de destino - la atribucion dura viene del DESTINO (las redes no pasan referrer confiable)",
+      "verified": false,
+      "verification_plan": "visita via link-in-bio registra utm_source=instagram|tiktok"
+    },
+    {
+      "channel": "comunidades_sellers",
+      "tracking_method": "cualitativo (menciones/respuestas, registro de hilos) + UTM solo donde las reglas del foro permitan link",
+      "verified": false,
+      "verification_plan": "registro manual de hilos respondidos (la atribucion directa aqui es honesta-mente parcial - se declara, no se infla)"
+    },
+    {
+      "channel": "paid_search_ventana",
+      "tracking_method": "Google Ads conversion import + UTM",
+      "verified": false,
+      "verification_plan": "DEFERRED con el canal (post-beta)"
+    }
+  ],
+  "economics_baseline_for_handoff": {
+    "target_cac_usd": 165,
+    "expected_ltv_usd": 500,
+    "source": "product_brief_v2.economics (D-029); el test REAL de ECONOMICS-001 es Phase 4"
+  },
+  "operator_signoff": false,
+  "status": "draft - PROPUESTA esperando firma (G-Phase-3.1); verified pasa a true por canal cuando el build pruebe cada evento end-to-end"
+}
