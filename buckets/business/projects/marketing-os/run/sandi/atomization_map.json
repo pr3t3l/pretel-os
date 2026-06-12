@@ -1,0 +1,191 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 2.4 - Atomization Map (spec Phase 2 v1.1 seccion 7). DRAFT propuesto por Sandi - el operador firma. Sustitucion documentada de la lookup LOCKED (1 thread + 1 short de la tabla canonica -> equivalentes de NUESTRA matriz firmada): sin canal X/threads y sin video V1 (alcance texto), los 5+ derivados se cumplen con carrusel IG + slideshow TikTok (misma pieza, 2 canales) + email + respuesta de foro + quote card + stories set. Override per decision_record (la tabla lo permite).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.4-atomization",
+  "strategy_id": "strat_priya_v1",
+  "ratio_policy": {
+    "vaynerchuk_per_channel": "default 3:1 valor:venta por canal [Context-Adjusted Threshold]; IG/TikTok B2C audiencia FRIA post-guru -> 5:1 declarado para rrss_social; email (audiencia caliente opted-in) -> 2:1; hybrid cuenta 0.5/0.5; SEO long-form = hybrid automatico (anchor_to_offer suave). VAYNER-001 vigila por canal; la fatiga real de Phase 4 (CTR decay) recalibra",
+    "flag5_note": "25/25/50 (corpus, RRSS organico B2C) queda como referencia documentada - NO sobrescribe el per-channel 5:1 elegido aqui (mas conservador con avatar post-guru)"
+  },
+  "atomizations": [
+    {
+      "pillar_id": "PILLAR_A",
+      "long_form": {
+        "asset_id": "asset_pillar_A_001",
+        "title_working": "The Real Math of Selling on Amazon: Where Your $100 Actually Goes",
+        "format": "seo_article",
+        "channel": "seo_blog",
+        "target_keyword": "amazon seller fees how much (cluster: amazon fee calculator, fba fees explained)",
+        "target_awareness_level": "problem_aware",
+        "target_journey_stage": "consciencia",
+        "estimated_word_count": 1600,
+        "structured_data": {
+          "schema_type": "Article",
+          "jsonld_validated": false,
+          "note": "validar JSON-LD antes de publicar"
+        },
+        "content_brief": "anatomia de los fees con numeros CITADOS (tabla publica de fees de Amazon + estudios de seller economics): referral + FBA + storage + ads = que % del precio es renta. Tono brand voice: datos sobre promesas, honesto hasta la incomodidad. JTBD ancla JTB-1 (flujo predecible sin volverse marketera full-time). Keywords del cluster cronico de Priya. CIERRE anchor_to_offer suave: la calculadora -> puerta gratis",
+        "anchor_to_offer": "bloque final: 'quieres ver TU numero? mapea tu negocio gratis en 15 min' -> free door",
+        "addresses_phase_2_handoff": [],
+        "content_type": "hybrid"
+      },
+      "derivatives": [
+        {
+          "derivative_id": "A_001_d1",
+          "format": "carousel",
+          "channel": "rrss_social (IG)",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_01",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "brief": "6 slides de texto: 'Where your $100 goes' - desglose visual del fee stack, slide final = pregunta retorica (sin CTA duro)"
+        },
+        {
+          "derivative_id": "A_001_d2",
+          "format": "carousel_slideshow",
+          "channel": "rrss_social (TikTok)",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_01",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "brief": "MISMA pieza que d1 adaptada a slideshow TikTok (multiplicador cross-platform D-043)"
+        },
+        {
+          "derivative_id": "A_001_d3",
+          "format": "email",
+          "channel": "email",
+          "target_awareness_level": "solution_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_02",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "hybrid",
+          "subject_line": {
+            "variants": [
+              "Where your $100 actually goes",
+              "The math Amazon hopes you skip",
+              "Your real margin, in one table",
+              "What $100 pays you (really)",
+              "The fee math, no sugar"
+            ],
+            "pre_header": "One table. Your real numbers. No drama - just the math and what to do with it.",
+            "one_variant_with_emoji": false,
+            "one_variant_with_emoji_note": "candidata con emoji se decide en produccion (politica email: none)",
+            "spam_words_checked": true,
+            "ab_test_pair": [
+              "Where your $100 actually goes",
+              "The math Amazon hopes you skip"
+            ]
+          }
+        },
+        {
+          "derivative_id": "A_001_d4",
+          "format": "forum_response_template",
+          "channel": "comunidades_sellers",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_03",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "brief": "respuesta-plantilla para hilos de fees: el desglose en 5 lineas + 'corre tus numeros' - CERO pitch, CERO link salvo si lo piden (policy value-first)"
+        },
+        {
+          "derivative_id": "A_001_d5",
+          "format": "quote_graphic",
+          "channel": "rrss_social",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_04",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "brief": "1 cifra + 1 frase (texto sobre plantilla): 'Of every $100 you sell, $XX is rent.' con fuente al pie (VR-4)"
+        },
+        {
+          "derivative_id": "A_001_d6",
+          "format": "stories_set",
+          "channel": "rrss_social (IG stories)",
+          "target_awareness_level": "problem_aware",
+          "language_pack_id": "lp_priya",
+          "hook_id_assigned": "hook_A_01",
+          "parent_long_form": "asset_pillar_A_001",
+          "content_type": "value",
+          "brief": "3 stories: repost del carrusel + sticker de pregunta ('cual fee te duele mas?') - 30seg de produccion (D-043)"
+        }
+      ]
+    },
+    {
+      "pillar_id": "PILLAR_B",
+      "long_form": {
+        "asset_id": "asset_pillar_B_001",
+        "title_working": "Amazon Changed the Rules Again? Your 7-Day Response Plan",
+        "format": "landing_evergreen",
+        "channel": "seo_blog (landing)",
+        "target_keyword": "amazon fee increase what to do",
+        "target_awareness_level": "most_aware",
+        "target_journey_stage": "decision",
+        "estimated_word_count": 900,
+        "content_brief": "la landing que ESPERA cada anuncio: que significa el cambio en dolares + plan de 7 dias + el camino de salida. Urgencia heredada LITERAL (runway Q4 con regla de retiro). CTA directo: puerta gratis",
+        "anchor_to_offer": "CTA directo (most_aware): empieza gratis hoy",
+        "addresses_phase_2_handoff": [],
+        "content_type": "cta"
+      },
+      "derivatives_summary": "6 derivados al activarse la ventana: carrusel respuesta-rapida x2 redes + email a lista + respuesta de foro en hilos del anuncio + quote card del numero del cambio + ad_copy (char limits Google: headline<=30/desc<=90) DEFERRED con paid",
+      "derivatives_note": "PILLAR_B produce bajo demanda de trigger (el protocolo manda sobre el calendario); arbol completo se instancia por evento"
+    },
+    {
+      "pillar_id": "PILLAR_C",
+      "long_form": {
+        "asset_id": "asset_pillar_C_001",
+        "title_working": "We Tried It On Ourselves First: The Papandi Working Case",
+        "format": "seo_article",
+        "channel": "seo_blog",
+        "target_keyword": "marketplace independence plan (brand-adjacent)",
+        "target_awareness_level": "solution_aware",
+        "target_journey_stage": "consideracion",
+        "estimated_word_count": 1500,
+        "content_brief": "el caso trabajado PUBLICO (el run fundacional como prueba): el metodo aplicado a nosotros mismos, numeros reales, que salio mal y se corrigio. REINFORCE: garantia e hito con palabras LITERALES de la oferta. RESOLVE: ROI '$40 sale pays the month' + behind-the-scenes del acompanamiento",
+        "anchor_to_offer": "garantia literal + puerta gratis",
+        "addresses_phase_2_handoff": [
+          "objection_precio (ROI visible)",
+          "anxiety_residual_podre_sola (behind-the-scenes)"
+        ],
+        "content_type": "hybrid"
+      },
+      "derivatives_summary": "6 derivados: carrusel 'what we got wrong' x2 redes + email bienvenida #3 (la prueba) + respuesta de foro para hilos de escepticismo + quote card de la garantia LITERAL + stories set",
+      "reimpact_note": "hogar del re-impacto (G18): mismos assets, angulo distinto a no-convertidores; ventana ticket-bajo 15min-1h"
+    },
+    {
+      "pillar_id": "PILLAR_D",
+      "long_form": {
+        "asset_id": "asset_pillar_D_001",
+        "title_working": "One More Year of Fees vs. One Year of Building Your Own Channel: The Side-by-Side",
+        "format": "seo_article",
+        "channel": "seo_blog",
+        "target_keyword": "sell off amazon build own audience (la busqueda LITERAL de where_we_meet)",
+        "target_awareness_level": "solution_aware",
+        "target_journey_stage": "consideracion",
+        "estimated_word_count": 1500,
+        "content_brief": "el comparativo seguir-igual vs plan, 12 meses lado a lado en dolares. DISPLACEMENT LITERAL OBLIGATORIO: 'replaces the hours you give the algorithm every week' + cost_of_continuing aparece textual (regla A1-ISSUE-4: el replacement_narrative_literal debe aparecer en >=1 derivado del pilar por ciclo)",
+        "anchor_to_offer": "hybrid: el plan como puente",
+        "addresses_phase_2_handoff": [
+          "habit_jaula (via displacement heredado)"
+        ],
+        "content_type": "hybrid"
+      },
+      "derivatives_summary": "6 derivados: carrusel before/after de la cuenta x2 redes + email displacement + respuesta de foro 'should I leave Amazon?' (corrige el marco: no salir - dejar de depender) + quote card del costo de seguir igual + stories set"
+    }
+  ],
+  "ratio_check_cycle1": {
+    "rrss_social": "derivados ciclo 1: A(4 value) + C(1 hybrid) + D(1 hybrid) = 5.0 value : 1.0 cta-equivalente = 5:1 - cumple el objetivo declarado para audiencia fria",
+    "email": "bienvenida 5 correos: 3 value + 2 hybrid = 4:1 sobre objetivo 2:1 - holgura",
+    "seo_blog": "long-forms hybrid automatico - sin alarma",
+    "vayner_001": "no dispara en ningun canal"
+  },
+  "schwartz_order_check": "ningun derivado asume nivel superior al de su long-form padre + email d3 sube problem->solution (permitido: el orden se respeta hacia adelante)",
+  "production_note": "la PROSA de los assets (articulo completo, slides, emails) se produce tras la firma del mapa - 2.4 V1: el mapa es el contrato, la produccion lo ejecuta pieza a pieza con los hooks de 2.5",
+  "operator_signoff": false,
+  "status": "draft - PROPUESTA esperando firma (G-Phase-2.4); hook_ids se definen en 2.5 (la library)"
+}
