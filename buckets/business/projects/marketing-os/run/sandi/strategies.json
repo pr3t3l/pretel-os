@@ -18,8 +18,8 @@
       "version_number": 1,
       "status": "active",
       "created_at": "2026-06-11",
-      "offer_spec_id": null,
-      "offer_spec_note": "se ancla al cerrar 1.2-1.4 del ciclo 1",
+      "offer_spec_id": "offer_priya_v1_20260611",
+      "offer_spec_note": "anclado al cierre de G-Phase-1 (D-038): run/sandi/offer_spec.json",
       "content_plan_id": null,
       "results_summary": null,
       "superseded_by": null

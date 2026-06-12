@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] seed v1. OUTPUT CANONICO de Phase 1 (spec v1.6 seccion 8) - consolidacion del ciclo 1. Los bloques grandes ya firmados se referencian por path (mismo patron que product_brief_v2). DRAFT: 1.4 en curso (language_pack + pricing propuestos; naming + statement pendientes).",
+  "_note": "[Evolving Schema] seed v1. OUTPUT CANONICO de Phase 1 (spec v1.6 seccion 8) - consolidacion del ciclo 1. Los bloques grandes ya firmados se referencian por path (mismo patron que product_brief_v2). FIRMADO 2026-06-12 (D-038): G-Phase-1 GLOBAL PASSED - la primera oferta completa del sistema (Papandi / strat_priya_v1).",
   "offer_id": "offer_priya_v1_20260611",
   "run": "sandi",
   "phase": "phase_1",
@@ -24,7 +24,7 @@
     "path": "run/sandi/risk_urgency.json (signed_v1 D-036: money_back incondicional 30d + deadline-Q4 con regla de retiro + sin escasez + displacement)"
   },
   "pricing": {
-    "_status": "PROPUESTA 1.4 - el operador dispone",
+    "_status": "FIRMADO (D-038) - ancla v2 + Beats ratificado + puerta gratis + single_tier",
     "price_point_usd": 30,
     "price_mechanism": "lista_fija + por_volumen",
     "price_mechanism_note": "suscripcion $30/mes (lista fija) que incluye una bolsa mensual de Beats; acciones consumen Beats por peso de clase (por volumen). Menu BMC E3",
@@ -129,17 +129,17 @@
     "PRICING-001 no dispara: competitive_position poblado con 4 referencias de pricing_tiers"
   ],
   "metadata": {
-    "hours_invested": 0,
-    "usd_invested": 0,
-    "_metadata_note": "se cuantifica al cierre del gate global G-Phase-1",
-    "completed_at": null,
-    "operator_signoff": false,
+    "hours_invested": 5,
+    "usd_invested": 15,
+    "_metadata_note": "[estimado] sesion 3 de cowork (sim completa 1.1-1.4); propuesto por Sandi sin objecion del operador - afinable con registro real",
+    "completed_at": "2026-06-12",
+    "operator_signoff": true,
     "phase_2_handoff": {
       "path": "run/sandi/offer_stack.json#phase_2_handoff (objecion precio -> copy ROI; residuo anxiety podre-sola -> onboarding; habit jaula -> displacement como copy central)"
     }
   },
-  "operator_signoff": false,
-  "status": "draft final - TODO 1.4 propuesto (pricing v2 + language_pack + PAPANDI + statement); esperando FIRMA GLOBAL del operador para cerrar G-Phase-1",
+  "operator_signoff": true,
+  "status": "SIGNED (D-038, DB 308fb419) - G-Phase-1 GLOBAL PASSED. PHASE 1 CERRADA",
   "naming_research": {
     "date": "2026-06-12",
     "verdict_input": "el espacio 'Sandi' esta poblado en NUESTRA forma exacta (asistente IA SaaS)",

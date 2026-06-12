@@ -1,7 +1,7 @@
 # Papandi — The Marketplace Independence Plan
 
 > **Artefacto:** offer_statement (1.4 output B) · estrategia `strat_priya_v1` · idioma del avatar (EN) · ≤350 palabras
-> **Estado:** DRAFT esperando firma del operador. Usa: language_pack firmado (quotes reales), ancla v2 (cost_of_inaction), garantía D-036, urgencia Q4 con regla de retiro, displacement D-036. Regla D-034: nunca promete visuales terminados.
+> **Estado:** FIRMADO con el gate global (D-038, 2026-06-12). Tropiezos de lectura futuros se ENMIENDAN (re-abren visiblemente), no se editan en silencio. Usa: language_pack firmado (quotes reales), ancla v2 (cost_of_inaction), garantía D-036, urgencia Q4 con regla de retiro, displacement D-036. Regla D-034: nunca promete visuales terminados.
 
 ---
 
