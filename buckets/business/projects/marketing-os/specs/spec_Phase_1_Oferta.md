@@ -215,7 +215,7 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 - `save_lesson` si la reducción del denominador desbloqueó algo no obvio
 
 ### Gate G-Phase-1.1
-- Un `value_equation.json` por avatar
+- Un `value_equation.json` por avatar **ACTIVO** (USER-CORRECTED 2026-06-12, D-039): con la política de activación escalonada (D-034), la ecuación se puntúa **al encender** un avatar — no se obliga al usuario a puntuar avatares en banca. El run fundacional puntuó los 4 a la vez porque la sim validaba el método completo y el batch calibraba el criterio; el producto puntúa por encendido.
 - Cada `score_rationale` cita ≥1 elemento del `product_brief_v2`
 - `dream_outcome.jtbd_source` y `pull_amplified` poblados (no pain points)
 - `weakest_axis` y `phase_1_focus` registrados como `decision_record`
@@ -240,6 +240,8 @@ En otras palabras: la carga de la prueba se invierte. Antes había que justifica
 
 ### Propósito
 Después de 1.1, evaluar — con evidencia de los `value_equation.json` ya producidos — si dos o más avatars comparten lo suficiente para **colapsar en una oferta unificada** (optimización), o si cada uno conserva su estrategia independiente (default).
+
+**Evaluación escalonada (USER-CORRECTED 2026-06-12, D-039, coherente con la activación D-034):** con **un solo avatar activo**, la decisión es trivial (`single_avatar` / su propia estrategia) y **no se evalúa nada** — no hay con quién comparar. La evaluación de unificación corre **cada vez que un avatar nuevo se enciende**: su ecuación recién puntuada se compara contra las firmadas de los avatares ya activos (las 5 condiciones de abajo). La unificación sigue siendo optimización por evidencia, nunca default.
 
 ### Criterio de UNIFICACIÓN (5 condiciones)
 
