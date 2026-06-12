@@ -591,6 +591,7 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 - ≥5 `key_phrases` (frases que el avatar SÍ usa, citables al copy de Phase 2)
 - ≥3 `avoid_phrases` (frases que le suenan ajenas o lo desconectan)
 - `vocabulary_register` declarado: `casual | profesional | técnico | emocional`
+- **Estándar de método (USER-CORRECTED 2026-06-11): las `key_phrases` nacen de QUOTES LITERALES capturadas en el research** — `pain_points_universal.literal_quote`, hilos de foros del 0.3, `where_we_meet` del avatar. Hablarle al cliente con las palabras exactas que él usó para nombrar su dolor es el estándar, no un nice-to-have; las frases inventadas "que suenan al avatar" son el fallback, etiquetado. Phase 2 hereda este estándar para todo el copy.
 
 **Gate**: `positioning_variants[].language_pack` poblado para cada avatar declarado en `language_packs_required` del `multi_avatar_decision.json`. Sin esto, 1.4 no avanza a escribir statements.
 
@@ -639,6 +640,7 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 - Si `composite_value_score >= 3000`, el precio puede subir; bajar precio solo cuando `likelihood` (eje 2) es débil
 - `good_better_best` aumenta ticket promedio ~30% para productos digitales (heurística, no ley)
 - `price_mechanism` declarado (no implícito): nombrar el mecanismo obliga a decidir QUÉ se cobra (cuota plana vs uso vs ambos) antes de decidir CUÁNTO
+- **El ancla de la página usa referentes que el avatar YA CONOCE (USER-CORRECTED 2026-06-11):** sus propios costos, dolores y números (`cost_of_inaction` con SUS fees, dream value en SUS términos) — no comparables de herramientas que probablemente no conoce ("¿qué es esto? esto no es para mí" → se va). Los comparables de `pricing_tiers` son **evidencia interna** para los candados (ratio/margen) y para defender los valores; al copy solo suben los referentes que el avatar reconoce (sus sustitutos reales, sus costos actuales). Dos capas: candado = comparable citado; página = referente vivido.
 - Si el producto tiene puerta gratuita (free tier / trial / lead magnet — Curso 1, paso 10 del workflow): se declara como tier de entrada en `tiers[]` (`price_usd: 0`) con su job explícito (capturar email / activar / demostrar método). El lead magnet pertenece a la **arquitectura de la oferta** (se decide aquí); sus assets se **producen** en Phase 2. Una puerta gratis sin job declarado es costo sin estrategia.
 - Validación cruzada `tier_strategy` ↔ `tiers.length` — **cuenta solo tiers DE PAGO** (`price_usd > 0`); la puerta gratuita (E5) se declara en `tiers[]` pero no computa para esta validación (aclaración 2026-06-11: E5 creó el caso borde free-door + single_tier):
   - `single_tier` → 1 tier de pago

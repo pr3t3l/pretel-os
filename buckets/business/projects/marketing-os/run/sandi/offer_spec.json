@@ -9,7 +9,9 @@
     "strategy_version": 1,
     "product_brief_path": "run/sandi/product_brief_v2.json",
     "primary_avatar_id": "avatar_enjaulado_marketplace",
-    "covers_avatars": ["avatar_enjaulado_marketplace"]
+    "covers_avatars": [
+      "avatar_enjaulado_marketplace"
+    ]
   },
   "multi_avatar_strategy": "separate_strategies",
   "value_equation_per_avatar": {
@@ -34,27 +36,60 @@
       "calibration": "pesos y bolsa se calibran con telemetria real (Modulo C); estos son seed"
     },
     "price_anchor": {
-      "anchor_type": "total_stack",
-      "anchor_statement": "Todo esto vale $333. Tu inversion: $30/mes."
+      "anchor_type": "cost_of_inaction",
+      "anchor_statement": "PROPUESTA v2 (USER-CORRECTED: referentes conocidos, no herramientas desconocidas): 'Amazon se queda con $30-70 de cada $100 que vendes. Sandi cuesta $30 al mes - las comisiones de UNA sola venta - para construir el canal donde esa comision te la quedas tu.'",
+      "anchor_v1_rejected": "'Todo esto vale $333 / Tu inversion $30' RECHAZADA por el operador: los $333 derivan de comparables que el avatar probablemente no conoce (M1, Jungle Scout) -> 'no se que es esto, no es para mi'. Los comparables quedan como evidencia interna de los candados; el ancla usa el referente que Priya VIVE: sus fees",
+      "anchor_secondary": "ROI por venta (dream): 'una venta propia de $40 paga el mes' - ya en phase_2_handoff"
     },
     "price_rationale": "cita los tres pilares: (1) value_equation re-scored 1440 (estandar operativo - precio de entrada coherente, no premium); (2) stack ratio 11.1x >= 5x (el paquete sostiene el precio con holgura); (3) competitive_position: entrada bajo M1 ($99 = 1 ICP) y bajo el entry serio de seller tools (Helium $129), 100-250x bajo agencia, apenas sobre el sustituto #1 ChatGPT $20 - la diferencia se justifica por metodologia+memoria+loop, no por precio (lectura firmada de pricing_tiers.json)",
     "competitive_position": {
       "competitors_referenced": [
-        {"name": "M1-Project (Elsa AI)", "price_usd": 99, "their_stack_estimate_usd": 99, "note": "1 ICP; $199 = 3 ICPs sin loop"},
-        {"name": "ChatGPT/Claude a mano (sustituto #1)", "price_usd": 20, "their_stack_estimate_usd": 20, "note": "se desplaza con metodologia+memoria+loop, no con precio"},
-        {"name": "Jasper", "price_usd": 59, "their_stack_estimate_usd": 69, "note": "copy sin estrategia"},
-        {"name": "Agencia full-service SMB", "price_usd": 5000, "their_stack_estimate_usd": 8000, "note": "el techo del mercado"}
+        {
+          "name": "M1-Project (Elsa AI)",
+          "price_usd": 99,
+          "their_stack_estimate_usd": 99,
+          "note": "1 ICP; $199 = 3 ICPs sin loop"
+        },
+        {
+          "name": "ChatGPT/Claude a mano (sustituto #1)",
+          "price_usd": 20,
+          "their_stack_estimate_usd": 20,
+          "note": "se desplaza con metodologia+memoria+loop, no con precio"
+        },
+        {
+          "name": "Jasper",
+          "price_usd": 59,
+          "their_stack_estimate_usd": 69,
+          "note": "copy sin estrategia"
+        },
+        {
+          "name": "Agencia full-service SMB",
+          "price_usd": 5000,
+          "their_stack_estimate_usd": 8000,
+          "note": "el techo del mercado"
+        }
       ],
       "your_price_usd": 30,
       "your_tier_chosen": "below_market",
       "tier_rationale": "cuna de entrada D-028 (H4): ~$30 con valor de tier $99+ - below_market en precio, premium en valor percibido (11.1x). No competimos por precio contra ChatGPT $20: competimos por sistema completo"
     },
     "tiers": [
-      {"tier_name": "puerta_gratis", "price_usd": 0, "delta_value": "PROPUESTA free door (E5): el primer paso de la Fundacion (0.1 'Tu negocio' con cowork de idea) gratis - vive la co-creacion con SU idea + captura email + firma su primer gate; el resto de la Fundacion y el loop requieren plan. Job: demostrar el metodo + lead magnet estructural. NO computa para validacion de tier_strategy (tiers de pago)", "is_decoy": false},
-      {"tier_name": "base", "price_usd": 30, "delta_value": "todo el sistema: Fundacion completa + N avatares (encendido bajo politica D-034) + loop 1-5 + bolsa mensual de Beats", "is_decoy": false}
+      {
+        "tier_name": "puerta_gratis",
+        "price_usd": 0,
+        "delta_value": "PROPUESTA free door (E5): el primer paso de la Fundacion (0.1 'Tu negocio' con cowork de idea) gratis - vive la co-creacion con SU idea + captura email + firma su primer gate; el resto de la Fundacion y el loop requieren plan. Job: demostrar el metodo + lead magnet estructural. NO computa para validacion de tier_strategy (tiers de pago)",
+        "is_decoy": false
+      },
+      {
+        "tier_name": "base",
+        "price_usd": 30,
+        "delta_value": "todo el sistema: Fundacion completa + N avatares (encendido bajo politica D-034) + loop 1-5 + bolsa mensual de Beats",
+        "is_decoy": false
+      }
     ],
     "tier_strategy": "single_tier",
-    "tier_strategy_note": "1 tier de pago (validacion: puerta gratis no computa - aclaracion spec 2026-06-11). good_better_best y founders-price (urgency B diferida) son candidatos post-PMF con datos del Modulo C"
+    "tier_strategy_note": "1 tier de pago (validacion: puerta gratis no computa - aclaracion spec 2026-06-11). good_better_best y founders-price (urgency B diferida) son candidatos post-PMF con datos del Modulo C",
+    "beats_system_build": "PENDIENTE EXPLICITO (mandato operador 2026-06-11): configurar TODO el sistema de Beats para que realmente funcione - ledger, cargas/equivalencias por clase de accion, medicion de consumo en vivo, bolsa mensual, recargas. Task pretel-os creada; cruza con Modulo C (telemetria/admin) y con el build del billing"
   },
   "name": null,
   "name_status": "PENDIENTE - 1.4 output C: decision del nombre DEFINITIVO (working 'Sandi' desde 0.1; dominio/trademark a verificar). LA decision del operador",
@@ -81,7 +116,8 @@
           "passive income / get rich",
           "quit Amazon / leave Amazon overnight (ella NO quiere irse: quiere dejar de depender)",
           "influencer / go viral"
-        ]
+        ],
+        "method_standard": "USER-CORRECTED: key_phrases desde quotes LITERALES del research (estandar de metodo, no nice-to-have) - fijado en spec 1.4.0; Phase 2 hereda para todo el copy"
       }
     }
   ],
@@ -103,5 +139,40 @@
     }
   },
   "operator_signoff": false,
-  "status": "draft - pricing + language_pack propuestos; PENDIENTES: ratificar Beats, naming definitivo, statement, gate global"
+  "status": "draft - ancla v2 propuesta (cost_of_inaction); Beats build marcado; naming EN EXPLORACION (investigacion de conflictos hecha - ver naming_research); statement tras naming",
+  "naming_research": {
+    "date": "2026-06-12",
+    "verdict_input": "el espacio 'Sandi' esta poblado en NUESTRA forma exacta (asistente IA SaaS)",
+    "findings": [
+      "SANDI - Banco Santander S.A.: registro US serial 90359826 (filed 2020) en clase 042 (SaaS/PaaS de asistente personal + CHATBOT con NLP, campo banca/finanzas personales) + clase 036; segunda solicitud 98445769 (2024). Un banco global posee 'SANDI' para un chatbot SaaS",
+      "SANDI - VORTO LLC: registro US 5904152 (2019), software descargable para logistica (clase 9)",
+      "Sandy AI - Salesmate: agente de ventas IA 24/7 (homofono exacto, espacio adyacente sales/CRM - nuestros compradores pueden conocerlo)",
+      "sandi.app - asistente IA para NDIS (Australia) | Sandi AI health coach (arealchange.ai) | Ask SaNDI (chatbot salud) | SandiaAI (Sandia National Labs interno)",
+      "dominios: sandi.com/.ai/.app/heysandi.com tomados; getsandi.com/trysandi.com/sandi.marketing/sandimarketing.com disponibles"
+    ],
+    "risk_read_not_legal_advice": "riesgo NO trivial para lanzamiento US: (a) registro vivo clase-042 de un megabanco para un chatbot SaaS llamado SANDI - oposicion posible aunque su campo declarado sea finanzas; (b) registro vivo clase-9 de VORTO; (c) confusion de mercado real con Sandy AI en software de ventas. Recomendacion de Sandi: EXPLORAR nombres propios; cualquier finalista pasa el mismo screen (dominio + trademark + competidores) + abogado antes de lanzar. La decision es del operador",
+    "exploration_round_1": {
+      "all_taken": [
+        "pepita.ai",
+        "getpepita.com",
+        "mentora.ai",
+        "getmentora.com",
+        "tendra.ai",
+        "sembra.ai",
+        "cultiva.ai",
+        "loopa.ai",
+        "semora.ai",
+        "audara.ai",
+        "norra.ai",
+        "steadi.ai"
+      ],
+      "available": {
+        "cultora.ai": "$160/2yr",
+        "seedra.ai": "$160/2yr",
+        "getsemora.com": "$11.25/yr",
+        "getcultora.com": "$11.25/yr"
+      },
+      "learning": "el .ai de palabras simples pronunciables esta arrasado - la ruta es acunacion mas propia o marca+.com con prefijo (get/try) o TLD .marketing"
+    }
+  }
 }
