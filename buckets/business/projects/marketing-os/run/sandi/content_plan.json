@@ -1,7 +1,7 @@
 {
   "plan_id": "plan_priya_v1_20260612",
   "schema_version": "v1",
-  "_note": "[Evolving Schema] OUTPUT CANONICO de Phase 2 (spec v1.1 seccion 10) - consolidacion por referencia del ciclo 1. ESPERANDO firma global del operador (G-Phase-2).",
+  "_note": "[Evolving Schema] OUTPUT CANONICO de Phase 2 (spec v1.1 seccion 10) - consolidacion por referencia del ciclo 1. FIRMADO 2026-06-12 (D-049): G-Phase-2 GLOBAL PASSED - el primer plan de contenido completo del sistema.",
   "run": "sandi",
   "phase": "phase_2",
   "linked_to": {
@@ -64,6 +64,12 @@
     "pulls_underamplified_addressed": [],
     "coverage_complete": true
   },
-  "operator_signoff": false,
-  "status": "draft consolidado - ESPERANDO FIRMA GLOBAL G-Phase-2"
+  "operator_signoff": true,
+  "status": "SIGNED (D-049, DB 3fa40d0d) - G-Phase-2 GLOBAL PASSED. PHASE 2 CERRADA",
+  "signed_at": "2026-06-12",
+  "metadata": {
+    "hours_invested": 3,
+    "usd_invested": 8,
+    "_note": "[estimado] sub-sesion Phase 2 completa"
+  }
 }

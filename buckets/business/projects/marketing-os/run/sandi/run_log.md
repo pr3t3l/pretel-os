@@ -26,7 +26,8 @@
 | Phase 2 | 2.3 Pilares por fuerza | ✅ **CERRADO (D-045)** | 4 pilares obligatorios (uno por fuerza: dolores/disparadores/miedos/hábitos) con modo REINFORCE (amplifica el offer_statement) vs RESOLVE (lo que la oferta delegó al copy) |
 | Phase 2 | 2.4 Atomización | ✅ **CERRADO (D-046)** — producción A_001 en curso | 1 pieza larga por pilar → derivados cross-platform (carruseles×2 redes, email, foro) con ratio Vaynerchuk ≥1:5 |
 | Phase 2 | 2.5 Hooks | ✅ **CERRADO (D-048)** | `hook_library.json` — 40 hooks EN (10/pilar), 8 templates, identity_callouts desde social_job LITERAL, 40/40 voice+negative checks | mix por awareness (create_demand + demand_type=mixed de Priya) → matriz canal×journey → 4 pilares por fuerza (REINFORCE vs RESOLVE) → atomización → hooks |
-| Phase 2 | **Gate global** | 🔄 **ESPERANDO FIRMA** | `content_plan.json` consolidado (6 sub-gates ✓) · `negative_filter_report.json`: 47 evaluados / 0 bloqueados · handoff coverage COMPLETE |
+| Phase 2 | **Gate global** | ✅ **FIRMADO (D-049, 2026-06-12)** — **PHASE 2 CERRADA** | `content_plan.json` consolidado (6 sub-gates ✓) · `negative_filter_report.json`: 47 evaluados / 0 bloqueados · handoff coverage COMPLETE |
+| Phase 3 | — | ⏭️ SIGUIENTE EN SIM | Publicar/Distribuir: calendario + tracking (fontanería de atribución) + protocolo de ventanas + notificaciones-con-copy (task 7493e337); input listo: content_plan firmado |
 | Phase 2 | dogfood verificación | ✅ 2026-06-12 | operador corrió 1.1 in-app (sim project): scores EXACTOS a D-031 (8/4/5/6=960 👏); textos truncados completados con canon vía SQL (mandato explícito); HF draft se auto-corrige con D-039 |
 
 ## Hechos clave capturados
