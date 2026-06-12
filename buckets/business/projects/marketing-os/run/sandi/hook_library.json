@@ -1,0 +1,1357 @@
+{
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] Sub-paso 2.5 - Hook Library (spec Phase 2 v1.1 seccion 8). DRAFT propuesto por Sandi - el operador firma. 40 hooks EN (idioma del avatar), 10 por pilar, 8 templates distintos. Checks V1 manuales: brand_voice (VR-1..5: cero prohibidos, numeros con fuente donde aplica, <=2 oraciones) + negative_persona_safe (cero promesas rapidas/garantizadas/sin-esfuerzo - el registro anti-guru aplica DOBLE en hooks). identity_callout usa el social_job LITERAL ('negocio serio, no hobby' / 'experto en lo que hago, no en buscar clientes').",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.5-hook-library",
+  "strategy_id": "strat_priya_v1",
+  "hooks": [
+    {
+      "hook_id": "hook_A_01",
+      "template": "specific_number",
+      "text": "You sold $100 yesterday. How much of it is actually yours?",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script",
+        "article_lead",
+        "stories"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 4,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": "2026-06-12 (A_001)",
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_02",
+      "template": "curiosity_gap",
+      "text": "The math Amazon hopes you skip.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "email_subject",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 4,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": "2026-06-12 (A_001)",
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_03",
+      "template": "problem_agitate_solve",
+      "text": "Here's the actual fee math in 5 lines.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "forum_response"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 4,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": "2026-06-12 (A_001)",
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_04",
+      "template": "specific_number",
+      "text": "Of every $100 you sell, $37-$54 is rent.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "quote_graphic",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 4,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": "2026-06-12 (A_001)",
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_05",
+      "template": "most_people_think",
+      "text": "Most sellers think their margin problem is pricing. It's rent.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_06",
+      "template": "contrarian",
+      "text": "Your ad budget isn't growing your business. It's paying your landlord.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_07",
+      "template": "before_after_bridge",
+      "text": "Same product, same price: $46 on Amazon, $97 on your own site. The bridge is smaller than you think.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_08",
+      "template": "pattern_interrupt",
+      "text": "Stop calculating your margin. Calculate your rent first.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "short_video_script",
+        "stories"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_09",
+      "template": "curiosity_gap",
+      "text": "There's a fifth Amazon fee. It never shows up on an invoice.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_A_10",
+      "template": "identity_callout",
+      "text": "If you run a serious business - not a hobby - you should know your real per-sale number.",
+      "force_attacked": "ongoing_pain",
+      "specific_target": "forces de Priya (avatars.json, pilar A)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_A"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "forum_response"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_01",
+      "template": "specific_number",
+      "text": "Amazon's new fees start in 30 days. Here's your 7-day response plan.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "landing_lead",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_02",
+      "template": "pattern_interrupt",
+      "text": "Don't panic about the fee increase. Do this instead.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "short_video_script",
+        "stories"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_03",
+      "template": "problem_agitate_solve",
+      "text": "Another fee hike email this morning? Let's turn the anger into a plan.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "email_subject",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_04",
+      "template": "curiosity_gap",
+      "text": "What the fee announcement didn't say - and what it means for your margin.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "article_lead",
+        "forum_response"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_05",
+      "template": "before_after_bridge",
+      "text": "Today: rage-reading the fee update. In 7 days: a plan that makes the next one matter less.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_06",
+      "template": "specific_number",
+      "text": "8-12 weeks. That's the runway you need to hit Q4 selling on your own channel.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "landing_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_07",
+      "template": "identity_callout",
+      "text": "If your business is serious enough to survive a policy change, this week is when you prove it.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_08",
+      "template": "most_people_think",
+      "text": "Most sellers will absorb this fee increase. A few will use it as the push they needed.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_09",
+      "template": "contrarian",
+      "text": "The fee hike isn't your problem. Having only one landlord is.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "quote_graphic",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_B_10",
+      "template": "problem_agitate_solve",
+      "text": "Suspended sellers don't get a warning. They get an email. Build the backup before you need it.",
+      "force_attacked": "trigger",
+      "specific_target": "forces de Priya (avatars.json, pilar B)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_B"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_01",
+      "template": "contrarian",
+      "text": "Don't trust us. Track us - every number we publish cites its source.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject",
+        "forum_response"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_02",
+      "template": "specific_number",
+      "text": "One $40 sale on your own channel pays the month. That's the whole ROI math.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "quote_graphic",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_03",
+      "template": "most_people_think",
+      "text": "Most people think they need another course. You need a plan that runs next to your day.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_04",
+      "template": "before_after_bridge",
+      "text": "Burned by promises before? Fair. Here's a 30-day milestone you can verify yourself.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_05",
+      "template": "problem_agitate_solve",
+      "text": "'Will this work for ME?' is the right question. Here's how we answer it without asking for faith.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "article_lead",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_06",
+      "template": "curiosity_gap",
+      "text": "We ran our own method on ourselves first. Here's what went wrong.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_07",
+      "template": "identity_callout",
+      "text": "You're an expert at what you do - not at finding clients. That division of labor is the plan.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "quote_graphic"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_08",
+      "template": "pattern_interrupt",
+      "text": "No dashboards. No lifestyle photos. Just the fee table and a refund policy with no fine print.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_09",
+      "template": "specific_number",
+      "text": "30 days. If it feels like smoke, you get the month back. No forms.",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "quote_graphic",
+        "stories"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_C_10",
+      "template": "before_after_bridge",
+      "text": "From 'one more subscription' to 'the subscription one sale pays for.'",
+      "force_attacked": "anxiety",
+      "specific_target": "forces de Priya (avatars.json, pilar C)",
+      "awareness_level": "most_aware",
+      "compatible_pillars": [
+        "PILLAR_C"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "email_subject",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_01",
+      "template": "contrarian",
+      "text": "Staying on Amazon isn't the safe choice. Staying ONLY on Amazon is the risky one.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script",
+        "quote_graphic"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_02",
+      "template": "most_people_think",
+      "text": "Most sellers call it 'the cost of doing business.' It's the cost of doing someone else's.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "quote_graphic"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_03",
+      "template": "pattern_interrupt",
+      "text": "Take last year's fee total. That was your marketing budget - spent on someone else's brand.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_04",
+      "template": "before_after_bridge",
+      "text": "Tonight: fighting the algorithm again. Next quarter: emailing customers who are actually yours.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject",
+        "short_video_script"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_05",
+      "template": "problem_agitate_solve",
+      "text": "The cage is comfortable - Amazon still pays the bills. That's exactly why the math deserves a look.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "article_lead",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_06",
+      "template": "curiosity_gap",
+      "text": "What would your store look like if you kept the $97 instead of the $46?",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "stories",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_07",
+      "template": "identity_callout",
+      "text": "Serious businesses own their customer list. Hobbies rent theirs.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "quote_graphic",
+        "carousel"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_08",
+      "template": "contrarian",
+      "text": "'Don't put all your eggs in one basket' - except your whole revenue, apparently?",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "problem_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "short_video_script"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_09",
+      "template": "before_after_bridge",
+      "text": "Replace the hours you give the algorithm with hours that build something you keep.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "email_subject"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    },
+    {
+      "hook_id": "hook_D_10",
+      "template": "most_people_think",
+      "text": "Everyone says diversify. Nobody shows the both/and plan. Here it is.",
+      "force_attacked": "habit",
+      "specific_target": "forces de Priya (avatars.json, pilar D)",
+      "awareness_level": "solution_aware",
+      "compatible_pillars": [
+        "PILLAR_D"
+      ],
+      "compatible_channels": [
+        "rrss_social",
+        "seo_blog",
+        "email",
+        "comunidades_sellers"
+      ],
+      "compatible_formats": [
+        "carousel",
+        "article_lead"
+      ],
+      "language_pack_compatible": [
+        "lp_priya"
+      ],
+      "brand_voice_check_passed": true,
+      "negative_persona_safe": true,
+      "performance_data": {
+        "uses_count": 0,
+        "best_ctr_observed": null,
+        "best_engagement_observed": null,
+        "last_used": null,
+        "status": "untested"
+      }
+    }
+  ],
+  "templates_used_count": {
+    "specific_number": 6,
+    "curiosity_gap": 5,
+    "problem_agitate_solve": 5,
+    "most_people_think": 5,
+    "contrarian": 5,
+    "before_after_bridge": 6,
+    "pattern_interrupt": 4,
+    "identity_callout": 4
+  },
+  "coverage_check": {
+    "per_pillar": "10/10/10/10 (>=10 OK)",
+    "templates_distinct": "8 (>=4 OK)",
+    "voice_check": "40/40 passed (manual V1)",
+    "negative_safe": "40/40 (cero claims rapidos/garantizados)",
+    "ya_en_uso": "hook_A_01..04 viven en A_001 (status untested hasta datos de Phase 4)"
+  },
+  "operator_signoff": false,
+  "status": "draft - PROPUESTA esperando firma (G-Phase-2.5)"
+}
