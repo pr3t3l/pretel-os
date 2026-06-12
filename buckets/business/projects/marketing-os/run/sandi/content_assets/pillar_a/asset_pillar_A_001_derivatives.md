@@ -13,8 +13,19 @@
 5. **Storage, returns, extras: −$2 to −$5.** The small print adds up.
 6. **You keep: $46–$63. Before making the product.** Every dollar on your own channel keeps ~$97. The difference is whose customer it is. *(cierre — sin CTA duro: pieza de valor)*
 
-## d2 — Slideshow TikTok · content_type: value · hook_A_01
-**La MISMA pieza que d1** adaptada al formato slideshow (multiplicador cross-platform): mismos 6 textos, ritmo 1 slide/1.5s, primera slide = hook completo (los primeros segundos deciden — corpus, curso 7).
+## d2 — TikTok short (GUION, ~40s) · content_type: value · hook_A_01 · USER-CORRECTED D-047: TikTok = video, entregable separado del carrusel
+
+**`video_script_structure` (kind: organic — gancho 3-5s / cuerpo con micro-ganchos / cierre 4-6s):**
+
+| t | Rol | Guion (a cámara o voz) | En pantalla |
+|---|---|---|---|
+| 0-4s | **hook** | "You sold $100 on Amazon yesterday. Want to see how much is actually yours?" | "$100" gigante; subtítulos ON |
+| 4-12s | setup | "Four fees nobody adds up for you. Referral: fifteen, right off the top." | −$15 apila |
+| 12-25s | **micro-gancho** + cuerpo | "Fulfillment? Five to nine more. And here's the one that surprises everyone — ads. Fifteen to twenty-five, just to stay visible." | −$5..9, −$15..25 apilan |
+| 25-34s | cuerpo | "Storage and returns take the rest. You keep forty-six to sixty-three. *Before* making the product." | total $46–63; "sources: Amazon fee schedule · Jungle Scout" |
+| 34-42s | cierre suave | "On your own channel, that same sale keeps about ninety-seven — and the customer stays yours. Keep Amazon. Build yours next to it." | $46 vs $97 lado a lado |
+
+**Notas de producción (5 min):** green-screen sobre la tabla del artículo O text-overlay puro; subtítulos siempre; primer frame = el número. Sin CTA dura (pieza de DAR). *Mientras no haya capacidad de grabar: TikTok photo-mode con las slides de d1 es el FLOOR honesto — el guion queda listo igual (el entregable del sistema es el guion).*
 
 ## d3 — Email (nota semanal) · content_type: hybrid · hook_A_02
 

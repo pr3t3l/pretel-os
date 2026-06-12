@@ -38,7 +38,7 @@ Sin números de cadencia, pero con la doctrina que los gobierna:
 ## Principios transversales
 
 1. **Escalera de cadencia**: arrancar en el piso sostenible → subir a la meta cuando el flujo ruede → los datos propios calibran (Phase 4). Consistencia > rachas (3/sem sostenidas > 7 una semana y 0 la siguiente).
-2. **Cross-platform por diseño**: el mismo carrusel = TikTok slideshow + IG carousel → 3 piezas alimentan 2 redes. La atomización (2.4) produce para este multiplicador.
+2. **Cross-platform por diseño (enmendado D-047, USER-CORRECTED)**: la misma pieza ancla alimenta ambas redes, pero con entregables SEPARADOS por naturaleza de red — **IG = carrusel de imágenes con texto** (copy de slides) / **TikTok = video short** (GUION con estructura de intervalos; el guion es texto, grabarlo ~5 min, photo-mode como floor). La atomización (2.4) produce ambos desde cada ancla.
 3. **Viable solo con piezas listas**: estas cargas asumen que Papandi entrega cada pieza hecha (carrusel desde plantilla = minutos). Sin eso, son sobre-compromiso (flag de la matriz).
 4. **Trigger de notificaciones (mandato, task `7493e337`)**: cada slot del calendario notifica al usuario CON el copy listo adentro; "publicado" alimenta la medición. Nace en Phase 3.
 

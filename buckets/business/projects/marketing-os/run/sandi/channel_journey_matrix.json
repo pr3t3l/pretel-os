@@ -63,8 +63,8 @@
       "channel": "rrss_social (IG/TikTok organico)",
       "journey_stage": "consciencia",
       "awareness_level": "unaware_problem_aware",
-      "format_primary": "carrusel educativo de texto + quote cards desde plantilla (Papandi genera el texto completo del carrusel; produccion en minutos, no edicion de video)",
-      "format_secondary": "scripts de reel/green-screen LISTOS (texto) para activar video cuando haya capacidad (V2)",
+      "format_primary": "IG: carrusel educativo de imagenes con texto (copy de slides desde plantilla) / TikTok: GUION de video short con estructura de intervalos (entregables SEPARADOS por red - D-047)",
+      "format_secondary": "quote cards + stories ligeras (IG); photo-mode como floor de TikTok sin grabacion",
       "frequency_per_week_v1": 3,
       "kpi_primary": "saves",
       "kpi_secondary": "shares",
@@ -169,6 +169,6 @@
       }
     },
     "notification_trigger_requirement": "MANDATO DEL OPERADOR: cada slot del calendario dispara notificacion al usuario CON el contenido/copy listo adentro ('recuerda postear - aqui esta el contenido'). Task 7493e337; el calendario nace en Phase 3 (distribution_plan); marcar 'publicado' alimenta Phase 4.",
-    "capacity_reconciliation": "carga floor total: 1 blog + 3-5 tiktok + 3 IG feed + stories ligeras + 2-3 foros + 1 email = ~10-13 acciones/sem. VIABLE solo porque Papandi entrega cada pieza LISTA (carrusel = minutos con plantilla; story = repost). El carrusel se publica cross-platform (TikTok slideshow + IG carousel = la misma pieza adaptada) - 3 carruseles sirven a ambas redes. Valvula D-042(a) intacta: si aprieta, bajar al floor minimo antes que excluir."
+    "capacity_reconciliation": "carga floor total: 1 blog + 3-5 tiktok + 3 IG feed + stories ligeras + 2-3 foros + 1 email = ~10-13 acciones/sem. VIABLE solo porque Papandi entrega cada pieza LISTA (carrusel = minutos con plantilla; story = repost). D-047 (USER-CORRECTED): misma ancla alimenta ambas redes pero con entregables SEPARADOS - IG: carrusel de imagenes con texto / TikTok: GUION de video short (intervalos organicos del spec); grabar el short = ~5 min con green-screen/text-overlay o photo-mode como floor. Valvula D-042(a) intacta: si aprieta, bajar al floor minimo antes que excluir."
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.4 - Atomization Map (spec Phase 2 v1.1 seccion 7). DRAFT propuesto por Sandi - el operador firma. Sustitucion documentada de la lookup LOCKED (1 thread + 1 short de la tabla canonica -> equivalentes de NUESTRA matriz firmada): sin canal X/threads y sin video V1 (alcance texto), los 5+ derivados se cumplen con carrusel IG + slideshow TikTok (misma pieza, 2 canales) + email + respuesta de foro + quote card + stories set. Override per decision_record (la tabla lo permite).",
+  "_note": "[Evolving Schema] Sub-paso 2.4 - Atomization Map (spec Phase 2 v1.1 seccion 7). DRAFT propuesto por Sandi - el operador firma. Sustitucion documentada de la lookup LOCKED (1 thread + 1 short de la tabla canonica -> equivalentes de NUESTRA matriz firmada): sin canal X/threads y sin video V1 (alcance texto), los 5+ derivados se cumplen con carrusel IG + slideshow TikTok (misma pieza, 2 canales) + email + respuesta de foro + quote card + stories set. Override per decision_record (la tabla lo permite). ENMENDADO D-047 (USER-CORRECTED): IG = imagenes con texto (copy de slides) / TikTok = video short (GUION con estructura de intervalos) - misma ancla, DOS entregables separados.",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.4-atomization",
@@ -45,14 +45,19 @@
         },
         {
           "derivative_id": "A_001_d2",
-          "format": "carousel_slideshow",
+          "format": "short_video_script",
           "channel": "rrss_social (TikTok)",
           "target_awareness_level": "problem_aware",
           "language_pack_id": "lp_priya",
           "hook_id_assigned": "hook_A_01",
           "parent_long_form": "asset_pillar_A_001",
           "content_type": "value",
-          "brief": "MISMA pieza que d1 adaptada a slideshow TikTok (multiplicador cross-platform D-043)"
+          "brief": "GUION de short ~40s (kind: organic - gancho 3-5s / cuerpo con micro-ganchos / cierre suave) desde la misma ancla que d1; entregable = guion+tomas+subtitulos (texto); grabacion = 5 min green-screen/text-overlay; floor sin grabacion: photo-mode con slides de d1",
+          "video_script_structure": {
+            "kind": "organic",
+            "intervals": "0-4s hook / 4-25s cuerpo con micro-gancho / 25-34s cuerpo / 34-42s cierre suave",
+            "note": "guion completo en content_assets/pillar_a/asset_pillar_A_001_derivatives.md d2"
+          }
         },
         {
           "derivative_id": "A_001_d3",
@@ -132,7 +137,7 @@
         "addresses_phase_2_handoff": [],
         "content_type": "cta"
       },
-      "derivatives_summary": "6 derivados al activarse la ventana: carrusel respuesta-rapida x2 redes + email a lista + respuesta de foro en hilos del anuncio + quote card del numero del cambio + ad_copy (char limits Google: headline<=30/desc<=90) DEFERRED con paid",
+      "derivatives_summary": "6 derivados al activarse la ventana: carrusel respuesta-rapida IG (copy de slides) + guion TikTok (video short) + email a lista + respuesta de foro en hilos del anuncio + quote card del numero del cambio + ad_copy (char limits Google: headline<=30/desc<=90) DEFERRED con paid",
       "derivatives_note": "PILLAR_B produce bajo demanda de trigger (el protocolo manda sobre el calendario); arbol completo se instancia por evento"
     },
     {
@@ -154,7 +159,7 @@
         ],
         "content_type": "hybrid"
       },
-      "derivatives_summary": "6 derivados: carrusel 'what we got wrong' x2 redes + email bienvenida #3 (la prueba) + respuesta de foro para hilos de escepticismo + quote card de la garantia LITERAL + stories set",
+      "derivatives_summary": "6 derivados: carrusel 'what we got wrong' IG (copy de slides) + guion TikTok (video short) + email bienvenida #3 (la prueba) + respuesta de foro para hilos de escepticismo + quote card de la garantia LITERAL + stories set",
       "reimpact_note": "hogar del re-impacto (G18): mismos assets, angulo distinto a no-convertidores; ventana ticket-bajo 15min-1h"
     },
     {
@@ -175,7 +180,7 @@
         ],
         "content_type": "hybrid"
       },
-      "derivatives_summary": "6 derivados: carrusel before/after de la cuenta x2 redes + email displacement + respuesta de foro 'should I leave Amazon?' (corrige el marco: no salir - dejar de depender) + quote card del costo de seguir igual + stories set"
+      "derivatives_summary": "6 derivados: carrusel before/after de la cuenta IG (copy de slides) + guion TikTok (video short) + email displacement + respuesta de foro 'should I leave Amazon?' (corrige el marco: no salir - dejar de depender) + quote card del costo de seguir igual + stories set"
     }
   ],
   "ratio_check_cycle1": {
@@ -187,5 +192,6 @@
   "schwartz_order_check": "ningun derivado asume nivel superior al de su long-form padre + email d3 sube problem->solution (permitido: el orden se respeta hacia adelante)",
   "production_note": "la PROSA de los assets (articulo completo, slides, emails) se produce tras la firma del mapa - 2.4 V1: el mapa es el contrato, la produccion lo ejecuta pieza a pieza con los hooks de 2.5",
   "operator_signoff": true,
-  "status": "signed_v1 (D-046, DB d33aaebd) - G-Phase-2.4 PASSED. Produccion en curso: A_001 articulo + 6 derivados DRAFT en content_assets/pillar_a/"
+  "status": "signed_v1 (D-046, DB d33aaebd) - G-Phase-2.4 PASSED. Produccion en curso: A_001 articulo + 6 derivados DRAFT en content_assets/pillar_a/",
+  "cross_platform_note_d047": "el multiplicador sigue (1 ancla alimenta ambas redes) pero los entregables se SEPARAN por naturaleza de red: IG carrusel de imagenes con texto / TikTok guion de video short. El guion es texto (alcance D-034 intacto); grabar = usuario o capacidad V2"
 }
