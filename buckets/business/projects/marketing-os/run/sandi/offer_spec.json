@@ -91,8 +91,8 @@
     "tier_strategy_note": "1 tier de pago (validacion: puerta gratis no computa - aclaracion spec 2026-06-11). good_better_best y founders-price (urgency B diferida) son candidatos post-PMF con datos del Modulo C",
     "beats_system_build": "PENDIENTE EXPLICITO (mandato operador 2026-06-11): configurar TODO el sistema de Beats para que realmente funcione - ledger, cargas/equivalencias por clase de accion, medicion de consumo en vivo, bolsa mensual, recargas. Task pretel-os creada; cruza con Modulo C (telemetria/admin) y con el build del billing"
   },
-  "name": null,
-  "name_status": "PENDIENTE - 1.4 output C: decision del nombre DEFINITIVO (working 'Sandi' desde 0.1; dominio/trademark a verificar). LA decision del operador",
+  "name": "Papandi",
+  "name_status": "FINAL (D-037, DB 98f204a2): PAPANDI - acunado por el operador. Historia familiar PRIVADA (el copy publico jamas la usa). Compra papandi.com autorizada (handoff interactivo); papandi.ai recomendado defensivo pendiente; screen USPTO/abogado = gate de launch",
   "positioning_variants": [
     {
       "avatar_id": "avatar_enjaulado_marketplace",
@@ -122,7 +122,7 @@
     }
   ],
   "statement_paths_by_avatar": {
-    "avatar_enjaulado_marketplace": "PENDIENTE - offer_statement_priya.md se escribe tras el naming (1.4 output B, <=350 palabras, usa el language_pack)"
+    "avatar_enjaulado_marketplace": "run/sandi/offer_statement_priya.md (EN - idioma del avatar; DRAFT esperando firma del operador)"
   },
   "signal_rules_triggered": [
     "VALUE-002 (Priya 960 debil) - RESUELTO: D-031 sanciono bloqueo blando + re-score D-036 a 1440",
@@ -139,7 +139,7 @@
     }
   },
   "operator_signoff": false,
-  "status": "draft - ancla v2 propuesta (cost_of_inaction); Beats build marcado; naming EN EXPLORACION (investigacion de conflictos hecha - ver naming_research); statement tras naming",
+  "status": "draft final - TODO 1.4 propuesto (pricing v2 + language_pack + PAPANDI + statement); esperando FIRMA GLOBAL del operador para cerrar G-Phase-1",
   "naming_research": {
     "date": "2026-06-12",
     "verdict_input": "el espacio 'Sandi' esta poblado en NUESTRA forma exacta (asistente IA SaaS)",

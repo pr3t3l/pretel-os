@@ -3,7 +3,7 @@
 **Tipo:** spec de carácter (capa A de "Portable Human Connection" — ver `Overall_WF.md`).
 **Por qué existe:** Anthropic hornea el carácter dentro del modelo; nosotros NO podemos depender de eso al cambiar de proveedor (OpenAI / DeepSeek / Kimi / …). Este archivo es el carácter **explícito y portable**: va en el system prompt + few-shot exemplars, y **cualquier modelo lo actúa**. Al cambiar de modelo, correr los character evals para que la persona sobreviva. (Mismo patrón que `SOUL.md` de pretel-os, ADR-22.)
 
-> Nota: "Sandi" es working name. Este es el carácter del **sistema** (cómo Sandi le habla a TODOS sus usuarios) — distinto del brand voice de cada *producto del usuario* (eso es Phase 2.0).
+> Nota: el nombre definitivo es **Papandi** (D-037, 2026-06-12 — "Sandi" fue working name, retirado por conflictos de marca). El carácter descrito aquí es EL MISMO; el rebrand de strings es task `942d5214`. Regla de marca D-037: la historia familiar del nombre es PRIVADA — el copy público jamás la usa. Este es el carácter del **sistema** (cómo Papandi le habla a TODOS sus usuarios) — distinto del brand voice de cada *producto del usuario* (eso es Phase 2.0).
 
 ---
 

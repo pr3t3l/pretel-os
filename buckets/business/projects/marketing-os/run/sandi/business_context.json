@@ -15,13 +15,22 @@
   "monetization_model": "subscription + usage(credits)",
   "monetization_note": "créditos mensuales que consumen campañas/avatares/proyectos; límites por definir",
   "market_scope": "internacional",
-  "geographies_launch": ["US"],
-  "geographies_horizon": ["US", "Europe", "LatAm"],
+  "geographies_launch": [
+    "US"
+  ],
+  "geographies_horizon": [
+    "US",
+    "Europe",
+    "LatAm"
+  ],
   "language_primary": "en",
-  "languages_horizon": ["en", "es"],
-  "name_status": "working",
+  "languages_horizon": [
+    "en",
+    "es"
+  ],
+  "name_status": "final",
   "working_name": "Sandi",
-  "working_name_note": "asignado de forma aleatoria; el operador investigó y duda por competencia + disponibilidad de dominio. Finalizar en Phase 1.4 (post-posicionamiento). Chequear dominio + trademark antes de comprometer.",
+  "working_name_note": "RESUELTO en Phase 1.4 (D-037, 2026-06-12): nombre definitivo = PAPANDI (acunado por el operador; PAPaya + sANDIa). 'Sandi' retirado como working name - indefendible en US (registro Santander clase 042 chatbot SaaS + VORTO clase 9 + Sandy AI Salesmate). papandi.com/.ai libres al decidir; compra .com autorizada; screen formal USPTO/abogado = gate de launch (task e66dce5a). Historia familiar del nombre: PRIVADA (regla de marca). Promocion working->final disenada desde 0.1 (4b) - enmienda registrada, no edicion silenciosa.",
   "implications_acknowledged": [
     "B2C reflexivo -> marketing de confianza/educacion, NO 'compra-ya'; requiere trial/garantia (Phase 1 risk-reversal, Phase 2 contenido educativo)",
     "Foco US/ingles -> la investigacion de demanda (0.2) arranca en ingles/US; LatAm/Europe = expansion; ingles = idioma mas barato en tokens",
@@ -29,12 +38,15 @@
   ],
   "dmu_required": false,
   "metadata": {
-    "product_capabilities_noted": ["multimodal"],
+    "product_capabilities_noted": [
+      "multimodal"
+    ],
     "parked_dependencies": [
       "modelo de costo de IA por avatar/ciclo (insumo de Phase 1 Pricing y del sistema de creditos)"
     ],
     "_purpose": "campos aun no promovidos al schema de primera clase (Pattern C capture-before-promote)"
   },
   "operator_signoff": true,
-  "gate_G_Phase_0_1": "passed"
+  "gate_G_Phase_0_1": "passed",
+  "final_name": "Papandi"
 }
