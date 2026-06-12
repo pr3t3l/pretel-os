@@ -71,6 +71,6 @@
     "expected_ltv_usd": 500,
     "source": "product_brief_v2.economics (D-029); el test REAL de ECONOMICS-001 es Phase 4"
   },
-  "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando firma (G-Phase-3.1); verified pasa a true por canal cuando el build pruebe cada evento end-to-end"
+  "operator_signoff": true,
+  "status": "signed_v1 (D-050) - G-Phase-3.1 PASSED (verified=false por canal hasta probar end-to-end en build)"
 }
