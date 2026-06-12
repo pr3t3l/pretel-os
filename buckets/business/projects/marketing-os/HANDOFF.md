@@ -1,52 +1,51 @@
-# HANDOFF — Sandi / Marketing-OS (continuación de cowork · sesión 2 → 3)
+# HANDOFF — Papandi / Marketing-OS (continuación de cowork · sesión 3 → 4)
 
-**Para:** la próxima sesión de Claude (cambio de chat por límite de contexto).
-**De:** Claude + Alfredo (prettelv1@gmail.com), tras DOS sesiones épicas de co-creación (la 2ª: de spec a producto desplegado y dogfoodeado).
-**Regla #1:** esto **NO es un proyecto nuevo. Es continuación.** No empieces de cero, no te re-presentes, no re-preguntes lo ya decidido. Lee esto + `SESSION_STATE.md` + `Overall_WF.md` (§decisiones D-001…D-029) y retoma con la misma voz y relación. El handoff 1→2 funcionó perfecto ("no perdí lo que amo de esta conversación" — el operador); honra eso.
+**Para:** la próxima sesión de Claude (cambio de chat por ventana de contexto llena).
+**De:** Claude + Alfredo (prettelv1@gmail.com), tras TRES sesiones de co-creación. La 3ª cerró Phase 1 y Phase 2 COMPLETAS en sim, bautizó el producto (**Papandi**), y terminó con la corrección más importante del proyecto (lee §3 antes que nada).
+**Regla #1:** esto **NO es un proyecto nuevo. Es continuación.** No te re-presentes, no re-preguntes lo decidido. Lee esto + `SESSION_STATE.md` + `specs/build_plan_experiencia_canonica.md` + `specs/cag_step_beat_canonical.md` y retoma con la misma voz y relación.
 
 ---
 
-## 1. CÓMO TRABAJAMOS (lo más importante — léelo primero)
+## 1. CÓMO TRABAJAMOS (el contrato — ampliado en sesión 3)
 
-Esto es lo que hace que el cowork funcione. Adóptalo:
+- **Co-creación, no ejecución.** Socio de pensamiento: propone con porqués, construye sobre (yes-and), reta con respeto. Alfredo SIEMPRE es el autor; sus correcciones MANDAN (van "USER-CORRECTED" en prompts/specs).
+- **Glass-box siempre.** Toda cifra con fuente; inferencias etiquetadas; errores reconocidos y decompuestos (la sesión 3 tuvo varios — cada uno reconocido sumó confianza).
+- **Voces marcadas:** `## 🔧 Claude` (meta/ingeniería) vs `## 🍉 Sandi — sim` (el personaje). Mandato explícito del operador.
+- **El beat canónico ("mensaje 1000 de 10")** — `specs/cag_step_beat_canonical.md` variantes A y B: TODA presentación de paso sigue los 8 movimientos (apertura → instrumento → TU-dato-citado → propuesta-con-porqué → candados-con-margen → en-cristiano → ask-con-guardarraíl → conversación). El operador pidió replicarlo "exactamente en cada parte".
+- **Capa usuario sin maquinaria:** cero D-xxx/códigos/JSON al usuario ("como ya firmaste"; estantería, no JSON — si la pantalla muestra llaves {}, está rota).
+- **Regla sim→app (D-051):** cada paso cerrado en sim se siembra a prod + gana su vista + **se revisa EN la app antes de seguir**.
+- **Disciplina:** commitea a `pretel-os/main` Y `Sandia-Marketing/main` a medida que avanzas (cada push a sandia = deploy a prod); `npm run verify` antes de cada commit; mensajes por archivo temporal; **al final de cada push: `git -C C:/Users/prett/Documents/pretel-os pull --ff-only`** (el operador navega ESA copia — se quedó atrás una vez y "perdió" archivos).
+- Cadencias se escriben "N por semana" (nunca "N/sem"). Decisiones D-xxx + lessons via MCP pretel-os SIEMPRE (vamos en D-053).
 
-- **Co-creación, no ejecución.** No eres un asistente que cumple órdenes — eres un **socio de pensamiento**. Propón ideas que Alfredo no tenía, construye sobre las suyas (yes-and), empuja la idea más lejos. **Aporta.**
-- **Glass-box siempre.** Muestra de dónde sale cada conclusión (fuente/razonamiento). Etiqueta las inferencias como inferencias. Di lo que NO pudiste verificar. Si te equivocas, reconócelo y arréglalo — eso construye más confianza, no menos. (Sesión 2: el id de Haiku inválido, el JSON roto — cada error admitido + arreglado + blindado SUMÓ confianza.)
-- **Reta con respeto.** Señala puntos ciegos. Discrepa cuando haya razón. Pero **Alfredo siempre es el autor** — tú propones, él dispone. Sus correcciones MANDAN (literalmente: van marcadas "USER-CORRECTED, outranks prior inference" en los prompts downstream).
-- **El usuario decide lo que toca decisiones.** Cambios a una decisión locked (D-xxx) se FLAGUEAN, no se aplican solos. Las firmas se ENMIENDAN (re-abren visiblemente), nunca se editan en silencio — ya es código además de regla.
-- **Voz:** cálido + directo, español, frases cortas, cero adulación vacía, específico. En la simulación/producto: personaje 🍉 Sandi (SOUL_setup_agent.md).
-- **Disciplina:** commitea a `pretel-os/main` Y a `Sandia-Marketing/main` a medida que avanzas — **cada push a sandia se despliega SOLO a producción** (Vercel git-integration). Verifica contra prod (runtime logs por MCP de Vercel), no contra suposiciones. `npm run verify` antes de cada commit. Mensajes de commit por archivo temporal (PowerShell 5.1 rompe con comillas/slashes).
-- **La meta-recursión:** el producto (Sandi) hace POR EL USUARIO lo que tú haces por Alfredo. La sesión 2 lo demostró en vivo: él dijo "¡está de locos!" usando el cowork de idea — ESE es el norte. La simulación fundacional ya vive DENTRO del producto (proyecto sembrado en prod).
+## 2. QUÉ ES + ESTADO REAL
 
-## 2. QUÉ ES (detalle en SESSION_STATE.md)
+**Papandi** (ex-Sandi — D-037: nombre acuñado por el operador, papandi.com COMPRADO y sirviendo prod; historia familiar del nombre = PRIVADA, jamás en copy público) = SaaS AI-first que guía de "tengo una idea" → "estrategia accionable". **PROD: papandi.com / sandia-marketing.vercel.app** (repo `C:\Users\prett\Documents\sandia-marketing`).
 
-**Sandi** = SaaS AI-first que guía a no-expertos de "tengo una idea" → "estrategia accionable". **EN PRODUCCIÓN: https://sandia-marketing.vercel.app** (Next.js + Supabase `qxhfmsojpjmnlzaduzao` + Vercel). Doctrina/specs en pretel-os `buckets/business/projects/marketing-os/`.
+**Sim (run/sandi/, la metodología validándose a sí misma):** Phase 0 ✅ (D-029) · **Phase 1 ✅ (D-030..D-038**: ecuación, estrategias separadas/strat_priya_v1, stack 11.1×/76%, garantía incondicional + urgencia-con-retiro + displacement, $30+Beats+puerta gratis, PAPANDI, statement EN) · **Phase 2 ✅ (D-040..D-049**: voz sage+caregiver, mix 15/30/40/15, matriz 5 canales con cadencias-por-estudio, 4 pilares REINFORCE/RESOLVE, atomización con pieza A_001 PRODUCIDA + guion TikTok, 40 hooks) · **Phase 3 abierta: 3.1 tracking ✅ (D-050**; conversion=subscription_started $30); faltan 3.2 exclusiones → 3.3 calendario+notificaciones → 3.4 go-live.
 
-**Estado real:** **PHASE 0 COMPLETA EN LA APP** — los 5 pasos (Tu negocio con cowork de idea iterativo cost-capped · Tu mercado con web search real · Tu puerta · Tus personas · Tu competencia) funcionan end-to-end con gates firmables, y el operador los corrió TODOS con su app real (**Healthy Families** = run manual #2 de BP-001). Multi-proveedor: router tarea→modelo (`lib/api/llm/models.ts`; claude-* directo, resto OpenRouter; **techo strategy = Sonnet, NUNCA Opus** — mandato de costos). UX doctrine en `spec_UX_Experience.md` (7 principios). 21/21 tests.
+**Build (sandia):** Phase 0 wizard completo + hub del proyecto + Fase 1 interactiva (M7a) + T1 experiencia canónica (StepChat + guiones + pasos 2-3) + visor Fase 2 (estantería de hooks) + breadcrumbs/lifecycle navegables. Seed: 14 artefactos del sim en prod (script `.claude/seed_sim_phase2.mjs`).
 
-## 3. DÓNDE VAMOS — RETOMAR AQUÍ: **PHASE 1 (OFERTA), SIM PRIMERO**
+**Doctrina nueva de la sesión 3 (toda USER-CORRECTED, ya en specs):** aperturas de fase 0-5 canónicas · nunca-un-número-antes-que-su-instrumento (falló 2 veces antes de ser regla) · ancla con referentes VIVIDOS del avatar (no herramientas desconocidas) · quotes literales del research = estándar de copy · grandes superficies (IG/TikTok) ON por defecto, excluir exige caso · IG=imágenes/TikTok=video (entregables separados, guion=texto) · blindaje agnóstico al modelo (`quality_armor_model_agnostic.md`, 10 capas).
 
-Pipeline D-024: se SIMULA la fase antes de codearla (Phase 0 lo probó: la sim produjo guiones/flags/fixtures y el build voló). Phase 1 sim = formato wizard 🍉 Sandi, como Phase 0:
+## 3. ⚠️ DÓNDE RETOMAR — LA CORRECCIÓN RAÍZ (D-053, lo más importante)
 
-1. **Value equation por avatar** — las anxieties/pulls de Dana, Marcus, **Priya (1er ciclo)** y Héctor están en `run/sandi/avatars.json` esperando ser offer stack.
-2. **Pricing de créditos** — converge la dependencia parqueada desde 0.1 (modelo de costo de IA por avatar/ciclo) con la sesión de costos pendiente. Insumo: `project_llm_calls` ya audita costo real por llamada; `pricing_tiers.json` (17 competidores) listo.
-3. **Offer stack honesto** (risk reversal solo si se honra — regla de sistema) + **naming 1.4**: el nombre DEFINITIVO de Sandi (working name desde el día 1, dominio/trademark pendiente).
-4. Del sim salen los guiones → build del step Oferta en sandia (ahí **nace la entidad `strategies`** — tablas ya migradas en prod).
+Al final de la sesión, el operador corrió el wizard de HF y pegó NUESTRA interacción completa como contraste: **"No es la interacción que tenemos nosotros... es educar, es hacer todo el proceso, es sentir un chat, una igual... eso ya lo hicimos en este chat — pero no lo has hecho [en la app]."** El build entregaba formularios funcionales sin el alma. Se pausó todo, se escribió **`specs/build_plan_experiencia_canonica.md`** (anatomía de 8 movimientos por paso + tabla por fase/paso + tandas T1-T4), el operador lo aprobó, y **T1 se entregó** (StepChat conversacional + guiones canónicos + pasos 2-3 de Fase 1 re-hechos)…
 
-**Ojo:** `spec_Phase_1_Oferta.md` es la única spec SIN validar contra corpus (cabo suelto histórico) — validarla contra `specs/corpus_knowledge/2_analisis_mercado_synthesis.md` + `bmc_synthesis.md` (checkout principal `C:\Users\prett\Pretel-OS`, NO está en worktrees) antes o durante la sim.
+…pero **el operador sigue SIN estar satisfecho** (sus palabras al cerrar: "aún no estoy satisfecho, y puede ser porque llenamos la ventana de contexto"). **NO asumas que T1 está bien.**
 
-## 4. CABOS SUELTOS (honestos)
+**Primer trabajo de la sesión 4, en orden:**
+1. Lee `build_plan_experiencia_canonica.md` + `cag_step_beat_canonical.md` + 2-3 beats del run (`run/sandi/` artifacts + las transcripciones citadas en el CAG) — ese es el contrato de experiencia.
+2. **Revisa T1 CON el operador en la app** (HF → Fase 1 → pasos 2-3): qué se siente plano, qué falta del canon. Su test es el criterio: *"¿se siente como la sesión 3?"*
+3. Refina T1 hasta su visto bueno ANTES de T2 (1.3/1.4 + dominio en vivo) → T3 (retrofit Fase 0) → T4 (Fase 2 conversacional).
 
-1. **Rollup/celebración Phase 0 in-app** — los 5 gates están firmados pero falta la pantalla "Tu Fundación completa" (product_brief rollup + celebrate 400ms + handoff visual a Phase 1).
-2. **Evals multi-modelo** — harness diseñado en `docs/model-selection.md` (golden set = run Sandi + HF; juez ciego; regla 95%-calidad); sin correr. Kimi K2.5/DeepSeek esperan destronar a Haiku en beats/extraction.
-3. **Sesión de costos/rentabilidad** — marcada por el operador; cruza con pricing Phase 1.
-4. Menores: `flags_raised` append-only (semántica documentar); doc-paste = candidato premium (campo existe, UI removida); icons 404 del manifest (PWA); botón "Repensar con mi ajuste" diseñado no construido; FLAG-7/FLAG-8 de la sim siguen sin decidir.
-5. **Dogfood pendiente:** apps realtor (run #3 BP-001) cuando toque.
+Hipótesis honestas de por qué T1 quedó corto (verificar con él): los beats aparecen amontonados (sin ritmo de chat — el plan pedía secuencial), la recomendación razonada de Sandi no es proactiva (solo si preguntas), el chat es genérico-corto (Haiku con system mínimo) vs la profundidad de la sesión, y faltó pulir 1.1 al canon.
+
+## 4. CABOS SUELTOS (tasks en pretel-os via task_list)
+
+Evals multi-modelo `e4cecead` (high — capa 8 del blindaje, lo único diseñado-sin-correr) · Módulo C admin `156e9c29` · Beats system `5953b520` · Notificaciones publicación `7493e337` · TM screen Papandi `e66dce5a` (gate de launch) · Rebrand Sandi→Papandi en UI `942d5214` (la app aún dice "Sandi") · Check engine VR `bc281ffc` · Sim 3.2-3.4 (cada paso CON su vista, D-051) · papandi.ai compra defensiva (libre al 2026-06-12, pendiente del operador) · anclas B/C/D de contenido (prosa pendiente; A_001 producida).
 
 ## 5. PRIMER MENSAJE RECOMENDADO PARA EL NUEVO CHAT
 
-Pega esto para arrancar sin fricción:
+> Lee completos `buckets/business/projects/marketing-os/HANDOFF.md`, `SESSION_STATE.md`, `specs/build_plan_experiencia_canonica.md` y `specs/cag_step_beat_canonical.md`. Adopta el contrato de colaboración (§1: co-creación, glass-box, voces marcadas 🔧/🍉, yo soy el autor). Esto es **continuación** (4ª sesión). Papandi está en prod con Phases 0-2 cerradas en sim y Fase 1 interactiva en la app. **Retoma por la corrección raíz D-053 (§3 del HANDOFF):** T1 de la Experiencia Canónica está shipped pero NO me satisface aún — revisémoslo juntos en la app (HF → Fase 1 → pasos 2-3) contra el contrato del CAG, refínalo hasta que se sienta como nuestra conversación, y solo entonces sigue con T2. Commitea a ambos repos a medida que avancemos y sincroniza mi copia de Documents al final de cada push.
 
-> Lee completos `buckets/business/projects/marketing-os/HANDOFF.md`, `SESSION_STATE.md` y `Overall_WF.md` (§decisiones). Adopta el contrato de colaboración de la sección 1 (co-creación, glass-box, yo soy el autor, tú propones). Esto es **continuación** (3ª sesión), no proyecto nuevo. Sandi está EN PRODUCCIÓN con Phase 0 completa y dogfoodeada. Retomamos con **Phase 1 (Oferta): la SIMULACIÓN primero** (pipeline D-024), en formato wizard (personaje 🍉 Sandi): value equation desde los avatares del run (Priya = primer ciclo), pricing de créditos (+ modelo de costo de IA, dependencia parqueada desde 0.1), offer stack honesto y naming 1.4 (el nombre definitivo). Valida antes `spec_Phase_1_Oferta.md` contra el corpus (cabo suelto #1 histórico). Commitea a pretel-os/main y a Sandia-Marketing/main a medida que avancemos.
-
-*(El corpus destilado vive en `specs/corpus_knowledge/` del checkout principal. La simulación fundacional está sembrada DENTRO del producto en prod — proyecto "Sandi (la simulación fundacional)" — úsala como referencia viva.)*
+*(El run de referencia vive en `run/sandi/` + sembrado en prod en el proyecto "Sandi (la simulación fundacional)". Las decisiones D-001..D-053 están en la DB de pretel-os vía `decision_search`.)*
