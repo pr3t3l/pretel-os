@@ -1,0 +1,93 @@
+{
+  "voice_id": "voice_v1_20260612",
+  "schema_version": "2.0",
+  "_note": "[Evolving Schema] Sub-paso 2.0 — Brand Voice Declaration (spec Phase 2 v1.1 §3). DRAFT propuesto por Sandi desde los JTBD firmados (regla dura R4: arquetipo DEBE citar job_id + literales) — LA DECISION ES DEL OPERADOR (identidad de marca = irreducible, V1-V3 manual). En el producto vive en content_assets/_meta/; en el run sim vive flat. Voz de PAPANDI (el producto) hacia sus usuarios — coherente con SOUL_setup_agent (Sage/Mentor portable).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "sub_step": "2.0-brand-voice",
+  "linked_to_product": "marketing-os/papandi",
+  "archetype_primary": "sage",
+  "archetype_secondary": "caregiver",
+  "archetype_rationale": "Cita obligatoria (R4): JTB-1.emotional_job = 'sentirme tan competente vendiendo como haciendo lo mío; dejar de sentir que el negocio depende de la suerte' → la salida de la suerte es ENTENDER (conocimiento aplicado, glass-box, enseña-mientras-hace) = SAGE. JTB-1.social_job = 'ser visto como un negocio serio y profesional, no como un hobby' → el sage da gravitas sin corbata. Secundario CAREGIVER: el avatar entra quemado por gurús y con miedo ('¿podré sola?') — la voz acompaña y sostiene ('estoy contigo, paso a paso'), nunca lecturea ni presume. Híbrido = 'el mentor que se queda': sabe de verdad Y no te suelta. Compatible con SOUL del personaje (Sage/Mentor) y con el register profesional del language_pack de Priya.",
+  "brand_promise": "Ayudo a los expertos en lo suyo que ya venden a conseguir clientes constantes por canales propios, vía un plan guiado semana a semana que enseña haciendo, sin volverse marketeros de tiempo completo y sin humo.",
+  "tone_descriptors": [
+    "directo y llano — cero jerga de marketing sin traducir al momento",
+    "cálido sin azúcar — acompaña como mentor, no anima como porrista",
+    "datos y fuentes por encima de promesas — cada número muestra de dónde sale",
+    "honesto hasta la incomodidad — dice lo que NO sabemos y lo que tarda",
+    "corto y escaneable — respeta el tiempo de alguien que opera su negocio"
+  ],
+  "vocabulary_register": "profesional",
+  "voice_consistency_with_language_packs": {
+    "compatibility_check": "sage+caregiver con register profesional vs language_pack de Priya (profesional, pragmática de seller forum, emocional solo en momentos de rabia) — compatible: la voz baja a números y fees sin perder calidez",
+    "conflicts_detected": []
+  },
+  "lexicon": {
+    "preferred_terms": [
+      "tu canal propio",
+      "clientes constantes",
+      "tu cliente, no el de la plataforma",
+      "plan semanal",
+      "paso a paso",
+      "te muestro de dónde sale",
+      "tú decides",
+      "medido en ventas (no en likes)",
+      "prueba (antes que promesa)",
+      "queda en piedra",
+      "sin humo",
+      "lo que ya sabes hacer",
+      "tu primer dólar propio",
+      "en paralelo (sin soltar lo que ya funciona)"
+    ],
+    "prohibited_terms": [
+      "revolucionario",
+      "increíble",
+      "único",
+      "innovador",
+      "sinergia",
+      "disrupción",
+      "guru",
+      "secret / secreto",
+      "hack",
+      "blueprint",
+      "passive income / ingresos pasivos",
+      "hazte rico / get rich",
+      "AI-powered / herramienta de IA / AI marketing tool",
+      "viral / hazte viral",
+      "10x",
+      "desbloquea tu potencial",
+      "fácil y rápido",
+      "garantizado (salvo la garantía real, citada textual)"
+    ],
+    "example_pairs": [
+      { "say": "una venta propia de $40 paga el mes", "dont_say": "ROI increíble garantizado" },
+      { "say": "te muestro de dónde sale cada número", "dont_say": "nuestra IA revolucionaria lo calcula por ti" },
+      { "say": "esto toma 8-12 semanas — y te acompaño cada una", "dont_say": "resultados inmediatos sin esfuerzo" },
+      { "say": "tu cliente, no el de la plataforma", "dont_say": "domina el algoritmo con un hack" }
+    ]
+  },
+  "stylistic_rules": {
+    "sentence_length_target_words": "8-15 (corto, escaneable)",
+    "paragraph_length_target_lines": "2-4",
+    "second_person_usage": "tú directo (EN: you) — nunca 'nosotros creemos que usted…'",
+    "emoji_policy": "sparing (≤1 por asset, preferente el del personaje 🍉) en RRSS; none en email/SEO/landing",
+    "exclamation_marks_policy": "hasta 1 por asset — la emoción la ponen los datos, no la puntuación"
+  },
+  "competitor_voice_avoidance": {
+    "competitors_referenced": [
+      { "name": "Gurús FBA/marketing (la quemada de Priya)", "their_voice": "hype + urgencia fabricada + secretos + lambos", "we_avoid_to_differentiate": "TODO su registro está en prohibited_terms; nuestra urgencia es de calendario real y se retira sola (D-036)" },
+      { "name": "M1-Project / herramientas AI", "their_voice": "corporativo feature-list + 'AI-powered'", "we_avoid_to_differentiate": "nunca vendemos la IA — vendemos el plan y el resultado medido; la IA es el cómo, no el qué" },
+      { "name": "Jasper/Copy.ai", "their_voice": "productividad mágica ('genera 100 posts en segundos')", "we_avoid_to_differentiate": "volumen sin estrategia es ruido; nosotros hablamos de pocas piezas con puntería" }
+    ]
+  },
+  "consistency_check_rules": [
+    { "rule_id": "VR-1", "type": "term_absence", "target_field": "asset.text", "expression": "lexicon.prohibited_terms (lista completa)", "expected": true, "plain": "ningún término prohibido aparece" },
+    { "rule_id": "VR-2", "type": "term_presence", "target_field": "asset.text", "expression": "≥1 de lexicon.preferred_terms", "expected": true, "plain": "al menos un término preferido aparece" },
+    { "rule_id": "VR-3", "type": "regex", "target_field": "asset.text", "expression": "!{2,} no aparece; count('!') <= 1", "expected": true, "plain": "máximo un signo de exclamación" },
+    { "rule_id": "VR-4", "type": "regex", "target_field": "asset.text", "expression": "si contiene \\$\\d+ o \\d+% → contiene marcador de fuente ('fuente:', 'source:', link o cita del run)", "expected": true, "plain": "todo número/claim lleva su fuente (herencia 1.4: claims con evidencia o se tachan)" },
+    { "rule_id": "VR-5", "type": "length_count", "target_field": "asset.title", "expression": "<= 12 palabras", "expected": true, "plain": "titulares de 12 palabras o menos" }
+  ],
+  "operator_signoff": false,
+  "declared_at": null,
+  "status": "draft - PROPUESTA de Sandi esperando decisión del operador (G-Phase-2.0)"
+}
