@@ -186,6 +186,6 @@
   },
   "schwartz_order_check": "ningun derivado asume nivel superior al de su long-form padre + email d3 sube problem->solution (permitido: el orden se respeta hacia adelante)",
   "production_note": "la PROSA de los assets (articulo completo, slides, emails) se produce tras la firma del mapa - 2.4 V1: el mapa es el contrato, la produccion lo ejecuta pieza a pieza con los hooks de 2.5",
-  "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando firma (G-Phase-2.4); hook_ids se definen en 2.5 (la library)"
+  "operator_signoff": true,
+  "status": "signed_v1 (D-046, DB d33aaebd) - G-Phase-2.4 PASSED. Produccion en curso: A_001 articulo + 6 derivados DRAFT en content_assets/pillar_a/"
 }
