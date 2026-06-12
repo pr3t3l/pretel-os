@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.5 - Hook Library (spec Phase 2 v1.1 seccion 8). DRAFT propuesto por Sandi - el operador firma. 40 hooks EN (idioma del avatar), 10 por pilar, 8 templates distintos. Checks V1 manuales: brand_voice (VR-1..5: cero prohibidos, numeros con fuente donde aplica, <=2 oraciones) + negative_persona_safe (cero promesas rapidas/garantizadas/sin-esfuerzo - el registro anti-guru aplica DOBLE en hooks). identity_callout usa el social_job LITERAL ('negocio serio, no hobby' / 'experto en lo que hago, no en buscar clientes').",
+  "_note": "[Evolving Schema] Sub-paso 2.5 - Hook Library (spec Phase 2 v1.1 seccion 8). DRAFT propuesto por Sandi - el operador firma. 40 hooks EN (idioma del avatar), 10 por pilar, 8 templates distintos. Checks V1 manuales: brand_voice (VR-1..5: cero prohibidos, numeros con fuente donde aplica, <=2 oraciones) + negative_persona_safe (cero promesas rapidas/garantizadas/sin-esfuerzo - el registro anti-guru aplica DOBLE en hooks). identity_callout usa el social_job LITERAL ('negocio serio, no hobby' / 'experto en lo que hago, no en buscar clientes'). FIRMADA 2026-06-12 (D-048): 'Perfecto, me encanta'. Mandato de presentacion: el usuario NUNCA ve la biblioteca como JSON - vista de estanteria (widget generado en sesion + regla en UX spec).",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.5-hook-library",
@@ -1352,6 +1352,6 @@
     "negative_safe": "40/40 (cero claims rapidos/garantizados)",
     "ya_en_uso": "hook_A_01..04 viven en A_001 (status untested hasta datos de Phase 4)"
   },
-  "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando firma (G-Phase-2.5)"
+  "operator_signoff": true,
+  "status": "signed_v1 (D-048) - G-Phase-2.5 PASSED"
 }

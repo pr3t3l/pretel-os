@@ -1,0 +1,69 @@
+{
+  "plan_id": "plan_priya_v1_20260612",
+  "schema_version": "v1",
+  "_note": "[Evolving Schema] OUTPUT CANONICO de Phase 2 (spec v1.1 seccion 10) - consolidacion por referencia del ciclo 1. ESPERANDO firma global del operador (G-Phase-2).",
+  "run": "sandi",
+  "phase": "phase_2",
+  "linked_to": {
+    "strategy_id": "strat_priya_v1",
+    "strategy_version": 1,
+    "offer_id": "offer_priya_v1_20260611",
+    "product_brief_v2_path": "run/sandi/product_brief_v2.json",
+    "primary_avatar_id": "avatar_enjaulado_marketplace",
+    "covers_avatars": [
+      "avatar_enjaulado_marketplace"
+    ],
+    "multi_avatar_strategy": "separate_strategies"
+  },
+  "brand_voice_path": "run/sandi/brand_voice.json (signed D-040: sage+caregiver, CPM confidence-gap)",
+  "content_mix_path": "run/sandi/content_mix.json (signed D-041: 15/30/40/15)",
+  "channel_journey_matrix_path": "run/sandi/channel_journey_matrix.json (signed D-044; cadencias D-043; entregables separados D-047)",
+  "pillars_path": "run/sandi/pillars.json (signed D-045: 4 pilares REINFORCE/RESOLVE)",
+  "atomization_map_path": "run/sandi/atomization_map.json (signed D-046: 4 anclas x 6 derivados)",
+  "hook_library_path": "run/sandi/hook_library.json (signed D-048: 40 hooks, 8 templates)",
+  "content_assets_produced": [
+    "content_assets/pillar_a/asset_pillar_A_001_article.md (~1310 pal)",
+    "content_assets/pillar_a/asset_pillar_A_001_derivatives.md (6 derivados + guion TikTok D-047)"
+  ],
+  "language_pack_assignments_global": {
+    "avatar_enjaulado_marketplace": "lp_priya (offer_spec.positioning_variants)"
+  },
+  "negative_persona_filter_report_path": "run/sandi/negative_filter_report.json",
+  "phase_2_handoff_coverage": {
+    "objections_uncovered_addressed": [
+      {
+        "phase_1_uncovered_id": "objecion precio ('otra suscripcion mas')",
+        "covered_by_pillar": "PILLAR_C",
+        "covered_by_asset_ids": [
+          "hook_C_02",
+          "hook_C_10",
+          "asset_pillar_C_001 (brief)"
+        ]
+      }
+    ],
+    "anxieties_uncovered_addressed": [
+      {
+        "phase_1_uncovered_id": "residuo 'podre sola?'",
+        "covered_by_pillar": "PILLAR_C",
+        "covered_by_asset_ids": [
+          "asset_pillar_C_001 (behind-the-scenes brief)",
+          "hook_C_03"
+        ]
+      }
+    ],
+    "habits_unattacked_addressed": [
+      {
+        "phase_1_uncovered_id": "habit #1 jaula comoda (delegado a displacement)",
+        "covered_by_pillar": "PILLAR_D",
+        "covered_by_asset_ids": [
+          "asset_pillar_D_001 (displacement literal)",
+          "hook_D_05"
+        ]
+      }
+    ],
+    "pulls_underamplified_addressed": [],
+    "coverage_complete": true
+  },
+  "operator_signoff": false,
+  "status": "draft consolidado - ESPERANDO FIRMA GLOBAL G-Phase-2"
+}

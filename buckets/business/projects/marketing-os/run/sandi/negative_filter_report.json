@@ -1,0 +1,7 @@
+{
+  "evaluated_at": "2026-06-12",
+  "assets_evaluated_count": 42,
+  "assets_blocked_count": 0,
+  "blocks": [],
+  "_note": "filtro deterministico (spec seccion 9) corrido sobre articulo + derivados + 40 hooks del ciclo 1"
+}

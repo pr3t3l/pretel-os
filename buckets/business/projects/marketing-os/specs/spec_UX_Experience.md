@@ -88,6 +88,7 @@ Regla de jerarquía: el hub responde "¿cómo va mi negocio y qué sigue?"; el w
 - ❌ Urgencia/escasez fabricada, badges falsos, confirmshaming — **prohibido por sistema** (honestidad arquitectónica, CONSTITUTION del producto).
 - ❌ Animación >300ms fuera del momento celebrate. ❌ Movimiento que contradice la dirección del flow.
 - ❌ Mostrar un score/puntuación antes de enseñar el instrumento que lo produce (qué mide, escala, cómo se combina, umbrales). Un número sin instrumento es jerga numérica.
+- ❌ **Presentar un artefacto al usuario como JSON/crudo (USER-CORRECTED 2026-06-12, D-048).** Todo artefacto tiene su VISTA humana: la biblioteca de ganchos es una **estantería** (tarjetas con filtro por pilar/plantilla, botón copiar, badge de estado untested/winner/retired, "usar en pieza"); el plan es un tablero; la ecuación es la pantalla del paso. El JSON vive en la capa sistema/admin. Regla de prueba: si la pantalla muestra llaves `{}`, está rota.
 
 ## 4. Métricas de que la UX funciona (se miden desde V1)
 
