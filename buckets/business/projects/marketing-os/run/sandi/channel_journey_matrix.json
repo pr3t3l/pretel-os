@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8). ENMENDADA por D-042 (USER-CORRECTED): grandes superficies ON por defecto - rrss_social entra con formato texto-primero.",
+  "_note": "[Evolving Schema] Sub-paso 2.2 - Customer Journey x Canal Matrix (spec Phase 2 v1.1 seccion 5, lookup channel_function LOCKED). DRAFT propuesto por Sandi desde where_we_meet FIRMADO del avatar - el operador valida. Resuelve la nota del PRE-gate check 7: business_context declaro scope (online_only); aqui se declaran los canales CONCRETOS desde los habitos del avatar (via de extension A1-ISSUE-8). ENMENDADA por D-042 (USER-CORRECTED): grandes superficies ON por defecto - rrss_social entra con formato texto-primero. ENMENDADA 2da vez por D-043 (USER-CORRECTED): cadencias con datos de estudios 2026 + escalera de cadencia (floor->target) + ventanas optimas + trigger de notificaciones (task 7493e337).",
   "run": "sandi",
   "phase": "phase_2",
   "sub_step": "2.2-channel-journey-matrix",
@@ -65,11 +65,12 @@
       "awareness_level": "unaware_problem_aware",
       "format_primary": "carrusel educativo de texto + quote cards desde plantilla (Papandi genera el texto completo del carrusel; produccion en minutos, no edicion de video)",
       "format_secondary": "scripts de reel/green-screen LISTOS (texto) para activar video cuando haya capacidad (V2)",
-      "frequency_per_week_v1": 2,
+      "frequency_per_week_v1": 3,
       "kpi_primary": "saves",
       "kpi_secondary": "shares",
       "rationale": "REGLA D-042 (grandes superficies ON por defecto): aqui vive todo - incluida Priya. Ironia probatoria del research: los gurus que la quemaron construyeron sus imperios AQUI - su atencion esta validada y la voz sin-humo destaca por contraste. Motor nativo del 15% unaware del mix",
-      "policy_note": "el registro anti-guru del brand voice aplica DOBLE en este canal (es su territorio): cero hype, cero urgencia fabricada, numeros con fuente"
+      "policy_note": "el registro anti-guru del brand voice aplica DOBLE en este canal (es su territorio): cero hype, cero urgencia fabricada, numeros con fuente",
+      "frequency_note": "FLOOR 3 carruseles/sem cross-platform (la misma pieza sirve TikTok slideshow + IG carousel) + Stories ligeras diarias; TARGET 1/dia TikTok + 4-5 IG (ver posting_schedule, D-043). La cifra inicial 2/sem corregida por el operador + estudios 2026"
     },
     {
       "channel": "email",
@@ -126,7 +127,48 @@
     "retencion": "email (suscripcion: desde dia 1)",
     "advocacy": "DEFERRED pre-PMF: nace de clientes reales post-launch (comunidades como canal natural cuando existan casos) - excepcion documentada"
   },
-  "weekly_load_check": "carga V1 enmendada: 1 pieza SEO + 2 participaciones foro + 1 email + 2 carruseles social = ~6 acciones/semana, todas con borrador/plantilla hechos por Papandi. Valvula D-042(a): si aprieta, social baja a 1/sem - DEGRADAR > excluir. Bajo el limite de 5/canal",
+  "weekly_load_check": "carga V1 (floor): 1 blog + 3 carruseles cross-platform + stories ligeras + 2-3 foros + 1 email = ~8-10 acciones/sem, todas con pieza LISTA de Papandi. Escalera: subir hacia target cuando el flujo ruede. Valvula: bajar al floor antes que excluir (D-042a)",
   "operator_signoff": false,
-  "status": "draft - PROPUESTA esperando validacion del operador (G-Phase-2.2)"
+  "status": "draft - PROPUESTA esperando validacion del operador (G-Phase-2.2)",
+  "posting_schedule": {
+    "_basis": "operador 2026-06-12: '2 por semana es poco para IG/TikTok' -> research profundo. Corpus (curso 7): SIN numeros de cadencia, pero 7-11-4 (FLAG-3: confianza = 7h exposicion + 11 interacciones + 4 impactos - exige VOLUMEN, respalda al operador), watch-time rey, calendario+metricas como habito, hora LOCAL de la audiencia. Numeros: estudios 2026 citados por entrada.",
+    "cadence_ladder_principle": "escalera de cadencia (Pattern B): FLOOR de lanzamiento (sostenible dia 1 con plantillas de Papandi) -> TARGET (al rodar el flujo) -> los datos propios del usuario calibran (Phase 4). Consistencia > rachas: mejor 3/sem sostenidas que 7 una semana y 0 la siguiente (consenso de todos los estudios).",
+    "channels": {
+      "tiktok": {
+        "floor_launch": "3-5 posts/semana",
+        "target": "1 post/dia",
+        "ceiling_warning": ">5/dia diluye alcance y arriesga shadowban 3-14 dias (Multilogin/automateed 2026)",
+        "evidence": "Buffer (estudio 11M+ posts): 1-3/dia sweet spot; 2-5/sem = +17% views/post; 11+/sem = +34% (JoinBrands 2026)",
+        "best_windows": "mar-vie 14-18h hora LOCAL de la audiencia (Sprout 2026, ~2B engagements); Buffer 7.1M: SABADO mejor dia (videos, carruseles y text posts)",
+        "format_v1": "text slideshows/carruseles + quote cards (texto-primero); scripts de video listos para V2"
+      },
+      "instagram": {
+        "floor_launch": "3 posts de feed/semana (carruseles) + Stories diarias LIGERAS (repost del carrusel / behind-the-scenes: ~30seg de produccion)",
+        "target": "4-5 feed/semana + Reels al activar video (V2)",
+        "evidence": "consenso 2026: 3-5 feed/sem maximiza alcance organico; plan completo = 3-5 feed + ~4 reels + stories diarias (posteverywhere/imageworks 2026)",
+        "best_windows": "mar 13-19h y mie 12-21h; mejor hora unica: mie 11am (Hootsuite); FINES DE SEMANA = engagement mas bajo en casi todas las industrias (Sprout 2026)",
+        "format_v1": "carruseles educativos de plantilla + quote cards"
+      },
+      "comunidades_sellers": {
+        "floor_launch": "2-3 participaciones/semana",
+        "target": "diario ligero (15 min de listening + 1 respuesta con sustancia)",
+        "evidence": "Reddit 2026 small-business guide: funciona como canal de ESCUCHA e intencion, no de frecuencia - la calidad de la respuesta manda (ALM Corp 2026); valida nuestro value-first",
+        "best_windows": "responder hilos CALIENTES rapido (la ventana es del hilo, no del reloj)"
+      },
+      "email": {
+        "floor_launch": "1 nota/semana (mismo dia, misma hora - el habito es del lector)",
+        "target": "1/semana + secuencias automaticas (bienvenida, re-impacto)",
+        "evidence": "rango sano small-biz: semanal a 2x/sem; consistencia > frecuencia (consenso; Ahrefs diario es outlier de media propia)",
+        "best_windows": "mar-jue manana (hora local del lector); calibrar con open_rate propio"
+      },
+      "seo_blog": {
+        "floor_launch": "1 pieza/semana",
+        "target": "1-2/semana",
+        "evidence": "resultados SEO reales en 3-6 meses de consistencia (Firstep 2026); la constancia importa mas que el burst",
+        "best_windows": "N/A (evergreen) - publicar y distribuir via social/email"
+      }
+    },
+    "notification_trigger_requirement": "MANDATO DEL OPERADOR: cada slot del calendario dispara notificacion al usuario CON el contenido/copy listo adentro ('recuerda postear - aqui esta el contenido'). Task 7493e337; el calendario nace en Phase 3 (distribution_plan); marcar 'publicado' alimenta Phase 4.",
+    "capacity_reconciliation": "carga floor total: 1 blog + 3-5 tiktok + 3 IG feed + stories ligeras + 2-3 foros + 1 email = ~10-13 acciones/sem. VIABLE solo porque Papandi entrega cada pieza LISTA (carrusel = minutos con plantilla; story = repost). El carrusel se publica cross-platform (TikTok slideshow + IG carousel = la misma pieza adaptada) - 3 carruseles sirven a ambas redes. Valvula D-042(a) intacta: si aprieta, bajar al floor minimo antes que excluir."
+  }
 }
