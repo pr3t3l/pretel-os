@@ -46,6 +46,7 @@ from .tools.health import health
 from .tools.report_satisfaction import report_satisfaction
 from .tools.lessons import (
     approve_lesson,
+    lesson_update_tags,
     list_pending_lessons,
     reject_lesson,
     save_lesson,
@@ -68,8 +69,14 @@ from .tools.best_practices import (
     best_practice_record,
     best_practice_rollback,
     best_practice_search,
+    best_practice_update_tags,
 )
-from .tools.decisions import decision_record, decision_search, decision_supersede
+from .tools.decisions import (
+    decision_record,
+    decision_search,
+    decision_supersede,
+    decision_update_tags,
+)
 from .tools.router_feedback import router_feedback_record, router_feedback_review
 from .tools.tasks import (
     task_close,
@@ -133,6 +140,7 @@ def build_app() -> FastMCP:
     app.tool(list_pending_lessons)
     app.tool(approve_lesson)
     app.tool(reject_lesson)
+    app.tool(lesson_update_tags)
     app.tool(list_pending_cross_pollination)
     app.tool(resolve_cross_pollination)
     app.tool(register_skill)
@@ -162,12 +170,14 @@ def build_app() -> FastMCP:
     app.tool(decision_record)
     app.tool(decision_search)
     app.tool(decision_supersede)
+    app.tool(decision_update_tags)
 
     # Module 0.X — best_practices
     app.tool(best_practice_record)
     app.tool(best_practice_search)
     app.tool(best_practice_deactivate)
     app.tool(best_practice_rollback)
+    app.tool(best_practice_update_tags)
 
     # Module 7 Phase B — projects
     app.tool(create_project)

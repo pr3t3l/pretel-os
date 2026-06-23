@@ -100,7 +100,7 @@ Adds an executable tool (an MCP-callable function or external operation) to the 
 
 ---
 
-## 3. Lessons — capture and review (5 tools)
+## 3. Lessons — capture and review (6 tools)
 
 Lessons are the system's living memory of what worked, what broke, and what to do differently next time. The five tools cover the lifecycle from capture through review.
 
@@ -154,9 +154,19 @@ Flips a `pending_review` lesson to `rejected` and records the rejection reason i
 
 **Use it when** the lesson does not pass review. Common rejection reasons: "duplicates lesson X", "too vague — no concrete technology reference", "not actually a lesson — paraphrases CONSTITUTION".
 
+### `lesson_update_tags`
+
+Patches a lesson's `tags` array without touching content or the embedding. Two list parameters — `tags_add` and `tags_remove` — apply set-union and set-subtraction respectively, both idempotent. Original tag order is preserved; new tags append at the end.
+
+**Activates** when a taxonomy decision changes after the lesson is already active: a new course tag needs to backfill, a typo in an existing tag needs cleanup, a cross-bucket relevance label gets added retroactively. The narrower `save_lesson` path is unusable here because the dup-check at ≥0.92 returns `merge_candidate` and blocks the re-insert.
+
+**Returns** the new tag array on success, or `found: false` when the row was deleted.
+
+**Use it when** the semantic content of the lesson is correct but its metadata needs amending. Content corrections still go through the pending_review → archive → re-save flow; status transitions still go through `approve_lesson` / `reject_lesson`. Tag-only updates do NOT requeue embeddings (the migration 0037 trigger only invalidates on title/content changes), and the awareness layer's README projection picks up the tag change on the next debounce.
+
 ---
 
-## 4. Best practices (4 tools)
+## 4. Best practices (5 tools)
 
 Where lessons are reactive (a real loop closed), best practices are proactive (a process or convention worth following). Lessons say "we found this bug last Tuesday"; best practices say "always do X before Y". Both have their own table because they answer different questions.
 
@@ -199,6 +209,16 @@ Restores the `previous_guidance` field into the active guidance, single-step onl
 **Returns** whether the row had a prior version to restore and whether it was applied.
 
 **Use it when** the most recent edit was a mistake. For deeper rollbacks (more than one version back), the audit trail in `git log` of the migration files is the source of truth, not this tool.
+
+### `best_practice_update_tags`
+
+Tag-only patch for a best practice — same shape as `lesson_update_tags`. Does not re-embed and does not consume the single-step rollback slot, so it is much cheaper than calling `best_practice_record(update_id=...)` when only the tag set needs to change.
+
+**Activates** when retagging a convention to fit a new taxonomy or to add cross-bucket applicability hints. Works on both active and deactivated rows so historical entries can be cleaned up.
+
+**Returns** the new tag array.
+
+**Use it when** the convention itself is unchanged but its metadata is. For guidance edits the full `best_practice_record(update_id=...)` path is still the right tool because it preserves the rollback slot.
 
 ---
 
@@ -258,7 +278,7 @@ Reopens a closed task. Sets status back to `open`, clears `done_at`, and appends
 
 ---
 
-## 6. Decisions (3 tools)
+## 6. Decisions (4 tools)
 
 Decisions are ADR-style records — what we decided, why, and what we considered. The `decisions` table predates the formal ADR process; migration 0028 added the columns to support typed scope (architectural / process / product / operational) and the ADR-number convention.
 
@@ -291,6 +311,16 @@ Atomically replaces an active decision with a new one. In a single transaction: 
 **Returns** the new decision's identifier and the old one's identifier.
 
 **Use it when** a prior decision is no longer correct. Do not edit the old decision in place — the supersede pattern preserves the reasoning that led to the change.
+
+### `decision_update_tags`
+
+Tag-only patch for a decision — same shape as the other `*_update_tags` tools. Does not touch title/context/decision and therefore does not re-embed and does not break the append-only ADR contract.
+
+**Activates** when the decision content is correct but the ADR has been mis-tagged, or when a new applicable-bucket relevance label needs to backfill across older ADRs. Works on rows in any status (`active`, `superseded`, etc.) so historical decisions can be retagged too.
+
+**Returns** the new tag array.
+
+**Use it when** the chain of reasoning in the decision is intact but its metadata needs amending. Semantic changes still require `decision_supersede` so the audit chain stays honest.
 
 ---
 

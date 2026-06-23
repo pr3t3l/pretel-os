@@ -1,7 +1,8 @@
 # CONSTITUTION — pretel-os
 
 **Status:** Active
-**Last updated:** 2026-05-07 (v5.2 — M6 reflection_worker cancelled; §2.6 reduced from 5 to 4 workers; Dream Engine charter rescoped to 3 active jobs + 4 deferred; §4 rule 8 stripped of Reflection alias clauses; §5.4 rule 20 reassigns cross_pollination_queue writer to Dream Engine; §5.5 rule 22 archive thresholds parametrized via operator_preferences; §5.5 rule 23 deferred indefinitely; §5.5 rule 24 corrects proposal_type drift to typed proposed_by + UNIQUE idempotency. Decision log: `decisions` table id 9e8bacad (M6 cancellation) + ADR-029 (this amendment, decisions row a39bc9b9).)
+**Last updated:** 2026-06-01 (v5.3 — §11 catalog grew 39 → 42 tools: added `lesson_update_tags` (§11.3), `best_practice_update_tags` (§11.4), `decision_update_tags` (§11.6) as tag-only mutations; narrow carve-out from §5.2 lesson immutability for metadata; doctrine impact tracked via a fresh `decision_record` and a queued §5.2 amendment. Migration 0040 seeds the catalog rows.)
+**Previously:** 2026-05-07 (v5.2 — M6 reflection_worker cancelled; §2.6 reduced from 5 to 4 workers; Dream Engine charter rescoped to 3 active jobs + 4 deferred; §4 rule 8 stripped of Reflection alias clauses; §5.4 rule 20 reassigns cross_pollination_queue writer to Dream Engine; §5.5 rule 22 archive thresholds parametrized via operator_preferences; §5.5 rule 23 deferred indefinitely; §5.5 rule 24 corrects proposal_type drift to typed proposed_by + UNIQUE idempotency. Decision log: `decisions` table id 9e8bacad (M6 cancellation) + ADR-029 (this amendment, decisions row a39bc9b9).)
 **Previously:** 2026-04-30 (v5.1 — M0.X + M4 + M5 + M7 + M7.5 reconciliation; +§11 tool catalog; +5th worker; +list_catalog tool + 3 catalog orphans seeded via migration 0036)
 **Owner:** Alfredo Pretel Vargas
 
@@ -373,7 +374,7 @@ No rule is changed through conversation alone. Speech is not law; the commit is.
 
 ---
 
-## 11. MCP tool catalog (39 tools across 11 domains)
+## 11. MCP tool catalog (42 tools across 11 domains)
 
 This section is the canonical inventory of the live MCP tool surface. The order matches `app.tool(...)` registrations in `src/mcp_server/main.py`. Adding a tool here without registering it in `main.py` is a doc lie; registering a tool in `main.py` without adding it here is the same. Both must move together.
 
@@ -400,7 +401,7 @@ The two layers diverged historically (3 tools had main.py registrations but no c
 | `register_skill` | Registers methodology (`kind='skill'`) with `skill_file_path`. |
 | `register_tool` | Registers executable tool (`kind='tool'`) with `mcp_tool_name`. |
 
-### 11.3 Lessons — capture and review (5)
+### 11.3 Lessons — capture and review (6)
 
 | Tool | Function |
 |------|----------|
@@ -409,8 +410,9 @@ The two layers diverged historically (3 tools had main.py registrations but no c
 | `list_pending_lessons` | Review queue, oldest-first. |
 | `approve_lesson` | Flip `pending_review` → `active`. |
 | `reject_lesson` | Flip `pending_review` → `rejected` (reason required). |
+| `lesson_update_tags` | Tag-only patch (`tags_add` / `tags_remove`). Narrow carve-out from §5.2 immutability for metadata; no re-embedding, no dup-check. Catalog row added 2026-06-01 / migration 0040. |
 
-### 11.4 Best practices (4)
+### 11.4 Best practices (5)
 
 | Tool | Function |
 |------|----------|
@@ -418,6 +420,7 @@ The two layers diverged historically (3 tools had main.py registrations but no c
 | `best_practice_search` | Semantic search filtered by category / applicable_buckets / active. |
 | `best_practice_deactivate` | Soft-delete (`active=false`). |
 | `best_practice_rollback` | Restores `previous_guidance` once (no chain). |
+| `best_practice_update_tags` | Tag-only patch — cheaper than `best_practice_record(update_id=...)` because it does not re-embed and does not consume the rollback slot. Catalog row added 2026-06-01 / migration 0040. |
 
 ### 11.5 Tasks (5)
 
@@ -429,13 +432,14 @@ The two layers diverged historically (3 tools had main.py registrations but no c
 | `task_close` | Mark done with optional `completion_note`. |
 | `task_reopen` | Append to `metadata.reopened_history` (audit trail). |
 
-### 11.6 Decisions (3)
+### 11.6 Decisions (4)
 
 | Tool | Function |
 |------|----------|
 | `decision_record` | INSERT with embedding; `project` is REQUIRED by NOT NULL schema; M7.5 also resolves `project_id`. |
 | `decision_search` | Semantic search with default `status='active'`. |
 | `decision_supersede` | Atomic supersede of an active decision. |
+| `decision_update_tags` | Tag-only patch — preserves the append-only ADR contract because title/context/decision are untouched. Works on any status. Catalog row added 2026-06-01 / migration 0040. |
 
 ### 11.7 Projects (3)
 
@@ -478,7 +482,9 @@ The two layers diverged historically (3 tools had main.py registrations but no c
 | `archive_project` | Status active→archived; emits `project_lifecycle` notify; regenerates bucket README inline. |
 | `recommend_skills_for_query` | Per-query skill recommendation: keyword + utility scoring (no LLM call). Returns top-3 with `score >= 1.0`. |
 
-**Total: 39 tools across 11 domains** (3+2+5+4+5+3+3+2+4+3+4 = 38 + `list_catalog` in §11.1 = 39). Plus 3 registered skills in `tools_catalog`: `sdd`, `vett`, `skill_discovery` — making the catalog row count 42.
+**Total: 42 tools across 11 domains** (3+2+6+5+5+4+3+2+4+3+4 = 41 + `list_catalog` in §11.1 = 42). Plus 3 registered skills in `tools_catalog`: `sdd`, `vett`, `skill_discovery` — making the catalog row count 45.
+
+The 3 tools added on 2026-06-01 (migration 0040) — `lesson_update_tags`, `decision_update_tags`, `best_practice_update_tags` — are tag-only mutations and carve out a narrow exception to §5.2's lesson immutability contract for metadata changes. A decision_record recorded with the same patch tracks the doctrine impact and queues the formal §5.2 amendment for the next review pass.
 
 When a new tool is registered, **two artifacts move in the same commit**:
 1. `app.tool(<name>)` in `src/mcp_server/main.py`.

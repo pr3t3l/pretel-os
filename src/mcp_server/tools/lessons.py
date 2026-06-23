@@ -538,6 +538,133 @@ async def approve_lesson(id: str) -> dict:
     return {"status": "ok", "approved": approved}
 
 
+async def lesson_update_tags(
+    id: str,
+    tags_add: Optional[list[str]] = None,
+    tags_remove: Optional[list[str]] = None,
+) -> dict[str, Any]:
+    """Patch a lesson's `tags` array without touching content or embedding.
+
+    Narrow carve-out from the M5 / CONSTITUTION §5.2 immutability contract:
+    tags are metadata, not semantic content, so this path bypasses the
+    auto-approval gate, the dup-check, and re-embedding. `tags_add` is
+    unioned in (idempotent — already-present tags are no-ops); `tags_remove`
+    is subtracted afterwards (idempotent — absent tags are no-ops). Order
+    among existing tags is preserved; new tags append at the end.
+
+    Title, content, next_time, bucket, category, status, embedding, and
+    all review state remain untouched. Content edits still require the
+    pending_review → archive → re-save path; status transitions still go
+    through approve_lesson / reject_lesson.
+
+    The BEFORE UPDATE trigger from migration 0037
+    (`invalidate_embedding_on_content_change`) only nulls embedding when
+    title/content change, so tag-only updates do NOT requeue embeddings.
+    The awareness layer (migration 0034) WILL fire a `readme_dirty`
+    NOTIFY because the consumer rewrites the lesson digest; that is
+    intended — README projections must reflect tag edits.
+
+    Args:
+        id: uuid of the lesson row.
+        tags_add: tags to union into the existing array.
+        tags_remove: tags to subtract from the existing array.
+
+    Returns:
+        {status:'ok', id, found:True, tags:[...new tags...]} on success.
+        {status:'ok', found:False} when the row does not exist or was soft-deleted.
+        {status:'error', error:'no tag operation specified'} when both lists are empty/None.
+        {status:'degraded', journal_id:...} when DB is down.
+    """
+    add_list = list(tags_add or [])
+    remove_list = list(tags_remove or [])
+    if not add_list and not remove_list:
+        return {"status": "error", "error": "no tag operation specified"}
+
+    if not isinstance(id, str) or not id.strip():
+        return {"status": "error", "error": "id must be a non-empty string"}
+
+    payload: dict[str, Any] = {
+        "id": id, "tags_add": add_list, "tags_remove": remove_list,
+    }
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            journal_id = journal_mod.record("lesson_update_tags", payload)
+            await log_usage(
+                tool_name="lesson_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable", "journal_id": journal_id},
+            )
+            return degraded("db_unavailable", journal_id=journal_id)
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.transaction():
+                    async with conn.cursor() as cur:
+                        await cur.execute(
+                            "SELECT tags, bucket FROM lessons "
+                            "WHERE id = %s AND deleted_at IS NULL "
+                            "FOR UPDATE",
+                            (id,),
+                        )
+                        existing = await cur.fetchone()
+                        if existing is None:
+                            return {"status": "ok", "found": False}
+                        current_tags = list(existing[0] or [])
+                        bucket = existing[1]
+
+                        new_tags = list(current_tags)
+                        for tag in add_list:
+                            if tag not in new_tags:
+                                new_tags.append(tag)
+                        if remove_list:
+                            remove_set = set(remove_list)
+                            new_tags = [t for t in new_tags if t not in remove_set]
+
+                        await cur.execute(
+                            "UPDATE lessons SET tags = %s WHERE id = %s "
+                            "RETURNING id, tags",
+                            (new_tags, id),
+                        )
+                        upd = await cur.fetchone()
+                        assert upd is not None, "UPDATE inside FOR UPDATE block returned no row"
+                        lesson_id = str(upd[0])
+                        result_tags = list(upd[1] or [])
+        except Exception as exc:
+            log.exception("lesson_update_tags failed")
+            await log_usage(
+                tool_name="lesson_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc), "id": id},
+            )
+            return {"status": "error", "error": str(exc)}
+
+    await log_usage(
+        tool_name="lesson_update_tags",
+        bucket=bucket,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={
+            "id": lesson_id,
+            "tags_added": len(add_list),
+            "tags_removed": len(remove_list),
+            "final_tag_count": len(result_tags),
+        },
+    )
+    return {"status": "ok", "id": lesson_id, "found": True, "tags": result_tags}
+
+
 async def reject_lesson(id: str, reason: str) -> dict:
     """Reject a pending lesson — flip status to 'rejected'.
 

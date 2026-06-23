@@ -314,6 +314,127 @@ async def decision_search(
     return {"status": "ok", "results": results}
 
 
+async def decision_update_tags(
+    id: str,
+    tags_add: Optional[list[str]] = None,
+    tags_remove: Optional[list[str]] = None,
+) -> dict[str, Any]:
+    """Patch a decision's `tags` array without touching content or embedding.
+
+    Symmetric with `lesson_update_tags` / `best_practice_update_tags`.
+    Tags are metadata; this path bypasses re-embedding. For semantic
+    changes to title/context/decision use `decision_supersede` — it
+    keeps the append-only ADR contract intact by creating a new row
+    and marking the old one `superseded`.
+
+    The BEFORE UPDATE trigger from migration 0037
+    (`invalidate_embedding_on_content_change`) only nulls embedding when
+    title/context/decision differ, so tag-only updates do NOT requeue
+    embeddings. The awareness layer (migration 0034) DOES fire
+    `readme_dirty` because the decisions section of the project README
+    reflects tag changes; that is intended.
+
+    Args:
+        id: uuid of the decision row.
+        tags_add: tags to union into the existing array.
+        tags_remove: tags to subtract from the existing array.
+
+    Returns:
+        {status:'ok', id, found:True, tags:[...new tags...]} on success.
+        {status:'ok', found:False} when the row does not exist.
+        {status:'error', error:'no tag operation specified'} when both lists are empty/None.
+        {status:'degraded', journal_id:...} when DB is down.
+    """
+    add_list = list(tags_add or [])
+    remove_list = list(tags_remove or [])
+    if not add_list and not remove_list:
+        return {"status": "error", "error": "no tag operation specified"}
+
+    if not isinstance(id, str) or not id.strip():
+        return {"status": "error", "error": "id must be a non-empty string"}
+
+    payload: dict[str, Any] = {
+        "id": id, "tags_add": add_list, "tags_remove": remove_list,
+    }
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            journal_id = journal_mod.record("decision_update_tags", payload)
+            await log_usage(
+                tool_name="decision_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable", "journal_id": journal_id},
+            )
+            return degraded("db_unavailable", journal_id=journal_id)
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.transaction():
+                    async with conn.cursor() as cur:
+                        await cur.execute(
+                            "SELECT tags, bucket, project FROM decisions "
+                            "WHERE id = %s FOR UPDATE",
+                            (id,),
+                        )
+                        existing = await cur.fetchone()
+                        if existing is None:
+                            return {"status": "ok", "found": False}
+                        current_tags = list(existing[0] or [])
+                        bucket = existing[1]
+                        project = existing[2]
+
+                        new_tags = list(current_tags)
+                        for tag in add_list:
+                            if tag not in new_tags:
+                                new_tags.append(tag)
+                        if remove_list:
+                            remove_set = set(remove_list)
+                            new_tags = [t for t in new_tags if t not in remove_set]
+
+                        await cur.execute(
+                            "UPDATE decisions SET tags = %s WHERE id = %s "
+                            "RETURNING id, tags",
+                            (new_tags, id),
+                        )
+                        upd = await cur.fetchone()
+                        assert upd is not None, "UPDATE inside FOR UPDATE block returned no row"
+                        dec_id = str(upd[0])
+                        result_tags = list(upd[1] or [])
+        except Exception as exc:
+            log.exception("decision_update_tags failed")
+            await log_usage(
+                tool_name="decision_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc), "id": id},
+            )
+            return {"status": "error", "error": str(exc)}
+
+    await log_usage(
+        tool_name="decision_update_tags",
+        bucket=bucket,
+        project=project,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={
+            "id": dec_id,
+            "tags_added": len(add_list),
+            "tags_removed": len(remove_list),
+            "final_tag_count": len(result_tags),
+        },
+    )
+    return {"status": "ok", "id": dec_id, "found": True, "tags": result_tags}
+
+
 async def decision_supersede(
     old_id: str,
     new_decision_payload: dict[str, Any],
