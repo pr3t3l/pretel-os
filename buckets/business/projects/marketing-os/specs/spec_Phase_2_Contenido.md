@@ -24,9 +24,11 @@ Phase 2 convierte la oferta (Phase 1) en piezas de contenido que respetan simult
 
 ### Pertenencia a una Estrategia (D-009/D-010, ver `Overall_WF.md`)
 
-Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia versionada por avatar), no al proyecto plano. Esto materializa la jerarquía Project → Avatar → **Strategy** → Contenido.
+Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia de contenido versionada por avatar), no al proyecto plano. Esto materializa la jerarquía Project → Buyer Persona (**oferta**, Fase 1) → Avatar (**contenido**, Fase 2) → **Strategy** → Contenido.
 
-- **`separate_strategies` (default):** Phase 1 y Phase 2 corren **N veces, una por avatar**. Cada corrida produce su propio `content_plan.json` enganchado a su `strategy_id` (un avatar, una versión). Es el caso limpio de la orquestación paralela.
+> **Reencuadre 2026-06-23 (oferta = buyer persona):** la **oferta** (`offer_spec.json`: value equation, stack, risk/urgency, pricing) es UNA, del buyer persona, y se construye **una sola vez** en Fase 1. Fase 2 la **consume** (lee `stack.force_coverage`, `risk_urgency_displacement.displacement_framing` del comprador) y **adapta lenguaje/énfasis por avatar** vía `language_packs`. El `force_coverage` que Fase 2 hereda es del comprador; el énfasis (qué fuerza liderar) se elige por avatar. El contrato de datos no cambia — solo se aclara que el origen es persona-level.
+
+- **`separate_strategies` (default):** **Fase 1 (oferta) corre UNA vez** para el comprador; **Fase 2 (contenido) corre N veces, una por avatar**. Cada corrida de Fase 2 produce su propio `content_plan.json` enganchado a su `strategy_id` (un avatar, una versión), todas enlazadas al **mismo** `offer_spec.json`. Es el caso limpio de la orquestación paralela.
 - **`unified_C_*`:** un solo `content_plan.json` sirve a varios avatars (`covers_avatars`), enganchado a la estrategia unificada cuyo `covers_avatar_ids` lista todos. La diferenciación por avatar ocurre vía `language_packs` dentro del plan único.
 - El plan declara `linked_to.strategy_id` + `strategy_version`. Decisiones, lessons y `signal_rules_triggered` de Phase 2 se persisten con `strategy_id` (no solo `project_id`), para que el loop de Phase 5 aprenda por estrategia.
 

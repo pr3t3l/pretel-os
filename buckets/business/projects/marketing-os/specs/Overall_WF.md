@@ -31,10 +31,12 @@ This is the architectural thesis of Sandi. Every other feature is downstream of 
 
 **The job:** a single problem (e.g. "I want to validate / scale my idea") is shared by very different people — a student and a bakery owner have the *same problem* but require *100% different marketing strategies* (different channels, language, awareness level, willingness to pay). A human consultant cannot economically sustain many distinct avatars, each with its own evolving strategy, content, metrics and improvement loop running in parallel. **An AI system can — trivially and cheaply.**
 
-**The thesis:** Sandi's defensible advantage is **not** "AI-powered personas" or "AI content" (both commoditized). It is **maintaining N avatars alive simultaneously, each with its own full Phase 1→5 loop (offer → content → publish → measure → adjust), versioned over time.** This is structural, not cosmetic — competitors are one-shot generators; Sandi is a persistent parallel orchestrator.
+**The thesis:** Sandi's defensible advantage is **not** "AI-powered personas" or "AI content" (both commoditized). It is **maintaining N avatars alive simultaneously, each with its own content→publish→measure→adjust loop (Phase 2→5), versioned over time — all built on the SAME buyer-persona offer (Phase 1).** This is structural, not cosmetic — competitors are one-shot generators; Sandi is a persistent parallel orchestrator.
+
+**The offer belongs to the buyer persona, NOT the avatar.** Price, package, value equation and guarantee are properties of the product / buyer persona — one product, one offer, shared by all of that persona's avatars (consistent with the conceptual-layer table in `CLAUDE.md`: **Buyer Persona → Phase 1 (Oferta); Avatar → Phase 2 (Content)**). What runs in parallel per avatar is the **content + distribution strategy** (Phase 2→5), not a separate offer.
 
 **Design consequences (binding on all phase specs):**
-- Per-avatar strategy is the **default**, not the exception. Unifying avatars into one offer is an *optimization* that must be justified by evidence — not the goal (see Phase 1 §4).
+- The **offer** (Phase 1) is per **buyer persona** — one, shared by the persona's avatars. The per-avatar default unit of orchestration is the **content/distribution strategy** (Phase 2→5). If an avatar genuinely needs a different offer/price, that is a signal it is a *different buyer persona*, not an avatar — split it as such (see Phase 1 §4).
 - There is **no hard cap** on avatars. The operator may prioritize which to activate first, but the system holds N in parallel (supersedes the old "max 5 avatars" rule in Phase 0 §6).
 - Strategies are **versioned in time**. The Phase 5 loop does not overwrite a strategy; it emits Strategy #N+1 for that avatar, preserving history for learning (see §"Strategy Lifecycle").
 
@@ -61,14 +63,14 @@ Project  ("Mi negocio de X")
 
 - **Foundation (0.1–0.2.5):** computed once per project, shared by all avatars. Re-runs only on Phase 0 re-trigger conditions.
 - **Buyer Persona (0.3):** one primary persona per project by default (the universal segment description). Additional personas only with evidence.
-- **Avatar:** an independent unit of orchestration. Each avatar owns its own strategy stream.
-- **Strategy:** one full run of Phase 1→5 for one avatar, dated and versioned. Each strategy produces its own Results, Learnings, Decisions and Best Practices.
+- **Avatar:** an independent unit of orchestration. Each avatar owns its own content/distribution strategy stream — on top of the shared buyer-persona offer.
+- **Strategy:** one full run of the content→adjust loop (Phase 2→5) for one avatar, dated and versioned, built on the buyer-persona offer (Phase 1, shared). Each strategy produces its own Results, Learnings, Decisions and Best Practices.
 
 ## Strategy Lifecycle (the per-avatar loop in time)
 
 For each avatar, Phases 1→5 produce a **Strategy** record:
 
-1. Phase 1 (Oferta) + Phase 2 (Contenido) author the strategy's offer and content plan.
+1. Phase 1 (Oferta) authors the **buyer-persona offer** (one, shared by all of the persona's avatars). Phase 2 (Contenido) authors **this avatar's** content plan on top of that shared offer.
 2. Phase 3 (Publicar) + Phase 4 (Medir) execute and collect `results_summary`.
 3. Phase 5 (Ajustar) reads results and, instead of editing the active strategy, **emits Strategy #N+1** for that avatar (status `active`), marking the previous one `superseded`. Learnings, decisions and best practices are persisted **per strategy version**, never flattened to the project.
 
@@ -76,7 +78,7 @@ This preserves the full history per avatar — the substrate the system learns f
 
 ### Avatar activation (signed policy, D-034)
 
-Avatars not in the first cycle live **on the bench** — visible in the project hub with their Phase 0 work intact — with an explicit, signature-worthy action: **"Encender este público"** (births their `strategies` row v1 and starts THEIR Phase 1→5 loop, in parallel, without touching what already runs). Activation suggestions are **signal-based, never calendar-based** (consistent with D-012):
+Avatars not in the first cycle live **on the bench** — visible in the project hub with their Phase 0 work intact — with an explicit, signature-worthy action: **"Encender este público"** (births their `strategies` row v1 and starts THEIR content→adjust loop (Phase 2→5), **reusing the buyer-persona offer** from Phase 1, in parallel, without touching what already runs). Activation suggestions are **signal-based, never calendar-based** (consistent with D-012):
 
 1. **First loop closed** — the active avatar reached its first Phase 4 money measurement (the user has seen the full system turn once).
 2. **Stability** — the active avatar's publishing has run ~2 weeks with no red flags (free capacity).

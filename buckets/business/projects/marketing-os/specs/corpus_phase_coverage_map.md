@@ -38,7 +38,8 @@ Por cada fase: (1) **cursos que la alimentan**, (2) **los conceptos del corpus q
 
 | Concepto del corpus | Dónde aterriza | ¿Cubierto hoy? |
 |---|---|---|
-| **Value equation** (sueño × probabilidad ÷ tiempo ÷ esfuerzo) | 1.1 La ecuación de valor · `value_equations` | ✅ por avatar encendido (D-039) |
+| **Value equation** (sueño × probabilidad ÷ tiempo ÷ esfuerzo) | 1.1 La ecuación de valor · `value_equations` | ✅ del **buyer persona** (reencuadre 2026-06-23), puntuada vía el avatar de entrada |
+| **OFERTA = buyer persona; estrategia/contenido = avatar** | toda la Fase 1 (oferta) vs 1.x/Fase 2 (estrategia) | ✅ híbrido firmado 2026-06-23 — precio/costo/valor/central/paquete del comprador; demand_type + contenido por avatar |
 | **Propuesta de valor afinada** (relevancia/diferenciación/credibilidad probada) | 1.2 El paquete · `offer_stack` | ✅ stack con comparables citados |
 | **Activadores de compra → urgencia honesta** | 1.3 Garantía y urgencia · `risk_urgency` | ✅ urgencia real con regla de retiro |
 | **Manejo de objeciones / punto de dolor → garantía** | 1.3 (risk reversal) | ✅ garantía honrable + honesty check |

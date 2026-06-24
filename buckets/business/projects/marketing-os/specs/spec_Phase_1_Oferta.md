@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-1
-**Status**: spec drafted v1.6 (validada vs corpus)
-**Last updated**: 2026-06-11
+**Status**: spec drafted v1.7 (oferta = buyer persona; estrategia/contenido por avatar)
+**Last updated**: 2026-06-23
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. FastAPI is future-only for heavy jobs, complex agents, or public API needs.
 
 **Audit references**:
@@ -17,7 +17,7 @@
 
 ## 0. Contexto y propósito
 
-Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimétrica en valor percibido vs precio que rechazarla se sienta estúpido. Output canónico: `offer_spec.json` + `offer_statement.md` (uno por avatar o variante, según estrategia multi-avatar).
+Phase 1 convierte el conocimiento del **buyer persona** (Phase 0.3 — el persona primario, NO el ICP de 0.2.5 ni un avatar) en una oferta tan asimétrica en valor percibido vs precio que rechazarla se sienta estúpido. **La oferta es del buyer persona: una sola, compartida por todos sus avatares** (capa canónica de `CLAUDE.md`: Buyer Persona → Phase 1 Oferta; Avatar → Phase 2 Contenido). Output canónico: `offer_spec.json` + `offer_statement.md` (**uno por buyer persona**; las variantes de lenguaje/contenido por avatar nacen en Fase 2).
 
 **Spine teórico**:
 - Hormozi $100M Offers (Value Equation, Stack, Risk Reversal, Urgency)
@@ -26,7 +26,8 @@ Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimét
 - Drive Big School: 3-traits check (relevante/diferente/creíble) como auditoría final, no como spine
 
 **Principios operacionales**:
-- Dream Outcome se ancla en JTBD, no en pain points (oferta aspiracional, no defensiva)
+- **La oferta es del buyer persona, no del avatar.** Entregable central, precio, costo, ecuación de valor / eje débil, paquete y garantía pertenecen al producto / buyer persona — una sola oferta. Lo que se paraleliza por avatar es la **estrategia de contenido/distribución** (Fase 2→5). Si un avatar exige otra oferta/precio, es señal de que es **otro buyer persona** (no un avatar) → se separa. El eje débil que ataca el paquete es el del comprador; el avatar de entrada (beachhead) solo es el primero que lo revela.
+- Dream Outcome se ancla en JTBD del **buyer persona**, no en pain points (oferta aspiracional, no defensiva)
 - Bonuses mapean explícitamente a Forces of Progress, no solo a "objection_n"
 - Risk reversal y urgency 100% manuales en todas las versiones (decisión ética irreductible)
 - Ambos gates obligatorios: perceived_value_ratio + gross_margin_pct
@@ -39,7 +40,7 @@ Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimét
 
 | Sub-paso | Output | Estimado V1 | Sub-workflow asistente |
 |---|---|---|---|
-| 1.1 — Dream Outcome + Value Equation | `value_equation.json` (uno por avatar) | 1–2 h/avatar | `value-equation-optimizer` |
+| 1.1 — Dream Outcome + Value Equation | `value_equation.json` (uno por **buyer persona**) | 1–2 h | `value-equation-optimizer` |
 | 1.2 — Offer Stack | `offer_stack.json` | 2–3 h | `offer-stack-builder` |
 | 1.3 — Risk Reversal + Urgency + Displacement | `risk_urgency.json` | 1 h | Manual 100% |
 | 1.4 — Pricing + Naming + Statement | `offer_statement.md` + pricing block | 1–2 h | Asistido por LLM |
@@ -70,7 +71,7 @@ Phase 1 NO arranca a menos que se cumplan los **10 checks** (vs 4 anteriores). S
 ## 3. Sub-paso 1.1 — Dream Outcome + Value Equation
 
 ### Propósito
-Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del avatar (no en pain points).
+Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del **buyer persona** (no del avatar, no en pain points). El eje débil que sale aquí es el del comprador.
 
 ### Guion de educación del instrumento (canon LITERAL — mandato del operador D-032: este copy entra al sistema tal cual, no parafraseado. Regla §2b del Setup Agent: nunca un número antes que su instrumento)
 
@@ -141,15 +142,15 @@ Sin división, sin /100. Rango: **1 a 10,000**. Más legible para el operador qu
 | 3,000 – 6,000 | Sólida | Avanza sin flag. |
 | > 6,000 | Excepcional (Hormozi-tier) | Avanza con tag `hormozi-tier` para reuso en otros productos como referencia. |
 
-### Output: `value_equation.json` — uno por avatar
+### Output: `value_equation.json` — uno por buyer persona
 
 ```json
 {
   "avatar_id": "avatar_1",
   "dream_outcome": {
-    "statement": "1 oración desde POV del avatar, aspiracional, anclada en JTBD",
+    "statement": "1 oración desde POV del buyer persona, aspiracional, anclada en JTBD",
     "jtbd_source": "JTB-1 (emotional_job + functional_job)",
-    "pull_amplified": "pull_of_new_solution #2 del avatar",
+    "pull_amplified": "pull_of_new_solution #2 del buyer persona",
     "evidence_path": "buyer_persona.jobs_to_be_done[0] + avatars[0].forces_of_progress.pull_of_new_solution",
     "score": 8,
     "score_rationale": "por qué 8 y no 10 — qué falta para ser un dream outcome de 10"
@@ -215,7 +216,7 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 - `save_lesson` si la reducción del denominador desbloqueó algo no obvio
 
 ### Gate G-Phase-1.1
-- Un `value_equation.json` por avatar **ACTIVO** (USER-CORRECTED 2026-06-12, D-039): con la política de activación escalonada (D-034), la ecuación se puntúa **al encender** un avatar — no se obliga al usuario a puntuar avatares en banca. El run fundacional puntuó los 4 a la vez porque la sim validaba el método completo y el batch calibraba el criterio; el producto puntúa por encendido.
+- Un `value_equation.json` por **buyer persona** (USER-CORRECTED 2026-06-23): la ecuación se puntúa **a través del avatar de entrada / beachhead** (la puerta más difícil), pero su eje débil es el del comprador. No se obliga al usuario a puntuar avatares en banca. Cuando un avatar nuevo se enciende, su puntuación sirve de **chequeo de convergencia** (si su eje débil coincide → confirma un solo comprador; si diverge fuerte → señal de que es otro buyer persona), no para crear otra oferta.
 - Cada `score_rationale` cita ≥1 elemento del `product_brief_v2`
 - `dream_outcome.jtbd_source` y `pull_amplified` poblados (no pain points)
 - `weakest_axis` y `phase_1_focus` registrados como `decision_record`
@@ -232,14 +233,14 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 
 ## 4. Transversal — Multi-avatar strategy (después de 1.1)
 
-### Default invertido (D-009, 2026-06-06)
+### El default: UNA oferta del comprador, estrategias de contenido por avatar (D-009, reencuadrado 2026-06-23)
 
-**La estrategia por-avatar es el DEFAULT, no la excepción.** El diferenciador central de Sandi es mantener N avatars en paralelo, cada uno con su propia estrategia (ver `Overall_WF.md` §"Core Differentiator"). Por eso este sub-paso **no decide si separar** — asume que cada avatar merece su propia estrategia — sino que decide si existe **evidencia suficiente para *unificar*** dos o más avatars bajo una sola oferta como **optimización** (ahorra trabajo cuando los avatars son casi idénticos).
+**La oferta es UNA, del buyer persona** (entregable central, precio, costo, valor/eje débil, paquete, garantía) — nunca se separa por avatar, porque es del producto/comprador. Lo que se mantiene **en paralelo por avatar** es la **estrategia de contenido/distribución** (Fase 2→5). El diferenciador de Sandi es mantener N avatares vivos en paralelo, cada uno con su loop de contenido→ajuste, **sobre la MISMA oferta del comprador** (ver `Overall_WF.md` §"Core Differentiator", reencuadrado).
 
-En otras palabras: la carga de la prueba se invierte. Antes había que justificar separar; ahora hay que **justificar unificar**. Si la evidencia de unificación no se cumple, cada avatar sigue su propia estrategia (Phase 1→5 independiente), que es el comportamiento esperado del sistema.
+Por eso este sub-paso **NO decide si la oferta se separa** (nunca se separa). Decide, después de 1.1, **qué tan unificada o separada corre la estrategia de CONTENIDO** entre los avatares: ¿comparten statement y registro lingüístico, o cada uno necesita el suyo? La "unificación" de aquí en adelante es de **contenido**, no de oferta. *(Si dos avatares exigieran ofertas/precios genuinamente distintos, no son avatares del mismo comprador — son buyer personas distintos y se separan a nivel persona, fuera de este sub-paso.)*
 
 ### Propósito
-Después de 1.1, evaluar — con evidencia de los `value_equation.json` ya producidos — si dos o más avatars comparten lo suficiente para **colapsar en una oferta unificada** (optimización), o si cada uno conserva su estrategia independiente (default).
+Después de 1.1, evaluar — con evidencia de las ecuaciones y forces ya producidos — si dos o más avatares comparten lo suficiente para **compartir la misma estrategia de contenido** (un solo statement / registro), o si cada uno necesita su propio statement y language pack en Fase 2. **La oferta (1.2–1.4) se construye UNA vez, para el comprador**, en cualquier caso.
 
 **Evaluación escalonada (USER-CORRECTED 2026-06-12, D-039, coherente con la activación D-034):** con **un solo avatar activo**, la decisión es trivial (`single_avatar` / su propia estrategia) y **no se evalúa nada** — no hay con quién comparar. La evaluación de unificación corre **cada vez que un avatar nuevo se enciende**: su ecuación recién puntuada se compara contra las firmadas de los avatares ya activos (las 5 condiciones de abajo). La unificación sigue siendo optimización por evidencia, nunca default.
 
@@ -262,13 +263,13 @@ El default es `separate_strategies` (cada avatar su propia estrategia). Solo se 
 
 | Condiciones | Estrategia | Schema implicación |
 |---|---|---|
-| ≥2 hard ❌ | **Default — estrategias separadas**: cada avatar conserva su propio `offer_spec.json` y su propio loop Phase 1→5 | `multi_avatar_strategy: "separate_strategies"` |
+| ≥2 hard ❌ | **Estrategias de CONTENIDO separadas**: UNA oferta del comprador (`offer_spec.json` único); cada avatar corre su propio loop de contenido (Fase 2→5), con statement y language pack propios | `multi_avatar_strategy: "separate_strategies"` |
 | Exactamente 1 hard ❌ | **Unificación con avatar_specific bonuses**: 1 oferta, 1 stack base + 1-2 bonuses específicos por avatar para cerrar gap | `multi_avatar_strategy: "unified_C_avatar_specific_bonuses"` |
 | 4 hard ✅ + soft ❌ | **Unificación con language_packs**: 1 oferta, 1 stack, 1 precio, N statements lingüísticos | `multi_avatar_strategy: "unified_C_language_packs"` |
 | 4 hard ✅ + soft ✅ | **Unificación limpia**: 1 oferta, 1 stack, 1 statement | `multi_avatar_strategy: "unified_C_clean"` |
 | 1 solo avatar | N/A | `multi_avatar_strategy: "single_avatar"` |
 
-**Nota:** `separate_strategies` (default) reemplaza el antiguo `separate_offers`. El cambio no es solo de nombre: antes "separar" era el fallback indeseado cuando fallaban condiciones; ahora es el **comportamiento base esperado**, alineado con la orquestación paralela. Cada estrategia separada se persiste como un registro `strategies` independiente por avatar (ver `Overall_WF.md`).
+**Nota:** `separate_strategies` (default) reemplaza el antiguo `separate_offers`. **Bajo el reencuadre 2026-06-23, significa estrategias de CONTENIDO separadas por avatar, NO ofertas separadas:** la oferta (`offer_spec.json`) es una sola, del comprador, y se comparte. Cada estrategia de contenido se persiste como un registro `strategies` independiente por avatar (ver `Overall_WF.md`), todas enlazadas al mismo `offer_spec.json`.
 
 ### Output: `multi_avatar_decision.json`
 
@@ -306,8 +307,9 @@ El default es `separate_strategies` (cada avatar su propia estrategia). Solo se 
 
 El `multi_avatar_decision.json` determina **cuántas `strategies` rows se crean** (ver `Overall_WF.md` §"Strategy Lifecycle"). Es aquí — después de 1.1 y la decisión multi-avatar, antes de 1.2 — donde nace la entidad Estrategia:
 
-- **`separate_strategies` (default):** se crea **una `strategies` row por avatar** (`version_number = 1`, `status = 'active'`, `covers_avatar_ids = [avatar_id]`). Los sub-pasos 1.2–1.4 corren N veces, cada corrida anclando su `offer_spec.json` a su `strategy_id`.
-- **`unified_C_*`:** se crea **una sola `strategies` row** con `avatar_id` = primario y `covers_avatar_ids` = todos los avatars cubiertos. Los sub-pasos 1.2–1.4 corren una vez; el `offer_spec.json` se ancla a esa estrategia.
+- **La oferta (sub-pasos 1.2–1.4) corre UNA sola vez, para el buyer persona**, en cualquier variante. Produce un único `offer_spec.json`.
+- **`separate_strategies` (default):** se crea **una `strategies` row por avatar** (`version_number = 1`, `status = 'active'`, `covers_avatar_ids = [avatar_id]`) para su loop de **contenido** (Fase 2→5). Todas las rows enlazan (`linked_to.offer_spec`) al **mismo** `offer_spec.json` del comprador.
+- **`unified_C_*`:** se crea **una sola `strategies` row** con `avatar_id` = primario y `covers_avatar_ids` = todos los avatars cubiertos, enlazada a ese mismo `offer_spec.json`.
 - **`single_avatar`:** una `strategies` row trivial.
 
 Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `offer_spec`. El `offer_spec.json` declara `linked_to.strategy_id` + `strategy_version` (consumido por Phase 2 check 14 y por toda la cadena Phase 3→5).
@@ -318,8 +320,7 @@ Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `
 - `multi_avatar_decision.json` existe y poblado
 - `strategies` row(s) creada(s) según la regla de granularidad de arriba (`version_number=1`, `status='active'`)
 - `demand_type` poblado en cada `strategies` row (heredado de Phase 0 o ajustado con `decision_record`)
-- Si `separate_strategies` (default) → sub-pasos 1.2–1.4 se ejecutan N veces (una por avatar), cada corrida produce un `offer_spec.json` anclado a su `strategy_id` independiente
-- Si cualquier variante de unified_C → sub-pasos 1.2–1.4 se ejecutan una sola vez con outputs adaptados, anclados a la estrategia unificada
+- Sub-pasos 1.2–1.4 (la oferta) se ejecutan **UNA sola vez** para el buyer persona, en cualquier variante; el `offer_spec.json` único se enlaza a todas las `strategies` rows. La variante multi-avatar gobierna cuántos **statements / language packs** se producen (1.4 / Fase 2), no cuántas ofertas.
 
 ---
 
@@ -374,7 +375,7 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
 
 ```json
 {
-  "avatar_target": "avatar_1 | primary",
+  "persona_target": "buyer persona primario (la oferta es de él; covers todos sus avatares)",
   "core_deliverable": {
     "name": "qué reciben efectivamente",
     "description": "1-2 oraciones",
@@ -387,7 +388,7 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
       "id": "bonus_1",
       "name": "nombre concreto y específico",
       "force_attacked": "pull_amplify | anxiety_reduce | habit_break | weakest_axis_boost",
-      "specific_target": "anxiety #2 del avatar OR habit #1 OR pull #3 OR weakest_axis",
+      "specific_target": "anxiety #2 del buyer persona OR habit #1 OR pull #3 OR weakest_axis",
       "hormozi_category": "speed | done_for_you | identity | community_access | results_guarantee | other  [Extensible Vocabulary]",
       "hormozi_category_custom_description": "obligatorio si category=other. Las 5 de Hormozi son la SEMILLA (las escribió para SUS productos); un sistema que mercadea cualquier producto verá tipos que él no enumeró — ej: 'estatus/reconocimiento (hall of fame público)', 'acceso anticipado', 'personalización extrema'. Un custom que aparezca ≥3 veces se promueve (ver Overall_WF §Pattern A).",
       "addresses_objection": "obj_id o null",
@@ -446,7 +447,7 @@ Skill registrado en pretel-os.
 - `buyer_persona.economic_capacity` (de Phase 0.3)
 - `competitive_landscape.pricing_tiers` (de Phase 0.4)
 - `value_equation.json` (de Phase 1.1)
-- `forces_of_progress` del avatar
+- `forces_of_progress` del buyer persona (el avatar de entrada solo las revela primero)
 - `core_deliverable` declarado por operador
 - `price_point_target` declarado por operador
 - `delivery_cost_per_unit` declarado por operador
@@ -534,7 +535,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
     "is_genuine": true,
     "genuine_reason": "capacidad limitada | lanzamiento | ventana estacional | etc.",
     "aligned_with_trigger": "trigger_id de avatar.forces_of_progress.push_of_situation.triggers, o null si type=none",
-    "alignment_rationale": "por qué la urgencia conecta con este trigger específico del avatar — defensa contra urgency fabricada"
+    "alignment_rationale": "por qué la urgencia conecta con este trigger específico del buyer persona — defensa contra urgency fabricada"
   },
   "scarcity": {
     "type": "quantity_limited | access_limited | time_limited | none",
@@ -543,7 +544,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
     "genuine_reason": "..."
   },
   "displacement_framing": {
-    "habit_being_displaced": "habit_1 del avatar — el comportamiento status quo",
+    "habit_being_displaced": "habit_1 del buyer persona — el comportamiento status quo",
     "replacement_narrative": "1 oración que enmarca tu oferta como reemplazo del status quo, no como adición",
     "cost_of_continuing_current_path": "qué pierden si no cambian (usado en copy de Phase 2)",
     "habits_attacked_by_framing": ["habit_1", "habit_2"]
@@ -566,7 +567,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
 - Si urgency ≠ "none" → `aligned_with_trigger` apunta a un `trigger_id` real de `avatar.forces_of_progress.push_of_situation.triggers` y `alignment_rationale` justifica la conexión (ISSUE-A4, audit 2026-05-10 — ancla evidencial contra urgency fabricada)
 - `decision_record` registrado para cualquier urgency/scarcity activa
 - `displacement_framing` poblado con `habit_being_displaced` y `replacement_narrative` (no skippable)
-- `risk_reversal.anxieties_addressed` mapea a anxieties del avatar (no inventadas)
+- `risk_reversal.anxieties_addressed` mapea a anxieties del buyer persona (no inventadas)
 
 ### V1/V2/V3
 | Versión | Quién decide |
@@ -651,7 +652,7 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 
 ### Output B: `offer_statement.md` — página única (≤350 palabras)
 
-Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}` → un statement por avatar/language_pack.
+El `offer_statement.md` es UNO, del buyer persona. Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}` → las **variantes lingüísticas por avatar** (mismo statement, registro/vocabulario del avatar) se materializan como **copy de Fase 2**, no como statements de oferta separados.
 
 Estructura obligatoria:
 
@@ -711,7 +712,7 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
 - `competitive_position` poblado con análisis vs ≥1 competidor de Phase 0.4
 - `tier_strategy` validado contra `tiers.length`
 - `offer_statement.md` ≤350 palabras
-- Si multi-avatar → un statement por avatar/language_pack
+- Un statement del buyer persona; si multi-avatar, las variantes lingüísticas por avatar son copy de Fase 2
 - Operador puede leer el statement en voz alta en ≤60 segundos sin tropezar
 - Avatar test: ¿el avatar entendería esto sin diccionario? (si no, simplificar)
 - Drive 3-traits check final: relevante (al avatar), diferente (vs competencia), creíble (sin claims vacíos)
@@ -731,13 +732,10 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
     "covers_avatars": ["avatar_1", "avatar_2", "avatar_3"]
   },
   "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_strategies",
-  "value_equation_per_avatar": {
-    "avatar_1": { "...del 1.1..." },
-    "avatar_2": { "...del 1.1..." }
-  },
-  "stack": { "...del 1.2..." },
-  "risk_urgency_displacement": { "...del 1.3..." },
-  "pricing": { "...del 1.4..." },
+  "value_equation": { "...del 1.1 — UNA, del buyer persona; el avatar de entrada es la lente..." },
+  "stack": { "...del 1.2 — del buyer persona..." },
+  "risk_urgency_displacement": { "...del 1.3 — del buyer persona..." },
+  "pricing": { "...del 1.4 — del buyer persona..." },
   "name": "string",
   "positioning_variants": [
     {
@@ -750,8 +748,9 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
       }
     }
   ],
-  "statement_paths_by_avatar": {
-    "avatar_1": "offer_statement_avatar_1.md"
+  "statement_path": "offer_statement.md",
+  "statement_paths_by_language_pack": {
+    "_comment": "uno por persona (statement_path). Variantes lingüísticas por avatar (positioning_variants[].language_pack) se materializan como copy en Fase 2, no como ofertas separadas."
   },
   "signal_rules_triggered": [],
   "metadata": {
@@ -868,7 +867,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 |---|---|---|
 | D1 | Stack-to-price ratio default | Tabla derivada por business_type × purchase_type (3× B2B reflexiva → 7× B2C impulsiva). Override por decision_record. |
 | D2 | Composite value score gate mínimo | <100 bloqueo duro, 100–1000 bloqueo blando, 1000+ avanza. Escala 1–10,000. |
-| D3 | Múltiples ofertas simultáneas por avatar | **Default invertido (D-009, 2026-06-06):** estrategia por-avatar es el default; el algoritmo de 5 condiciones decide si hay evidencia para *unificar* como optimización. `separate_strategies` (default) reemplaza `separate_offers`. Cada estrategia separada = un `strategies` row versionado. |
+| D3 | Granularidad oferta vs contenido por avatar | **Reencuadrado (2026-06-23):** la OFERTA es del buyer persona — UNA, compartida por todos sus avatares (capa canónica Buyer Persona→Phase 1, Avatar→Phase 2). Lo que se paraleliza por avatar es la **estrategia de contenido** (Fase 2→5). El algoritmo de 5 condiciones decide la unificación del **contenido** (statement/language packs), no de la oferta. `separate_strategies` = estrategias de contenido separadas; un solo `offer_spec.json` las enlaza. |
 | D4 | Convención scoring Value Equation | 10 = óptimo en todos los ejes. Fórmula multiplicativa, sin división. Rango 1–10,000. |
 | D5 | Dream Outcome anclaje | JTBD (emotional + functional) + pull, NO pain points. Oferta aspiracional, no defensiva. |
 | D6 | Bonus mapping | Forces of Progress (pull_amplify, anxiety_reduce, habit_break, weakest_axis_boost), NO solo "objection_n". |
@@ -936,7 +935,7 @@ Para el primer ciclo manual de Phase 1 con un producto real:
 [ ] 1.4 — pricing con competitive_position poblado
 [ ] 1.4 — tier_strategy validado contra tiers.length
 [ ] 1.4 — offer_statement.md ≤350 palabras
-[ ] 1.4 — si multi-avatar: un statement por avatar/language_pack
+[ ] 1.4 — un statement del buyer persona; variantes lingüísticas por avatar = copy de Fase 2
 [ ] 1.4 — Drive 3-traits check: relevante, diferente, creíble
 [ ] Signal rules evaluadas: ninguna alert sin resolver
 [ ] offer_spec.json consolidado
