@@ -358,6 +358,8 @@ El paquete sube el eje débil (likelihood/time — pueden ser dos a la vez) por 
 - **PROHIBIDO (ética glass-box):** casos/testimonios/estudios presentados como existentes, "pruebas" que el comprador deba leer (PDF de caso, dossier), y el marco "le funcionó a X → te funcionará a ti". Un producto PRE-LANZAMIENTO no tiene clientes; inventar un caso es una claim fabricada y se prohíbe (mismo estándar que urgencia fabricada).
 - **Mecanismo SIN promesa de resultado:** se describe como lo que el sistema HACE (*"aprende de tu negocio y ajusta tu estrategia cada semana"*), nunca como resultado garantizado (*"vas a vender más"*). El claim es sobre la acción del producto, no sobre el resultado del cliente.
 
+> Esta doctrina gobierna **los dos generadores**: el `weak_plan_note` del paso 1.1 (el plan de mejora del eje débil, obligatorio para firmar) **y** el `offer-stack-builder` del paso 1.2. Ambos prohíben la prueba social fabricada y exigen mecanismo + reversión de riesgo. (Build: `value-equation-suggest.ts` y `stack-proposal.ts`.)
+
 ### Margin gate (por delivery_format) — ÚNICO candado económico
 
 Único candado económico (salud del negocio, no comparación). **El umbral NO es fijo: se adapta a la forma de entrega.** En 1.2 el `offer-stack-builder` clasifica `delivery_format` (digital | service | physical | hybrid); el código mapea ese formato al umbral de la tabla de abajo (la tabla es autoritativa en código — `MARGIN_TARGETS` en `offer.ts` del build —, el LLM solo clasifica). El operador puede corregir la forma de entrega en el candado (Sandi propone, operador dispone) y el umbral se recalcula. Un 70% fijo penalizaría a negocios físicos/servicio (no pueden sostenerlo) y bloquearía la firma — por eso el candado es por-formato.
