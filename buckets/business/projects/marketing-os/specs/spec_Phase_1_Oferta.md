@@ -349,6 +349,15 @@ Construir el conjunto core + bonuses que (a) ataquen el **eje débil** de la ecu
 
 NO hay candado de ratio valor/precio (retirado en v1.8). La fuerza del paquete se mide así: el `offer-stack-builder` propone `proposed_rescore` = cuánto sube el **eje más débil** de la ecuación de valor del comprador gracias a este paquete (ej. likelihood 3→6, con su porqué). Es una PROPUESTA — el operador la firma en 1.3 junto con la garantía (que puede sumar). Si el paquete no mueve creíblemente el eje débil, necesita mejores piezas — no valores inflados.
 
+### Cómo se ataca el eje débil — por MECANISMO + reversión de riesgo, NUNCA por prueba social (decisión 2026-06-26)
+
+El paquete sube el eje débil (likelihood/time — pueden ser dos a la vez) por **dos vías, las dos obligatorias**, y con una prohibición dura:
+
+- **MECANISMO ("por qué te va a funcionar A TI"):** justifica el alza anclando en lo que el PRODUCTO HACE según sus **diferenciadores firmados** (su mecanismo real). El foco es *"te funciona porque [el producto hace X]"*, jamás *"a otros les funcionó, por eso a ti"*. El `offer-stack-builder` recibe los diferenciadores firmados en su contexto para anclar esto — generaliza, porque lee el mecanismo de CADA producto, no uno hardcodeado.
+- **MOTIVACIÓN / REVERSIÓN DE RIESGO accionable sin leer:** prueba gratis, acompañamiento guiado, onboarding asistido. Algo que se OFRECE y se prueba, no algo que el comprador deba sentarse a leer. Para un escéptico (likelihood bajo) la prueba más fuerte y honesta es su **experiencia propia**, no un testimonio ajeno.
+- **PROHIBIDO (ética glass-box):** casos/testimonios/estudios presentados como existentes, "pruebas" que el comprador deba leer (PDF de caso, dossier), y el marco "le funcionó a X → te funcionará a ti". Un producto PRE-LANZAMIENTO no tiene clientes; inventar un caso es una claim fabricada y se prohíbe (mismo estándar que urgencia fabricada).
+- **Mecanismo SIN promesa de resultado:** se describe como lo que el sistema HACE (*"aprende de tu negocio y ajusta tu estrategia cada semana"*), nunca como resultado garantizado (*"vas a vender más"*). El claim es sobre la acción del producto, no sobre el resultado del cliente.
+
 ### Margin gate (por delivery_format) — ÚNICO candado económico
 
 Único candado económico (salud del negocio, no comparación). **El umbral NO es fijo: se adapta a la forma de entrega.** En 1.2 el `offer-stack-builder` clasifica `delivery_format` (digital | service | physical | hybrid); el código mapea ese formato al umbral de la tabla de abajo (la tabla es autoritativa en código — `MARGIN_TARGETS` en `offer.ts` del build —, el LLM solo clasifica). El operador puede corregir la forma de entrega en el candado (Sandi propone, operador dispone) y el umbral se recalcula. Un 70% fijo penalizaría a negocios físicos/servicio (no pueden sostenerlo) y bloquearía la firma — por eso el candado es por-formato.
