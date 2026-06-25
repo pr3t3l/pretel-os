@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-1
-**Status**: spec drafted v1.7 (oferta = buyer persona; estrategia/contenido por avatar)
-**Last updated**: 2026-06-23
+**Status**: spec drafted v1.8 (oferta = buyer persona; **valor por funcionalidad, no por comparación**)
+**Last updated**: 2026-06-25
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. FastAPI is future-only for heavy jobs, complex agents, or public API needs.
 
 **Audit references**:
@@ -12,6 +12,7 @@
 - Mejoras operador 2026-05-10 — tabla ratio derivada, margin gate, sub-workflows, condición 5 multi-avatar, escala 1-10000
 - Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — ISSUE-A1 (G-PRE check 7 a "TODOS los avatars"), ISSUE-A2 (sub-paso 1.4.0 language_packs), ISSUE-A3 (comparable obligatorio en core_deliverable.value_rationale), ISSUE-A4 (urgency.aligned_with_trigger)
 - Validación corpus (2026-06-11, cierra el pendiente R5 del pase D-021) — vs Curso 2 (C5 propuesta de valor / C6 activadores / C7 puntos de dolor), BMC (bloque PV 11 elementos, Fuentes de Ingresos, patrones FREE) y Curso 1 (lead magnet, CPA<margen). Veredicto: superset 8.5, cero contradicciones duras. Enriquecimientos E1–E6 integrados en esta v1.6; detalle en `corpus_validation_report.md` §Addendum 2026-06-11
+- **Enmienda v1.8 (2026-06-25, decisión del operador) — VALOR POR FUNCIONALIDAD, NO POR COMPARACIÓN.** Se retira el value-stack-con-comparables de Hormozi (valores percibidos por pieza + comparables de mercado + candado de ratio ≥N×). Razón del operador: "no me quiero comparar con nadie… es mostrar por qué uno vale" (Google no dice "mejor que Bing"; la vela no dice "mejor que las otras", dice "mi aroma dura más"). Anclar la oferta en otros productos/precios la pone en su sombra (suena cara/barata) e introduce competidores en la mente del cliente. **Sustitución:** cada pieza se justifica por lo que HACE / le permite al cliente y el freno que le quita; la prueba de que el paquete vale es el **movimiento del eje débil** de la ecuación de valor (`proposed_rescore`), no un ratio; el **único candado económico es el margen** (salud del negocio, no comparación). Consistente con la ética glass-box (anti-urgencia-fabricada). Detalle de implementación en el build: `sandia-marketing` (offer.ts, stack-proposal.ts, paquete-thread, statement-proposal).
 
 ---
 
@@ -30,7 +31,7 @@ Phase 1 convierte el conocimiento del **buyer persona** (Phase 0.3 — el person
 - Dream Outcome se ancla en JTBD del **buyer persona**, no en pain points (oferta aspiracional, no defensiva)
 - Bonuses mapean explícitamente a Forces of Progress, no solo a "objection_n"
 - Risk reversal y urgency 100% manuales en todas las versiones (decisión ética irreductible)
-- Ambos gates obligatorios: perceived_value_ratio + gross_margin_pct
+- **Valor por funcionalidad, NO por comparación (v1.8):** cada pieza vende por lo que HACE, jamás por "esto cuesta $X en otro lado". Un solo candado económico: `gross_margin_pct`. La fuerza de la oferta la prueba el movimiento del eje débil (`proposed_rescore`), no un ratio valor/precio. El antiguo `perceived_value_ratio` queda retirado.
 - Composite value score con escala 1–10000 (más legible que 0.01–100)
 - Por qué esta fase es la palanca barata (Curso 2 C5): optimizar la propuesta de valor mejora el ratio de conversión sin aumentar gasto de adquisición — frecuentemente más rentable que comprar más tráfico. Phase 1 es donde se gana conversión antes de pagar por ella.
 
@@ -326,41 +327,31 @@ Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `
 
 ## 5. Sub-paso 1.2 — Offer Stack
 
+> **ENMIENDA v1.8 (2026-06-25) — valor por funcionalidad, no por comparación.** Lo que sigue describe el modelo retirado (value-stack Hormozi con valores percibidos por pieza + comparables + candado de ratio ≥N×). **YA NO APLICA.** El modelo vigente: cada pieza se justifica por lo que HACE / le permite al cliente y el freno que le quita — sin valores en dólares por pieza ni comparables de mercado. La prueba de que el paquete vale es el **movimiento del eje débil** (`proposed_rescore`: ej. probabilidad 3→6), no un ratio. El **único candado económico es el margen**. El bloque de `ratio_target` (tabla por business_type), los campos `perceived_value_usd`/`value_rationale`/`stack_to_price_ratio` y el lenguaje "valores≠precios" quedan como contexto histórico; el build los conserva nullable solo por compatibilidad con stacks firmados antes del cambio.
+
 ### Propósito
-Construir el conjunto core + bonuses cuyo valor percibido stackeado cumpla **ambos** gates: ratio adecuado al business_type × purchase_type **Y** gross margin saludable según delivery_format.
+Construir el conjunto core + bonuses que (a) ataquen el **eje débil** de la ecuación de valor del comprador, justificando cada pieza por lo que HACE, y (b) sostengan un **margen saludable** según delivery_format. La fuerza del paquete se demuestra con `proposed_rescore` (cuánto sube el eje débil), no con un ratio valor/precio.
 
-### Guion de educación del instrumento (canon LITERAL — regla §2b: el concepto de stack se enseña ANTES de mostrar valores)
+### Guion de educación del instrumento (canon — el principio se enseña ANTES de la primera tarjeta)
 
-**Versión beat (se muestra ANTES de la primera tarjeta con valor):**
+**Versión beat (se muestra ANTES de la primera tarjeta):**
 
-> "Vamos a armar tu oferta como un **paquete**. Cada pieza tiene un **valor** — lo que costaría conseguirla por separado, probado con precios reales de tu competencia — y el paquete entero tiene **UN precio**, mucho menor. Esa distancia entre lo que vale y lo que cuesta es lo que hace que decir que no se sienta tonto.
-> Ojo, lo más importante: **los valores NO son precios que alguien paga.** Son el 'esto es lo que recibes' de tu página de venta. Tu cliente paga solo el precio final — los valores existen para que VEA cuánto se lleva por ese precio."
+> "Vamos a armar tu oferta como un **paquete**. Cada pieza se gana su lugar por lo que **HACE** — lo que le permite a tu cliente y el freno que le quita —, no por compararla con lo que cobra otro. No decimos 'esto cuesta tanto y te lo damos por menos': eso te pone en la sombra de otros y suena a barato. Mostramos por qué cada pieza importa, y el paquete entero tiene **UN precio**. Como la vela cuyo aroma dura más: no dice 'mejor que las otras', dice lo que hace."
 
 **Versión panel ("¿Cómo se arma el paquete?"):**
 
-> - Cada pieza declara su valor con un **comparable real citado** (un competidor que cobra eso por algo equivalente) — nunca un número inventado.
-> - La forma final en la página de venta es siempre: lista de piezas con su valor → **"Valor total: $X. Tu inversión hoy: $Y."** La resta la hace el cliente solo.
-> - Dos candados protegen el paquete: el valor total debe ser **≥N× el precio** (N según tu tipo de negocio) y el margen debe ser **≥M%** (según lo que cuesta entregarlo). Si un candado falla, el paquete se rediseña — no se publica.
+> - Cada pieza declara **qué le permite al cliente** (`description`) y **qué freno le quita** (`specific_target`) — sin valores en dólares, sin comparables, sin nombrar marcas.
+> - La forma final en la página de venta es: lista de piezas por lo que hacen → **una sola línea de precio**. Sin "valor total $X": el cliente ve lo que el paquete HACE por él y decide.
+> - La prueba de que el paquete vale es el **movimiento del eje débil** (`proposed_rescore`) — se firma en 1.3 con la garantía. Un solo candado económico protege el negocio: el margen ≥M%. Si el margen falla, se ajusta precio o costo — no se publica.
 > - Si el producto tendrá **niveles de precio** (básico/medio/premium), eso se decide en el paso de pricing (1.4, `tier_strategy`) — el stack define QUÉ se entrega; los niveles definen CÓMO se escalona.
 
-### Tabla derivada de ratio_target (no hardcoded, calculada)
+### Prueba de fuerza: movimiento del eje débil (reemplaza al ratio_target)
 
-`ratio_target` se calcula desde `business_context`:
-
-| business_type | purchase_type / sales_cycle | ratio_target | Justificación |
-|---|---|---|---|
-| B2B | reflexiva | 3× | Decisión racional, ROI demostrable en hoja de cálculo |
-| B2B | mixta | 4× | Decisor racional pero champion con componente emocional |
-| B2C | reflexiva | 5× | Punto medio Hormozi clásico |
-| B2C | mixta | 6× | Compra con análisis pero gatillada emocionalmente |
-| B2C | impulsiva | 7× | Compra emocional, necesita "victoria abrumadora" |
-| Hybrid | cualquiera | 5× | Default conservador |
-
-**[Context-Adjusted Threshold]** Esta tabla es el **default por segmento**, no una ley. El múltiplo correcto también depende del panorama competitivo que Phase 0 ya levantó (`competitive_landscape`): un mercado saturado exige un ratio percibido más alto para destacar; un mercado virgen tolera menos. **Regla:** el `offer-stack-builder` lee `competitive_landscape.pricing_tiers` y, si la realidad competitiva contradice el default de la tabla, **eso dispara razonamiento (no se aplica ciego)** y ajusta `ratio_target` con la evidencia. El override por `decision_record` sigue permitido, pero el ajuste preferido es **por evidencia competitiva**, no manual a ciegas (ver Overall_WF §Pattern B).
+NO hay candado de ratio valor/precio (retirado en v1.8). La fuerza del paquete se mide así: el `offer-stack-builder` propone `proposed_rescore` = cuánto sube el **eje más débil** de la ecuación de valor del comprador gracias a este paquete (ej. likelihood 3→6, con su porqué). Es una PROPUESTA — el operador la firma en 1.3 junto con la garantía (que puede sumar). Si el paquete no mueve creíblemente el eje débil, necesita mejores piezas — no valores inflados.
 
 ### Margin gate (por delivery_format)
 
-Segundo gate obligatorio simultáneo al ratio gate.
+Único candado económico (salud del negocio, no comparación).
 
 | `product.delivery_format` | `gross_margin_pct` mínimo | Justificación |
 |---|---|---|
@@ -873,7 +864,8 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 | D6 | Bonus mapping | Forces of Progress (pull_amplify, anxiety_reduce, habit_break, weakest_axis_boost), NO solo "objection_n". |
 | D7 | Anxiety y habit coverage obligatorios | ≥1 bonus anxiety_reduce, ≥1 bonus habit_break (regla dura). |
 | D8 | Displacement framing | Obligatorio en 1.3, no opcional. Rompe habit del status quo. |
-| D9 | Margin gate | 70% digital / 50% service / 30% physical / 40% hybrid. Ambos gates obligatorios (ratio + margin). |
+| D9 | Margin gate | 70% digital / 50% service / 30% physical / 40% hybrid. **v1.8: ÚNICO candado económico** (el de ratio fue retirado). |
+| D12 | **Valor por funcionalidad, no por comparación (2026-06-25)** | Se retira el value-stack con valores percibidos + comparables + candado de ratio ≥N×. Cada pieza vende por lo que HACE; la fuerza la prueba `proposed_rescore` (movimiento del eje débil). Supersede D1 (tabla ratio_target) y la parte "ratio" de D9. |
 | D10 | Risk reversal / urgency manual permanente | V1, V2, V3 — siempre humano. Decisión ética irreductible. |
 | D11 | Bonus Hormozi categorization | speed / done_for_you / identity / community_access / results_guarantee — campo opcional pero recomendado para detectar gaps. |
 
@@ -885,8 +877,9 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 |---|---|
 | L1 | Dream Outcome viene del JOB (Christensen), no del pain (defensivo). Hormozi es aspiracional. |
 | L2 | El 70% de ofertas que fallan, fallan por no atacar anxiety + habit. Solo amplifican pull. |
-| L3 | Stack-to-price ratio NO es universal — depende de business_type × purchase_type. |
-| L4 | Margen y ratio son gates separados — ofertas pueden pasar uno y fallar el otro. |
+| L3 | ~~Stack-to-price ratio NO es universal~~ **(RETIRADA v1.8)** — el ratio de valor se eliminó: la oferta se vende por funcionalidad, no por comparación. |
+| L4 | ~~Margen y ratio son gates separados~~ **(v1.8)** — queda un único candado: el margen. La fuerza de la oferta la prueba el movimiento del eje débil. |
+| L4b | Vender por comparación de precios pone el producto en la sombra de otros (suena caro/barato) e introduce competidores en la mente del cliente. Mostrar por qué uno vale (funcionalidad/resultado) es posicionamiento premium y consistente con la ética glass-box. |
 | L5 | Reducir denominador (time + effort) supera a inflar numerador (dream + likelihood) en composite. |
 | L6 | Multi-avatar no es decisión a priori — se decide después de 1.1 con evidencia. |
 | L7 | Vocabulary mismatch entre avatars no requiere ofertas separadas — requiere language_packs. |
