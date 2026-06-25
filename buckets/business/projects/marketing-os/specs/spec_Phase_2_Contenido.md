@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-2
-**Status**: spec drafted v1.1 (post audit R4)
-**Last updated**: 2026-06-01
+**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado)
+**Last updated**: 2026-06-25
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. n8n is not part of the MVP; revisit only for Phase 3 distribution/publication.
 
 **Audit references**:
@@ -13,6 +13,7 @@
 - Auditoría Phase 2 R4 (2026-05-10) — A1-ISSUE-1 (force_coverage consumido + REINFORCE-001), A1-ISSUE-2 (JTBD anclado en brand voice + pilares + hooks), A1-ISSUE-3 (Vaynerchuk ratio + VAYNER-001), A1-ISSUE-4 (displacement_framing en PILLAR_D), A1-ISSUE-7/8 (L11 + Pinterest), A2-ISSUE-1/2/3/4 (V1/V2 disambiguación, evaluador, filesystem↔pretel-os, lookup table IDs explícitos)
 - BP-001 (`fea3dbd8`) — V1 100% manual de operador antes de cualquier sub-workflow
 - Lesson `17112600` — `domain` de pretel-os best_practices solo acepta `workflow|process|convention|communication`; signal-rules se persisten como `domain: workflow` con prefijo `SIGNAL-RULE` en título
+- Auditoría de consistencia Fase 0/1→2 (2026-06-25, registro `_audit_change_ledger.md` C1–C14) — **C4** (decision `11b919ab`): PILLAR_C retira testimonios / casos de éxito → mecanismo + reversión de riesgo + demos (producto pre-lanzamiento prohíbe prueba social); **C5** (decision `a2ef7e37`): la oferta es UNA del buyer persona — retirado el enum `unified_C_avatar_specific_bonuses`, jamás bonuses/ofertas por avatar; **C14**: idioma del contenido = se construye en español, sale en el idioma del locale del mercado, se traduce al final
 
 ---
 
@@ -26,7 +27,7 @@ Phase 2 convierte la oferta (Phase 1) en piezas de contenido que respetan simult
 
 Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia de contenido versionada por avatar), no al proyecto plano. Esto materializa la jerarquía Project → Buyer Persona (**oferta**, Fase 1) → Avatar (**contenido**, Fase 2) → **Strategy** → Contenido.
 
-> **Reencuadre 2026-06-23 (oferta = buyer persona):** la **oferta** (`offer_spec.json`: value equation, stack, risk/urgency, pricing) es UNA, del buyer persona, y se construye **una sola vez** en Fase 1. Fase 2 la **consume** (lee `stack.force_coverage`, `risk_urgency_displacement.displacement_framing` del comprador) y **adapta lenguaje/énfasis por avatar** vía `language_packs`. El `force_coverage` que Fase 2 hereda es del comprador; el énfasis (qué fuerza liderar) se elige por avatar. El contrato de datos no cambia — solo se aclara que el origen es persona-level.
+> **Reencuadre 2026-06-23 (oferta = buyer persona; C5, decision `a2ef7e37`):** la **oferta** (`offer_spec.json`: value equation, stack, risk/urgency, pricing) es UNA, del buyer persona, compartida por TODOS sus avatares, y se construye **una sola vez** en Fase 1. La diferenciación por avatar es de **estrategia/contenido** (N estrategias de contenido/distribución por avatar, sobre UNA oferta del comprador), **JAMÁS de oferta** — no existen "ofertas separadas" ni "bonuses por avatar". Fase 2 la **consume** (lee `stack.force_coverage`, `risk_urgency_displacement.displacement_framing` del comprador) y **adapta lenguaje/énfasis por avatar** vía `language_packs`. El `force_coverage` que Fase 2 hereda es del comprador; el énfasis (qué fuerza liderar) se elige por avatar. El contrato de datos no cambia — solo se aclara que el origen es persona-level.
 
 - **`separate_strategies` (default):** **Fase 1 (oferta) corre UNA vez** para el comprador; **Fase 2 (contenido) corre N veces, una por avatar**. Cada corrida de Fase 2 produce su propio `content_plan.json` enganchado a su `strategy_id` (un avatar, una versión), todas enlazadas al **mismo** `offer_spec.json`. Es el caso limpio de la orquestación paralela.
 - **`unified_C_*`:** un solo `content_plan.json` sirve a varios avatars (`covers_avatars`), enganchado a la estrategia unificada cuyo `covers_avatar_ids` lista todos. La diferenciación por avatar ocurre vía `language_packs` dentro del plan único.
@@ -45,6 +46,7 @@ Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia de
 - `phase_2_handoff` de Phase 1 es contrato vinculante: cada uncovered explícito debe ser cubierto por ≥1 asset, no hay "lo veo en Phase 5"
 - `negative_personas.signals_to_detect` se evalúan contra cada asset antes de publicar; matches bloquean
 - Cada asset tiene `parent_pillar` + `force_attacked` + `awareness_level` + `language_pack_id` + `channel` — sin estos campos el asset no entra al plan
+- **Idioma del contenido (C14):** el contenido se **construye en español** (comodidad del operador), pero el mercado primario es US/inglés. La **salida al mercado va en el idioma del locale del launch focus**; las semillas en español se traducen al final, página por página / asset por asset. Los `language_packs` adaptan registro/énfasis **por avatar dentro del idioma del mercado**, no son la capa de traducción — la traducción al idioma del locale es un paso explícito de cierre, no un efecto colateral del language_pack.
 
 ---
 
@@ -71,8 +73,8 @@ Phase 2 NO arranca a menos que se cumplan los **14 checks**. Si cualquier check 
 **Checks de Phase 1 cierre:**
 1. ✅ `offer_spec.json` existe con `metadata.operator_signoff: true`
 2. ✅ `offer_statement.md` existe (uno si `single_avatar` o `unified_C_*`, N si `separate_strategies`) y cada uno ≤350 palabras
-3. ✅ `offer_spec.multi_avatar_strategy` ∈ {`single_avatar`, `unified_C_clean`, `unified_C_language_packs`, `unified_C_avatar_specific_bonuses`, `separate_strategies`} declarado
-4. ✅ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, unified_C_avatar_specific_bonuses}`: `positioning_variants[]` poblado con `language_pack.vocabulary_register`, ≥5 `key_phrases` y ≥3 `avoid_phrases` por avatar (heredado de G-Phase-1.4)
+3. ✅ `offer_spec.multi_avatar_strategy` ∈ {`single_avatar`, `unified_C_clean`, `unified_C_language_packs`, `separate_strategies`} declarado (~~`unified_C_avatar_specific_bonuses`~~ RETIRADO por C5 / decision `a2ef7e37`: la oferta es UNA del buyer persona, jamás bonuses por avatar — la diferenciación por avatar es de estrategia/contenido vía `language_packs`, no de oferta)
+4. ✅ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}`: `positioning_variants[]` poblado con `language_pack.vocabulary_register`, ≥5 `key_phrases` y ≥3 `avoid_phrases` por avatar (heredado de G-Phase-1.4). (`unified_C_avatar_specific_bonuses` retirado — C5.)
 5. ✅ `offer_spec.metadata.phase_2_handoff` documentado: `objections_uncovered`, `anxieties_uncovered`, `habits_unattacked`, `pulls_underamplified` poblados explícitamente (cero uncovered permitido solo si OFFER-001 acknowledged en Phase 1)
 
 **Checks de Phase 0 todavía válidos:**
@@ -382,7 +384,7 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
 |---|---|---|---|---|
 | **PILLAR_A** | `ongoing_pains` (push crónico) | Captura demanda existente, evergreen | SEO + YouTube long-form | Long-form artículo, how-to, listicle, comparativo |
 | **PILLAR_B** | `triggers` (push agudo, evento) | Captura demanda en momento exacto | Paid ads + landing pages dedicadas | Ad creativo + LP por trigger, email de campaña |
-| **PILLAR_C** | `anxiety` (frenos al cambio) | Reduce fricción de compra | Email + RRSS orgánico + RRSS paid | Testimonios, casos de éxito, demos, behind-the-scenes, garantía explicada |
+| **PILLAR_C** | `anxiety` (frenos al cambio) | Reduce fricción de compra | Email + RRSS orgánico + RRSS paid | Mecanismo ("por qué te funciona a TI", anclado en los diferenciadores firmados), reversión de riesgo (prueba gratis, acompañamiento, garantía de entregable explicada), demos del producto, behind-the-scenes. **Producto pre-lanzamiento = sin clientes → prohibido testimonios / casos de éxito / "a otros les funcionó" (C4, decision `11b919ab`).** |
 | **PILLAR_D** | `habit` (inercia status quo) | Rompe estado actual | SEO + RRSS + email | Comparativos vs status quo, framing de displacement, "X vs no-hacer-nada", cost-of-inaction stories |
 
 ### Distinción reinforce vs resolve (A1-ISSUE-1 audit R4)
@@ -849,7 +851,7 @@ Para cada asset (long_form o derivative o hook):
     "product_brief_v2_path": "...",
     "primary_avatar_id": "avatar_1",
     "covers_avatars": ["avatar_1", "avatar_2"],
-    "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_strategies"
+    "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | separate_strategies"
   },
   "brand_voice": { "...del 2.0..." },
   "content_mix": { "...del 2.1..." },

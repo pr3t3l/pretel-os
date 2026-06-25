@@ -3,6 +3,7 @@
 **Status:** mapa de auditoría LOCKED como herramienta de la simulación-de-cero de Papandi (mandato del operador 2026-06-13: *"use `_corpus_extracted` toda la info para saber qué cargar en cada una de las fases y asegurarnos que lo tenemos todo incluido"*).
 **Para qué sirve:** cada pantalla del wizard se audita contra su fila aquí — si un concepto del corpus que le toca a esa fase no está cubierto (ni en el spec, ni en el guion, ni en la propuesta del producto), es un hueco a llenar. Es el checklist de completitud, pantalla por pantalla.
 **Fuente:** los 7 cursos + BMC en `_corpus_extracted/` (mapeados 2026-06-13). El corpus es el cuerpo de teoría; este doc dice dónde aterriza cada pieza.
+**Last updated:** 2026-06-25 — anotadas las **divergencias intencionales** de Fase 1 (valor por funcionalidad / no prueba social) tras la doctrina v1.8 del ledger C1–C14. El corpus es **piso**, no autoridad: donde Fase 1 se aparta a proposito del corpus, la fila apunta a la divergencia trazable (ver bloque bajo la tabla de FASE 1).
 
 ---
 
@@ -40,13 +41,19 @@ Por cada fase: (1) **cursos que la alimentan**, (2) **los conceptos del corpus q
 |---|---|---|
 | **Value equation** (sueño × probabilidad ÷ tiempo ÷ esfuerzo) | 1.1 La ecuación de valor · `value_equations` | ✅ del **buyer persona** (reencuadre 2026-06-23), puntuada vía el avatar de entrada |
 | **OFERTA = buyer persona; estrategia/contenido = avatar** | toda la Fase 1 (oferta) vs 1.x/Fase 2 (estrategia) | ✅ híbrido firmado 2026-06-23 — precio/costo/valor/central/paquete del comprador; demand_type + contenido por avatar |
-| **Propuesta de valor afinada** (relevancia/diferenciación/credibilidad probada) | 1.2 El paquete · `offer_stack` | ✅ stack con comparables citados |
+| **Propuesta de valor afinada** (relevancia/diferenciación/credibilidad probada) | 1.2 El paquete · `offer_stack` | ✅ stack justificado por funcionalidad (lo que HACE + freno que quita) — **ver Divergencia D-1 abajo** |
 | **Activadores de compra → urgencia honesta** | 1.3 Garantía y urgencia · `risk_urgency` | ✅ urgencia real con regla de retiro |
 | **Manejo de objeciones / punto de dolor → garantía** | 1.3 (risk reversal) | ✅ garantía honrable + honesty check |
 | **BMC Revenue Streams** (bait-hook, tiered, subscription) | 1.4 Precio · `offer_spec.pricing` | ✅ suscripción + Beats; **estudio de precio real (cazado 2026-06-12)** |
 | **BMC Cost Structure** (fijo vs variable, escalabilidad) | 1.2 (costo de servir) · **desglose de costo por patrón** | ✅ cost-estimate (marginal + pasarela en código) |
-| **Posicionamiento** (el hueco del 0.4 → ángulo) | 1.x estrategias + 1.4 statement | ✅ separate_strategies + statement |
+| **Posicionamiento** (el hueco del 0.4 → ángulo) | 1.x estrategias + 1.4 statement | ✅ N estrategias **por avatar** sobre UNA oferta del buyer persona (nunca "ofertas separadas") + statement |
 | **Language pack** (frases literales del research del cliente) | 1.4 (key_phrases) — método estándar | ✅ USER-CORRECTED como regla |
+
+> ### Divergencias INTENCIONALES de Fase 1 con el corpus (decisiones trazables — 2026-06-25, ledger C1–C5)
+> El corpus es el **piso**; estas dos divergencias son rumbos firmados a proposito (no huecos ni contradicciones). Detalle completo en `corpus_validation_report.md §0`.
+> - **D-1 (C1, decision `a2ef7e37`) — valor por FUNCIONALIDAD, no por comparación.** Se retiro el value-stack de Hormozi: cada pieza del `offer_stack` se justifica por lo que **HACE** y por el freno que quita, **no por un valor percibido/comparable** (`perceived_value_usd`/`comparable`/`value_rationale` eliminados). La "prueba de que vale" = movimiento del eje débil (`proposed_rescore`), no un ratio. **Único candado económico = margen por `delivery_format`** (digital 70% / servicio 50% / físico 30% / híbrido 40%). Donde el corpus pediria "comparables citados", aqui se cita el **mecanismo + diferenciador firmado**.
+> - **D-2 (C4, decision `11b919ab`) — credibilidad por MECANISMO, NUNCA por prueba social.** Producto pre-lanzamiento sin clientes → prohibidos casos/testimonios/simulaciones/"a otros les funciono" (serian claim fabricada). El eje débil se ataca por mecanismo ("por que te funciona a TI") + reversión de riesgo accionable (prueba gratis, acompañamiento). Gobierna ambos generadores (1.1 `weak_plan_note` + 1.2 `offer-stack-builder`) y el énfasis del contenido de Fase 2. Donde el corpus de RRSS pediria prueba social, aqui se exige experiencia propia.
+> - **Recordatorio C5:** la **OFERTA es del buyer persona** (una sola, compartida por todos sus avatares); lo "por avatar" es solo la **estrategia/contenido** de Fase 2. JAMÁS "ofertas separadas" por avatar.
 
 ## FASE 2 — Contenido (`content_plan.json` + `content_assets/`)
 
