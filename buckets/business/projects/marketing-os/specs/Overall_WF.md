@@ -3,7 +3,8 @@
 **Project:** business/marketing-os  
 **Document type:** lifecycle overview  
 **Status:** living document; architecture corrected for Sandi Marketing MVP  
-**Last updated:** 2026-06-25 (auditoría Fase 0/1→2: C5 — la oferta es del buyer persona, una sola compartida; lo que se ramifica por avatar es la estrategia de CONTENIDO, nunca la oferta; decisiones 1.x históricas marcadas superseded vs doctrina v1.8 / decision `a2ef7e37`)  
+**Last updated:** 2026-06-26 (C15 — refinamiento de la frontera híbrida DENTRO de Fase 2: reparto de conciencia 2.1 + voz 2.0 = COMPARTIDOS del buyer persona; las piezas 2.2–2.5 son por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición — próximo paso: keyword research por-avatar)  
+*Prev: 2026-06-25 (auditoría Fase 0/1→2: C5 — la oferta es del buyer persona, una sola compartida; lo que se ramifica por avatar es la estrategia de CONTENIDO, nunca la oferta; decisiones 1.x históricas marcadas superseded vs doctrina v1.8 / decision `a2ef7e37`)*  
 *Prev: 2026-06-06 (parallel multi-avatar orchestration + strategies entity + Phases 3/4/5)*
 
 ## Current Implementation Plan
@@ -339,6 +340,8 @@ The lifecycle remains the product methodology:
    Output: `optimization_plan.json` + per-strategy lessons/decisions/best-practices. **Per avatar:** Phase 5 does not edit the active strategy — it emits Strategy #N+1 (new `strategies` row, status `active`) and marks the previous `superseded`. A flag→action→re-trigger table routes each Phase 4 flag to the minimal phase that fixes the root cause. See §"Strategy Lifecycle".
 
 **Note on scope of the loop:** Phases 1→5 run **per avatar**, in parallel across all active avatars. The Foundation layer (Phase 0.1–0.2.5) is shared and runs once per project. This is the parallel multi-avatar orchestration described above.
+
+**Refinement (C15, 2026-06-26) — what's "per avatar" inside Phase 2:** different avatars genuinely sit at different awareness levels (stated above: "different channels, language, awareness level"). But that per-avatar awareness is only honest if it is **measured**. In V1 we measure `awareness_distribution` **once** at Phase 0.2 (Foundation, shared), so the **awareness/effort mix (2.1) and brand voice (2.0) are shared at the buyer-persona level** — assigning a whole avatar to one Schwartz stage from a single `journey_stage` label is prohibited (it is the classic "assume what the segment knows" error). What branches per avatar in Phase 2 is the **content pieces (2.2–2.5)**: channels anchored on `avatars[].where_we_meet`, pillars built from the avatar's declared `forces_of_progress`, hooks in the avatar's vocabulary. The mix becomes per-avatar **only when per-avatar awareness is measured** — unlocked by per-avatar keyword research (documented next step). See `spec_Phase_2_Contenido.md §4`.
 
 ## Phase Specs
 

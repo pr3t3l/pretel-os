@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-2
-**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado)
-**Last updated**: 2026-06-25
+**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado) + v1.2 (C15, 2026-06-26: reparto 2.1 COMPARTIDO del buyer persona; piezas 2.2–2.5 por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición, no etiqueta)
+**Last updated**: 2026-06-26
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. n8n is not part of the MVP; revisit only for Phase 3 distribution/publication.
 
 **Audit references**:
@@ -14,6 +14,7 @@
 - BP-001 (`fea3dbd8`) — V1 100% manual de operador antes de cualquier sub-workflow
 - Lesson `17112600` — `domain` de pretel-os best_practices solo acepta `workflow|process|convention|communication`; signal-rules se persisten como `domain: workflow` con prefijo `SIGNAL-RULE` en título
 - Auditoría de consistencia Fase 0/1→2 (2026-06-25, registro `_audit_change_ledger.md` C1–C14) — **C4** (decision `11b919ab`): PILLAR_C retira testimonios / casos de éxito → mecanismo + reversión de riesgo + demos (producto pre-lanzamiento prohíbe prueba social); **C5** (decision `a2ef7e37`): la oferta es UNA del buyer persona — retirado el enum `unified_C_avatar_specific_bonuses`, jamás bonuses/ofertas por avatar; **C14**: idioma del contenido = se construye en español, sale en el idioma del locale del mercado, se traduce al final
+- **C15** (2026-06-26, registro `_audit_change_ledger.md`): el **reparto de conciencia 2.1 es COMPARTIDO del buyer persona** (una foto medida, no por avatar) — prohibido fabricar el sesgo por-avatar desde una etiqueta (`journey_stage`); la diferenciación por avatar vive en las **piezas 2.2–2.5**, ancladas en `avatars[].where_we_meet` (canales) y `forces_of_progress` (pilares). Per-avatar awareness se habilita solo con **keyword research por-avatar medido** (próximo paso documentado). La voz 2.0 y el reparto 2.1 se almacenan con `avatar_key=''` (compartido); 2.2–2.5 con el `key` del avatar.
 
 ---
 
@@ -32,6 +33,20 @@ Cada `content_plan.json` **pertenece a una `strategies` row** (una estrategia de
 - **`separate_strategies` (default):** **Fase 1 (oferta) corre UNA vez** para el comprador; **Fase 2 (contenido) corre N veces, una por avatar**. Cada corrida de Fase 2 produce su propio `content_plan.json` enganchado a su `strategy_id` (un avatar, una versión), todas enlazadas al **mismo** `offer_spec.json`. Es el caso limpio de la orquestación paralela.
 - **`unified_C_*`:** un solo `content_plan.json` sirve a varios avatars (`covers_avatars`), enganchado a la estrategia unificada cuyo `covers_avatar_ids` lista todos. La diferenciación por avatar ocurre vía `language_packs` dentro del plan único.
 - El plan declara `linked_to.strategy_id` + `strategy_version`. Decisiones, lessons y `signal_rules_triggered` de Phase 2 se persisten con `strategy_id` (no solo `project_id`), para que el loop de Phase 5 aprenda por estrategia.
+
+### Qué personaliza al avatar (y qué NO) — doctrina 2026-06-26 (C15)
+
+El buyer persona es **el trabajo a resolver** (JTBD + dolores centrales); el avatar es **ese mismo trabajo vestido con el idioma, los canales y los disparadores de su segmento**. Lo COMPARTIDO (persona) no se re-decide por avatar: la **oferta** (Fase 1), la **voz de marca** (2.0) y el **reparto de conciencia** (2.1). Lo que SÍ diferencia las piezas por avatar son **5 dimensiones que ya se capturan en 0.3** y que Fase 2 DEBE consumir:
+
+| Dimensión | Campo (0.3) | Alimenta |
+|---|---|---|
+| Identidad / vocabulario | `essence`, `distinct_because` | voz aplicada, ganchos (2.5) |
+| Dónde se reúnen | `where_we_meet` | **canales (2.2)** — anclar la matriz aquí |
+| Sus dolores específicos | `forces_of_progress.ongoing_pains` | **pilares (2.3)** |
+| Lo que los dispara | `forces_of_progress.triggers` | pilares (2.3) + ganchos (2.5) |
+| Sus miedos / hábitos | `forces_of_progress.anxiety` / `habit` | pilares (2.3) |
+
+**Regla dura:** los pilares (2.3) se construyen desde las fuerzas **DECLARADAS** del avatar (no se re-infieren de la esencia), y los canales (2.2) anclan en `where_we_meet`. Si un paso de contenido ignora estos campos, las piezas no se diferencian de verdad y el moat multi-avatar es cosmético.
 
 **Spine teórico**:
 - Schwartz "Breakthrough Advertising" (5 awareness levels — Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware; este sistema colapsa Product+Most en "Most Aware" siguiendo el mapping ya hecho en Phase 0.2)
@@ -207,8 +222,18 @@ El archivo `brand_voice.json` vive en filesystem en `content_assets/_meta/brand_
 
 ## 4. Sub-paso 2.1 — Awareness Mapping & Content Mix
 
+### NIVEL: COMPARTIDO (buyer persona / mercado), no por avatar — decisión 2026-06-26 (C15)
+
+> **El reparto del esfuerzo es del buyer persona, NO del avatar (en V1).** La `awareness_distribution` se **mide una sola vez** a nivel mercado en Phase 0.2 (capa Foundation, avatar-agnóstica). El `content_mix.target_mix` se deriva de ESA foto y se **comparte** por todos los avatares del comprador; el `content_plan` por-avatar lo **referencia**, no lo re-decide.
+>
+> **Por qué (honestidad de medición, no pereza):** en principio cada avatar tiene su propia distribución de conciencia (Schwartz es per-segmento; ver `Overall_WF.md §Core Differentiator`). PERO afirmar un sesgo por-avatar exige **medirlo**. **PROHIBIDO** sesgar el mix desde una sola etiqueta de avatar (`journey_stage`/`customer_journey_position`): meter a todo un segmento en "dormido" o "sabe-que-duele" es exactamente el error que Schwartz advierte — dentro de cualquier avatar hay del novato al experto. Una foto compartida honesta vence a cuatro fotos inventadas.
+>
+> **Camino a per-avatar (futuro, NO V1):** cuando exista **keyword research POR AVATAR** (la distribución de intención de búsqueda de SUS términos, vía DataForSEO), se podrá derivar un mix por-avatar **medido**. Recién ahí 2.1 sube a per-avatar. La infra ya lo soporta (`project_phase_artifacts.avatar_key`); hoy 2.1 se escribe con `avatar_key=''` (compartido).
+>
+> **Lo que SÍ se personaliza por avatar son las PIEZAS (2.2–2.5)** — ver §"Qué personaliza al avatar" en Contexto.
+
 ### Propósito
-Decidir qué % del contenido total va a cada nivel de Schwartz, ancladonte en el `awareness_distribution` ya calculado en Phase 0.2. **No es 1:1 con la distribución de demanda** — es función de la `offer_strategy` taggeada por DEMAND-001/002 en Phase 0.2.
+Decidir qué % del contenido total va a cada nivel de Schwartz, anclándote en el `awareness_distribution` ya calculado en Phase 0.2. **No es 1:1 con la distribución de demanda** — es función de la `offer_strategy` taggeada por DEMAND-001/002 en Phase 0.2. Es un input **del comprador**, compartido por sus avatares.
 
 ### Heurísticas de mapping (LOCKED)
 
@@ -341,7 +366,8 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
 
 ### Lectura previa
 - `business_context.channel`
-- `awareness_distribution` y `content_mix.target_mix` (sub-paso 2.1)
+- `awareness_distribution` y `content_mix.target_mix` (sub-paso 2.1 — **compartido del comprador**)
+- **`avatars[].where_we_meet` (Phase 0.3) — ANCLA OBLIGATORIA**: los canales de ESTE avatar salen de dónde vive (sus comunidades/plataformas concretas), no de un default genérico. Es el campo que diferencia la matriz por avatar (C15).
 - `avatars[].customer_journey_position` (Phase 0.3)
 - `lessons` con tags `['channel-function', 'customer-journey']`
 
@@ -367,6 +393,8 @@ Esta tabla está registrada como `best_practice` en pretel-os con `domain: workf
 
 ### Propósito
 4 pilares de contenido, **uno por fuerza** de Christensen (ongoing_pains, triggers, anxiety, habit). El error clásico es agrupar pilares por tema ("blog de SEO", "Reels de TikTok") — esto descubre canal pero no estrategia. Pilares por fuerza garantizan que cada palanca psicológica del avatar recibe contenido específico.
+
+> **Regla de datos (C15, 2026-06-26):** los 4 pilares se construyen desde las `forces_of_progress` **DECLARADAS** del avatar activo (`ongoing_pains`, `triggers`, `anxiety`, `habit` de 0.3) — **NO se re-infieren** de la esencia ni del mercado. Es la fuente principal de diferenciación entre avatares: el trigger del de Etsy ("Etsy cambia su algoritmo") y el del freelancer ("un cliente recurrente desaparece") producen pilares distintos. El prompt de 2.3 DEBE recibir estas fuerzas como input, no reconstruirlas.
 
 ### Guion de educación del instrumento (canon LITERAL — mandato del operador 2026-06-12, D-045: "me gusta mucho toda la explicación, debemos mantenerla")
 
