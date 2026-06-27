@@ -442,6 +442,8 @@
 **[OPERADOR]:** *"Perfecto, solo recuerda que Instagram puede ser imágenes pero TikTok es video shorts, por eso debemos separarlos: un entregable es copy de imágenes con texto, otro de videos shorts."*
 
 > 🍉 Cazada correcta — la naturaleza de cada red manda sobre la comodidad del multiplicador: Instagram = imágenes con texto (copy de slides), TikTok = video short (guion con estructura). La misma pieza ancla alimenta a ambos, pero son DOS entregables distintos. Y nota la elegancia: el guion de video ES texto — entra en nuestro alcance (Papandi entrega el guion listo con tomas y subtítulos; grabar son 5 minutos con green-screen o text-overlay).
+
+> ⚠️ **Corrección retroactiva (C16, 2026-06-27):** el ejemplo *"Instagram = imágenes / TikTok = video"* se cristalizó por error como **ley fija canal→formato** en el build. El operador aclaró que era un ejemplo (su palabra original fue *"Instagram **puede** ser imágenes"*): IG admite Reels/video, fotos, carruseles, Stories — el avatar puede hacer video en IG. El principio correcto (vigente) es **"entregables separados por canal × formato; el formato lo elige el canal Y el avatar, no un mapa fijo"**. Ver `_audit_change_ledger.md` C16 y `spec_Phase_2_Contenido.md` §atomización. Lo que SÍ se mantiene de esta conversación: cada canal×formato es su propio entregable (un carrusel ≠ un video = producción distinta).
 >
 > El guion real de la pieza 1 (~40 segundos, estructura del método: gancho 3-5s → cuerpo con micro-ganchos → cierre suave):
 >

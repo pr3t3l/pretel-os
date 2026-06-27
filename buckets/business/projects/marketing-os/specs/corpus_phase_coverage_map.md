@@ -3,6 +3,7 @@
 **Status:** mapa de auditoría LOCKED como herramienta de la simulación-de-cero de Papandi (mandato del operador 2026-06-13: *"use `_corpus_extracted` toda la info para saber qué cargar en cada una de las fases y asegurarnos que lo tenemos todo incluido"*).
 **Para qué sirve:** cada pantalla del wizard se audita contra su fila aquí — si un concepto del corpus que le toca a esa fase no está cubierto (ni en el spec, ni en el guion, ni en la propuesta del producto), es un hueco a llenar. Es el checklist de completitud, pantalla por pantalla.
 **Fuente:** los 7 cursos + BMC en `_corpus_extracted/` (mapeados 2026-06-13). El corpus es el cuerpo de teoría; este doc dice dónde aterriza cada pieza.
+**Last updated:** 2026-06-25 — anotadas las **divergencias intencionales** de Fase 1 (valor por funcionalidad / no prueba social) tras la doctrina v1.8 del ledger C1–C14. El corpus es **piso**, no autoridad: donde Fase 1 se aparta a proposito del corpus, la fila apunta a la divergencia trazable (ver bloque bajo la tabla de FASE 1).
 
 ---
 
@@ -38,14 +39,22 @@ Por cada fase: (1) **cursos que la alimentan**, (2) **los conceptos del corpus q
 
 | Concepto del corpus | Dónde aterriza | ¿Cubierto hoy? |
 |---|---|---|
-| **Value equation** (sueño × probabilidad ÷ tiempo ÷ esfuerzo) | 1.1 La ecuación de valor · `value_equations` | ✅ por avatar encendido (D-039) |
-| **Propuesta de valor afinada** (relevancia/diferenciación/credibilidad probada) | 1.2 El paquete · `offer_stack` | ✅ stack con comparables citados |
+| **Value equation** (sueño × probabilidad ÷ tiempo ÷ esfuerzo) | 1.1 La ecuación de valor · `value_equations` | ✅ del **buyer persona** (reencuadre 2026-06-23), puntuada vía el avatar de entrada |
+| **OFERTA = buyer persona; estrategia/contenido = avatar** | toda la Fase 1 (oferta) vs 1.x/Fase 2 (estrategia) | ✅ híbrido firmado 2026-06-23 — precio/costo/valor/central/paquete del comprador; demand_type + contenido por avatar |
+| **Propuesta de valor afinada** (relevancia/diferenciación/credibilidad probada) | 1.2 El paquete · `offer_stack` | ✅ stack justificado por funcionalidad (lo que HACE + freno que quita) — **ver Divergencia D-1 abajo** |
 | **Activadores de compra → urgencia honesta** | 1.3 Garantía y urgencia · `risk_urgency` | ✅ urgencia real con regla de retiro |
 | **Manejo de objeciones / punto de dolor → garantía** | 1.3 (risk reversal) | ✅ garantía honrable + honesty check |
 | **BMC Revenue Streams** (bait-hook, tiered, subscription) | 1.4 Precio · `offer_spec.pricing` | ✅ suscripción + Beats; **estudio de precio real (cazado 2026-06-12)** |
 | **BMC Cost Structure** (fijo vs variable, escalabilidad) | 1.2 (costo de servir) · **desglose de costo por patrón** | ✅ cost-estimate (marginal + pasarela en código) |
-| **Posicionamiento** (el hueco del 0.4 → ángulo) | 1.x estrategias + 1.4 statement | ✅ separate_strategies + statement |
+| **Posicionamiento** (el hueco del 0.4 → ángulo) | 1.x estrategias + 1.4 statement | ✅ N estrategias **por avatar** sobre UNA oferta del buyer persona (nunca "ofertas separadas") + statement |
 | **Language pack** (frases literales del research del cliente) | 1.4 (key_phrases) — método estándar | ✅ USER-CORRECTED como regla |
+
+> ### Divergencias INTENCIONALES con el corpus (decisiones trazables — ledger C1–C5, C15)
+> El corpus es el **piso**; estas divergencias son rumbos firmados a proposito (no huecos ni contradicciones). Detalle completo en `corpus_validation_report.md §0`.
+> - **D-1 (C1, decision `a2ef7e37`) — valor por FUNCIONALIDAD, no por comparación.** Se retiro el value-stack de Hormozi: cada pieza del `offer_stack` se justifica por lo que **HACE** y por el freno que quita, **no por un valor percibido/comparable** (`perceived_value_usd`/`comparable`/`value_rationale` eliminados). La "prueba de que vale" = movimiento del eje débil (`proposed_rescore`), no un ratio. **Único candado económico = margen por `delivery_format`** (digital 70% / servicio 50% / físico 30% / híbrido 40%). Donde el corpus pediria "comparables citados", aqui se cita el **mecanismo + diferenciador firmado**.
+> - **D-2 (C4, decision `11b919ab`) — credibilidad por MECANISMO, NUNCA por prueba social.** Producto pre-lanzamiento sin clientes → prohibidos casos/testimonios/simulaciones/"a otros les funciono" (serian claim fabricada). El eje débil se ataca por mecanismo ("por que te funciona a TI") + reversión de riesgo accionable (prueba gratis, acompañamiento). Gobierna ambos generadores (1.1 `weak_plan_note` + 1.2 `offer-stack-builder`) y el énfasis del contenido de Fase 2. Donde el corpus de RRSS pediria prueba social, aqui se exige experiencia propia.
+> - **Recordatorio C5:** la **OFERTA es del buyer persona** (una sola, compartida por todos sus avatares); lo "por avatar" es solo la **estrategia/contenido** de Fase 2. JAMÁS "ofertas separadas" por avatar.
+> - **D-3 (C15, 2026-06-26) — el reparto de conciencia (2.1) es del BUYER PERSONA, no del avatar (en V1).** La `awareness_distribution` se mide una vez (0.2) y se comparte; el `content_mix` se deriva de esa foto. PROHIBIDO sesgar el mix por-avatar desde una etiqueta (`journey_stage`) — es el error de Schwartz (un avatar va de novato a experto, no es una sola etapa). La voz 2.0 también es compartida. Lo que el corpus de RRSS/SEO pediría "adaptar al segmento" se cumple en las **piezas 2.2–2.5** (canales desde `where_we_meet`, pilares desde `forces_of_progress` declaradas, ganchos en su vocabulario), no en el reparto. Per-avatar awareness exige **medición** (keyword research por-avatar = próximo paso).
 
 ## FASE 2 — Contenido (`content_plan.json` + `content_assets/`)
 
@@ -58,7 +67,7 @@ Por cada fase: (1) **cursos que la alimentan**, (2) **los conceptos del corpus q
 | **Estrategia de contenido** (valor antes de vender; educar/entretener/inspirar) | 2.1 + 2.3 | ✅ ratio dar:pedir + pilares |
 | **Arquitectura de canal** (SEO captura · RRSS marca · Email nurturing · SEM inmediato) | 2.2 La matriz · `channel_journey_matrix` | ✅ grandes superficies ON por regla |
 | **Cadencias por plataforma + 7-11-4** (Curso 7 + lookup) | 2.2 (cadencias "N por semana" con fuentes) · `lookup_posting_cadence_2026` | ✅ corpus + estudios |
-| **Plataforma-específico** (YouTube long-form · TikTok 3seg/video · IG visual) | 2.2 + 2.4 (IG=imágenes / TikTok=video) | ✅ entregables separados |
+| **Plataforma-específico** (YouTube long-form · TikTok 3seg/video · IG visual) | 2.2 + 2.4 (entregables separados por **canal × formato**; el formato sigue al canal Y al avatar, NO un mapa fijo — un canal admite varios formatos, C16) | ✅ entregables separados |
 | **Pilares de contenido** (territorios por fuerza psicológica) | 2.3 Los 4 pilares · `pillars` (REFORZAR/RESOLVER) | ✅ |
 | **Atomización / repurposing** (1 pieza → N derivados; YouTube→shorts) | 2.4 La multiplicación · `atomization_map` (1→6) | ✅ |
 | **SEO: intención de búsqueda + keyword clustering + E-E-A-T** | 2.x (pilar SEO + ancla larga) | ⚠️ **verificar:** intención de búsqueda y E-E-A-T explícitos en el pilar SEO |

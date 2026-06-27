@@ -2,22 +2,24 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-1
-**Status**: spec drafted v1.6 (validada vs corpus)
-**Last updated**: 2026-06-11
+**Status**: spec drafted v1.8 (oferta = buyer persona; **valor por funcionalidad, no por comparación**)
+**Last updated**: 2026-06-25
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. FastAPI is future-only for heavy jobs, complex agents, or public API needs.
 
 **Audit references**:
 - Phase 0 v1.5 (Categoría A integrada) — outputs consumidos en G-Phase-1-PRE
 - Auditoría externa Phase 1 (2026-05-10) — 3 regresiones + bug matemático + 6 mediums integrados
-- Mejoras operador 2026-05-10 — tabla ratio derivada, margin gate, sub-workflows, condición 5 multi-avatar, escala 1-10000
-- Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — ISSUE-A1 (G-PRE check 7 a "TODOS los avatars"), ISSUE-A2 (sub-paso 1.4.0 language_packs), ISSUE-A3 (comparable obligatorio en core_deliverable.value_rationale), ISSUE-A4 (urgency.aligned_with_trigger)
+- Mejoras operador 2026-05-10 — tabla ratio derivada *(SUPERSEDED por v1.8 / decision `a2ef7e37` — candado de ratio retirado)*, margin gate, sub-workflows, condición 5 multi-avatar, escala 1-10000
+- Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — ISSUE-A1 (G-PRE check 7 a "TODOS los avatars"), ISSUE-A2 (sub-paso 1.4.0 language_packs), ISSUE-A3 (comparable obligatorio en core_deliverable.value_rationale) *(SUPERSEDED por v1.8 / decision `a2ef7e37` — comparables y value_rationale retirados; valor por funcionalidad)*, ISSUE-A4 (urgency.aligned_with_trigger)
 - Validación corpus (2026-06-11, cierra el pendiente R5 del pase D-021) — vs Curso 2 (C5 propuesta de valor / C6 activadores / C7 puntos de dolor), BMC (bloque PV 11 elementos, Fuentes de Ingresos, patrones FREE) y Curso 1 (lead magnet, CPA<margen). Veredicto: superset 8.5, cero contradicciones duras. Enriquecimientos E1–E6 integrados en esta v1.6; detalle en `corpus_validation_report.md` §Addendum 2026-06-11
+- **Enmienda v1.8 (2026-06-25, decisión del operador) — VALOR POR FUNCIONALIDAD, NO POR COMPARACIÓN.** Se retira el value-stack-con-comparables de Hormozi (valores percibidos por pieza + comparables de mercado + candado de ratio ≥N×). Razón del operador: "no me quiero comparar con nadie… es mostrar por qué uno vale" (Google no dice "mejor que Bing"; la vela no dice "mejor que las otras", dice "mi aroma dura más"). Anclar la oferta en otros productos/precios la pone en su sombra (suena cara/barata) e introduce competidores en la mente del cliente. **Sustitución:** cada pieza se justifica por lo que HACE / le permite al cliente y el freno que le quita; la prueba de que el paquete vale es el **movimiento del eje débil** de la ecuación de valor (`proposed_rescore`), no un ratio; el **único candado económico es el margen** (salud del negocio, no comparación), y su umbral **se adapta a la forma de entrega** (digital 70% / servicio 50% / físico 30% / híbrido 40%) — NO un 70% fijo, que penalizaba a negocios físicos/servicio y rompía la generalización. Consistente con la ética glass-box (anti-urgencia-fabricada). Detalle de implementación en el build: `sandia-marketing` (offer.ts `MARGIN_TARGETS`/`marginThresholdFor`, stack-proposal.ts clasifica `delivery_format`, paquete-thread, statement-proposal).
+- **Barrido de residuos v1.8 (2026-06-25, auditoría de consistencia `_audit_report_2026-06-25.md` — FOCO ROJO #1).** Los intros ya reflejaban v1.8 pero los schemas/gates/algoritmos/artefactos seguían en el modelo viejo. Saneado en esta pasada: schema `offer_stack.json` (quitados `perceived_value_usd`/`value_rationale`/`stack_to_price_ratio`/`ratio_target`/`ratio_gate_passed`; añadido `proposed_rescore` + `delivery_format` en `stack_economics`); algoritmo `offer-stack-builder` (clasifica delivery_format → margen, propone `proposed_rescore` por mecanismo + reversión de riesgo, sin gap matemático de ratio); gate G-Phase-1.2 + G-Phase-1.4 + global; signal rule STACK-001; plantilla `offer_statement.md` (por funcionalidad, UNA línea de precio, sin "Valor total"); pricing (sin `total_stack`/`their_stack_estimate`/"stack ratio"); `value-equation-optimizer` (anti-prueba-social: mecanismo + reversión de riesgo, jamás testimonios/casos); checklist V1. Filas históricas (D1, ISSUE-A3, tabla ratio) anotadas SUPERSEDED, no borradas.
 
 ---
 
 ## 0. Contexto y propósito
 
-Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimétrica en valor percibido vs precio que rechazarla se sienta estúpido. Output canónico: `offer_spec.json` + `offer_statement.md` (uno por avatar o variante, según estrategia multi-avatar).
+Phase 1 convierte el conocimiento del **buyer persona** (Phase 0.3 — el persona primario, NO el ICP de 0.2.5 ni un avatar) en una oferta tan asimétrica en valor percibido vs precio que rechazarla se sienta estúpido. **La oferta es del buyer persona: una sola, compartida por todos sus avatares** (capa canónica de `CLAUDE.md`: Buyer Persona → Phase 1 Oferta; Avatar → Phase 2 Contenido). Output canónico: `offer_spec.json` + `offer_statement.md` (**uno por buyer persona**; las variantes de lenguaje/contenido por avatar nacen en Fase 2).
 
 **Spine teórico**:
 - Hormozi $100M Offers (Value Equation, Stack, Risk Reversal, Urgency)
@@ -26,10 +28,11 @@ Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimét
 - Drive Big School: 3-traits check (relevante/diferente/creíble) como auditoría final, no como spine
 
 **Principios operacionales**:
-- Dream Outcome se ancla en JTBD, no en pain points (oferta aspiracional, no defensiva)
+- **La oferta es del buyer persona, no del avatar.** Entregable central, precio, costo, ecuación de valor / eje débil, paquete y garantía pertenecen al producto / buyer persona — una sola oferta. Lo que se paraleliza por avatar es la **estrategia de contenido/distribución** (Fase 2→5). Si un avatar exige otra oferta/precio, es señal de que es **otro buyer persona** (no un avatar) → se separa. El eje débil que ataca el paquete es el del comprador; el avatar de entrada (beachhead) solo es el primero que lo revela.
+- Dream Outcome se ancla en JTBD del **buyer persona**, no en pain points (oferta aspiracional, no defensiva)
 - Bonuses mapean explícitamente a Forces of Progress, no solo a "objection_n"
 - Risk reversal y urgency 100% manuales en todas las versiones (decisión ética irreductible)
-- Ambos gates obligatorios: perceived_value_ratio + gross_margin_pct
+- **Valor por funcionalidad, NO por comparación (v1.8):** cada pieza vende por lo que HACE, jamás por "esto cuesta $X en otro lado". Un solo candado económico: `gross_margin_pct`. La fuerza de la oferta la prueba el movimiento del eje débil (`proposed_rescore`), no un ratio valor/precio. El antiguo `perceived_value_ratio` queda retirado.
 - Composite value score con escala 1–10000 (más legible que 0.01–100)
 - Por qué esta fase es la palanca barata (Curso 2 C5): optimizar la propuesta de valor mejora el ratio de conversión sin aumentar gasto de adquisición — frecuentemente más rentable que comprar más tráfico. Phase 1 es donde se gana conversión antes de pagar por ella.
 
@@ -39,7 +42,7 @@ Phase 1 convierte el conocimiento del avatar (Phase 0) en una oferta tan asimét
 
 | Sub-paso | Output | Estimado V1 | Sub-workflow asistente |
 |---|---|---|---|
-| 1.1 — Dream Outcome + Value Equation | `value_equation.json` (uno por avatar) | 1–2 h/avatar | `value-equation-optimizer` |
+| 1.1 — Dream Outcome + Value Equation | `value_equation.json` (uno por **buyer persona**) | 1–2 h | `value-equation-optimizer` |
 | 1.2 — Offer Stack | `offer_stack.json` | 2–3 h | `offer-stack-builder` |
 | 1.3 — Risk Reversal + Urgency + Displacement | `risk_urgency.json` | 1 h | Manual 100% |
 | 1.4 — Pricing + Naming + Statement | `offer_statement.md` + pricing block | 1–2 h | Asistido por LLM |
@@ -70,7 +73,7 @@ Phase 1 NO arranca a menos que se cumplan los **10 checks** (vs 4 anteriores). S
 ## 3. Sub-paso 1.1 — Dream Outcome + Value Equation
 
 ### Propósito
-Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del avatar (no en pain points).
+Cuantificar el valor percibido aplicando la Value Equation de Hormozi, anclando el Dream Outcome en JTBD del **buyer persona** (no del avatar, no en pain points). El eje débil que sale aquí es el del comprador.
 
 ### Guion de educación del instrumento (canon LITERAL — mandato del operador D-032: este copy entra al sistema tal cual, no parafraseado. Regla §2b del Setup Agent: nunca un número antes que su instrumento)
 
@@ -141,15 +144,15 @@ Sin división, sin /100. Rango: **1 a 10,000**. Más legible para el operador qu
 | 3,000 – 6,000 | Sólida | Avanza sin flag. |
 | > 6,000 | Excepcional (Hormozi-tier) | Avanza con tag `hormozi-tier` para reuso en otros productos como referencia. |
 
-### Output: `value_equation.json` — uno por avatar
+### Output: `value_equation.json` — uno por buyer persona
 
 ```json
 {
   "avatar_id": "avatar_1",
   "dream_outcome": {
-    "statement": "1 oración desde POV del avatar, aspiracional, anclada en JTBD",
+    "statement": "1 oración desde POV del buyer persona, aspiracional, anclada en JTBD",
     "jtbd_source": "JTB-1 (emotional_job + functional_job)",
-    "pull_amplified": "pull_of_new_solution #2 del avatar",
+    "pull_amplified": "pull_of_new_solution #2 del buyer persona",
     "evidence_path": "buyer_persona.jobs_to_be_done[0] + avatars[0].forces_of_progress.pull_of_new_solution",
     "score": 8,
     "score_rationale": "por qué 8 y no 10 — qué falta para ser un dream outcome de 10"
@@ -157,9 +160,9 @@ Sin división, sin /100. Rango: **1 a 10,000**. Más legible para el operador qu
   "likelihood_of_achievement": {
     "objections_addressed": ["objection_1 → cómo el producto la resuelve"],
     "anxieties_addressed": ["anxiety_1 → cómo el producto la calma"],
-    "proof_assets_available": ["testimonios | demo | trial | garantía | track record"],
+    "proof_assets_available": ["mecanismo (lo que el producto HACE) | demo | trial | garantía honesta — NO prueba social fabricada"],
     "score": 6,
-    "score_rationale": "qué evidencia falta para subir a 9-10"
+    "score_rationale": "qué evidencia (mecanismo / reversión de riesgo) falta para subir a 9-10"
   },
   "time_delay": {
     "current_time_to_outcome": "X días/semanas/horas",
@@ -196,14 +199,16 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
    - Si time_score < 6: "¿qué del producto/proceso puede entregar resultado más rápido?"
    - Si effort_score < 6: "¿qué del producto puede ser done-for-you vs do-it-yourself?"
 5. SOLO si denominador ya optimizado, sugiere aumentar numerador
-   - Si likelihood < 6: testimonios, garantías, casos de éxito
+   - Si likelihood < 6: MECANISMO ("por qué te funciona a TI" anclado en los diferenciadores firmados del producto) + reversión de riesgo accionable (prueba gratis, acompañamiento, garantía honesta). NUNCA prueba social fabricada (testimonios/casos de éxito/"a otros les funcionó") — prohibido en producto pre-lanzamiento (claim fabricada, mismo estándar que urgencia fabricada).
    - Si dream < 6: reframe del outcome desde JTBD (no del producto)
 6. Re-puntúa, recalcula composite
 7. Si composite < 100 después de optimización → flag al operador con 3 opciones:
-   - Subir precio significativamente (cambia ratio)
+   - Subir precio significativamente (mejora margen; el precio se justifica por funcionalidad, no por ratio)
    - Pivotar el avatar (no es target real)
    - Pivotar el producto (no resuelve el job)
 ```
+
+> Esta vía gobierna el `weak_plan_note` del paso 1.1 (el plan de mejora del eje débil, obligatorio para firmar): comparte la doctrina anti-prueba-social del `offer-stack-builder` de 1.2. Ambos exigen mecanismo + reversión de riesgo; ambos prohíben la prueba social fabricada. (Build: `value-equation-suggest.ts` y `stack-proposal.ts`.)
 
 ### Lectura previa pretel-os
 - `product_brief_v2.json` completo (incluye JTBD, Forces of Progress, ICP)
@@ -215,7 +220,7 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 - `save_lesson` si la reducción del denominador desbloqueó algo no obvio
 
 ### Gate G-Phase-1.1
-- Un `value_equation.json` por avatar **ACTIVO** (USER-CORRECTED 2026-06-12, D-039): con la política de activación escalonada (D-034), la ecuación se puntúa **al encender** un avatar — no se obliga al usuario a puntuar avatares en banca. El run fundacional puntuó los 4 a la vez porque la sim validaba el método completo y el batch calibraba el criterio; el producto puntúa por encendido.
+- Un `value_equation.json` por **buyer persona** (USER-CORRECTED 2026-06-23): la ecuación se puntúa **a través del avatar de entrada / beachhead** (la puerta más difícil), pero su eje débil es el del comprador. No se obliga al usuario a puntuar avatares en banca. Cuando un avatar nuevo se enciende, su puntuación sirve de **chequeo de convergencia** (si su eje débil coincide → confirma un solo comprador; si diverge fuerte → señal de que es otro buyer persona), no para crear otra oferta.
 - Cada `score_rationale` cita ≥1 elemento del `product_brief_v2`
 - `dream_outcome.jtbd_source` y `pull_amplified` poblados (no pain points)
 - `weakest_axis` y `phase_1_focus` registrados como `decision_record`
@@ -224,7 +229,7 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 ### V1/V2/V3
 | Versión | Cómo opera |
 |---|---|
-| V1 | Manual + Claude asiste. Operador puntúa, Claude challenges con preguntas socráticas ("¿por qué likelihood 6 si no tienes testimonios?"). |
+| V1 | Manual + Claude asiste. Operador puntúa, Claude challenges con preguntas socráticas ("¿por qué likelihood 6 si el mecanismo del producto no muestra aún por qué le funcionará a ESTA persona?"). |
 | V2 | Sub-workflow drafta scores desde JTBD + Forces of Progress, operador valida. |
 | V3 | Auto + flag excepciones (scores muy fuera de distribución cross-producto). |
 
@@ -232,14 +237,14 @@ Skill registrado en pretel-os (`domain: marketing-offer`, `scope: project:busine
 
 ## 4. Transversal — Multi-avatar strategy (después de 1.1)
 
-### Default invertido (D-009, 2026-06-06)
+### El default: UNA oferta del comprador, estrategias de contenido por avatar (D-009, reencuadrado 2026-06-23)
 
-**La estrategia por-avatar es el DEFAULT, no la excepción.** El diferenciador central de Sandi es mantener N avatars en paralelo, cada uno con su propia estrategia (ver `Overall_WF.md` §"Core Differentiator"). Por eso este sub-paso **no decide si separar** — asume que cada avatar merece su propia estrategia — sino que decide si existe **evidencia suficiente para *unificar*** dos o más avatars bajo una sola oferta como **optimización** (ahorra trabajo cuando los avatars son casi idénticos).
+**La oferta es UNA, del buyer persona** (entregable central, precio, costo, valor/eje débil, paquete, garantía) — nunca se separa por avatar, porque es del producto/comprador. Lo que se mantiene **en paralelo por avatar** es la **estrategia de contenido/distribución** (Fase 2→5). El diferenciador de Sandi es mantener N avatares vivos en paralelo, cada uno con su loop de contenido→ajuste, **sobre la MISMA oferta del comprador** (ver `Overall_WF.md` §"Core Differentiator", reencuadrado).
 
-En otras palabras: la carga de la prueba se invierte. Antes había que justificar separar; ahora hay que **justificar unificar**. Si la evidencia de unificación no se cumple, cada avatar sigue su propia estrategia (Phase 1→5 independiente), que es el comportamiento esperado del sistema.
+Por eso este sub-paso **NO decide si la oferta se separa** (nunca se separa). Decide, después de 1.1, **qué tan unificada o separada corre la estrategia de CONTENIDO** entre los avatares: ¿comparten statement y registro lingüístico, o cada uno necesita el suyo? La "unificación" de aquí en adelante es de **contenido**, no de oferta. *(Si dos avatares exigieran ofertas/precios genuinamente distintos, no son avatares del mismo comprador — son buyer personas distintos y se separan a nivel persona, fuera de este sub-paso.)*
 
 ### Propósito
-Después de 1.1, evaluar — con evidencia de los `value_equation.json` ya producidos — si dos o más avatars comparten lo suficiente para **colapsar en una oferta unificada** (optimización), o si cada uno conserva su estrategia independiente (default).
+Después de 1.1, evaluar — con evidencia de las ecuaciones y forces ya producidos — si dos o más avatares comparten lo suficiente para **compartir la misma estrategia de contenido** (un solo statement / registro), o si cada uno necesita su propio statement y language pack en Fase 2. **La oferta (1.2–1.4) se construye UNA vez, para el comprador**, en cualquier caso.
 
 **Evaluación escalonada (USER-CORRECTED 2026-06-12, D-039, coherente con la activación D-034):** con **un solo avatar activo**, la decisión es trivial (`single_avatar` / su propia estrategia) y **no se evalúa nada** — no hay con quién comparar. La evaluación de unificación corre **cada vez que un avatar nuevo se enciende**: su ecuación recién puntuada se compara contra las firmadas de los avatares ya activos (las 5 condiciones de abajo). La unificación sigue siendo optimización por evidencia, nunca default.
 
@@ -262,13 +267,13 @@ El default es `separate_strategies` (cada avatar su propia estrategia). Solo se 
 
 | Condiciones | Estrategia | Schema implicación |
 |---|---|---|
-| ≥2 hard ❌ | **Default — estrategias separadas**: cada avatar conserva su propio `offer_spec.json` y su propio loop Phase 1→5 | `multi_avatar_strategy: "separate_strategies"` |
+| ≥2 hard ❌ | **Estrategias de CONTENIDO separadas**: UNA oferta del comprador (`offer_spec.json` único); cada avatar corre su propio loop de contenido (Fase 2→5), con statement y language pack propios | `multi_avatar_strategy: "separate_strategies"` |
 | Exactamente 1 hard ❌ | **Unificación con avatar_specific bonuses**: 1 oferta, 1 stack base + 1-2 bonuses específicos por avatar para cerrar gap | `multi_avatar_strategy: "unified_C_avatar_specific_bonuses"` |
 | 4 hard ✅ + soft ❌ | **Unificación con language_packs**: 1 oferta, 1 stack, 1 precio, N statements lingüísticos | `multi_avatar_strategy: "unified_C_language_packs"` |
 | 4 hard ✅ + soft ✅ | **Unificación limpia**: 1 oferta, 1 stack, 1 statement | `multi_avatar_strategy: "unified_C_clean"` |
 | 1 solo avatar | N/A | `multi_avatar_strategy: "single_avatar"` |
 
-**Nota:** `separate_strategies` (default) reemplaza el antiguo `separate_offers`. El cambio no es solo de nombre: antes "separar" era el fallback indeseado cuando fallaban condiciones; ahora es el **comportamiento base esperado**, alineado con la orquestación paralela. Cada estrategia separada se persiste como un registro `strategies` independiente por avatar (ver `Overall_WF.md`).
+**Nota:** `separate_strategies` (default) reemplaza el antiguo `separate_offers`. **Bajo el reencuadre 2026-06-23, significa estrategias de CONTENIDO separadas por avatar, NO ofertas separadas:** la oferta (`offer_spec.json`) es una sola, del comprador, y se comparte. Cada estrategia de contenido se persiste como un registro `strategies` independiente por avatar (ver `Overall_WF.md`), todas enlazadas al mismo `offer_spec.json`.
 
 ### Output: `multi_avatar_decision.json`
 
@@ -306,8 +311,9 @@ El default es `separate_strategies` (cada avatar su propia estrategia). Solo se 
 
 El `multi_avatar_decision.json` determina **cuántas `strategies` rows se crean** (ver `Overall_WF.md` §"Strategy Lifecycle"). Es aquí — después de 1.1 y la decisión multi-avatar, antes de 1.2 — donde nace la entidad Estrategia:
 
-- **`separate_strategies` (default):** se crea **una `strategies` row por avatar** (`version_number = 1`, `status = 'active'`, `covers_avatar_ids = [avatar_id]`). Los sub-pasos 1.2–1.4 corren N veces, cada corrida anclando su `offer_spec.json` a su `strategy_id`.
-- **`unified_C_*`:** se crea **una sola `strategies` row** con `avatar_id` = primario y `covers_avatar_ids` = todos los avatars cubiertos. Los sub-pasos 1.2–1.4 corren una vez; el `offer_spec.json` se ancla a esa estrategia.
+- **La oferta (sub-pasos 1.2–1.4) corre UNA sola vez, para el buyer persona**, en cualquier variante. Produce un único `offer_spec.json`.
+- **`separate_strategies` (default):** se crea **una `strategies` row por avatar** (`version_number = 1`, `status = 'active'`, `covers_avatar_ids = [avatar_id]`) para su loop de **contenido** (Fase 2→5). Todas las rows enlazan (`linked_to.offer_spec`) al **mismo** `offer_spec.json` del comprador.
+- **`unified_C_*`:** se crea **una sola `strategies` row** con `avatar_id` = primario y `covers_avatar_ids` = todos los avatars cubiertos, enlazada a ese mismo `offer_spec.json`.
 - **`single_avatar`:** una `strategies` row trivial.
 
 Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `offer_spec`. El `offer_spec.json` declara `linked_to.strategy_id` + `strategy_version` (consumido por Phase 2 check 14 y por toda la cadena Phase 3→5).
@@ -318,48 +324,48 @@ Cada `strategies` row se persiste con `multi_avatar_strategy` espejando el del `
 - `multi_avatar_decision.json` existe y poblado
 - `strategies` row(s) creada(s) según la regla de granularidad de arriba (`version_number=1`, `status='active'`)
 - `demand_type` poblado en cada `strategies` row (heredado de Phase 0 o ajustado con `decision_record`)
-- Si `separate_strategies` (default) → sub-pasos 1.2–1.4 se ejecutan N veces (una por avatar), cada corrida produce un `offer_spec.json` anclado a su `strategy_id` independiente
-- Si cualquier variante de unified_C → sub-pasos 1.2–1.4 se ejecutan una sola vez con outputs adaptados, anclados a la estrategia unificada
+- Sub-pasos 1.2–1.4 (la oferta) se ejecutan **UNA sola vez** para el buyer persona, en cualquier variante; el `offer_spec.json` único se enlaza a todas las `strategies` rows. La variante multi-avatar gobierna cuántos **statements / language packs** se producen (1.4 / Fase 2), no cuántas ofertas.
 
 ---
 
 ## 5. Sub-paso 1.2 — Offer Stack
 
+> **ENMIENDA v1.8 (2026-06-25) — valor por funcionalidad, no por comparación.** Lo que sigue describe el modelo retirado (value-stack Hormozi con valores percibidos por pieza + comparables + candado de ratio ≥N×). **YA NO APLICA.** El modelo vigente: cada pieza se justifica por lo que HACE / le permite al cliente y el freno que le quita — sin valores en dólares por pieza ni comparables de mercado. La prueba de que el paquete vale es el **movimiento del eje débil** (`proposed_rescore`: ej. probabilidad 3→6), no un ratio. El **único candado económico es el margen**. El bloque de `ratio_target` (tabla por business_type), los campos `perceived_value_usd`/`value_rationale`/`stack_to_price_ratio` y el lenguaje "valores≠precios" quedan como contexto histórico; el build los conserva nullable solo por compatibilidad con stacks firmados antes del cambio.
+
 ### Propósito
-Construir el conjunto core + bonuses cuyo valor percibido stackeado cumpla **ambos** gates: ratio adecuado al business_type × purchase_type **Y** gross margin saludable según delivery_format.
+Construir el conjunto core + bonuses que (a) ataquen el **eje débil** de la ecuación de valor del comprador, justificando cada pieza por lo que HACE, y (b) sostengan un **margen saludable** según delivery_format. La fuerza del paquete se demuestra con `proposed_rescore` (cuánto sube el eje débil), no con un ratio valor/precio.
 
-### Guion de educación del instrumento (canon LITERAL — regla §2b: el concepto de stack se enseña ANTES de mostrar valores)
+### Guion de educación del instrumento (canon — el principio se enseña ANTES de la primera tarjeta)
 
-**Versión beat (se muestra ANTES de la primera tarjeta con valor):**
+**Versión beat (se muestra ANTES de la primera tarjeta):**
 
-> "Vamos a armar tu oferta como un **paquete**. Cada pieza tiene un **valor** — lo que costaría conseguirla por separado, probado con precios reales de tu competencia — y el paquete entero tiene **UN precio**, mucho menor. Esa distancia entre lo que vale y lo que cuesta es lo que hace que decir que no se sienta tonto.
-> Ojo, lo más importante: **los valores NO son precios que alguien paga.** Son el 'esto es lo que recibes' de tu página de venta. Tu cliente paga solo el precio final — los valores existen para que VEA cuánto se lleva por ese precio."
+> "Vamos a armar tu oferta como un **paquete**. Cada pieza se gana su lugar por lo que **HACE** — lo que le permite a tu cliente y el freno que le quita —, no por compararla con lo que cobra otro. No decimos 'esto cuesta tanto y te lo damos por menos': eso te pone en la sombra de otros y suena a barato. Mostramos por qué cada pieza importa, y el paquete entero tiene **UN precio**. Como la vela cuyo aroma dura más: no dice 'mejor que las otras', dice lo que hace."
 
 **Versión panel ("¿Cómo se arma el paquete?"):**
 
-> - Cada pieza declara su valor con un **comparable real citado** (un competidor que cobra eso por algo equivalente) — nunca un número inventado.
-> - La forma final en la página de venta es siempre: lista de piezas con su valor → **"Valor total: $X. Tu inversión hoy: $Y."** La resta la hace el cliente solo.
-> - Dos candados protegen el paquete: el valor total debe ser **≥N× el precio** (N según tu tipo de negocio) y el margen debe ser **≥M%** (según lo que cuesta entregarlo). Si un candado falla, el paquete se rediseña — no se publica.
+> - Cada pieza declara **qué le permite al cliente** (`description`) y **qué freno le quita** (`specific_target`) — sin valores en dólares, sin comparables, sin nombrar marcas.
+> - La forma final en la página de venta es: lista de piezas por lo que hacen → **una sola línea de precio**. Sin "valor total $X": el cliente ve lo que el paquete HACE por él y decide.
+> - La prueba de que el paquete vale es el **movimiento del eje débil** (`proposed_rescore`) — se firma en 1.3 con la garantía. Un solo candado económico protege el negocio: el margen ≥M%. Si el margen falla, se ajusta precio o costo — no se publica.
 > - Si el producto tendrá **niveles de precio** (básico/medio/premium), eso se decide en el paso de pricing (1.4, `tier_strategy`) — el stack define QUÉ se entrega; los niveles definen CÓMO se escalona.
 
-### Tabla derivada de ratio_target (no hardcoded, calculada)
+### Prueba de fuerza: movimiento del eje débil (reemplaza al ratio_target)
 
-`ratio_target` se calcula desde `business_context`:
+NO hay candado de ratio valor/precio (retirado en v1.8). La fuerza del paquete se mide así: el `offer-stack-builder` propone `proposed_rescore` = cuánto sube el **eje más débil** de la ecuación de valor del comprador gracias a este paquete (ej. likelihood 3→6, con su porqué). Es una PROPUESTA — el operador la firma en 1.3 junto con la garantía (que puede sumar). Si el paquete no mueve creíblemente el eje débil, necesita mejores piezas — no valores inflados.
 
-| business_type | purchase_type / sales_cycle | ratio_target | Justificación |
-|---|---|---|---|
-| B2B | reflexiva | 3× | Decisión racional, ROI demostrable en hoja de cálculo |
-| B2B | mixta | 4× | Decisor racional pero champion con componente emocional |
-| B2C | reflexiva | 5× | Punto medio Hormozi clásico |
-| B2C | mixta | 6× | Compra con análisis pero gatillada emocionalmente |
-| B2C | impulsiva | 7× | Compra emocional, necesita "victoria abrumadora" |
-| Hybrid | cualquiera | 5× | Default conservador |
+### Cómo se ataca el eje débil — por MECANISMO + reversión de riesgo, NUNCA por prueba social (decisión 2026-06-26)
 
-**[Context-Adjusted Threshold]** Esta tabla es el **default por segmento**, no una ley. El múltiplo correcto también depende del panorama competitivo que Phase 0 ya levantó (`competitive_landscape`): un mercado saturado exige un ratio percibido más alto para destacar; un mercado virgen tolera menos. **Regla:** el `offer-stack-builder` lee `competitive_landscape.pricing_tiers` y, si la realidad competitiva contradice el default de la tabla, **eso dispara razonamiento (no se aplica ciego)** y ajusta `ratio_target` con la evidencia. El override por `decision_record` sigue permitido, pero el ajuste preferido es **por evidencia competitiva**, no manual a ciegas (ver Overall_WF §Pattern B).
+El paquete sube el eje débil (likelihood/time — pueden ser dos a la vez) por **dos vías, las dos obligatorias**, y con una prohibición dura:
 
-### Margin gate (por delivery_format)
+- **MECANISMO ("por qué te va a funcionar A TI"):** justifica el alza anclando en lo que el PRODUCTO HACE según sus **diferenciadores firmados** (su mecanismo real). El foco es *"te funciona porque [el producto hace X]"*, jamás *"a otros les funcionó, por eso a ti"*. El `offer-stack-builder` recibe los diferenciadores firmados en su contexto para anclar esto — generaliza, porque lee el mecanismo de CADA producto, no uno hardcodeado.
+- **MOTIVACIÓN / REVERSIÓN DE RIESGO accionable sin leer:** prueba gratis, acompañamiento guiado, onboarding asistido. Algo que se OFRECE y se prueba, no algo que el comprador deba sentarse a leer. Para un escéptico (likelihood bajo) la prueba más fuerte y honesta es su **experiencia propia**, no un testimonio ajeno.
+- **PROHIBIDO (ética glass-box):** casos/testimonios/estudios presentados como existentes, "pruebas" que el comprador deba leer (PDF de caso, dossier), y el marco "le funcionó a X → te funcionará a ti". Un producto PRE-LANZAMIENTO no tiene clientes; inventar un caso es una claim fabricada y se prohíbe (mismo estándar que urgencia fabricada).
+- **Mecanismo SIN promesa de resultado:** se describe como lo que el sistema HACE (*"aprende de tu negocio y ajusta tu estrategia cada semana"*), nunca como resultado garantizado (*"vas a vender más"*). El claim es sobre la acción del producto, no sobre el resultado del cliente.
 
-Segundo gate obligatorio simultáneo al ratio gate.
+> Esta doctrina gobierna **los dos generadores**: el `weak_plan_note` del paso 1.1 (el plan de mejora del eje débil, obligatorio para firmar) **y** el `offer-stack-builder` del paso 1.2. Ambos prohíben la prueba social fabricada y exigen mecanismo + reversión de riesgo. (Build: `value-equation-suggest.ts` y `stack-proposal.ts`.)
+
+### Margin gate (por delivery_format) — ÚNICO candado económico
+
+Único candado económico (salud del negocio, no comparación). **El umbral NO es fijo: se adapta a la forma de entrega.** En 1.2 el `offer-stack-builder` clasifica `delivery_format` (digital | service | physical | hybrid); el código mapea ese formato al umbral de la tabla de abajo (la tabla es autoritativa en código — `MARGIN_TARGETS` en `offer.ts` del build —, el LLM solo clasifica). El operador puede corregir la forma de entrega en el candado (Sandi propone, operador dispone) y el umbral se recalcula. Un 70% fijo penalizaría a negocios físicos/servicio (no pueden sostenerlo) y bloquearía la firma — por eso el candado es por-formato.
 
 | `product.delivery_format` | `gross_margin_pct` mínimo | Justificación |
 |---|---|---|
@@ -374,46 +380,48 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
 
 ```json
 {
-  "avatar_target": "avatar_1 | primary",
+  "persona_target": "buyer persona primario (la oferta es de él; covers todos sus avatares)",
   "core_deliverable": {
     "name": "qué reciben efectivamente",
-    "description": "1-2 oraciones",
-    "perceived_value_usd": 0,
-    "value_rationale": "por qué vale eso — comparable de mercado real, citado",
+    "description": "1-2 oraciones — qué le PERMITE al cliente (por funcionalidad, no comparación)",
+    "specific_target": "qué freno le quita / qué le permite hacer",
     "delivery_cost_to_us_usd": 0
   },
   "bonuses": [
     {
       "id": "bonus_1",
       "name": "nombre concreto y específico",
+      "description": "qué le PERMITE al cliente — por funcionalidad, sin valores en dólares ni comparables ni marcas",
       "force_attacked": "pull_amplify | anxiety_reduce | habit_break | weakest_axis_boost",
-      "specific_target": "anxiety #2 del avatar OR habit #1 OR pull #3 OR weakest_axis",
+      "specific_target": "anxiety #2 del buyer persona OR habit #1 OR pull #3 OR weakest_axis",
       "hormozi_category": "speed | done_for_you | identity | community_access | results_guarantee | other  [Extensible Vocabulary]",
       "hormozi_category_custom_description": "obligatorio si category=other. Las 5 de Hormozi son la SEMILLA (las escribió para SUS productos); un sistema que mercadea cualquier producto verá tipos que él no enumeró — ej: 'estatus/reconocimiento (hall of fame público)', 'acceso anticipado', 'personalización extrema'. Un custom que aparezca ≥3 veces se promueve (ver Overall_WF §Pattern A).",
       "addresses_objection": "obj_id o null",
-      "perceived_value_usd": 0,
-      "value_rationale": "comparable de mercado real",
       "delivery_cost_to_us_usd": 0,
       "avatar_specific": null
     }
   ],
+  "proposed_rescore": {
+    "weakest_axis": "likelihood | time | dream | effort — el eje débil que el paquete ataca",
+    "from": 3,
+    "to": 6,
+    "rationale": "por qué este paquete sube ese eje — anclado en MECANISMO (lo que el producto HACE según sus diferenciadores firmados) + reversión de riesgo accionable, JAMÁS prueba social",
+    "operator_signed": false
+  },
   "stack_economics": {
-    "perceived_value_total_usd": 0,
     "delivery_cost_total_usd": 0,
     "price_point_usd": 0,
-    "stack_to_price_ratio": 0,
-    "stack_to_price_ratio_target": 5,
+    "delivery_format": "digital_download | service | physical | hybrid",
     "gross_margin_usd": 0,
     "gross_margin_pct": 0,
     "gross_margin_target_pct": 70,
-    "ratio_gate_passed": true,
     "margin_gate_passed": true
   },
   "force_coverage": {
     "pulls_amplified": ["pull_1", "pull_3"],
     "anxieties_attacked": ["anx_1", "anx_2"],
     "habits_broken": ["habit_2"],
-    "weakest_axis_boosted": "likelihood via testimonios + garantía"
+    "weakest_axis_boosted": "likelihood via mecanismo (lo que el producto HACE) + reversión de riesgo accionable"
   },
   "phase_2_handoff": {
     "objections_uncovered": ["obj_3 — Phase 2 lo resuelve con copy"],
@@ -430,9 +438,8 @@ Override por `decision_record` permitido (ej: producto loss-leader como entry po
 - **≥1 bonus debe tener `force_attacked: anxiety_reduce`** (sin esto la oferta solo amplifica pull → no convierte indecisos)
 - **≥1 bonus debe tener `force_attacked: habit_break`** (sin esto la oferta no rompe inercia → status quo gana)
 - Cada bonus mapea a `specific_target` concreto (no "objection_n" abstracto)
-- `value_rationale` con comparable de mercado real (citado), no inventado. Fuente complementaria sancionada (Curso 2 C5, "propuestas ocultas"): minería de reseñas de competidores/sustitutos — qué valoran y qué echan de menos los usuarios en reviews reales es evidencia de perceived value que el precio de lista no captura.
-- **`core_deliverable.value_rationale` debe citar ≥1 comparable de mercado real** (mismo estándar que bonuses; ISSUE-A3, audit 2026-05-10). Sin esto, `core_deliverable.perceived_value_usd` es la base inflable de toda la stack economics y el `ratio_gate` pasa engañosamente. Comparable preferido: precio listado de competidor de `competitive_landscape.pricing_tiers[]` que entrega un deliverable equivalente.
-- Bonuses con `delivery_cost_to_us_usd > 30% de perceived_value_usd` se flaguean como ineficientes
+- Cada pieza (core + bonuses) declara `description` por **funcionalidad** — qué le PERMITE al cliente y qué freno le quita — **sin valores en dólares, sin comparables de mercado, sin nombrar marcas** (v1.8, C1). Fuente complementaria sancionada (Curso 2 C5, "propuestas ocultas"): minería de reseñas de competidores/sustitutos — qué valoran y qué echan de menos los usuarios en reviews reales es evidencia de QUÉ funcionalidad importa, no de un valor en dólares que se cobra.
+- `proposed_rescore` poblado: el paquete debe mover creíblemente el eje débil de la ecuación de valor (ej. likelihood 3→6), con `rationale` anclado en mecanismo + reversión de riesgo. Esta es la prueba de fuerza del stack — reemplaza al antiguo `ratio_gate` (retirado en v1.8). Lo firma el operador en 1.3.
 - `avatar_specific` ≠ null solo si `multi_avatar_strategy === "unified_C_avatar_specific_bonuses"`
 
 **Checklist de tipos de valor (BMC, bloque Propuesta de Valor — lente de diseño, no gate):** al redactar core + bonuses, contrastar contra los 11 elementos de valor de Osterwalder: novedad · mejora de rendimiento · personalización · "el trabajo, hecho" · diseño · marca/estatus · precio · reducción de costes · reducción de riesgos · accesibilidad · comodidad/utilidad. Dos usos: (a) detectar tipos de valor que el producto YA entrega y el stack no está cobrando; (b) cuando un bonus no cae en las 5 semillas de Hormozi, los 11 de Osterwalder son vocabulario candidato para `hormozi_category_custom_description` (y para la promoción Pattern A si recurren ≥3×). Hormozi escribió sus 5 para SUS productos; Osterwalder enumeró el espacio completo.
@@ -445,34 +452,40 @@ Skill registrado en pretel-os.
 - `business_context` (de Phase 0.1)
 - `buyer_persona.economic_capacity` (de Phase 0.3)
 - `competitive_landscape.pricing_tiers` (de Phase 0.4)
-- `value_equation.json` (de Phase 1.1)
-- `forces_of_progress` del avatar
+- `value_equation.json` (de Phase 1.1) — de aquí sale el `weakest_axis` que el paquete ataca
+- `forces_of_progress` del buyer persona (el avatar de entrada solo las revela primero)
+- **diferenciadores firmados del producto** (su mecanismo real — para anclar el `proposed_rescore` en "por qué te funciona a TI"; generaliza porque lee el mecanismo de CADA producto, no uno hardcodeado)
 - `core_deliverable` declarado por operador
 - `price_point_target` declarado por operador
 - `delivery_cost_per_unit` declarado por operador
+- `delivery_format` (clasificado por el LLM, corregible por el operador → mapea al umbral de margen)
 
-**Algoritmo**:
+**Algoritmo** (v1.8 — valor por funcionalidad, candado único = margen):
 ```
-1. Lookup ratio_target desde tabla (business_type × purchase_type)
-2. Lookup gross_margin_target_pct desde tabla (delivery_format)
-3. Calcula perceived_value_needed = price_point_target × ratio_target
-4. Calcula gap = perceived_value_needed − core_deliverable.perceived_value_usd
-5. Propone bonuses para llenar el gap, priorizando en orden:
+1. Clasifica delivery_format (digital | service | physical | hybrid) leyendo el producto.
+   El operador puede corregir la forma de entrega (Sandi propone, operador dispone).
+2. Lookup gross_margin_target_pct desde MARGIN_TARGETS (delivery_format) — único candado económico.
+3. Lee el weakest_axis del value_equation: ese eje es la orden de trabajo del paquete.
+4. Recibe en su contexto los DIFERENCIADORES firmados del producto (su mecanismo real).
+5. Propone bonuses, cada uno justificado por lo que HACE / le permite al cliente (description
+   por funcionalidad — sin valores en dólares, sin comparables, sin marcas), priorizando en orden:
    a. Bonus que ataca weakest_axis del value_equation
    b. Bonus anxiety_reduce (cubrir top anxiety no atendida)
    c. Bonus habit_break (cubrir top habit no atendida)
-   d. Bonus con delivery_cost_to_us <= 5% de perceived_value (alto leverage)
+   d. Bonus de alto leverage (bajo delivery_cost relativo al precio)
    e. Categorización Hormozi: speed/DFY/identity/community/results
-6. Para cada bonus propuesto, calcula impacto en margen
-7. Itera hasta que AMBOS gates pasen:
-   - stack_to_price_ratio >= ratio_target
-   - gross_margin_pct >= gross_margin_target_pct
-8. Si converge → "stack terminado"
-9. Si no converge en 7 iteraciones → flag "trade-off requerido", operador elige:
-   - Subir precio (cambia ratio favorablemente)
-   - Bajar costo de bonuses (cambia margen favorablemente)
-   - Aceptar margen menor con decision_record (ej: loss-leader strategy)
-   - Reconsiderar core_deliverable.perceived_value_usd (puede estar subestimado)
+6. Propone proposed_rescore: cuánto sube el weakest_axis gracias al paquete (ej. likelihood 3→6),
+   anclado en MECANISMO ("te funciona porque [el producto hace X]", según diferenciadores firmados)
+   + reversión de riesgo accionable (prueba gratis, acompañamiento). NUNCA prueba social fabricada
+   (casos/testimonios/"a otros les funcionó") — prohibido (producto pre-lanzamiento, claim fabricada).
+7. Para cada bonus propuesto, calcula impacto en margen.
+8. Itera hasta que el gate de margen pase: gross_margin_pct >= gross_margin_target_pct.
+9. Si converge → "stack terminado". El proposed_rescore queda como PROPUESTA — el operador lo firma en 1.3.
+10. Si no converge en 7 iteraciones → flag "trade-off requerido", operador elige:
+   - Subir precio (mejora margen)
+   - Bajar costo de bonuses (mejora margen)
+   - Aceptar margen menor con decision_record (ej: loss-leader strategy con LTV downstream)
+   - Reconsiderar delivery_format (puede estar mal clasificado → otro umbral)
 ```
 
 ### Lectura previa
@@ -482,15 +495,16 @@ Skill registrado en pretel-os.
 - `competitive_landscape.pricing_tiers`
 
 ### Escrituras
-- `decision_record` por override de `ratio_target` o `gross_margin_target_pct`
-- `decision_record` por cada bonus con `delivery_cost > 30% perceived_value`
-- `save_lesson` si trade-off requerido reveló insight (ej: "perceived_value de core estaba subestimado")
+- `decision_record` por override de `gross_margin_target_pct` o corrección de `delivery_format`
+- `decision_record` por cada bonus de alto costo de entrega (alto `delivery_cost` relativo al precio)
+- `save_lesson` si trade-off requerido reveló insight (ej: "el delivery_format estaba mal clasificado")
 
 ### Gate G-Phase-1.2
 - ≥3 bonuses, ≤7
-- `ratio_gate_passed: true` Y `margin_gate_passed: true` (ambos)
+- `margin_gate_passed: true` (único candado económico — el de ratio fue retirado en v1.8)
+- `proposed_rescore` poblado: el paquete mueve creíblemente el eje débil (ej. likelihood 3→6), con `rationale` por mecanismo + reversión de riesgo (jamás prueba social)
 - ≥1 bonus `anxiety_reduce`, ≥1 bonus `habit_break`
-- Cada bonus con `force_attacked` y `specific_target` poblados
+- Cada bonus con `force_attacked`, `specific_target` y `description` (por funcionalidad) poblados
 - `phase_2_handoff` documentado (cero uncovered es sospechoso — signal rule OFFER-001)
 - Si margen falla y operador overrides → `decision_record` con LTV justification
 
@@ -534,7 +548,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
     "is_genuine": true,
     "genuine_reason": "capacidad limitada | lanzamiento | ventana estacional | etc.",
     "aligned_with_trigger": "trigger_id de avatar.forces_of_progress.push_of_situation.triggers, o null si type=none",
-    "alignment_rationale": "por qué la urgencia conecta con este trigger específico del avatar — defensa contra urgency fabricada"
+    "alignment_rationale": "por qué la urgencia conecta con este trigger específico del buyer persona — defensa contra urgency fabricada"
   },
   "scarcity": {
     "type": "quantity_limited | access_limited | time_limited | none",
@@ -543,7 +557,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
     "genuine_reason": "..."
   },
   "displacement_framing": {
-    "habit_being_displaced": "habit_1 del avatar — el comportamiento status quo",
+    "habit_being_displaced": "habit_1 del buyer persona — el comportamiento status quo",
     "replacement_narrative": "1 oración que enmarca tu oferta como reemplazo del status quo, no como adición",
     "cost_of_continuing_current_path": "qué pierden si no cambian (usado en copy de Phase 2)",
     "habits_attacked_by_framing": ["habit_1", "habit_2"]
@@ -566,7 +580,7 @@ Bajar 3 barreras finales: miedo al riesgo (risk reversal ataca anxiety), inercia
 - Si urgency ≠ "none" → `aligned_with_trigger` apunta a un `trigger_id` real de `avatar.forces_of_progress.push_of_situation.triggers` y `alignment_rationale` justifica la conexión (ISSUE-A4, audit 2026-05-10 — ancla evidencial contra urgency fabricada)
 - `decision_record` registrado para cualquier urgency/scarcity activa
 - `displacement_framing` poblado con `habit_being_displaced` y `replacement_narrative` (no skippable)
-- `risk_reversal.anxieties_addressed` mapea a anxieties del avatar (no inventadas)
+- `risk_reversal.anxieties_addressed` mapea a anxieties del buyer persona (no inventadas)
 
 ### V1/V2/V3
 | Versión | Quién decide |
@@ -608,21 +622,21 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
   "price_mechanism_note": "menú BMC Fuentes de Ingresos (fijo: lista / características / segmento / volumen — dinámico: negociación / yield / tiempo real / subasta). Componibles: suscripción+créditos = lista_fija (cuota) + por_volumen (créditos).",
   "monetization_pattern_echo": "espejo de business_context.monetization_pattern (subscription | freemium | bait_hook_credits | usage | one_shot | other). Si freemium: economía BMC — solo 1-10% convierte a pago y financia al resto; el free tier se diseña para ESO, no como producto completo regalado. Si bait_hook: el margen vive en el consumible recurrente, no en la entrada.",
   "price_anchor": {
-    "anchor_type": "dream_outcome_value | competitor_higher | total_stack | cost_of_inaction",
-    "anchor_statement": "ej: 'el valor del stack es $235, lo entregamos por $47'"
+    "anchor_type": "dream_outcome_value | competitor_higher | cost_of_inaction",
+    "anchor_statement": "ej: 'lo que te cuesta seguir como estás hoy son $X al mes' (referente que el avatar YA conoce — su costo actual / dolor; NO 'valor total del stack', retirado en v1.8)"
   },
-  "price_rationale": "por qué este precio. Cita value_equation, stack ratio, Y competitive_position.",
+  "price_rationale": "por qué este precio. Cita value_equation (movimiento del eje débil) Y competitive_position (estudio real de competidores). El precio se justifica por funcionalidad y salud de margen, no por un ratio valor/precio.",
   "competitive_position": {
+    "_comment": "evidencia INTERNA para el estudio de precio (C8) — no sube al copy salvo los referentes que el avatar reconoce",
     "competitors_referenced": [
       {
         "name": "Competidor A",
-        "price_usd": 67,
-        "their_stack_estimate_usd": 150
+        "price_usd": 67
       }
     ],
     "your_price_usd": 47,
     "your_tier_chosen": "below_market | at_market | premium",
-    "tier_rationale": "ej: '5× stack value justifica premium aunque competidor está a $67'"
+    "tier_rationale": "ej: 'el mecanismo (lo que entregamos hecho) justifica premium aunque el competidor está a $67' — por funcionalidad, no por ratio de stack"
   },
   "tiers": [
     {
@@ -651,7 +665,7 @@ Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies, un
 
 ### Output B: `offer_statement.md` — página única (≤350 palabras)
 
-Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}` → un statement por avatar/language_pack.
+El `offer_statement.md` es UNO, del buyer persona. Si `multi_avatar_strategy ∈ {unified_C_language_packs, separate_strategies}` → las **variantes lingüísticas por avatar** (mismo statement, registro/vocabulario del avatar) se materializan como **copy de Fase 2**, no como statements de oferta separados.
 
 Estructura obligatoria:
 
@@ -666,13 +680,17 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
 
 ## Lo que recibes
 
-- [Core deliverable] — valor $X
-- Bonus 1: [nombre] — valor $X (ataca [anxiety/habit/pull])
-- Bonus 2: [nombre] — valor $X
-- Bonus 3: [nombre] — valor $X
+- [Core deliverable] — qué te permite hacer / qué freno te quita
+- Bonus 1: [nombre] — qué te permite (ataca [anxiety/habit/pull])
+- Bonus 2: [nombre] — qué te permite
+- Bonus 3: [nombre] — qué te permite
 
-**Valor total: $XXX**
 **Tu inversión hoy: $XX**
+
+<!-- v1.8 (C11): cada pieza se lista por lo que HACE, sin "valor $X" por pieza ni "Valor total $XXX". UNA sola línea de precio. -->
+<!-- Anti-prueba-social (C4): NO "a otros les funcionó" ni testimonios; el "por qué te funciona a TI" se ancla en el mecanismo del producto (lo que HACE) + reversión de riesgo accionable. -->
+<!-- UN solo idioma (C11/C14): el del mercado (launch focus), traduciendo las semillas en español al final. -->
+
 
 ## Reemplaza esto, no agregues más a tu vida
 
@@ -707,11 +725,11 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
 
 ### Gate G-Phase-1.4
 - Si aplica multi-avatar: 1.4.0 cerrado (`positioning_variants[].language_pack` poblado para cada `language_packs_required`, ≥5 key_phrases y ≥3 avoid_phrases por pack)
-- `pricing.price_rationale` cita value_equation, stack ratio Y competitive_position
+- `pricing.price_rationale` cita value_equation (movimiento del eje débil) Y competitive_position (estudio real) — NO "stack ratio" (retirado en v1.8)
 - `competitive_position` poblado con análisis vs ≥1 competidor de Phase 0.4
 - `tier_strategy` validado contra `tiers.length`
 - `offer_statement.md` ≤350 palabras
-- Si multi-avatar → un statement por avatar/language_pack
+- Un statement del buyer persona; si multi-avatar, las variantes lingüísticas por avatar son copy de Fase 2
 - Operador puede leer el statement en voz alta en ≤60 segundos sin tropezar
 - Avatar test: ¿el avatar entendería esto sin diccionario? (si no, simplificar)
 - Drive 3-traits check final: relevante (al avatar), diferente (vs competencia), creíble (sin claims vacíos)
@@ -731,13 +749,10 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
     "covers_avatars": ["avatar_1", "avatar_2", "avatar_3"]
   },
   "multi_avatar_strategy": "single_avatar | unified_C_clean | unified_C_language_packs | unified_C_avatar_specific_bonuses | separate_strategies",
-  "value_equation_per_avatar": {
-    "avatar_1": { "...del 1.1..." },
-    "avatar_2": { "...del 1.1..." }
-  },
-  "stack": { "...del 1.2..." },
-  "risk_urgency_displacement": { "...del 1.3..." },
-  "pricing": { "...del 1.4..." },
+  "value_equation": { "...del 1.1 — UNA, del buyer persona; el avatar de entrada es la lente..." },
+  "stack": { "...del 1.2 — del buyer persona..." },
+  "risk_urgency_displacement": { "...del 1.3 — del buyer persona..." },
+  "pricing": { "...del 1.4 — del buyer persona..." },
   "name": "string",
   "positioning_variants": [
     {
@@ -750,8 +765,9 @@ Te entrego [core deliverable + dream outcome aspiracional en 1 oración].
       }
     }
   ],
-  "statement_paths_by_avatar": {
-    "avatar_1": "offer_statement_avatar_1.md"
+  "statement_path": "offer_statement.md",
+  "statement_paths_by_language_pack": {
+    "_comment": "uno por persona (statement_path). Variantes lingüísticas por avatar (positioning_variants[].language_pack) se materializan como copy en Fase 2, no como ofertas separadas."
   },
   "signal_rules_triggered": [],
   "metadata": {
@@ -777,7 +793,8 @@ Phase 1 se cierra cuando:
 - Sub-gates 1.1, multi-avatar, 1.2, 1.3, 1.4 cerrados
 - `offer_spec.json` consolidado
 - `composite_value_score >= 100` para cada avatar (o `decision_record` justificando)
-- Ambos economic gates pasados: ratio + margin (o `decision_record` con LTV justification)
+- Candado económico único pasado: margin gate por delivery_format (o `decision_record` con LTV justification) — el gate de ratio fue retirado en v1.8
+- `proposed_rescore` firmado por el operador (el paquete mueve el eje débil; ancla mecanismo + reversión de riesgo, no prueba social)
 - `phase_2_handoff` documentado (cero uncovered es sospechoso — OFFER-001 dispara warning)
 - Operador firma `operator_signoff: true`
 
@@ -811,10 +828,10 @@ Reglas heurísticas que disparan contra outputs estructurados. Viven como `best_
     {
       "id": "STACK-001",
       "applicable_phase": "phase-1.2",
-      "condition": "ratio_gate_passed == false OR margin_gate_passed == false",
+      "condition": "margin_gate_passed == false OR proposed_rescore == null",
       "severity": "alert",
-      "signal": "Stack falla uno de los dos gates económicos",
-      "implication": "Iterar con offer-stack-builder hasta que ambos pasen, o registrar decision_record justificando override.",
+      "signal": "Stack falla el candado de margen, o no propone movimiento del eje débil (v1.8: ratio retirado)",
+      "implication": "Iterar con offer-stack-builder hasta que el margen pase (por delivery_format) y el proposed_rescore mueva creíblemente el eje débil (mecanismo + reversión de riesgo, no prueba social), o registrar decision_record justificando override.",
       "auto_action": "block Phase 1.3 entry"
     },
     {
@@ -866,15 +883,16 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 
 | # | Decisión | Resolución |
 |---|---|---|
-| D1 | Stack-to-price ratio default | Tabla derivada por business_type × purchase_type (3× B2B reflexiva → 7× B2C impulsiva). Override por decision_record. |
+| D1 | Stack-to-price ratio default | ~~Tabla derivada por business_type × purchase_type (3× B2B reflexiva → 7× B2C impulsiva). Override por decision_record.~~ **(SUPERSEDED por D12 / v1.8 / decision `a2ef7e37`** — el candado de ratio se retiró; valor por funcionalidad, único candado = margen.) |
 | D2 | Composite value score gate mínimo | <100 bloqueo duro, 100–1000 bloqueo blando, 1000+ avanza. Escala 1–10,000. |
-| D3 | Múltiples ofertas simultáneas por avatar | **Default invertido (D-009, 2026-06-06):** estrategia por-avatar es el default; el algoritmo de 5 condiciones decide si hay evidencia para *unificar* como optimización. `separate_strategies` (default) reemplaza `separate_offers`. Cada estrategia separada = un `strategies` row versionado. |
+| D3 | Granularidad oferta vs contenido por avatar | **Reencuadrado (2026-06-23):** la OFERTA es del buyer persona — UNA, compartida por todos sus avatares (capa canónica Buyer Persona→Phase 1, Avatar→Phase 2). Lo que se paraleliza por avatar es la **estrategia de contenido** (Fase 2→5). El algoritmo de 5 condiciones decide la unificación del **contenido** (statement/language packs), no de la oferta. `separate_strategies` = estrategias de contenido separadas; un solo `offer_spec.json` las enlaza. |
 | D4 | Convención scoring Value Equation | 10 = óptimo en todos los ejes. Fórmula multiplicativa, sin división. Rango 1–10,000. |
 | D5 | Dream Outcome anclaje | JTBD (emotional + functional) + pull, NO pain points. Oferta aspiracional, no defensiva. |
 | D6 | Bonus mapping | Forces of Progress (pull_amplify, anxiety_reduce, habit_break, weakest_axis_boost), NO solo "objection_n". |
 | D7 | Anxiety y habit coverage obligatorios | ≥1 bonus anxiety_reduce, ≥1 bonus habit_break (regla dura). |
 | D8 | Displacement framing | Obligatorio en 1.3, no opcional. Rompe habit del status quo. |
-| D9 | Margin gate | 70% digital / 50% service / 30% physical / 40% hybrid. Ambos gates obligatorios (ratio + margin). |
+| D9 | Margin gate | 70% digital / 50% service / 30% physical / 40% hybrid. **v1.8: ÚNICO candado económico** (el de ratio fue retirado). |
+| D12 | **Valor por funcionalidad, no por comparación (2026-06-25)** | Se retira el value-stack con valores percibidos + comparables + candado de ratio ≥N×. Cada pieza vende por lo que HACE; la fuerza la prueba `proposed_rescore` (movimiento del eje débil). Supersede D1 (tabla ratio_target) y la parte "ratio" de D9. |
 | D10 | Risk reversal / urgency manual permanente | V1, V2, V3 — siempre humano. Decisión ética irreductible. |
 | D11 | Bonus Hormozi categorization | speed / done_for_you / identity / community_access / results_guarantee — campo opcional pero recomendado para detectar gaps. |
 
@@ -886,8 +904,9 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 |---|---|
 | L1 | Dream Outcome viene del JOB (Christensen), no del pain (defensivo). Hormozi es aspiracional. |
 | L2 | El 70% de ofertas que fallan, fallan por no atacar anxiety + habit. Solo amplifican pull. |
-| L3 | Stack-to-price ratio NO es universal — depende de business_type × purchase_type. |
-| L4 | Margen y ratio son gates separados — ofertas pueden pasar uno y fallar el otro. |
+| L3 | ~~Stack-to-price ratio NO es universal~~ **(RETIRADA v1.8)** — el ratio de valor se eliminó: la oferta se vende por funcionalidad, no por comparación. |
+| L4 | ~~Margen y ratio son gates separados~~ **(v1.8)** — queda un único candado: el margen. La fuerza de la oferta la prueba el movimiento del eje débil. |
+| L4b | Vender por comparación de precios pone el producto en la sombra de otros (suena caro/barato) e introduce competidores en la mente del cliente. Mostrar por qué uno vale (funcionalidad/resultado) es posicionamiento premium y consistente con la ética glass-box. |
 | L5 | Reducir denominador (time + effort) supera a inflar numerador (dream + likelihood) en composite. |
 | L6 | Multi-avatar no es decisión a priori — se decide después de 1.1 con evidencia. |
 | L7 | Vocabulary mismatch entre avatars no requiere ofertas separadas — requiere language_packs. |
@@ -903,8 +922,8 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia.
 - Skill `value-equation-optimizer` registrado en pretel-os
 - Skill `offer-stack-builder` registrado en pretel-os
 - 6 signal rules sembradas (VALUE-001/002, STACK-001/002, OFFER-001, PRICING-001)
-- Tabla `ratio_target` por business_type × purchase_type registrada como best_practice
-- Tabla `margin_target_pct` por delivery_format registrada como best_practice
+- ~~Tabla `ratio_target` por business_type × purchase_type registrada como best_practice~~ **(RETIRADA v1.8 — el candado de ratio se eliminó; valor por funcionalidad)**
+- Tabla `margin_target_pct` por delivery_format registrada como best_practice (`MARGIN_TARGETS` — único candado económico)
 
 ### Diferidos
 - Hormozi bonus categorization (MED-3 audit): campo opcional en V1, obligatorio en V2 cuando haya volumen para detectar patrones cross-producto
@@ -924,11 +943,11 @@ Para el primer ciclo manual de Phase 1 con un producto real:
 [ ] Multi-avatar — multi_avatar_decision.json producido con 5 condiciones evaluadas
 [ ] Multi-avatar — strategies row(s) creada(s) (1 por avatar en separate_strategies; 1 unificada en unified_C_*); version_number=1, status=active
 [ ] offer_spec.linked_to.strategy_id + strategy_version poblados
-[ ] 1.2 — core_deliverable con perceived_value y delivery_cost reales
-[ ] 1.2 — bonuses (3-7) con force_attacked y specific_target poblados
+[ ] 1.2 — core_deliverable con description por funcionalidad + delivery_cost real (sin perceived_value)
+[ ] 1.2 — bonuses (3-7) con description (por funcionalidad), force_attacked y specific_target poblados
 [ ] 1.2 — ≥1 bonus anxiety_reduce, ≥1 bonus habit_break
-[ ] 1.2 — ratio_gate_passed: true
-[ ] 1.2 — margin_gate_passed: true
+[ ] 1.2 — proposed_rescore poblado (mueve el eje débil por mecanismo + reversión de riesgo, no prueba social)
+[ ] 1.2 — margin_gate_passed: true (candado único, por delivery_format)
 [ ] 1.2 — phase_2_handoff documentado (uncovered explícitos)
 [ ] 1.3 — risk_reversal con anxieties_addressed mapeadas
 [ ] 1.3 — urgency/scarcity con is_genuine: true y genuine_reason real (o "none")
@@ -936,7 +955,7 @@ Para el primer ciclo manual de Phase 1 con un producto real:
 [ ] 1.4 — pricing con competitive_position poblado
 [ ] 1.4 — tier_strategy validado contra tiers.length
 [ ] 1.4 — offer_statement.md ≤350 palabras
-[ ] 1.4 — si multi-avatar: un statement por avatar/language_pack
+[ ] 1.4 — un statement del buyer persona; variantes lingüísticas por avatar = copy de Fase 2
 [ ] 1.4 — Drive 3-traits check: relevante, diferente, creíble
 [ ] Signal rules evaluadas: ninguna alert sin resolver
 [ ] offer_spec.json consolidado

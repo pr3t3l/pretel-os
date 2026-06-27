@@ -15,7 +15,7 @@ buckets/business/projects/marketing-os/
 ├── specs/
 │   ├── Overall_WF.md                          ← lifecycle overview, read first
 │   ├── spec_Phase_0_Research_ICP.md           ← v1.5 post-audit (R1+R3)
-│   ├── spec_Phase_1_Oferta.md                 ← v1.5 post-audit (R2+R3)
+│   ├── spec_Phase_1_Oferta.md                 ← v1.8 post-audit (valor por funcionalidad; candado = margen por delivery_format)
 │   └── spec_Phase_2_Contenido.md              ← v1.1 post-audit (R4)
 ├── docs/
 │   └── Marketing Documentacion Teorica/       ← course PDFs (Fundamentos, Análisis de mercado, SEO, RRSS)
@@ -48,6 +48,8 @@ Phases 0–2 are planning; 3–5 are execution + learning. Re-triggers flow back
 | **Avatar** | Contextual variant of the individual | Phase 2 (Content) |
 
 Merging these into one entity breaks B2B and loses precision in B2C. Preserve the distinction in any spec edits.
+
+**Hybrid offer/strategy rule (C5, decision `a2ef7e37`):** the **offer is the buyer persona's** — a single offer (`offer_spec` / `offer_statement`) shared by all of that persona's avatars; it never splits into per-avatar offers. The **strategy/content is per avatar** — Phase 2 produces N content/distribution strategies per avatar, all riding on that one shared offer. Phrase the differentiator as "N content strategies per avatar over ONE buyer-persona offer," never "separate offers per avatar." Phase 2 must not break this contract.
 
 ### Runtime stack (per `specs/Overall_WF.md` §9)
 
@@ -84,9 +86,11 @@ Explicit project commitments stated in `specs/Overall_WF.md`. Do not weaken them
 |---|---|---|
 | D-001 | `e258360a` | Marketing OS as module inside pretel-os, not external client |
 | D-002 | `7f87df56` | Audit R1 — Categoría A integrated into Phase 0 v1.5 |
-| D-003 | `9215573a` | Phase 1 spec v1.5 — external audit + operator improvements |
+| D-003 | `9215573a` | Phase 1 spec v1.5 — external audit + operator improvements *(SUPERSEDED en parte por v1.8 / decision `a2ef7e37`: el value-stack Hormozi y el candado de ratio se retiran)* |
 | D-004 | `ef0b2c75` | Audit R3 — Phase 0 ↔ Phase 1 alignment (target_cac_usd, pricing_tiers, ISSUE-A1–A4) |
 | D-005 | `fe833af2` | Phase 2 spec drafted v1.0 + audit R4 integrated v1.1 (force_coverage, JTBD anchor, Vaynerchuk ratio, displacement_inheritance) |
+| D-006 | `a2ef7e37` | Phase 1 v1.8 — **valor por FUNCIONALIDAD, no por comparación**: se retira `perceived_value_usd`/`comparable`/`value_rationale` y el candado de ratio; único candado económico = MARGEN por `delivery_format`; la "prueba de que vale" = movimiento del eje débil (`proposed_rescore`); híbrido oferta-del-buyer-persona / estrategia-por-avatar (C1/C2/C3/C5) |
+| D-007 | `11b919ab` | Phase 1 v1.8 — **atacar el eje débil por MECANISMO + reversión de riesgo, NUNCA por prueba social**: producto pre-lanzamiento sin clientes → prohibidos casos/testimonios/simulaciones; gobierna ambos generadores (1.1 `weak_plan_note` + 1.2 `offer-stack-builder`) (C4) |
 
 ## Working conventions
 

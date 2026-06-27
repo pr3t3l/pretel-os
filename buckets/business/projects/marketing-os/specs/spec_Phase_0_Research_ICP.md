@@ -2,13 +2,14 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-0
-**Status**: spec drafted, post-audit v1.5 + alignment patches (GAP-AL1, GAP-AL2)
-**Last updated**: 2026-06-01
+**Status**: spec drafted, post-audit v1.6 + alignment patches (GAP-AL1, GAP-AL2) + doctrina v1.8 (C1/C4/C8/C10, audit 2026-06-25)
+**Last updated**: 2026-06-25
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. Legacy references to handlers, n8n, or pretel-os DB writes are methodology/history, not MVP runtime.
 
 **Audit reference**:
 - `audit_marketing_os_phase_0.md` (2026-05-10) — Categoría A integrada
 - Auditoría alineación Phase 0 ↔ Phase 1 (2026-05-10) — GAP-AL1 (`target_cac_usd` persistido), GAP-AL2 (`competitive_landscape.pricing_tiers[]` estructurado)
+- Auditoría doctrina v1.8 (2026-06-25, `_audit_change_ledger.md` / `_audit_report_2026-06-25.md`) — M0: C4 (Forces `anxiety` ataca por mecanismo + reversión de riesgo, NUNCA prueba social), C10 (DataForSEO ACTIVO en V1), C8 (math gate = viabilidad, no precio de venta), C1/C5/C6 (oferta por funcionalidad del buyer persona, no value equation Hormozi ni por avatar)
 
 ---
 
@@ -18,7 +19,7 @@ Phase 0 es el cimiento sobre el que descansa el Marketing Lifecycle completo. Su
 
 **Output canónico**: `product_brief_v2.json` — input contract de Phase 1 (Oferta).
 
-> **Nota de ordenamiento (decisión trazable, no omisión):** el corpus (Curso 2 C7) coloca la **propuesta de valor** como pilar previo a los pain points. Sandi la **reubica intencionalmente a Phase 1** (value equation Hormozi por avatar), porque en nuestra arquitectura el JTBD (`current_solution` + `frustration_with_current`) y las Forces of Progress sustituyen ese pilar a nivel Foundation, y el customer journey ya vive embebido en el avatar. Esto es divergencia **consciente** de la secuencia del Curso 2, no un hueco. *(Un cambio activo a esto —ej. añadir una "hipótesis de valor" a nivel proyecto— tocaría D-009/D-010 → FLAG-8, decisión del operador.)*
+> **Nota de ordenamiento (decisión trazable, no omisión):** el corpus (Curso 2 C7) coloca la **propuesta de valor** como pilar previo a los pain points. Sandi la **reubica intencionalmente a Phase 1** (oferta por funcionalidad del buyer persona — UNA oferta del comprador, no value-stack Hormozi ni por avatar; ver C1/C5, decision `a2ef7e37`), porque en nuestra arquitectura el JTBD (`current_solution` + `frustration_with_current`) y las Forces of Progress sustituyen ese pilar a nivel Foundation, y el customer journey ya vive embebido en el avatar. Esto es divergencia **consciente** de la secuencia del Curso 2, no un hueco. *(Un cambio activo a esto —ej. añadir una "hipótesis de valor" a nivel proyecto— tocaría D-009/D-010 → FLAG-8, decisión del operador.)*
 
 ### Capa Foundation (agnóstica del avatar) vs capa por-avatar
 
@@ -215,6 +216,8 @@ Trio obligatorio. Cada uno con cita de fuente + método de cálculo (top-down vs
 
 Ajustable por `business_type` / `delivery_format` (un `digital_download` impulsivo convierte distinto a un `service` reflexivo). **La tasa concreta asumida en cada ejecución se registra en el `decision_record` de la clasificación 🟢/🟡/🔴**, para que el veredicto del math gate sea auditable y no dependa de un número implícito.
 
+> **El math gate es viabilidad, NO precio de venta (C8, decision `a2ef7e37`).** El `price_point_usd` que entra aquí es la hipótesis del operador usada solo como sanity-check de si el mercado obtenible soporta un negocio. **El precio real de venta NO se decide en Phase 0**: sale de un estudio real (competidores firmados + web, sobre el buyer persona completo) en Phase 1.2/1.4 (`pricing-research`). No tratar el número del math gate como el precio sugerido del producto.
+
 ### Fuentes y método: keyword-research-tiered (4 capas)
 
 Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: marketing-research, scope: project:business/marketing-os).
@@ -223,10 +226,10 @@ Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: mar
 |---|---|---|---|
 | 1. Brainstorm semilla | 5–10 seeds del operador desde hipótesis + business_context | $0 | NO (requiere operador) |
 | 2. Expansión gratis | Google autocomplete + PAA + Related searches + YouTube autocomplete + Amazon search bar + Reddit/Quora + TikTok/IG hashtags | $0 | Parcialmente hoy, totalmente en V2 |
-| 3. Validación de volumen | Keyword Planner (free) → SearchVolume.com (free, ~100 kw/lote) → Ubersuggest ($30/mo, paid) → Semrush/Ahrefs ($130+/mo, paid) | $0–$130+/mo | API en V2 |
+| 3. Validación de volumen | **DataForSEO ACTIVO en V1** (volumen real de Google vía API, best-effort con fallback a estimación del LLM si la API no responde) → Keyword Planner (free) → SearchVolume.com (free, ~100 kw/lote) → Ubersuggest ($30/mo, paid) → Semrush/Ahrefs ($130+/mo, paid) | ~$0.05/corrida (DataForSEO) – $130+/mo | **API activa desde V1** (DataForSEO), resto híbrido |
 | 4. Refinamiento | Filtrar volumen 0, clasificar intención + awareness, documentar fuente | tiempo | Híbrido permanente |
 
-**V1 stack recomendado**: Capa 1 + Capa 2 manual + Keyword Planner. Costo: $0.
+**V1 stack recomendado**: Capa 1 + Capa 2 manual + **DataForSEO (camino real activo)**, con Keyword Planner como respaldo manual. Costo: ~$0.05/corrida. El claim "datos reales de búsqueda" es honesto cuando corre el camino DataForSEO; si cae al fallback de estimación del LLM, se marca la fuente como estimada (C10, decision activa del operador).
 **V2 spec**: Capa 2 debe extraer ≥50 keywords brutas antes de filtrar (GAP-14, anotación para V2).
 
 ### Lectura previa pretel-os
@@ -252,8 +255,8 @@ Este sub-paso ejecuta el skill registrado `keyword-research-tiered` (domain: mar
 ### V1/V2/V3
 | Versión | Cómo opera |
 |---|---|
-| V1 | Manual con asistencia. Operador hace queries en Keyword Planner/Semrush, pega resultados; Claude estructura tabla, propone awareness mapping, calcula SAM/SOM. |
-| V2 | Sub-workflow `keyword-research-pipeline` en n8n. Capa 2 scraped automáticamente (≥50 keywords brutas). Capa 3 vía API si hay budget. Capa 4 LLM clasifica, operador aprueba. |
+| V1 | Manual con asistencia + **DataForSEO activo** para el volumen real (Capa 3). El operador puede además pegar queries de Keyword Planner/Semrush; Claude estructura tabla, propone awareness mapping, calcula SAM/SOM. Si DataForSEO no responde, se cae a estimación del LLM marcada como tal. |
+| V2 | Sub-workflow `keyword-research-pipeline` en n8n. Capa 2 scraped automáticamente (≥50 keywords brutas). Capa 3 ya corre vía DataForSEO desde V1; V2 la integra al pipeline n8n. Capa 4 LLM clasifica, operador aprueba. |
 | V3 | Sub-workflow corre solo, operador revisa output final + excepciones flagueadas. |
 
 **Promoción V1→V2**: ≥3 ciclos manuales completos + ≥1 best_practice codificando el método.
@@ -487,8 +490,8 @@ Las soluciones del Step 2 se llevan a Phase 1 como **mapa-semilla de objeciones*
 **Diferenciación Forces of Progress**:
 - **push (ongoing_pains)** → estratégico, captura vía SEO/contenido evergreen
 - **push (triggers)** → táctico, captura vía ads de alta intención en momento exacto
-- **pull** → posicionamiento + propuesta de valor de Phase 1
-- **anxiety** → Phase 1 offer stack ataca con risk reversal + prueba social
+- **pull** → posicionamiento + oferta por funcionalidad de Phase 1 (lo que cada pieza HACE para el buyer persona)
+- **anxiety** → Phase 1 offer stack ataca con **mecanismo** ("por qué te funciona a TI", anclado en los diferenciadores firmados) + **reversión de riesgo accionable** (prueba gratis, acompañamiento). **Nunca prueba social** — producto pre-lanzamiento no tiene clientes; testimonios/casos/"a otros les funcionó" son claim fabricada y quedan prohibidos (C4, decision `11b919ab`).
 - **habit** → Phase 1 offer stack rompe con framing displacement + urgencia genuina
 
 **Mínimos**:
@@ -565,7 +568,7 @@ Las soluciones del Step 2 se llevan a Phase 1 como **mapa-semilla de objeciones*
 | Artefacto | Nivel | Uso downstream |
 |---|---|---|
 | `icp.json` | Organizacional / cluster | Targeting de audiencias en LinkedIn/Meta, lead form filters |
-| `buyer_persona.json` | Individuo arquetípico | Phase 1 Oferta — value equation por persona |
+| `buyer_persona.json` | Individuo arquetípico | Phase 1 Oferta — oferta por funcionalidad del buyer persona (UNA oferta del comprador, no por avatar) |
 | `avatars.json` | Variante contextual del individuo | Phase 2 Content — copy específico al contexto |
 | `negative_personas.json` | Anti-target | Phase 3 Distribución — exclusion lists |
 | `dmu.json` (B2B only) | Roles de decisión dentro del ICP | Phase 2 Content — copy específico por rol |
@@ -919,7 +922,7 @@ Cada re-trigger queda como `decision_record` con motivo + evidencia + nivel (ava
 | L9 | Math gate: SOM × precio_max × conversion_rate_optimista < $5K → STOP |
 | L10 | Unit economics gate: LTV/CAC < 3.0 → STOP o revisar canal-mix |
 | L11 | Negative persona es artefacto, no prosa — Phase 2/3/4 lo leen programáticamente |
-| L12 | JTBD captura "qué contratan" mejor que pain points — Phase 1 Hormozi lo necesita para "Dream Outcome" |
+| L12 | JTBD captura "qué contratan" mejor que pain points — Phase 1 lo necesita para anclar la oferta por funcionalidad en el "Dream Outcome". *(SUPERSEDED el encuadre "Phase 1 Hormozi": el value-stack Hormozi se retiró; la oferta vende por lo que cada pieza HACE, no por value equation comparativa — C1, decision `a2ef7e37`.)* |
 | L13 | Awareness levels (Schwartz) ya están en intenciones de búsqueda — mapping trivial, output a Phase 2 |
 
 ---
