@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-2
-**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado) + v1.2 (C15, 2026-06-26: reparto 2.1 COMPARTIDO del buyer persona; piezas 2.2–2.5 por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición, no etiqueta)
-**Last updated**: 2026-06-26
+**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado) + v1.2 (C15, 2026-06-26: reparto 2.1 COMPARTIDO del buyer persona; piezas 2.2–2.5 por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición, no etiqueta) + v1.3 (C16, 2026-06-27: atomización 2.4 — el formato sigue al canal×avatar, NO un mapa fijo; se retira "IG=imágenes/TikTok=video" como ley)
+**Last updated**: 2026-06-27
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. n8n is not part of the MVP; revisit only for Phase 3 distribution/publication.
 
 **Audit references**:
@@ -567,6 +567,8 @@ Skill propuesto para V2 (no V1).
 
 ### Propósito
 Cada pilar produce **1 pieza long-form anchor** + **N derivatives**. Sin atomización, el costo por pieza es prohibitivo y el operador abandona el plan en semana 3. Modelo Vaynerchuk: 1 keynote → 64 piezas. V1 reduce a 1:5 mínimo (1 long-form → ≥5 derivatives).
+
+> **Principio canal × formato (C16, 2026-06-27 — corrige una cristalización rígida).** Cada derivative es una pieza **SEPARADA** en el formato que de verdad usa **su canal Y su avatar** — NO un mapa fijo canal→formato. Un mismo canal admite varios formatos (Instagram: foto/carrusel, Reel/video, Stories; TikTok: video, carrusel de fotos); se ELIGE el que encaja con cómo ese avatar consume ese canal (`avatars[].where_we_meet`). La regla *"IG = imágenes / TikTok = video"* fue un **ejemplo** del operador (transcript: *"Instagram **puede** ser imágenes"*) que se endureció por error en ley — se retira. Lo que se mantiene: la misma ancla NO se copia igual (un carrusel ≠ un video = producción distinta), así que cada canal×formato es su propio entregable. La tabla de abajo es de **ejemplos**, no un binding canal→formato.
 
 ### Ratio mínimo por canal/formato (LOCKED) — lookup table `atomization_ratio_minimum_per_anchor_format`
 

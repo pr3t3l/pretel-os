@@ -67,7 +67,7 @@ Por cada fase: (1) **cursos que la alimentan**, (2) **los conceptos del corpus q
 | **Estrategia de contenido** (valor antes de vender; educar/entretener/inspirar) | 2.1 + 2.3 | ✅ ratio dar:pedir + pilares |
 | **Arquitectura de canal** (SEO captura · RRSS marca · Email nurturing · SEM inmediato) | 2.2 La matriz · `channel_journey_matrix` | ✅ grandes superficies ON por regla |
 | **Cadencias por plataforma + 7-11-4** (Curso 7 + lookup) | 2.2 (cadencias "N por semana" con fuentes) · `lookup_posting_cadence_2026` | ✅ corpus + estudios |
-| **Plataforma-específico** (YouTube long-form · TikTok 3seg/video · IG visual) | 2.2 + 2.4 (IG=imágenes / TikTok=video) | ✅ entregables separados |
+| **Plataforma-específico** (YouTube long-form · TikTok 3seg/video · IG visual) | 2.2 + 2.4 (entregables separados por **canal × formato**; el formato sigue al canal Y al avatar, NO un mapa fijo — un canal admite varios formatos, C16) | ✅ entregables separados |
 | **Pilares de contenido** (territorios por fuerza psicológica) | 2.3 Los 4 pilares · `pillars` (REFORZAR/RESOLVER) | ✅ |
 | **Atomización / repurposing** (1 pieza → N derivados; YouTube→shorts) | 2.4 La multiplicación · `atomization_map` (1→6) | ✅ |
 | **SEO: intención de búsqueda + keyword clustering + E-E-A-T** | 2.x (pilar SEO + ancla larga) | ⚠️ **verificar:** intención de búsqueda y E-E-A-T explícitos en el pilar SEO |
