@@ -30,6 +30,9 @@ Sandi tiene dos módulos de cara al usuario (D-019: A = Business Case, B = Marke
 | 8 | **Ver ingresos** (MRR, por plan, churn) | falta billing (Stripe) — cruza con M11-style billing |
 | 9 | **Manejar perfiles de pago** (planes, créditos, comps, reembolsos) | falta ledger de créditos + integración de pagos |
 | 10 | **Lessons / decisions / best-practices del SISTEMA** — lo aprendido operando Sandi, visible y accionable para mejorarla | patrón pretel-os; falta instancia propia en Sandi (admin-level, no por-proyecto-de-usuario) |
+| 11 | **Costo de generación de IA** (imagen/video por endpoint) vs **lo que cobramos** al usuario | falta — el wrapper (`spec_AI_Gateway_Wrapper`) lo mide por llamada → este ledger; cruza con el pricing del Estudio (mandato 2026-06-28) |
+| 12 | **Costo de STORAGE** por tipo de asset y por usuario, con **pesos REALES medidos** (NO asumidos — las imágenes de Nano pesan más que 1 MB) | falta — telemetría de peso/costo por archivo; informa retención. Principio: la estimación es semilla, la realidad la reemplaza |
+| 13 | **COGS total por usuario** (LLM + generación IA + storage) a granularidad usuario/proyecto/avatar/acción | falta — agrega 11+12 al costo por usuario; valida el margen |
 
 ## 2. Brainstorm inicial (propuestas de Claude — el operador dispone; se completa en sesión dedicada)
 
