@@ -16,8 +16,8 @@
 | 1 | Arquitectura: wizard vs Estudio | ✅ redactada |
 | 2 | Contrato de datos: el plan alimenta la generación | ✅ redactada |
 | 3 | Producción pieza por pieza (copy/imagen/video por su modo) | ✅ redactada |
-| 4 | Endpoints + wrapper | ⬜ pendiente |
-| 5 | Biblioteca de assets (storage) | ⬜ pendiente |
+| 4 | Endpoints + wrapper | ✅ redactada |
+| 5 | Biblioteca de assets (storage) | ✅ redactada |
 | 6 | Calendario de publicaciones | ⬜ pendiente |
 | 7 | Guía de publicación (acompañamiento) | ⬜ pendiente |
 | 8 | La UI del Estudio | ⬜ pendiente |
@@ -65,6 +65,10 @@ Dos superficies distintas, con propósitos distintos:
 - **Fase 5 — Ajustar** (señales que re-disparan producción/plan).
 El usuario no piensa en "fases 3/4/5" — piensa en "producir, publicar, ver cómo va". Las fases son la plomería; el Estudio es la experiencia.
 
+**El Estudio es un SISTEMA PERPETUO, no un one-shot (la naturaleza del motor).** El plan firmado **NO es una lista fija de N piezas** que se produce una vez y se acaba — es una **RECETA**: los pilares + la biblioteca de ganchos + las cadencias son un **motor generativo** que produce piezas **semana tras semana**. La atomización (2.4) es el **primer lote**; de ahí el Estudio sigue generando piezas nuevas desde la receta, sobre la cadencia firmada (*"N por semana"*), hasta que la medición pida refrescar o ajustar. → **la cola de producción es un stream continuo**, no una lista que se vacía.
+
+**El Estudio es un LOOP, no lineal.** El motor corre en bucle: **producir → publicar → medir → refrescar/ajustar → producir…**. La medición (Fase 4) **re-dispara** producción: refrescar piezas viejas (freshness = señal de ranking), generar nuevos ganchos donde sube la fatiga, doblar lo que convierte. No es "planeo, produzco, publico, fin" — es un sistema que vive.
+
 ## 2. Contrato de datos: cómo el plan firmado alimenta la generación
 
 **Principio:** nada del plan se desperdicia. **Cada pieza real se genera cruzando los artefactos firmados** — el plan es el ADN de cada pieza. Para producir UNA pieza, el generador toma:
@@ -85,6 +89,26 @@ El usuario no piensa en "fases 3/4/5" — piensa en "producir, publicar, ver có
 > (ancla + kind) × (mensaje del pilar) × (gancho) × (voz) × (canal/momento) × (palabras de la oferta si reforzar) → **el copy real + las instrucciones de visual/video**, en el idioma del mercado, por el modo de producción que le toca.
 
 **Implicación:** el generador de producción es un prompt CAG (como los de Fase 2) que recibe TODO esto firmado y produce la pieza terminada. Glass-box: el usuario ve de qué pilar/gancho/voz nació cada pieza. Reusabilidad total del plan.
+
+**El brief es CHANNEL-AWARE (mejora — no one-size).** El ensamblado de arriba es la base, pero **el grounding cambia por canal**:
+- **SEO (artículo):** + análisis de la **SERP del Top-10** (vía DataForSEO) → **entidades a incluir + el gap de profundidad** vs el Top-3. Esto es lo que hace rankear, no solo "usar la keyword".
+- **Social (carrusel/reel):** + el ángulo **ADAS** + el gancho específico de la biblioteca.
+- **Email:** + la **posición en la secuencia** (bienvenida / nurturing / ventas) → la estructura que toca.
+- **Ads:** + los **límites de plataforma** + la landing destino.
+
+**El brief es un ARTEFACTO estructurado (mejora — no solo prosa).** Vive como el objeto `brief` de la pieza (§3.1), al estilo del **JSON-Prompt** del corpus:
+```
+brief = {
+  mensaje_del_pilar,     // el ángulo (fuerza + modo reforzar/resolver)
+  pov_mecanismo,         // el diferenciador único (anti-genérico, anti-prueba-social C4)
+  gancho,                // de la biblioteca (2.5)
+  voz,                   // léxico + prohibidos (2.0)
+  keywords, entidades,   // grounding real (DataForSEO / SERP)
+  palabras_de_oferta,    // si REFORZAR (Fase 1)
+  estructura_canal       // la plantilla del corpus (§3.3)
+}
+```
+§3 recibe un brief explícito y rico — el **lever #1 anti-genérico**. *(Brief genérico → output genérico; brief con datos reales → contenido que compite.)*
 
 ---
 
@@ -154,11 +178,46 @@ El modo de cada pieza se cruza con tu **perfil de producción** (capacidades). S
 ### 3.8 Aprobar → biblioteca → cola de publicación
 Pieza aprobada → **biblioteca de assets** (§5) → **cola de publicación** (§6). Reusable; nada se produce dos veces.
 
-## 4. Endpoints + wrapper  ⬜
-*(pendiente — qué endpoint por tipo; cómo el usuario elige; la capa wrapper)*
+## 4. Endpoints + wrapper
 
-## 5. Biblioteca de assets  ⬜
-*(pendiente — dónde se guarda; reuso; storage Supabase + retención)*
+**Sandi es el wrapper en medio.** Una capa que abstrae sobre múltiples endpoints de imagen y video. El usuario nunca llama un endpoint directo — pide *"genera esta imagen / video"* y el wrapper enruta. Beneficios: no nos casamos con un proveedor; enrutamos por precio/calidad/disponibilidad; endpoints nuevos enchufan sin tocar el resto.
+
+### 4.1 Qué endpoint por tipo (del research §7 de la propuesta)
+| Tipo | Default recomendado | Alternativas | Precio | Notas |
+|---|---|---|---|---|
+| **Imagen — estilizado de producto** | FLUX.1 Kontext · Seedream v4.5 Edit · Nano Banana | (mismo rango) | **~$0.04/img** | preservan el producto, re-estilizan la escena (C16) |
+| **Video — producto (beta)** | Runway Gen-4 Turbo | Veo 3 Fast · Kling 3.0 | **$0.75–3.60 / clip 15–30s** | image-to-video, beta; **nunca persona** |
+
+*(Precios de docs oficiales, mediados 2026 — confirmar al integrar.)*
+
+### 4.2 Cómo elige el usuario
+- **Default (todos):** Sandi usa el endpoint recomendado para el caso. Cero fricción.
+- **Elige tu engine (capacidad C5-avanzada):** quien sabe puede escoger (FLUX / Kling / Veo…) — el wrapper orquesta.
+- **BYO (trae tu IA):** corre el prompt en su propia herramienta/llave → **costo $0 para nosotros**.
+
+### 4.3 Qué hace el wrapper
+Enruta · normaliza formatos (entrada/salida) · **reintenta / failover** si un proveedor cae · **mide el costo** por generación (alimenta el ledger del Módulo C + el pricing §9) · guarda el resultado en la **biblioteca** (§5). Atado a la **promoción de endpoints** del Módulo C: cuando uno gana en precio/calidad, se promueve sin deploy.
+
+## 5. Biblioteca de assets
+
+**Todo lo producido se guarda en el proyecto del usuario, por avatar.** Es el activo que crece y **fideliza** (su biblioteca vive en Sandi).
+
+### 5.1 Qué se guarda y dónde
+| Asset | Dónde | Metadata |
+|---|---|---|
+| Texto (copy, artículo, guion, email) | DB (estilo `project_phase_artifacts`) | pieza, pilar, avatar, modo, status |
+| Imagen / video | **Supabase Storage** (object storage), carpeta por proyecto/avatar | + costo, endpoint, prompt usado, versión |
+
+### 5.2 Reuso (baja costo + fideliza)
+Un asset producido se **reutiliza** entre piezas y semanas (una foto estilizada de la vela sirve para 3 posts) → menos generaciones = menos COGS + retención. La biblioteca se navega desde el Estudio (§8).
+
+### 5.3 Storage — a resolver
+- **Tamaño:** imágenes 1–5 MB; videos 15–30s ≈ 5–50 MB. A escala, crece.
+- **Costo:** Supabase Storage ~$0.02/GB/mes (orden de magnitud — confirmar). En uso interno, trivial.
+- **Retención:** ¿se guardan todas las versiones? ¿se purgan borradores no aprobados? → decisión abierta (§11).
+- **Versionado:** una pieza regenerada, ¿guarda versiones o reemplaza? → §11.
+
+Cruza con el ledger de costos ([[sandia-cost-ledger]]: `project_api_calls` ya traquea costos de API externa; la generación imagen/video es el mismo patrón) y el Módulo C.
 
 ## 6. Calendario de publicaciones  ⬜
 *(pendiente — dónde vive; cómo recibe la info por canal; cadencias del plan)*
