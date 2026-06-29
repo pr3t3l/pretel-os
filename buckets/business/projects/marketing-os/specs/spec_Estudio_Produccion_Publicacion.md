@@ -127,6 +127,7 @@ Pieza = {
   outline,                   // la estructura (plantilla del corpus para ese canal)
   draft, asset,              // borrador → pieza final aprobada (texto + visual/video)
   qa_flags,                  // lo que el editor-IA revisó (voz, doctrina, estructura, keywords)
+  temporality,               // evergreen | seasonal (+event_ref, valid_window, expires_at) — ver spec_Inteligencia_Temporal
   status,                    // en_cola | producida | aprobada | publicada
   cost
 }
@@ -255,6 +256,10 @@ El horario **NO es genérico** — son **dos capas**:
 
 **Diferenciador:** una herramienta genérica te da el promedio y se queda ahí; nosotros **arrancamos calibrados por avatar Y nos volvemos tuyos con tus datos**.
 
+### 6.6 El radar de fechas (inteligencia temporal)
+
+La cadencia (§6.5) decide **CUÁNDO** publicar en la semana; el **radar** decide **QUÉ FECHAS explotar**. El calendario overlaya las fechas que el mercado vive (Black Friday, día del padre, cierre fiscal, vuelta al cole…) como **oportunidades con lead time** — *"X llega en 3 semanas, ¿campaña?"* → entra a la cola (§3) con la pieza lista, **consciente de la fecha de hoy** (un gancho de junio no habla de enero). Y al pasar la fecha, marca el contenido de temporada **"vencido"** y ofrece refrescarlo (sugiere, nunca borra). Es un motor aparte — **`spec_Inteligencia_Temporal.md`** (este calendario lo consume). Cadencia y radar son hermanos: uno reparte la semana, el otro explota el momento.
+
 ## 7. Guía de publicación (acompañamiento)
 
 ### 7.1 El compromiso: "te aviso con la pieza lista adentro"
@@ -323,7 +328,9 @@ El Estudio es la **experiencia/orquestación**; los demás specs son la plomerí
 | **AI Gateway** (`spec_AI_Gateway_Wrapper`) | la capa de endpoints (§4) — integración |
 | **Módulo C** (`spec_Admin_Cost_Intelligence`) | costos/billing/COGS (#11–13) — admin |
 | **Propuesta de producción** (`spec_Production_Support_...`) | los modos + capacidades + pricing |
+| **Inteligencia Temporal** (`spec_Inteligencia_Temporal`) | el **radar de fechas** (§6.6) — qué fechas explotar + vencimiento del contenido de temporada |
 | **`lookup_posting_cadence_2026`** | las cadencias + ventanas (semilla del calendario) |
+| **`lookup_event_calendar_2026`** | la base de eventos/fechas (semilla del radar) |
 
 ## 11. Decisiones abiertas
 
