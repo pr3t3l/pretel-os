@@ -1,7 +1,7 @@
 # El Estudio — Producción & Publicación (post-plan)
 
 **Project**: business/marketing-os
-**Status**: **BORRADOR EN DESARROLLO** (se redacta sección por sección con el operador; NO es ley, NO codear hasta firmar). Fundación §0–2 redactada; §3–11 pendientes.
+**Status**: **BORRADOR COMPLETO v0.1** (las 12 secciones §0–11 redactadas con el operador; NO es ley, NO codear hasta firmar). Pendiente: revisión final + bajar las decisiones abiertas (§11) + trinity antes de build.
 **Last updated**: 2026-06-28
 **Origen:** sesión sim Papandi (2026-06-28). Tras cerrar el plan (Fase 2) el operador identificó el puente que falta: el plan dice QUÉ publicar, pero hace falta PRODUCIR las piezas reales y PUBLICARLAS. Decisión arquitectónica del operador: esto es un **workspace independiente del wizard** ("el Estudio"), no una fase más.
 **Cruza con:** `spec_Production_Support_and_Pricing_PROPOSAL.md` (modos + pricing), `spec_Phase_2_Contenido.md` (el plan que alimenta), `spec_Phase_3_Distribucion.md` (publicar/medir — el Estudio es su casa/UI), `spec_Admin_Cost_Intelligence.md` (Módulo C — billing/cost admin).
@@ -20,10 +20,10 @@
 | 5 | Biblioteca de assets (storage) | ✅ redactada |
 | 6 | Calendario de publicaciones | ✅ redactada |
 | 7 | Guía de publicación (acompañamiento) | ✅ redactada |
-| 8 | La UI del Estudio | ⬜ pendiente |
-| 9 | Costos / pricing por modo | ⬜ pendiente |
-| 10 | Cruce con specs existentes | ⬜ pendiente |
-| 11 | Decisiones abiertas | ⬜ pendiente |
+| 8 | La UI del Estudio | ✅ redactada |
+| 9 | Costos / pricing por modo | ✅ redactada |
+| 10 | Cruce con specs existentes | ✅ redactada |
+| 11 | Decisiones abiertas | ✅ redactada |
 
 ---
 
@@ -244,10 +244,18 @@ El calendario es la línea de tiempo; la **cola (§3) es el "por producir"**. Do
 - **Por lote:** produces la semana entera de una y se agenda.
 El usuario reordena/reprograma slots a mano.
 
+### 6.5 El modelo de timing: semilla por avatar → personalización por datos (estudio 2026-06-28)
+El horario **NO es genérico** — son **dos capas**:
+- **Capa 1 — Semilla (calibrada por avatar):** los promedios del oficio (Sprout/Buffer 2026) **cruzados con lo que sabemos del avatar**: su **tipo (B2B/B2C) × nicho × canal × zona horaria**. El avatar de Etsy (B2C) arranca en IG/Pinterest tardes+fines de semana; el de coaches (B2B) en LinkedIn Mar–Jue 8–10h. **Arranque inteligente, no un horario genérico para todos.**
+- **Capa 2 — Personalización (sus propios datos):** cuando los posts acumulan analytics (**Fase 4** — cuándo SÍ interactuó su audiencia real), el calendario **se mueve a las mejores horas REALES** de su público. El **loop perpetuo (§1)** lo hace solo: semilla → mide → afina.
+- **Frecuencia** igual: semilla por canal (IG 3–5/sem · TikTok 2–5 · LinkedIn 2–5 · YouTube 1 · FB 1–2/día) → ajustada por fatiga/rendimiento medido. **Cadencia estable ≥8 semanas antes de evaluar** (el algoritmo premia consistencia).
+
+**Diferenciador:** una herramienta genérica te da el promedio y se queda ahí; nosotros **arrancamos calibrados por avatar Y nos volvemos tuyos con tus datos**.
+
 ## 7. Guía de publicación (acompañamiento)
 
 ### 7.1 El compromiso: "te aviso con la pieza lista adentro"
-Cuando un slot vence, el usuario recibe una **notificación con el asset terminado** (copy + imagen/video) **listo para publicar** — no para redactar. (Mandato del operador, task `7493e337`; nace en Fase 3.)
+Cuando un slot vence, el usuario recibe una **notificación con el asset terminado** (copy + imagen/video) **listo para publicar** — no para redactar — **en el mejor momento para su público** (calibrado por avatar → personalizado por sus datos, §6.5). (Mandato del operador, task `7493e337`; nace en Fase 3.)
 
 ### 7.2 Pasos por canal
 Cada canal trae su *"cómo publicar"*: dónde pegar, qué adjuntar, el horario. Algunos canales pueden **integrarse** (blog vía CMS, email vía ESP); el resto = "copia esto, publícalo aquí". Calibrado al canal.
@@ -263,14 +271,64 @@ No prometemos auto-publish hoy; prometemos que **producir y publicar sea trivial
 ### 7.5 Acompañamiento del lado humano
 Para piezas DIY (el video que grabas tú), la notificación incluye la **guía de producción** (§3.6) + un checklist. El sistema **acompaña**, no abandona en "ahora hazlo tú".
 
-## 8. La UI del Estudio  ⬜
-*(pendiente — pantallas: producir · biblioteca · calendario · publicar; navegación; acceso directo)*
+## 8. La UI del Estudio
 
-## 9. Costos / pricing por modo  ⬜
-*(pendiente — cross-ref a la propuesta: N-gratis + créditos + BYO; el ledger del Módulo C)*
+El Estudio es un **workspace persistente** (no un wizard), **por avatar** (selector arriba, como Fase 2). El plan firmado queda en **solo-lectura** (referencia); la operación vive aquí. Cuatro superficies + una de resultados:
 
-## 10. Cruce con specs existentes  ⬜
-*(pendiente — Fase 3 distribución, Fase 4 medir, Módulo C admin; sin duplicar)*
+### 8.1 Producir (la cola)
+La lista de piezas por producir (de la receta + cadencia). Cada pieza muestra **de qué pilar/gancho nació + su modo + costo**. El usuario produce (texto auto · imagen 3 rutas · video guion+guía) y **aprueba/ajusta/regenera** (patrón de tarjeta).
 
-## 11. Decisiones abiertas  ⬜
-*(pendiente — endpoint primero, N-gratis, storage, avatares, auto-publish, etc.)*
+### 8.2 Biblioteca
+Los assets producidos (texto + imagen/video), navegables, **reutilizables** entre piezas/semanas. Filtros por pilar/canal/avatar.
+
+### 8.3 Calendario
+La línea de tiempo (semana/mes): los slots con su pieza, **calibrados por avatar y personalizados por datos** (§6.5). Reordenar/reprogramar a mano.
+
+### 8.4 Publicar
+Las notificaciones "pieza lista adentro" + los **pasos por canal** + marcar **publicado** (cierra el loop → medición).
+
+### 8.5 Resultados (Fase 4, después)
+Cómo va cada pieza/canal — y lo que **re-dispara** producción y afina el timing (el loop).
+
+**Principio UI:** operacional (dashboard), no lineal. **Glass-box** en cada pieza (origen + modo + costo). Acceso directo: el usuario no reabre Fase 2.
+
+## 9. Costos / pricing por modo
+
+Detalle completo en `spec_Production_Support_and_Pricing_PROPOSAL.md §5`; aquí el resumen operativo del Estudio:
+
+| Modo | Costo nuestro | Al usuario |
+|---|---|---|
+| Texto (auto) | LLM (centavos) | **incluido** |
+| Imagen (asistido) | ~$0.04/img | **N gratis/mes por tier** → luego medido (~$0.10–0.25) o **BYO** ($0) |
+| Video (asistido, beta) | $0.75–3.60/clip | **medido/créditos** o BYO — nunca ilimitado |
+| Guía-DIY / prompt-BYO | $0 | incluido |
+
+- **Dos modos activos** (cost-plus medido + BYO) + **N gratis y después se vende** (mandato).
+- El **wrapper mide el costo por llamada** → ledger de **Módulo C** (#11–13) → **COGS por usuario** → valida el margen (doctrina de margen, Fase 1).
+- Storage: costo por tipo con **pesos REALES medidos** (Módulo C #12) → informa retención.
+
+## 10. Cruce con specs existentes (sin duplicar)
+
+El Estudio es la **experiencia/orquestación**; los demás specs son la plomería.
+
+| Spec | Qué aporta al Estudio |
+|---|---|
+| **Fase 2** (`spec_Phase_2`) | el plan firmado = el **brief** (§2) que alimenta cada pieza |
+| **Fase 3** (`spec_Phase_3`) | publicar + tracking; el calendario hereda `publish_plan.calendar[]` |
+| **Fase 4** (`spec_Phase_4`) | medir → **alimenta el loop + la personalización de timing** (§6.5) |
+| **Fase 5** (`spec_Phase_5`) | ajustar → **re-dispara** producción (refrescar, nuevos ganchos) |
+| **AI Gateway** (`spec_AI_Gateway_Wrapper`) | la capa de endpoints (§4) — integración |
+| **Módulo C** (`spec_Admin_Cost_Intelligence`) | costos/billing/COGS (#11–13) — admin |
+| **Propuesta de producción** (`spec_Production_Support_...`) | los modos + capacidades + pricing |
+| **`lookup_posting_cadence_2026`** | las cadencias + ventanas (semilla del calendario) |
+
+## 11. Decisiones abiertas
+
+- **Endpoint de imagen primero** → spot-test de calidad con un producto real (Kontext vs Seedream vs Nano Banana).
+- **N gratis:** ¿cuántas, por tier o global? ¿créditos unificados o por tipo (imagen/video)?
+- **Storage:** retención (¿purgar borradores no aprobados?), versionado (¿guardar versiones?), pesos reales (medir).
+- **Avatares de persona** (HeyGen-style) — ¿en alcance con disclaimer, o fuera?
+- **Auto-publish** (V2) — ¿cuándo, en qué canales lo permite la plataforma?
+- **Integraciones de publicación** — ¿qué canales conectamos directo (CMS/ESP) vs "copia y publica"?
+- **Producción just-in-time vs por-lote** — ¿cuál default?
+- **Pendientes que ya son tareas:** escribir `spec_AI_Gateway` (`babfe7a0`) · construir Módulo C (`c027d954`) · keyword research por-avatar (`cdf66e45`).
