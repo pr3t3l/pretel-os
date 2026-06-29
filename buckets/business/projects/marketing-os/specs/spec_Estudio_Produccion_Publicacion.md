@@ -245,6 +245,9 @@ El calendario es la línea de tiempo; la **cola (§3) es el "por producir"**. Do
 El usuario reordena/reprograma slots a mano.
 
 ### 6.5 El modelo de timing: semilla por avatar → personalización por datos (estudio 2026-06-28)
+
+📅 **Los DATOS de la semilla** —ventanas por canal (IG/TikTok/LinkedIn/YouTube/Pinterest/FB/Blog/Email), frecuencias, el modificador **B2B vs B2C**, la meta-regla y las **fuentes** (Sprout ~2B engagements · Buffer 52M posts · HeyOrca · DevriX · Kanbox 4.8M)— viven en **`lookup_posting_cadence_2026.md`** (la tabla completa del estudio). Aquí va el **MODELO** de cómo el Estudio los usa:
+
 El horario **NO es genérico** — son **dos capas**:
 - **Capa 1 — Semilla (calibrada por avatar):** los promedios del oficio (Sprout/Buffer 2026) **cruzados con lo que sabemos del avatar**: su **tipo (B2B/B2C) × nicho × canal × zona horaria**. El avatar de Etsy (B2C) arranca en IG/Pinterest tardes+fines de semana; el de coaches (B2B) en LinkedIn Mar–Jue 8–10h. **Arranque inteligente, no un horario genérico para todos.**
 - **Capa 2 — Personalización (sus propios datos):** cuando los posts acumulan analytics (**Fase 4** — cuándo SÍ interactuó su audiencia real), el calendario **se mueve a las mejores horas REALES** de su público. El **loop perpetuo (§1)** lo hace solo: semilla → mide → afina.
