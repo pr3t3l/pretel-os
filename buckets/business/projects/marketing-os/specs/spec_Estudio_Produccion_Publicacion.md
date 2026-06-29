@@ -15,7 +15,7 @@
 | 0 | Propósito + La Promesa | ✅ redactada |
 | 1 | Arquitectura: wizard vs Estudio | ✅ redactada |
 | 2 | Contrato de datos: el plan alimenta la generación | ✅ redactada |
-| 3 | Producción pieza por pieza (copy/imagen/video por su modo) | ⬜ pendiente |
+| 3 | Producción pieza por pieza (copy/imagen/video por su modo) | ✅ redactada |
 | 4 | Endpoints + wrapper | ⬜ pendiente |
 | 5 | Biblioteca de assets (storage) | ⬜ pendiente |
 | 6 | Calendario de publicaciones | ⬜ pendiente |
@@ -88,8 +88,71 @@ El usuario no piensa en "fases 3/4/5" — piensa en "producir, publicar, ver có
 
 ---
 
-## 3. Producción pieza por pieza  ⬜
-*(pendiente — el modo por pieza, el copy por canal, el prompt de imagen, la guía de video)*
+## 3. Producción pieza por pieza
+
+El plan (2.4) entrega la **cola de producción**: por pilar, 1 ancla + N derivados, cada uno con su `kind` (canal × formato) y su modo. **La calidad NO sale de "un prompt"** — sale de un **pipeline de 5 pasos** (proceso experto confirmado por research externo + nuestro propio corpus), donde **el plan firmado ES el brief** — el lever #1 de calidad (*un brief genérico produce contenido genérico*).
+
+### 3.1 La unidad: la pieza
+```
+Pieza = {
+  id, avatar_key,            // POR AVATAR (C15) — faltaba
+  pillar_id, anchor_ref,     // de qué pilar / qué ancla deriva
+  kind: { channel, format },
+  production_mode,           // texto auto / imagen / video, por su modo
+  brief,                     // §2 ensamblado: mensaje+gancho+voz+keywords+oferta
+  outline,                   // la estructura (plantilla del corpus para ese canal)
+  draft, asset,              // borrador → pieza final aprobada (texto + visual/video)
+  qa_flags,                  // lo que el editor-IA revisó (voz, doctrina, estructura, keywords)
+  status,                    // en_cola | producida | aprobada | publicada
+  cost
+}
+```
+
+### 3.2 El pipeline de calidad (5 pasos) — cómo §2 alimenta §3
+El §2 (contrato de datos) **ES el brief**; §3 es el **pipeline** que lo convierte en una pieza de calidad:
+
+| Paso | Qué hace | Por qué da calidad (no genérico) |
+|---|---|---|
+| **1. Brief** | el §2 ya ensamblado: mensaje del pilar + gancho + voz + **keywords REALES** + palabras de la oferta + dolores del avatar | el brief más rico posible, con grounding en datos reales (= RAG). El plan es el anti-genérico. |
+| **2. Estructura** | se elige la **plantilla de calidad del corpus** para ese canal (no se inventa) | el oficio ya sabe cómo se estructura un buen artículo/carrusel/email/ad |
+| **3. Borrador** | el LLM redacta contra el brief + la estructura (para SEO, vía el **JSON-Prompt** parametrizado) | outline-first, no one-shot |
+| **4. Edición / QA** | paso SEPARADO: aplica candados de **voz + DOCTRINA + estructura del canal + keywords + gancho** | el salto de calidad vs one-shot; donde se enforce la doctrina |
+| **5. Aprobación** | tu tarjeta (✓ / ✏️ / regenerar) | tu autoría |
+
+### 3.3 Plantillas de calidad por canal (de NUESTRO corpus — el craft de los 7 cursos)
+La estructura no se inventa: viene del oficio que ya sintetizamos.
+
+| Canal | Estructura/plantilla (cita corpus) | Reglas |
+|---|---|---|
+| **Artículo SEO** | intro responde la intención en el §1 · H1>H2>H3 · párrafos 150–400 car · ≥5 entidades (rel >0.7) · enlaces internos · schema · más profundo que el Top 3. Parametrizado por **JSON-Prompt** (`3_seo:239`) | imágenes ≤120 KB · freshness |
+| **Carrusel / Reel / video corto** | **Hook 3–5s → Cuerpo 15–45s (micro-ganchos c/5–7s) → Cierre 4–6s (CTA)** · framework **ADAS** (`7_rrss:89,206`) | filtro niño (simple) · filtro masas (universal) · 1ª persona |
+| **Email** | bienvenida = **8 puntos** · ventas = **PAS o AIDA** · asuntos **<40 car** + pre-header (par A/B) (`6_email:62,252,282`) | beneficios no características · CTA con urgencia REAL |
+| **Google/Meta Ads** | 20 títulos ≤30 · 20 largos ≤90 · 20 desc ≤90 · landing 7 secciones (`5_sem:88,213`) | orientado a beneficio · relevancia kw (Quality Score) |
+
+### 3.4 La DOCTRINA filtra el craft (clave)
+El corpus es el **CRAFT** (cómo estructurar); la **doctrina manda sobre la TÁCTICA**. El paso de QA (4) **quita lo que el corpus sugiere pero nuestra doctrina prohíbe**:
+- el corpus de email pone *"testimonios / casos de éxito"* en la secuencia de ventas → **C4 los retira** (pre-lanzamiento sin clientes) y los reemplaza por **mecanismo**.
+- el corpus de ads pone *"precio tachado vs oferta"* (urgencia/comparación) → **C12 + C1** lo retiran (sin urgencia fabricada; valor por funcionalidad, no comparación).
+
+Combinamos lo mejor del oficio con nuestra honestidad. Glass-box: el QA reporta qué quitó y por qué.
+
+### 3.5 Imagen — las 3 rutas + el prompt generado
+El Estudio ofrece las rutas de la Promesa, y **Sandi genera el PROMPT** desde el contexto de la pieza:
+- **Asistido:** subes la foto cruda → la mandamos con el prompt al endpoint → imagen estilizada → biblioteca. *(Ej. vela → "coloca esta vela en una sala acogedora, luz cálida natural, fotografía lifestyle".)*
+- **Prompt-BYO:** te damos el prompt + pasos → lo corres en tu IA → subes el resultado.
+- **Guía-DIY:** instrucciones de foto (escena/luz/encuadre) → la tomas → la subes.
+- **Regla (C16 + fidelidad):** la IA estiliza la **escena**, NUNCA el **producto**. Para handmade auténtico, la guía-DIY a veces gana.
+
+### 3.6 Video — guion (del corpus) + guía, o IA-producto (beta)
+- **Guion (hecho):** con la plantilla del corpus — **Hook 3–5s → Cuerpo (micro-ganchos) → Cierre/CTA**, en la voz, idioma del mercado.
+- **Guía de producción (DIY):** ambiente/luz/encuadre/shot-list — "con el teléfono basta". Producto o talking-head (C4).
+- **IA-producto (beta):** anima la imagen del producto (image-to-video). **Nunca la persona** (políticas + autenticidad).
+
+### 3.7 El candado de producibilidad
+El modo de cada pieza se cruza con tu **perfil de producción** (capacidades). Si una pieza pide algo que no puedes (ej. video y no quieres grabar ni elegiste IA), el sistema **degrada** (a un formato que sí puedes) o **soporta** (guía / ruta IA) — **nunca te deja trabado**. Puedes cambiar el modo a mano.
+
+### 3.8 Aprobar → biblioteca → cola de publicación
+Pieza aprobada → **biblioteca de assets** (§5) → **cola de publicación** (§6). Reusable; nada se produce dos veces.
 
 ## 4. Endpoints + wrapper  ⬜
 *(pendiente — qué endpoint por tipo; cómo el usuario elige; la capa wrapper)*
