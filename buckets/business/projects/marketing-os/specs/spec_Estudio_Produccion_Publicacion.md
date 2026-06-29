@@ -18,8 +18,8 @@
 | 3 | Producción pieza por pieza (copy/imagen/video por su modo) | ✅ redactada |
 | 4 | Endpoints + wrapper | ✅ redactada |
 | 5 | Biblioteca de assets (storage) | ✅ redactada |
-| 6 | Calendario de publicaciones | ⬜ pendiente |
-| 7 | Guía de publicación (acompañamiento) | ⬜ pendiente |
+| 6 | Calendario de publicaciones | ✅ redactada |
+| 7 | Guía de publicación (acompañamiento) | ✅ redactada |
 | 8 | La UI del Estudio | ⬜ pendiente |
 | 9 | Costos / pricing por modo | ⬜ pendiente |
 | 10 | Cruce con specs existentes | ⬜ pendiente |
@@ -219,11 +219,49 @@ Un asset producido se **reutiliza** entre piezas y semanas (una foto estilizada 
 
 Cruza con el ledger de costos ([[sandia-cost-ledger]]: `project_api_calls` ya traquea costos de API externa; la generación imagen/video es el mismo patrón) y el Módulo C.
 
-## 6. Calendario de publicaciones  ⬜
-*(pendiente — dónde vive; cómo recibe la info por canal; cadencias del plan)*
+## 6. Calendario de publicaciones
 
-## 7. Guía de publicación  ⬜
-*(pendiente — el acompañamiento; "te aviso con la pieza lista"; pasos por canal; marcar publicado → medición)*
+El calendario es **la línea de tiempo** del Estudio: dónde y cuándo sale cada pieza. Es **perpetuo** (§1) — se llena semana tras semana desde la receta + las cadencias.
+
+### 6.1 De dónde sale
+**Cadencias firmadas (2.2)** × **piezas de la cola (§3)**. Cada canal trae su *"N por semana"* + sus **mejores ventanas** (del estudio + `lookup_posting_cadence_2026`). El calendario agenda los slots; la cola los llena.
+
+### 6.2 Qué tiene cada slot
+```
+slot = { fecha_hora, canal, formato, asset_ref (la pieza producida),
+         estado: programado|publicado, utm/tracking }
+```
+(hereda el `publish_plan.calendar[]` de Fase 3.)
+
+### 6.3 Cómo recibe la info por canal
+- **Cadencia + ventanas** por canal (2.2 + lookup) → los slots y sus horas.
+- **El mix** del oficio balancea el calendario: 25% viral / 25% captación / 50% conversión (corpus `7_rrss`) — no solo "piezas sueltas".
+- **7-11-4** (multi-touch): el calendario asegura el **ecosistema sostenido**, no impactos aislados.
+
+### 6.4 Producción ↔ calendario
+El calendario es la línea de tiempo; la **cola (§3) es el "por producir"**. Dos modos:
+- **Just-in-time:** la pieza se produce cuando su slot se acerca (ahorra costo si el plan cambia).
+- **Por lote:** produces la semana entera de una y se agenda.
+El usuario reordena/reprograma slots a mano.
+
+## 7. Guía de publicación (acompañamiento)
+
+### 7.1 El compromiso: "te aviso con la pieza lista adentro"
+Cuando un slot vence, el usuario recibe una **notificación con el asset terminado** (copy + imagen/video) **listo para publicar** — no para redactar. (Mandato del operador, task `7493e337`; nace en Fase 3.)
+
+### 7.2 Pasos por canal
+Cada canal trae su *"cómo publicar"*: dónde pegar, qué adjuntar, el horario. Algunos canales pueden **integrarse** (blog vía CMS, email vía ESP); el resto = "copia esto, publícalo aquí". Calibrado al canal.
+
+### 7.3 Marcar "publicado" → alimenta la medición
+Al marcar una pieza publicada (o auto-detectado), **se cierra el loop**: el post publicado → Fase 4 (métricas) → señales de Fase 5. El "publicado" es el dato que arranca la medición.
+
+### 7.4 Auto-publish = futuro (honestidad)
+- **V1:** el usuario publica — lo hacemos de **1–2 clics** (el asset llega hecho).
+- **V2:** un scheduler (n8n/cron) auto-publica donde la plataforma lo permite.
+No prometemos auto-publish hoy; prometemos que **producir y publicar sea trivial**.
+
+### 7.5 Acompañamiento del lado humano
+Para piezas DIY (el video que grabas tú), la notificación incluye la **guía de producción** (§3.6) + un checklist. El sistema **acompaña**, no abandona en "ahora hazlo tú".
 
 ## 8. La UI del Estudio  ⬜
 *(pendiente — pantallas: producir · biblioteca · calendario · publicar; navegación; acceso directo)*
