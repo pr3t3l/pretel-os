@@ -29,9 +29,9 @@
 4. **Probar en un branch de Supabase ANTES de tocar `qxhfmsojpjmnlzaduzao`.**
 **Done:** migración aplicada (branch → prod); los 4 avatares firmados intactos, ahora `evergreen`; `verify` verde; e2e: abrir Fase 2 y ver los ganchos sin cambios visibles.
 
-### M2 — Adapter de holidays (capa civil) — **incluye LA decisión de runtime**
-1. **DECIDIR dónde corre el radar** (ver §4): el producto deployado es sandia (Next.js/Supabase) → favorece **`date-holidays`** (npm, local, 200+ países, recurrencia+regiones) o **Nager.Date** (API). `python-holidays` solo si se levanta un servicio Python de pretel-os.
-2. Interfaz `HolidaySource.get_holidays(geo, year) → events[]`; implementación default según (1); cache en `project_events` o `holidays_cache`.
+### M2 — Adapter de holidays (capa civil)
+1. **Librería (RESUELTO §4): `date-holidays` (npm)** — instalar + envolver tras `HolidaySource`. Local, in-proceso, 200+ países, TS-native. *Cuidar:* trae data de todos los países → lazy-load por `market_geo` (bien para serverless Node).
+2. Interfaz `HolidaySource.getHolidays(geo, year) → events[]`; cache en `project_events` o `holidays_cache`. Adapter swappable (Nager.Date/Calendarific si algún día hace falta).
 **Done:** para un `market_geo` dado, el sistema lista los festivos civiles del año con su fecha real + `lead_time` (de la tabla curada), sin hardcodear.
 
 ### M3 — El radar (capas 1-4) + las fechas propias del usuario (capa 3)
@@ -52,9 +52,9 @@
 ## 3. Orden y dependencias
 **M1 bloquea todo** (foundation). M2 → M3 (el radar necesita la capa civil). M3 → M4 (el calendario consume el radar). M5 cierra. Paralelizable: M2 con la UI de capa-3 de M3.
 
-## 4. Pendiente clave a decidir EN M2 — ¿dónde corre el radar? (⚠️ contradice mi D-IT5)
-El `marketing-os/CLAUDE.md` dice *runtime = Python PhaseHandlers en pretel-os*, **pero la realidad de la sesión es que TODO el wizard (Fase 0-2) se construyó en `sandia-marketing` (Next.js/Supabase)** — no en PhaseHandlers Python. El radar/calendario son user-facing → muy probablemente viven en **sandia (Next API + Supabase)**.
-→ Si es así, el **default de D-IT5 cambia de `python-holidays` (Python) a `date-holidays` (npm) o Nager.Date (API)**. **Conflicto doctrina-vs-realidad: lo dejo SIN reconciliar en silencio — decisión del operador.** Afecta el pick de M2 + corrige la fila D-IT5 del spec.
+## 4. ✅ RESUELTO (2026-06-30) — dónde corre el radar + qué librería
+**Verificado el stack de sandia:** 100% Next.js 16 + React 19 + TS + Supabase + `@anthropic-ai/sdk` (JS). **CERO Python.** La generación ya vive en **API routes** (`app/api/phase2/step-proposal`, `app/api/phase2/hook-regen`, vía `lib/api/llm/complete.ts`). El radar/calendario corren **ahí mismo, in-proceso**.
+→ **Default D-IT5 = `date-holidays` (npm)** — local, donde ya corre la generación; 200+ países; TS-native; sin API externa ni servicio nuevo. `Nager.Date` (API) = fallback; `Calendarific` si se necesita cobertura/idiomas. **`python-holidays` descartada** (no hay servicio Python). El `marketing-os/CLAUDE.md` que dice "runtime Python" describe una arquitectura previa que el build en sandia ya superó — anotado, no es la realidad operante.
 
 ## 5. V1 cuts (lo que NO entra)
 - Capa 5 — tendencias vivas (futuro).

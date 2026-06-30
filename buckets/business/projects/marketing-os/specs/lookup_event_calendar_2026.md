@@ -64,12 +64,12 @@ La tabla es la **SEMILLA, no la verdad**. El óptimo real sale de los **datos de
 
 ## Pendientes (de `spec_Inteligencia_Temporal.md §11`)
 
-- ✅ ~~Fuente mantenida~~ → **RESUELTO (D-IT5):** festivos civiles vía **librería/API de holidays** (`python-holidays` default · Nager.Date alterna · Calendarific si hace falta cobertura), tras un adapter. Esta tabla = solo lo **comercial** + la meta de marketing.
+- ✅ ~~Fuente mantenida~~ → **RESUELTO (D-IT5):** festivos civiles vía **librería de holidays** (`date-holidays` npm default — el producto es Next.js/TS · Nager.Date API fallback · Calendarific si hace falta cobertura), tras un adapter. Esta tabla = solo lo **comercial** + la meta de marketing.
 - **Sembrar a profundidad:** lead times y "quién explota qué" de los **momentos comerciales** con grounding (candidato a estudio, como se hizo con la cadencia).
 - **Más geos:** la variación civil la da la librería; ampliar aquí solo la variación de momentos **comerciales** por mercado.
 
 ## Fuentes
 
-- **Festivos civiles (capa 1, D-IT5) — recurrencia + variantes regionales resueltas por la librería:** [python-holidays (PyPI)](https://pypi.org/project/holidays/) · [Nager.Date (open-source, 100+ países)](https://github.com/nager/Nager.Date) · [Calendarific (230 países, de pago)](https://calendarific.com/).
+- **Festivos civiles (capa 1, D-IT5) — recurrencia + variantes regionales resueltas por la librería:** [date-holidays (npm, default — 200+ países, TS)](https://www.npmjs.com/package/date-holidays) · [Nager.Date (API fallback)](https://github.com/nager/Nager.Date) · [Calendarific (230 países, de pago)](https://calendarific.com/) · [python-holidays](https://pypi.org/project/holidays/) (descartada: requeriría servicio Python).
 - **Momentos comerciales (capa 1, curados aquí):** conocimiento base de calendario comercial US + variación internacional — pendiente grounding a profundidad.
 - Hermana metodológica: [[lookup_posting_cadence_2026]] (mismo Pattern B: semilla calibrada → datos propios afinan).
