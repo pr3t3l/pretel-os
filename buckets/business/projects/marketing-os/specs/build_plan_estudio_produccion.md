@@ -22,7 +22,7 @@
 6. **El Estudio es PERPETUO, no one-shot (spec §1):** el plan firmado es una **RECETA** (pilares + ganchos + cadencias = motor generativo), NO una lista fija de N piezas. La cola 2.4 es el **PRIMER LOTE**; v1 lo produce manual. El motor que genera piezas nuevas semana tras semana + el **LOOP** (producir → publicar → medir → refrescar/ajustar, Fase 4/5 re-disparan) es la **evolución** — se construye tras validar el pipeline manual (BP-001). Este plan **arranca** ese sistema, no un one-shot que se vacía.
 7. **Glass-box por pieza (spec §0 anti-promesa + §8):** cada pieza muestra su **ORIGEN** (de qué pilar/gancho/voz nació) + su **MODO** + su **COSTO** antes de producir. Nunca prometemos "todo te llega hecho" si una parte la pones tú.
 
-## 2. Milestones (cada uno cierra verde: `npm run verify` + e2e del slice)
+## 1. LA decisión de diseño
 
 ### M1 — El brief + el modelo de pieza (la foundation)
 1. Esquema `pieza` (§3.1): `id, avatar_key, pillar_id, anchor_ref, kind{channel,format}, production_mode, brief, outline, draft, qa_flags, temporality, status, cost`. Tabla `project_pieces` (o JSONB) en Supabase + accesores `lib/api`.
@@ -51,3 +51,32 @@
 - Solo **texto** (imagen/video = track aparte).
 - **Manual-asistido** (sin automatización hasta ≥3 corridas — BP-001).
 - 1 canal/formato para la primera corrida (artículo SEO o carrusel); ampliar tras validar.
+
+## 6. UX v2 — el grid unificado + el detalle (2026-06-30, mandato del operador)
+Tras probar la sim: el "Producir" de lista delgada se reemplaza por una **superficie tipo Library de GPT** + un cambio de flujo. Funda la investigación de generación de imagen/video (ver `spec_AI_Gateway_Wrapper_PROPOSAL §0-3`).
+
+### 6.1 El flujo (renombre)
+**"Producir" → "Desarrollar idea"**: la primera acción crea el **PAQUETE** (texto + `design_spec` + prompts + tips), NO la media. Generar la imagen/video real es el paso **ÚLTIMO** (el AI Gateway), disponible **tras aprobar**.
+Estados: **por desarrollar → desarrollada → aprobada → producida (media) → publicada**. El texto puro queda publicable al aprobar; solo la media pasa por "Producir media".
+
+### 6.2 El grid (la superficie del Estudio)
+Una sola superficie: cada derivado del plan = una **card**. Filtros por **avatar** + **canal**; orden por **fecha sugerida** (del calendario M4). Producida → miniatura/preview + título; por desarrollar → título + descripción + CTA "Desarrollar idea". (Reemplaza la lista cola+biblioteca.)
+
+### 6.3 El detalle (al abrir una pieza) — glass-box
+**Encabezado común** (toda pieza): origen (pilar · gancho · voz · keywords · avatar) · el prompt exacto · QA (qué quitó y por qué) · tips de publicación · modo + costo · acciones (Aprobar / Regenerar / Editar).
+**El entregable, por tipo** (del `kind` = canal×formato de la atomización 2.4):
+- **Blog/SEO:** título SEO + meta · cuerpo (H2/H3, outline-first) · keywords + enlaces internos · **prompts + `design_spec`** de las imágenes.
+- **LinkedIn:** el post (gancho + cuerpo + CTA, formato LinkedIn) · el gancho (primer renglón) · hashtags · **prompt + `design_spec`** del visual.
+- **Imagen** (pin/post): el **`design_spec`** (cámara·iluminación·estilo·composición·output) · texto superpuesto · el prompt de generación · título/descripción (SEO).
+- **Carrusel:** por diapositiva: texto + dirección visual + **prompt + `design_spec`** · gancho (slide 1) + CTA (final) · caption + hashtags.
+- **Reel/Video:** **guion por intervalos** (0-3s gancho/cuerpo/cierre) + texto en pantalla · `design_spec` de video (movimiento de cámara · motion · audio · diálogo) · audio/trend.
+- **Email:** asunto + preheader · cuerpo (PAS/AIDA según secuencia) · CTA · tips de envío.
+
+El **`design_spec`** de toda pieza visual usa el **esquema canónico** (`spec_AI_Gateway §1-2`): sujeto · escena · cámara{ángulo, plano, lente, [video: movimiento]} · iluminación · estilo · composición · output [+video: motion, pacing, duration, audio, dialogue]. **Prosa, no JSON** (hallazgo verificado).
+
+### 6.4 Milestones v2 (renumeran el alcance de la UI; el brief M1 + el pipeline M2 se reusan)
+- **P1** — modelo de pieza enriquecido: `prompt_used`, `design_spec` (jsonb), `image_prompts`/`video_prompt`, `publish_tips`, `suggested_date`. Migración + tipos + accesores.
+- **P2** — el grid (cards · filtros avatar/canal/status · orden por fecha).
+- **P3** — el detalle (encabezado común + el entregable por tipo de §6.3).
+- **P4** — el pipeline "Desarrollar idea" entrega el paquete completo por tipo (incl. el `design_spec` de las visuales).
+- **P5** *(último, track aparte)* — AI Gateway: producir media real → las miniaturas se vuelven imágenes/videos reales.
