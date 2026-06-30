@@ -19,17 +19,19 @@
 3. **La doctrina filtra el craft** (§3.4): el QA **quita** lo que el corpus sugiere pero la doctrina prohíbe (testimonios → mecanismo, C4; precio tachado/urgencia → fuera, C12/C1). Glass-box: reporta qué quitó y por qué.
 4. **Manual antes de automático (BP-001):** el operador corre el pipeline a mano por pieza; se automatiza tras ≥3 corridas reales con ≥1 best_practice destilada.
 5. **Texto primero:** imagen/video (el wrapper de endpoints) es un track aparte; no bloquea el texto.
+6. **El Estudio es PERPETUO, no one-shot (spec §1):** el plan firmado es una **RECETA** (pilares + ganchos + cadencias = motor generativo), NO una lista fija de N piezas. La cola 2.4 es el **PRIMER LOTE**; v1 lo produce manual. El motor que genera piezas nuevas semana tras semana + el **LOOP** (producir → publicar → medir → refrescar/ajustar, Fase 4/5 re-disparan) es la **evolución** — se construye tras validar el pipeline manual (BP-001). Este plan **arranca** ese sistema, no un one-shot que se vacía.
+7. **Glass-box por pieza (spec §0 anti-promesa + §8):** cada pieza muestra su **ORIGEN** (de qué pilar/gancho/voz nació) + su **MODO** + su **COSTO** antes de producir. Nunca prometemos "todo te llega hecho" si una parte la pones tú.
 
 ## 2. Milestones (cada uno cierra verde: `npm run verify` + e2e del slice)
 
 ### M1 — El brief + el modelo de pieza (la foundation)
 1. Esquema `pieza` (§3.1): `id, avatar_key, pillar_id, anchor_ref, kind{channel,format}, production_mode, brief, outline, draft, qa_flags, temporality, status, cost`. Tabla `project_pieces` (o JSONB) en Supabase + accesores `lib/api`.
-2. **Ensamblador del brief** (`buildBrief`, puro/testeable): desde el plan firmado (2.3 + 2.4 + 2.0 + 2.5 + oferta + keywords) → el objeto `brief` **channel-aware** (§2).
+2. **Ensamblador del brief** (`buildBrief`, puro/testeable) — el contrato de datos **COMPLETO** (§2), nada del plan se desperdicia: **2.4** ancla+kind · **2.3** pilar (fuerza+modo) · **2.5** gancho · **2.0** voz (léxico+prohibidos) · **2.2** canal (función+cadencia+formato) · **2.1** reparto (momento de conciencia → registro) · **Fase 1** oferta (palabras exactas si REFORZAR) · **Fase 0** (keywords reales + idioma del avatar) · **perfil de producción** (→ el modo). El brief es **channel-aware** (SEO: entidades + gap de la SERP · social: ADAS · email: posición en la secuencia · ads: límites) y un **artefacto estructurado** (JSON-Prompt), no solo prosa.
 **Done:** dado un derivado de la cola (2.4) + su avatar, `buildBrief` produce el brief estructurado con grounding real; tests del ensamblado; tabla + accesores verdes.
 
 ### M2 — El pipeline de texto (brief → pieza aprobada), manual-asistido
 1. Ruta `app/api/estudio/produce` (server): Brief → elige la **plantilla del corpus** por canal (§3.3) → **Borrador** (LLM, outline-first) → **QA** (paso separado: candados voz/doctrina/estructura/keywords; reporta qué quitó).
-2. UI: una pieza de la cola → ver el borrador → el **QA visible** (qué revisó / qué quitó y por qué) → tarjeta **Aprobar / Ajustar / Regenerar** (autoría del operador).
+2. UI — la superficie **"Producir"** del Estudio (§8.1), por avatar: una pieza de la cola (mostrando **de qué pilar/gancho nació + su modo + costo** — glass-box) → ver el borrador → el **QA visible** (qué revisó / qué quitó y por qué) → tarjeta **Aprobar / Ajustar / Regenerar** (autoría del operador). *(Publicar = la superficie siguiente, §7 / §8.4.)*
 **Done:** producir **1 pieza real** de punta a punta (un artículo SEO o un guion de carrusel desde un pilar firmado), con el QA aplicando C4/C12/C1; el operador la aprueba; `verify` verde.
 
 ### M3 — Pieza aprobada → biblioteca → llena el calendario
