@@ -1,5 +1,7 @@
 # Build Plan — Calendario + Inteligencia Temporal en `sandia-marketing`
 
+**✅ EJECUTADO (2026-07, `sandia` main) — M1-M5 + calendario construidos, probados y desplegados:** M1 migración (`80d98da`) + accesores (`b8e83d0`) · M2 `date-holidays` (`be5a7bb`) · M3 radar lógica (`c77ae75`) + UI (`e0bc5c9`) · M4 calendario lógica (`2aaafc0`) + UI diseño Papandi (`476d413`) · M5 generación date-aware (`be150b8`) + flag "vencido" (`2c61031`) · nav (`7554ec2`). **145 tests + `next build` verdes.** Fase 2 firmada 100% (4 avatares). Validado en vivo: el Freelance regeneró con 2 ganchos seasonal anclados a Jul-4 + back-to-school.
+
 **Status:** v1.0 propuesto (2026-06-30) · **Gate de arranque:** Fase 2 FIRMADA (voz 2.0 · reparto 2.1 · canales+cadencias 2.2 · pilares 2.3 · multiplicación 2.4 · ganchos 2.5, los 4 avatares Papandi). El operador cierra planning y pide, en orden: **calendario → migrar lo ya construido/firmado → módulo de Producción.**
 **Doctrina que gobierna:** `spec_Inteligencia_Temporal.md` (v0.2 — el radar) + `spec_Estudio_Produccion_Publicacion.md §6` (el calendario) + `lookup_posting_cadence_2026.md` (cadencias/ventanas) + `lookup_event_calendar_2026.md` (eventos base) + reglas duras del repo sandia (UI nunca llama `supabase.from()` directo; data solo vía `lib/api`; DB solo por `supabase/migrations`; `npm run verify` es el gate).
 **Alcance:** el **calendario** + el **motor temporal** + la **MIGRACIÓN** de lo ya construido/firmado. **NO** incluye el módulo de Producción completo — ese viene después y *llena* los slots del calendario.
