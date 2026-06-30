@@ -258,7 +258,7 @@ El horario **NO es genérico** — son **dos capas**:
 
 ### 6.6 El radar de fechas (inteligencia temporal)
 
-La cadencia (§6.5) decide **CUÁNDO** publicar en la semana; el **radar** decide **QUÉ FECHAS explotar**. El calendario overlaya las fechas que el mercado vive (Black Friday, día del padre, cierre fiscal, vuelta al cole…) como **oportunidades con lead time** — *"X llega en 3 semanas, ¿campaña?"* → entra a la cola (§3) con la pieza lista, **consciente de la fecha de hoy** (un gancho de junio no habla de enero). Y al pasar la fecha, marca el contenido de temporada **"vencido"** y ofrece refrescarlo (sugiere, nunca borra). Es un motor aparte — **`spec_Inteligencia_Temporal.md`** (este calendario lo consume). Cadencia y radar son hermanos: uno reparte la semana, el otro explota el momento.
+La cadencia (§6.5) decide **CUÁNDO** publicar en la semana; el **radar** decide **QUÉ FECHAS explotar**. El calendario overlaya las fechas que el mercado vive (Black Friday, día del padre, cierre fiscal, vuelta al cole…) **y las que el usuario marca como suyas** (aniversario, lanzamientos — capa 3) como **oportunidades con lead time** — *"X llega en 3 semanas, ¿campaña?"* → entra a la cola (§3) con la pieza lista, **consciente de la fecha de hoy** (un gancho de junio no habla de enero). Y al pasar la fecha, marca el contenido de temporada **"vencido"** y ofrece refrescarlo (sugiere, nunca borra). Es un motor aparte — **`spec_Inteligencia_Temporal.md`** (este calendario lo consume). Cadencia y radar son hermanos: uno reparte la semana, el otro explota el momento.
 
 ## 7. Guía de publicación (acompañamiento)
 

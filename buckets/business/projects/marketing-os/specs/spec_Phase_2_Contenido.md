@@ -79,6 +79,8 @@ El buyer persona es **el trabajo a resolver** (JTBD + dolores centrales); el ava
 
 **Aclaración V1 vs V2** (A2-ISSUE-1, audit R4): en V1 todos los sub-pasos 2.1–2.5 son operador + Claude actuando como copilot — consistente con BP-001 (`fea3dbd8`). Los nombres `content-pillars-builder`, `content-atomizer`, `hook-library-generator`, `awareness-mix-suggester` referencian skills propuestos para V2 cuando ya existan ≥3 ciclos manuales con un producto real. La tabla declara V1 y V2 explícitamente para evitar la lectura de "el skill ya existe" antes de tiempo.
 
+> **Temporalidad del gancho — cruce con `spec_Inteligencia_Temporal.md`** (mandato 2026-06-29): cada hook de `hook_library.json` gana `temporality` (`evergreen` | `seasonal`); si es de temporada, lleva `event_ref` + `valid_window` + `expires_at` del **radar de fechas**. La generación de 2.5 recibe `{ today, upcoming_events[] }` como input → ganchos **conscientes de la fecha** (un gancho de junio no habla de noviembre) y la biblioteca **jubila** los vencidos (sugiere, nunca borra). La mayoría de la biblioteca es `evergreen`; los de temporada son pocos y los más potentes. Migración concreta en `spec_Inteligencia_Temporal §8.2`.
+
 ---
 
 ## 2. Pre-condición — Gate de entrada G-Phase-2-PRE

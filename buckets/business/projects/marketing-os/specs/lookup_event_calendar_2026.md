@@ -1,6 +1,6 @@
 # LOOKUP — Calendario de eventos / fechas explotables (semilla 2026)
 
-**Status:** **SEMILLA v0.1** (Pattern B: base curada + overlay por nicho derivado + priorización por datos propios en Fase 4). Extensible. · **Origen:** mandato del operador 2026-06-29 (ver `spec_Inteligencia_Temporal.md` — el radar de fechas). Esta tabla es la **Capa 1** (base universal + geo); la Capa 2 (nicho) se DERIVA por proyecto; la Capa 3 (datos propios) la reordena con el tiempo.
+**Status:** **SEMILLA v0.2** (Pattern B: base + overlay por nicho derivado + **fechas propias del usuario** + priorización por datos propios en Fase 4). Extensible. · **Origen:** mandato del operador 2026-06-29 (ver `spec_Inteligencia_Temporal.md` — el radar de fechas). **Cambio v0.2 (D-IT5):** los **festivos civiles/religiosos** ya NO se curan aquí — los trae una **librería/API de holidays por país** (recurrencia + geo resueltas, siempre al día). **Esta tabla cura los MOMENTOS COMERCIALES/MARKETING** que las librerías no traen (Black Friday, Small Business Saturday, Cyber Monday, vuelta al cole, temporada fiscal, bodas, cierres de Q) **+ la inteligencia de marketing por evento** (`lead_time`, quién lo explota, B2B/B2C) sobre todos. La **Capa 2** (nicho) se DERIVA por proyecto; la **Capa 3** = **fechas propias del usuario** (las añade a mano); la **Capa 4** (datos propios) reordena con el tiempo.
 **Regla de notación:** las fechas se escriben como **regla de recurrencia** (`date_rule`), no como fecha fija de 2026 — recurren cada año y se derivan al año en curso. `lead_time` = con cuánta anticipación arrancar contenido. `geo` = dónde aplica (universal `*` o país).
 **Persistencia:** este doc (referencia narrativa) + best_practice `LOOKUP-TABLE event_calendar` en pretel-os (descubrible cross-producto).
 **Aviso de geo:** sembrada **US-primaria** (mercado primario de Papandi, [[papandi-language-strategy]]) con la **variación por país señalada**. NO asumir US para todos — el día del padre/madre cae distinto por país; `market_geo` del proyecto manda.
@@ -8,6 +8,8 @@
 ---
 
 ## Capa 1 — Eventos base (universal + comercial), US-primario con variación por país
+
+> **Cómo leer esta tabla tras D-IT5:** las filas marcadas *(civil)* las **resuelve la librería de holidays** (fecha exacta + recurrencia + variante por país) — aquí solo viven por su **valor de marketing** (`lead_time` + quién lo explota). Las marcadas *(comercial)* las **curamos nosotros** (no están en las librerías). El `date_rule` de las civiles es **referencial**; la fecha real la calcula la librería para el año en curso.
 
 | Evento | `date_rule` (US salvo nota) | `kind` | `lead_time` | Quién lo explota |
 |---|---|---|---|---|
@@ -62,11 +64,12 @@ La tabla es la **SEMILLA, no la verdad**. El óptimo real sale de los **datos de
 
 ## Pendientes (de `spec_Inteligencia_Temporal.md §11`)
 
-- **Fuente mantenida:** ¿curada a mano o respaldada por una librería/API de holidays por país (recurrencia + geo ya resueltas)? — decidir.
-- **Sembrar a profundidad:** lead times y "quién explota qué" con grounding (candidato a estudio, como se hizo con la cadencia).
-- **Más geos:** ampliar la tabla de variación cuando entren mercados no-US.
+- ✅ ~~Fuente mantenida~~ → **RESUELTO (D-IT5):** festivos civiles vía **librería/API de holidays** (`python-holidays` default · Nager.Date alterna · Calendarific si hace falta cobertura), tras un adapter. Esta tabla = solo lo **comercial** + la meta de marketing.
+- **Sembrar a profundidad:** lead times y "quién explota qué" de los **momentos comerciales** con grounding (candidato a estudio, como se hizo con la cadencia).
+- **Más geos:** la variación civil la da la librería; ampliar aquí solo la variación de momentos **comerciales** por mercado.
 
-## Fuentes (semilla — pendiente grounding a profundidad)
+## Fuentes
 
-- Conocimiento base de calendario comercial US + variación internacional de día madre/padre (a confirmar con fuente mantenida).
+- **Festivos civiles (capa 1, D-IT5) — recurrencia + variantes regionales resueltas por la librería:** [python-holidays (PyPI)](https://pypi.org/project/holidays/) · [Nager.Date (open-source, 100+ países)](https://github.com/nager/Nager.Date) · [Calendarific (230 países, de pago)](https://calendarific.com/).
+- **Momentos comerciales (capa 1, curados aquí):** conocimiento base de calendario comercial US + variación internacional — pendiente grounding a profundidad.
 - Hermana metodológica: [[lookup_posting_cadence_2026]] (mismo Pattern B: semilla calibrada → datos propios afinan).
