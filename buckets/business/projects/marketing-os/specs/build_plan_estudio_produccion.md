@@ -1,6 +1,6 @@
 # Build Plan — Producción del Estudio (texto primero) en `sandia-marketing`
 
-**Status:** v1.0 propuesto (2026-07) — **Trinity:** spec ✅ (`spec_Estudio_Produccion_Publicacion.md §2-3`) · plan = este doc · tasks = registradas en pretel-os.
+**Status:** v2 **EJECUTADO** (2026-06-30) — UI v2 (grid + detalle + "Desarrollar idea" + AI Gateway scaffold) construida, verificada (179 tests) y desplegada; ver §6.4 para los SHAs. **Trinity:** spec ✅ (`spec_Estudio_Produccion_Publicacion.md §2-3`) · plan = este doc · tasks = registradas en pretel-os.
 **Gate de arranque:** Fase 2 FIRMADA al 100% (los 4 avatares, 2.0→2.6) + el calendario vivo (los slots esperan piezas; el drawer dice "el copy llega con producción" — esto lo cumple).
 **Doctrina que gobierna:** `spec_Estudio §2` (el plan firmado **ES el brief** — el lever #1 anti-genérico) + `§3` (pipeline de 5 pasos + plantillas del corpus + **la DOCTRINA filtra el craft**) + **C4/C12/C1** (sin prueba social · sin urgencia fabricada · valor por funcionalidad) + **BP-001** (manual antes de automático) + reglas duras de sandia (data vía `lib/api`; DB por `supabase/migrations`; `npm run verify` es el gate).
 **Alcance v1:** **TEXTO primero** (artículo SEO / guion de carrusel-reel / email / copy) — de un pilar firmado a una **pieza aprobada que llena un slot del calendario**. **Imagen/video = track aparte** (el AI Gateway, `spec_AI_Gateway_Wrapper_PROPOSAL.md`, tarea `babfe7a0`). Automatización SOLO tras ≥3 corridas manuales (BP-001).
@@ -74,9 +74,12 @@ Una sola superficie: cada derivado del plan = una **card**. Filtros por **avatar
 
 El **`design_spec`** de toda pieza visual usa el **esquema canónico** (`spec_AI_Gateway §1-2`): sujeto · escena · cámara{ángulo, plano, lente, [video: movimiento]} · iluminación · estilo · composición · output [+video: motion, pacing, duration, audio, dialogue]. **Prosa, no JSON** (hallazgo verificado).
 
-### 6.4 Milestones v2 (renumeran el alcance de la UI; el brief M1 + el pipeline M2 se reusan)
-- **P1** — modelo de pieza enriquecido: `prompt_used`, `design_spec` (jsonb), `image_prompts`/`video_prompt`, `publish_tips`, `suggested_date`. Migración + tipos + accesores.
-- **P2** — el grid (cards · filtros avatar/canal/status · orden por fecha).
-- **P3** — el detalle (encabezado común + el entregable por tipo de §6.3).
-- **P4** — el pipeline "Desarrollar idea" entrega el paquete completo por tipo (incl. el `design_spec` de las visuales).
-- **P5** *(último, track aparte)* — AI Gateway: producir media real → las miniaturas se vuelven imágenes/videos reales.
+### 6.4 Milestones v2 — EJECUTADO (renumeran el alcance de la UI; el brief M1 + el pipeline M2 se reusan)
+Estado: **P1–P5 construidos, verificados (179 tests) y desplegados** (Vercel auto-deploy desde `main`). SHAs en `sandia-marketing`.
+- **P1** ✅ `1d9caee` — modelo de pieza enriquecido: `prompt_used`, `design_spec` (jsonb), `image_prompts`/`video_prompt`, `publish_tips`, `suggested_date`. Migración + tipos + accesores.
+- **P2** ✅ `41a3996` — el grid (cards · filtros avatar/canal · estado por badge). Match derivado↔pieza por `(avatar_key, pillar_id, channel===kind)` — sin columna nueva; colisiones same-kind/same-pillar raras y aceptables v1 (fix futuro = `derivative_index`).
+- **P3** ✅ `41a3996` — el detalle (modal glass-box: origen · la pieza · `design_spec` · tips · QA · el prompt exacto · acciones), por tipo de §6.3.
+- **P4** ✅ `387c5da` — el pipeline "Desarrollar idea": UNA llamada LLM → el paquete completo por tipo (texto/guion + `design_spec` + tips + QA), `parseDevelop` robusto.
+- **P5** ✅ `de0512a` — AI Gateway scaffold: el **serializer canónico→prosa** (`lib/gateway/serialize.ts`, el "router propio") + interfaz `MediaProvider` + **proveedor mock** (placeholder SVG, cero costo) + route `produce-media` + botón "Producir media" en piezas aprobadas. **Generación real env-gated**: entra al conectar las llaves del operador (Replicate/fal/Veo/…) + presupuesto — no se gasta su dinero sin permiso.
+
+**Pendiente para "media real" (cuando el operador decida):** conectar ≥1 adapter real en `selectProvider()` tras poner la llave en `.env.local`/Vercel (`REPLICATE_API_TOKEN`/`FAL_KEY`/…) y definir presupuesto. Opcional: columna `derivative_index` si aparecen colisiones de match; `suggested_date` real desde el calendario (hoy null → orden natural de la cola).
