@@ -1,6 +1,6 @@
 # Build Plan — Producción v3: el Motor de Coherencia
 
-**Status:** v3 propuesto (2026-07-01) — re-scope tras la [investigación de mercado](../docs/research/2026-07-01_market_strategy_scope.md). **Supersede** el alcance UX-only de `build_plan_estudio_produccion.md` (v2): el Estudio deja de ser una superficie de generación y pasa a ser un **motor de coherencia de marca a nivel campaña**. **Trinity:** spec = este doc + la research · plan = §4-5 · tasks = §6 (+ registradas en pretel-os al arrancar).
+**Status:** v3 (2026-07-01) — **F1 construido y validado en vivo** (StyleID + Gateway v3/fal+Kontext → 8 imágenes coherentes con la marca real). **Actualizado tras el test:** el motor da coherencia pero **NO atención** → se añade la doctrina §2.7 (coherencia ≠ atención; gancho = texto-overlay que la IA no renderiza) y se afila **F2 = Brief + Texto-overlay** (§6.4). Re-scope original tras la [investigación de mercado](../docs/research/2026-07-01_market_strategy_scope.md); **supersede** el alcance UX-only de v2. **Trinity:** spec = este doc + la research · plan = §4-5 · tasks = §6.
 
 **Gobierna:** la research 2026-07 (hallazgo maestro: el mercado rechaza lo **no-verificable**, no la IA) + las decisiones del operador (§1) + la doctrina de sandia (data por `lib/api`; DB por `supabase/migrations`; `npm run verify` + `npm run build` son el gate; sin client lock-in).
 
@@ -24,6 +24,11 @@
 4. **Router, no modelo.** Integrar sobre fal.ai (≈985 endpoints, async/webhooks, ~30-50% más barato); tratar cada modelo como intercambiable (Sora 2 pasó de exclusiva a discontinuada en meses). La **tabla de enrutamiento** (§4.1) es la IP defendible.
 5. **Nunca cobrar créditos por regeneración dentro del loop** (patrón más odiado). Outputs **editables** (capas/tokens), no PNG plano. Brand kit como **guardrail activo**, no PDF.
 6. **HURT** (minutos de corrección humana por pieza) = la métrica de PMF, no volumen de output. El **data flywheel** (cada corrida mejora el contexto del proyecto) es el foso.
+7. **Coherencia ≠ atención** *(hallazgo del test en vivo 2026-07-01)*. La coherencia (StyleID + referencia) mantiene la MARCA, pero **lo que PARA el scroll es el GANCHO**, no que se vea bonito. Y el gancho que para es **TEXTO grande y legible** — que **la IA de imagen NO puede renderizar** (sale garabato: "papagnda pleosodyd"). Por eso:
+   - El gancho va como **capa de TEXTO-OVERLAY editable sobre un fondo IA limpio**, NUNCA "quemado" en la generación.
+   - La **portada (slide 1) es el scroll-stopper**: hook de texto + un visual con **tensión/pattern-interrupt**, no una foto tranquila.
+   - Slides tipo **diagrama / UI / texto** → **fondo limpio + overlay**, no IA renderizando texto.
+   - Regla dura: una pieza **coherente pero sin gancho legible = nadie la mira**. La atención es un objetivo de primera clase, no un subproducto de la coherencia.
 
 ## 3. Non-goals (lo que NO construimos)
 
@@ -49,7 +54,7 @@
 | `project_api_calls` (cost ledger) | live | + **markup 1.20** + superficie de saldo (D4) |
 | — | — | **Storage** (Supabase) para assets de marca + media; **modelo Campaña** (Big Idea + brief + piezas) |
 
-**La tabla de enrutamiento (intención→modelo, la IP):** imagen con texto legible→GPT Image/FLUX[max]; personaje consistente en carrusel→**FLUX.1 Kontext** (~92% identidad, 1 ref); commodity barato→SDXL ($0.003); anuncio hablado/lipsync→**Veo 3.1** o Seedance; mini-película multi-toma misma mascota multiidioma→**Kling 3.0** (reference locking + Voice Binding); cinematográfico+física+audio→**Seedance 2.x** (hasta 50 refs); movimiento de cámara→**Higgsfield**; 4K alta consistencia→Seedream 4.x. Degradación con gracia si un proveedor cae.
+**La tabla de enrutamiento (intención→modelo, la IP):** imagen de fondo **SIN texto quemado** (el gancho va en overlay, §2.7)→FLUX/GPT Image; personaje consistente en carrusel→**FLUX.1 Kontext** (~92% identidad, 1 ref); commodity barato→SDXL ($0.003); anuncio hablado/lipsync→**Veo 3.1** o Seedance; mini-película multi-toma misma mascota multiidioma→**Kling 3.0** (reference locking + Voice Binding); cinematográfico+física+audio→**Seedance 2.x** (hasta 50 refs); movimiento de cámara→**Higgsfield**; 4K alta consistencia→Seedream 4.x. Degradación con gracia si un proveedor cae.
 
 ### 4.2 VISUAL (lenguaje de diseño)
 - **Papandi dogfood:** nuestra propia identidad visual, ejemplar (somos la prueba viva del StyleID).
@@ -64,7 +69,11 @@
 ## 5. Fases (roadmap)
 
 - **F1 — Fundamentos del motor** *(Incremento 1, EN CURSO)*: **StyleID por proyecto** + **Gateway v3 (router fal.ai + async + referencias/start-end)**. Arregla directamente "no me gusta lo que generamos" (on-brand + confiable) y habilita todo lo demás.
-- **F2 — Campaña + Brief:** modelo de Campaña (Big Idea) + brief-gate (1 insight) + piezas que heredan el StyleID + glass-box por entregable + atomización hub-and-spoke (1 core → N spokes por canal).
+- **F2 — Brief afilado + Texto-overlay (la capa de ATENCIÓN)** *(SIGUIENTE — el hueco que el test reveló: el motor da coherencia, no atención)*:
+  - **Brief-gate de 1 insight** que venda el valor ÚNICO de Papandi (no una metáfora genérica del problema) — el diferenciador #1.
+  - **Capa de texto-overlay** (§2.7): fondo IA limpio + **gancho de texto grande, legible y editable** sobre la portada; por-slide clasifica **foto vs diagrama/UI/texto** (los de texto → fondo limpio + overlay, matan los garabatos).
+  - **Portada primero**: la slide 1 se diseña como scroll-stopper (hook + tensión visual).
+  - Modelo de **Campaña** (Big Idea) + piezas que heredan el StyleID + glass-box + atomización hub-and-spoke (1 core → N spokes por canal).
 - **F3 — Biblioteca + Aprobación:** Storage + biblioteca board-based + carriles de aprobación por riesgo + **link de aprobación sin seat** + auto-tag/búsqueda semántica (stack embeddings).
 - **F4 — Billing:** Stripe silla + uso (fal×1.20) + allowance de activación + saldo, sobre el cost ledger.
 - **F5 — Métricas + auto-mejora + Global:** HURT + métricas de relación (no vanity) + data flywheel; transcreación con checkpoint + disclosures de IA (C2PA/EU AI Act) por plataforma.
@@ -88,6 +97,17 @@
 
 ### 6.3 Gate
 - [ ] `npm run verify` + `npm run build` verdes; commit por sub-incremento a `main` de sandia.
+
+> **Estado F1 (2026-07-01):** StyleID (editar a mano + import URL/CSS/PDF + proponer, anti-clobber) + Gateway v3 (fal + Kontext + referencia + presupuesto multi-proveedor) **construidos y validados en vivo** — 8 imágenes coherentes con la marca real. El test reveló el hueco de F2 (§2.7).
+
+## 6.4 Tareas — F2 (Incremento 2, SIGUIENTE): Brief afilado + Texto-overlay
+- [ ] **Brief-gate:** Sandi propone **1 insight que venda el valor ÚNICO de Papandi** (no la metáfora genérica del problema) antes de generar; el operador lo firma (glass-box).
+- [ ] **Clasificador por-slide:** foto/escena (IA genera el visual) vs **diagrama / UI / texto** (fondo limpio + overlay; nunca IA renderizando texto).
+- [ ] **Capa de texto-overlay:** componer el **gancho** (texto grande, legible, tipografía del StyleID) sobre el fondo IA — **editable, no quemado**; export con el texto encima.
+- [ ] **Portada = scroll-stopper:** la slide 1 se diseña con hook + visual con tensión; el prompt del fondo deja **zona segura** para el texto.
+- [ ] **Prompts SIN pedir texto en la imagen** (evita los garabatos "papagnda pleosodyd"); el texto vive SOLO en la capa overlay.
+- [ ] Modelo de **Campaña** (Big Idea) + atomización hub-and-spoke.
+- [ ] Gate verde + commit.
 
 ## 7. Riesgos abiertos (de la crítica de la research)
 
