@@ -16,6 +16,13 @@
   - **Generación de media = las manos + 20%:** saldo aparte, **costo real de fal.ai × 1.20**, transparente. Nunca perdemos en COGS; esquiva la "jaula de créditos" (queja #1 de UX del mercado).
 - **D5 — Build lean + validar en vivo.** El moat-mínimo se construye ya; la **silla ES el test de willingness-to-pay** por el cerebro (no un smoke-test aparte). Se instrumenta desde el día 1.
 
+**Decisiones de VIDEO (operador, 2026-07-01 — tras la [research de video](../docs/research/2026-07-01_video_field_of_action.md)):**
+- **D-V1 — Audio:** SIN música en el archivo (se añade al publicar desde el catálogo de la plataforma — restricción legal). **Narración, diálogo y SFX nativos del modelo SÍ** (Kling/Seedance/Veo los generan). ElevenLabs fuera de V1 (innecesario con audio nativo; queda como fallback para VO en español, donde no hay lipsync nativo barato).
+- **D-V2 — Personaje de marca (lane avatar): SÍ se ofrece.** Personaje sintético consistente mantenido por **referencias** (fotos + voz anclada: Kling elements/Voice Binding · Wan reference-to-video · Seedance refs — mismo patrón que la referencia Kontext ya construida). Candados: **label IA siempre**, consentimiento explícito si clona a una persona real, y la evidencia visible al usuario (glass-box: 36% de castigo de marca al detectar IA — él decide informado). Nota: AvatarHype ≠ plataforma (es curso/recetario); la tecnología real es reference-based consistency.
+- **D-V3 — Entregable: TERMINADO por default** ("como sale de Kling/OpenArt": el/los clips generados listos para ver, con audio nativo; multi-shot en una generación — Seedance — preferido). **El PAQUETE va SIEMPRE incluido** (glass-box: guion + prompts + assets) y es el modo para usuarios expertos. Ensamble multi-clip server-side (captions quemados + concat, sin música ya es legal) = V1.5 opt-in.
+- **D-V4 — Modelos: SELECTOR visible, no default sellado.** El usuario elige el modelo (precio por clip visible ANTES de generar), genera las variantes que quiera; **las variantes se ALMACENAN (append, nunca reemplazan)** y el usuario decide cuál queda. Cada generación se registra (modelo · costo · kept/discarded) → **yield-ledger = el bake-off continuo con uso real** (data flywheel §2.6) que va enseñando qué modelo rinde por tipo de video. Sustituye al bake-off sintético.
+- **P0 legal vigente:** leer ToS comerciales de Kling/Wan/Seedance/fal (reventa del output a clientes del SaaS + likeness real) antes de vender la generación.
+
 ## 2. Doctrina que gobierna el producto (de la research, citada en el reporte)
 
 1. **Glass-box = el moat, no un detalle.** Cada entregable sale con su trail de fuentes + el prompt/asset exacto que el usuario pega y **posee**. (80% prefiere la versión con fuentes; solo 7% confía más por ver IA visible.)
@@ -108,6 +115,30 @@
 - [ ] **Prompts SIN pedir texto en la imagen** (evita los garabatos "papagnda pleosodyd"); el texto vive SOLO en la capa overlay.
 - [ ] Modelo de **Campaña** (Big Idea) + atomización hub-and-spoke.
 - [ ] Gate verde + commit.
+
+## 6.5 Tareas — F-Video V1 (tras la research de video + decisiones D-V1..V4)
+
+**0 — Fix de ESENCIA (prerequisito de TODO el contenido, no solo video):**
+- [ ] Cargar `business_context` (0.1: idea + diferenciadores firmados + why_now) al brief como bloque **ESENCIA**; la pieza debe respirarlo y el CTA nace de ahí (no genérico).
+- [ ] La **oferta SIEMPRE presente** en el brief, dosificada por modo del pilar (agitar = implícita/puerta al final; reforzar = explícita). Hoy solo entra en "reforzar" → por eso los CTAs genéricos.
+- [ ] Gancho por derivado (rotación sobre la biblioteca 2.5), no siempre `hooks[0]`.
+
+**1 — El guion de reel enriquecido (sin costo de generación):**
+- [ ] Campos nuevos: `hook_text_overlay` (≤8 palabras, frame 1), narración/diálogo por intervalo (marcado para audio nativo), duración objetivo 15–35s, CTA única, densidad 5–10 palabras/s.
+- [ ] Prompts de video **por clip y por modelo** (dialectos: comillas para diálogo en Seedance · ingredients ≤3 en Veo · start-frame en Kling · ≤2k chars en Wan) — entregable glass-box aunque el usuario genere fuera.
+
+**2 — Generación real de video (el selector):**
+- [ ] `routeVideoModel()` + catálogo de modelos de video en el gateway (Wan 2.6 · Kling 3.0 · Seedance 2.0 · Veo 3.1/Fast vía fal) con **precio/s visible antes de generar**.
+- [ ] **Selector de modelo** en la UI + generación **asíncrona** (cola + polling; Kling concurrencia 1 en fal).
+- [ ] **Variantes acumulativas**: cada generación se agrega (modelo · costo · prompt), nunca reemplaza; el usuario marca la que queda.
+- [ ] **Yield-ledger**: registrar intentos vs elegidas por modelo (el bake-off continuo, D-V4).
+- [ ] Start-frames 9:16 desde el StyleID (FLUX/Kontext, ~$0.10–0.24/reel) — fija el aspect en i2v y ancla la marca; producto = foto real como start frame (anti-alucinación).
+
+**3 — Personaje de marca (D-V2):**
+- [ ] Entidad "Personaje" en el StyleID (set de fotos de referencia + voz opcional) → se inyecta como referencias en la generación (Kling elements / Wan ref-to-video / Seedance refs).
+- [ ] Candados: label IA + flujo de consentimiento para likeness real + evidencia visible (glass-box).
+
+**V1.5 (después):** ensamble server-side opt-in (captions quemados + concat multi-clip, sin música) + zonas seguras como config versionada (`platform_rules`) + checklist de publicación por plataforma.
 
 ## 7. Riesgos abiertos (de la crítica de la research)
 
