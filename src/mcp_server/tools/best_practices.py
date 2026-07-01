@@ -368,6 +368,123 @@ async def best_practice_search(
     return {"status": "ok", "results": results}
 
 
+async def best_practice_update_tags(
+    id: str,
+    tags_add: Optional[list[str]] = None,
+    tags_remove: Optional[list[str]] = None,
+) -> dict[str, Any]:
+    """Patch a best_practice's `tags` array without touching guidance or embedding.
+
+    Symmetric with `lesson_update_tags` / `decision_update_tags`. The
+    existing `best_practice_record(update_id=...)` path re-embeds and
+    consumes the single-step rollback slot — overkill when only the tag
+    set changes. This function is a no-cost tag patch: no embedding
+    call, no rollback-slot consumption, no `previous_*` mutation.
+
+    Works on both active and deactivated rows (operator may want to
+    retag historical entries). Awareness layer trigger does NOT fire
+    for best_practices (no `readme_dirty` notify is wired for this
+    table — best_practices live in their own search surface, not the
+    project README projection).
+
+    Args:
+        id: uuid of the best_practice row.
+        tags_add: tags to union into the existing array.
+        tags_remove: tags to subtract from the existing array.
+
+    Returns:
+        {status:'ok', id, found:True, tags:[...new tags...]} on success.
+        {status:'ok', found:False} when the row does not exist.
+        {status:'error', error:'no tag operation specified'} when both lists are empty/None.
+        {status:'degraded', journal_id:...} when DB is down.
+    """
+    add_list = list(tags_add or [])
+    remove_list = list(tags_remove or [])
+    if not add_list and not remove_list:
+        return {"status": "error", "error": "no tag operation specified"}
+
+    if not isinstance(id, str) or not id.strip():
+        return {"status": "error", "error": "id must be a non-empty string"}
+
+    payload: dict[str, Any] = {
+        "id": id, "tags_add": add_list, "tags_remove": remove_list,
+    }
+
+    with Timer() as t:
+        if not db_mod.is_healthy():
+            journal_id = journal_mod.record("best_practice_update_tags", payload)
+            await log_usage(
+                tool_name="best_practice_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"degraded_reason": "db_unavailable", "journal_id": journal_id},
+            )
+            return degraded("db_unavailable", journal_id=journal_id)
+
+        pool = db_mod.get_pool()
+        try:
+            async with pool.connection(timeout=5.0) as conn:
+                async with conn.transaction():
+                    async with conn.cursor() as cur:
+                        await cur.execute(
+                            "SELECT tags FROM best_practices WHERE id = %s FOR UPDATE",
+                            (id,),
+                        )
+                        existing = await cur.fetchone()
+                        if existing is None:
+                            return {"status": "ok", "found": False}
+                        current_tags = list(existing[0] or [])
+
+                        new_tags = list(current_tags)
+                        for tag in add_list:
+                            if tag not in new_tags:
+                                new_tags.append(tag)
+                        if remove_list:
+                            remove_set = set(remove_list)
+                            new_tags = [t for t in new_tags if t not in remove_set]
+
+                        await cur.execute(
+                            "UPDATE best_practices SET tags = %s WHERE id = %s "
+                            "RETURNING id, tags",
+                            (new_tags, id),
+                        )
+                        upd = await cur.fetchone()
+                        assert upd is not None, "UPDATE inside FOR UPDATE block returned no row"
+                        bp_id = str(upd[0])
+                        result_tags = list(upd[1] or [])
+        except Exception as exc:
+            log.exception("best_practice_update_tags failed")
+            await log_usage(
+                tool_name="best_practice_update_tags",
+                bucket=None,
+                project=None,
+                invoked_by="client",
+                success=False,
+                duration_ms=t.ms,
+                metadata={"error": str(exc), "id": id},
+            )
+            return {"status": "error", "error": str(exc)}
+
+    await log_usage(
+        tool_name="best_practice_update_tags",
+        bucket=None,
+        project=None,
+        invoked_by="client",
+        success=True,
+        duration_ms=t.ms,
+        metadata={
+            "id": bp_id,
+            "tags_added": len(add_list),
+            "tags_removed": len(remove_list),
+            "final_tag_count": len(result_tags),
+        },
+    )
+    return {"status": "ok", "id": bp_id, "found": True, "tags": result_tags}
+
+
 async def best_practice_deactivate(id: str, reason: str) -> dict[str, Any]:
     """Soft-delete a best_practice. Sets active=false.
 
