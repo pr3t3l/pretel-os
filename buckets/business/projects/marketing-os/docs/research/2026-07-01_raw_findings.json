@@ -1,0 +1,733 @@
+{
+  "findings": [
+    {
+      "stream": "buyer_expectations",
+      "key_findings": [
+        {
+          "point": "Consumers distrust VISIBLE AI content, but the real trigger is un-verifiability, not AI itself",
+          "detail": "Only 7% say visible AI-generated marketing makes them trust a brand MORE; 31% say it makes them trust it LESS (Klaviyo/Datalily, Dec 2025, 8,000+ consumers across 8 countries incl. US/UK/Spain). The Brazilian data reframes the cause precisely: 'consumers are NOT rejecting AI content per se, they are rejecting answers they cannot verify' - when shown two versions of a result, 80% preferred the one with authentic human sourcing, credible sources and actionable links. Distrust is a verifiability/authenticity problem, not a technology problem.",
+          "source": "https://www.emarketer.com/content/shoppers-aren-t-impressed-by-ai-generated-marketing ; https://fastcompanybrasil.com/ia/a-busca-por-ia-tem-um-problema-de-confianca-transparencia-e-a-solucao/"
+        },
+        {
+          "point": "Labeling content 'AI-made' actively lowers perceived quality even when the content is identical",
+          "detail": "Experimental data: labeling an ad as AI-generated led consumers to evaluate it as less natural and less useful, even though the content was byte-for-byte identical to the human-labeled version. This is the 'transparency without trust' paradox - buyers demand disclosure, yet disclosure itself carries a penalty. The escape is quality that survives scrutiny, not hiding the AI.",
+          "source": "https://www.nim.org/en/publications/detail/transparency-without-trust"
+        },
+        {
+          "point": "Distrust is accelerating fast and is generational",
+          "detail": "Consumers saying heavy AI use would REDUCE brand trust jumped from 20% (2025) to 39% (2026). 54% of Gen Z say heavy AI use decreases trust vs 32% of boomers and 33% of Gen X. 50% of US consumers now prefer to buy from brands that AVOID GenAI in consumer-facing content (Gartner, 1,539 US consumers, Oct 2025). 49% believe AI has worsened content quality (57% among Gen Z/Millennials).",
+          "source": "https://www.gartner.com/en/newsroom/press-releases/2026-03-16-gartner-marketing-survey-finds-50-percent-of-consumers-prefer-brands-that-avoid-using-genai-in-consumer-facing-content0 ; https://www.cxtoday.com/marketing-sales-technology/automation-vs-authenticity-ai-generated-marketing-customer-trust/"
+        },
+        {
+          "point": "Transparency + user control is a near-universal, cross-cultural expectation",
+          "detail": "80%+ of consumers want AI content labeled across every format (video 91%, images 90%, audio 87%, written 84%). 91% expect brands to explicitly disclose AI use (Emplifi). In Brazil, 90% want transparency on AI-generated images; 69% want the OPTION to leave the AI surface and reach trusted sites. 61% of consumers want a toggle to turn AI summaries on/off (Gartner). This holds in US, Spain and Brazil alike - transparency and opt-out choice are the universal human demand.",
+          "source": "https://www.emarketer.com/content/shoppers-aren-t-impressed-by-ai-generated-marketing ; https://itforum.com.br/noticias/imagens-geradas-por-ia-90-transparencia/ ; https://www.gartner.com/en/newsroom/press-releases/2025-09-03-gartner-survey-finds-53-percent-of-consumers-distrust-ai-powered-search-results0"
+        },
+        {
+          "point": "The JTBD buyers hire a marketing agency/tool for: measurable results, not activity",
+          "detail": "In 2025 'flashy campaigns or growing follower counts isn't enough' - clients are smarter and more demanding, wanting clear outcomes, strategic input and short-term visible results. Top expectations: agility (faster rollouts, real-time monitoring, rapid test/iterate, proactive recommendations), data-driven results, real-time transparency (a centralized space to track progress, approve assets, see billing/metrics on demand), industry expertise, and consistent quality. Proactive communication during gaps between deliverables is repeatedly cited.",
+          "source": "https://nautilusmarketing.co.uk/what-modern-day-clients-expect-digital-marketing-agency/ ; https://whatagraph.com/blog/articles/exceeding-client-expectations"
+        },
+        {
+          "point": "The G2 vs Trustpilot rating gap reveals two buyer populations with opposite needs",
+          "detail": "Jasper scores 4.7/5 on G2 (1,270 reviews, power users who invested in learning) but 3.4/5 on Trustpilot (4,000+ reviews, users who expected plug-and-play and hit the learning curve + billing friction). Most-loved: faster first drafts, brand-consistent copy, beating writer's block, time savings. Most-hated: generic/repetitive output, over-enthusiastic tone, expensive with upsells, frustrating subscription management, and 'need to fact-check every claim before publishing'. The mass market is the Trustpilot population - they punish complexity and billing opacity.",
+          "source": "https://www.eyesift.com/blog/jasper-ai-review/ ; https://www.g2.com/products/jasper-ai/reviews?qs=pros-and-cons"
+        },
+        {
+          "point": "B2B software buyers now expect proof-of-value, usage-based pricing, and instant time-to-value",
+          "detail": "9 in 10 power users will pay a premium for AI but ONLY if the vendor demonstrably proves value/productivity gains - not feature lists. 39% prefer pay-as-you-go pricing (smaller initial deals that scale on fit). Two-thirds engage sales only after self-serve research. GenAI chatbots are now the #1 source shaping shortlists (17.1%), ahead of review sites (15.1%). Buyers emphasize clear ROI, faster time-to-value and ongoing performance impact.",
+          "source": "https://images.g2crowd.com/uploads/attachment/file/1470753/2025-G2-Buyer-Behavior-Report.pdf ; https://www.businesswire.com/news/home/20250514382531/en/G2-Report-AI-Now-Means-Always-Included-Disrupting-All-Stages-of-the-B2B-Software-Buying-Journey"
+        },
+        {
+          "point": "Vanity engagement metrics hide 'silent disengagement' - buyers want relationship-quality signals",
+          "detail": "Traditional performance indicators mask customers who stop caring without unsubscribing. 'Engagement tells you a message got attention, but not if that attention is curdling into fatigue' (Brevo). 'Clicks and engagement don't predict business growth' or trust (SurveyMonkey). 52% of consumers would stop purchasing after one inauthentic experience. Authenticity = consistent values, original storytelling and genuine brand perspective; AI is accepted best when it AMPLIFIES human expertise (scale, personalization, workflow) while humans keep control of voice, strategy and trust.",
+          "source": "https://www.cxtoday.com/marketing-sales-technology/automation-vs-authenticity-ai-generated-marketing-customer-trust/"
+        },
+        {
+          "point": "Cross-cultural pattern: the human core is universal, the emphasis shifts by market",
+          "detail": "Universal (US/Spain/Brazil): transparency, verifiability, opt-out choice, trust built on 'transparency, consistency and responsibility' (identical phrasing across markets). Spain's angle stresses distrust of 'promises of extraordinary results without methodology or evidence' and demands transparent process/budget/results reporting - buyers explicitly separate 'using AI tools' from 'a real AI strategy that produces sustainable advantage'. Brazil is notably more AI-open on the transactional side (40% accept AI making purchases for them) yet equally insistent on source transparency. Speed of response is the single most valued factor cross-market.",
+          "source": "https://www.cyberclick.es/numerical-blog/preguntas-para-elegir-una-agencia-de-marketing-con-ia-en-espana ; https://www.conversion.com.br/blog/40-brasileiros-ia-faca-compras/ ; https://www.marketingdirecto.com/marketing-general/consumidores-abandona-marca-tras-mala-experiencia"
+        }
+      ],
+      "implications_for_papandi": [
+        "Make 'glass-box' the core trust feature, not a footnote. Papandi's existing glass-box design (spec_Admin_Cost_Intelligence, entregable-accionable memory) is exactly what buyers demand: show WHAT was done and the exact sources/reasoning, not the machinery. The single strongest cross-cultural finding is that buyers reject UN-VERIFIABLE AI output, not AI output - so every Papandi deliverable should ship with its source trail and 'the exact prompt/asset the user pastes into their generator' so the human can verify and own it.",
+        "Position Papandi as an AI that AMPLIFIES the operator's voice, never one that replaces it. The market consensus is that AI is trusted when it scales production/personalization/workflow while the HUMAN keeps voice, strategy and final judgment. Papandi's 'voz compartida' + per-avatar model (fase2-por-avatar memory) already fits; lean into 'you stay the author, Papandi does the volume' as explicit copy.",
+        "Ship transparency + opt-out as product primitives for the END customer, not just the operator. Since 80-91% of consumers want AI-generated content labeled and 61% want a toggle, Papandi should make it trivially easy for its users to disclose AI assistance and to keep a human-in-the-loop checkpoint. This is a differentiator vs tools that encourage 'publish and hope no one notices.'",
+        "Sell on demonstrable ROI and time-to-value, priced pay-as-you-go - because that is exactly how the buyer now buys. G2 shows 9/10 will pay a premium ONLY with proven value and 39% prefer usage-based pricing. This aligns with Papandi's per-project cost ledger (sandia-cost-ledger memory) - surface real cost + result per project as a selling point, and let buyers start tiny and scale on fit rather than a big upfront commitment.",
+        "Beat the Jasper 'Trustpilot problem': win the plug-and-play mass market on onboarding simplicity and billing honesty. The most punished failures are generic output, learning curve, opaque subscriptions and upsell friction. Papandi's 'Desarrollar idea' / grid+detalle UX and offer-by-what-it-does framing (papandi-oferta-funcionalidad memory) should be stress-tested for a first-run user who is NOT technical - fast first win, transparent pricing, no surprise upsells.",
+        "Frame the offer around outcomes and evidence, not feature lists or hype - and especially avoid 'extraordinary results' claims. The Spanish market explicitly distrusts promises without methodology/evidence, and US B2B buyers pay only for proven value. Papandi's Fase-1 'sell by what each piece DOES' is directionally right; add a lightweight evidence/methodology layer (why this recommendation, what it's based on) to convert the skeptical buyer.",
+        "For global expansion, keep ONE trust architecture (transparency, verifiability, opt-out, human-authorship) and localize only emphasis. The human core is universal across US/Spain/Brazil; do not build market-specific trust logic. Brazil skews more AI-transaction-open, Spain skews more evidence/methodology-demanding, US skews most anti-visible-GenAI and most generational - tune messaging weight per locale (papandi-language-strategy memory), not the underlying product.",
+        "Give operators relationship-quality metrics, not vanity engagement. Buyers and their customers are hurt by 'silent disengagement' that clicks/opens hide. A Papandi dashboard that surfaces trust/fatigue signals (repeat engagement, sentiment, unsubscribe-precursors) rather than raw clicks would directly answer the 'we're measuring the wrong things' complaint and differentiate from every clicks-only tool."
+      ],
+      "what_the_best_do": [
+        "Use AI to scale production/personalization while keeping humans in control of brand voice, strategy and final trust-building (SAS, PhotoShelter, Medallia CMOs)",
+        "Make GenAI OPTIONAL not mandatory, start with clearly assistive use cases that deliver immediate value, and label AI-driven experiences so people know when/how AI is used (Gartner recommendation)",
+        "Give buyers a centralized real-time space to track progress, approve assets, see billing/metrics on demand (agency transparency benchmark)",
+        "Prove value/productivity gains explicitly rather than listing features - and offer pay-as-you-go so buyers start small and scale on fit (G2)",
+        "Provide verifiable sources and an opt-out path to trusted human content - the version WITH sources+links wins 80% preference (Brazil experiment)",
+        "Measure relationship quality and fatigue, not just clicks/opens (Brevo, SurveyMonkey)"
+      ],
+      "gaps_or_complaints": [
+        "Most vendor-published numbers (SmythOS '73% can spot AI', various blog stats) are not peer-reviewed; I prioritized Gartner (named sample sizes/dates), Klaviyo/Datalily (8,000+, 8 countries), and academic/NIM experimental work over vendor blogs.",
+        "The 'consumers reject un-verifiability not AI' reframing is strongest in the Brazilian Fast Company source and one experiment; it is directionally corroborated by the labeling studies but would benefit from a larger controlled replication.",
+        "Direct raw-voice buyer complaints (Reddit/forum threads) were summarized by search rather than fetched verbatim - the WebSearch could not surface individual thread URLs, so the small-business 'what they hate' list is a synthesized consensus, not quoted posts.",
+        "Spanish and Portuguese sources skew toward trade press (puromarketing, IT Forum, Consumidor Moderno) rather than primary surveys; the cross-cultural 'universal core' claim rests on convergent phrasing across markets, which is suggestive but not a single controlled multi-country instrument beyond the Klaviyo 8-country study."
+      ],
+      "sources": [
+        "https://www.emarketer.com/content/shoppers-aren-t-impressed-by-ai-generated-marketing",
+        "https://www.gartner.com/en/newsroom/press-releases/2025-09-03-gartner-survey-finds-53-percent-of-consumers-distrust-ai-powered-search-results0",
+        "https://www.gartner.com/en/newsroom/press-releases/2026-03-16-gartner-marketing-survey-finds-50-percent-of-consumers-prefer-brands-that-avoid-using-genai-in-consumer-facing-content0",
+        "https://www.cxtoday.com/marketing-sales-technology/automation-vs-authenticity-ai-generated-marketing-customer-trust/",
+        "https://www.nim.org/en/publications/detail/transparency-without-trust",
+        "https://images.g2crowd.com/uploads/attachment/file/1470753/2025-G2-Buyer-Behavior-Report.pdf",
+        "https://www.businesswire.com/news/home/20250514382531/en/G2-Report-AI-Now-Means-Always-Included-Disrupting-All-Stages-of-the-B2B-Software-Buying-Journey",
+        "https://www.eyesift.com/blog/jasper-ai-review/",
+        "https://www.g2.com/products/jasper-ai/reviews?qs=pros-and-cons",
+        "https://nautilusmarketing.co.uk/what-modern-day-clients-expect-digital-marketing-agency/",
+        "https://whatagraph.com/blog/articles/exceeding-client-expectations",
+        "https://www.cyberclick.es/numerical-blog/preguntas-para-elegir-una-agencia-de-marketing-con-ia-en-espana",
+        "https://www.marketingdirecto.com/marketing-general/consumidores-abandona-marca-tras-mala-experiencia",
+        "https://fastcompanybrasil.com/ia/a-busca-por-ia-tem-um-problema-de-confianca-transparencia-e-a-solucao/",
+        "https://itforum.com.br/noticias/imagens-geradas-por-ia-90-transparencia/",
+        "https://www.conversion.com.br/blog/40-brasileiros-ia-faca-compras/"
+      ]
+    },
+    {
+      "stream": "competitors_offerings",
+      "key_findings": [
+        {
+          "point": "Jasper: sigue siendo el 'incumbente' de copy de marca pero abandona al usuario solo",
+          "detail": "Plan Creator descontinuado en 2026; queda Pro a ~$69/seat/mes ($59 anual) y Business $250+/mes. Su feature diferencial es Brand Voice (entrena la IA con tu contenido). Quejas reales en Reddit: 'the output always sounds so generic now' y 'you would be a fool to pay for Jasper, ChatGPT is better with good prompts'. Con Surfer SEO el costo real supera $138/mes. Es texto-only, lo que lo deja corto ante suites multimodales.",
+          "source": "leapshq.com/blog/jasper-ai-pricing + socialrails.com/blog/jasper-review"
+        },
+        {
+          "point": "Copy.ai: pivotó de generador de copy a 'GTM AI Platform' y subió mucho el precio",
+          "detail": "Ya no vende 'escribir copy' sino orquestar go-to-market (account research, secuencias de ventas, ABM, repurposing) via Workflows y Agents. Su pitch explicito es 'un solo sistema — no docenas de copilots y point solutions... eliminando GTM bloat'. Pero Workflows/Agents arrancan en $249/mes con modelo de seats + Workflow Credits. Se movio hacia B2B sales/enterprise, dejando hueco en el SMB.",
+          "source": "copy.ai + eesel.ai/blog/copy-ai-review"
+        },
+        {
+          "point": "AdCreative.ai: rey del creative publicitario de performance, precio escalonado agresivo",
+          "detail": "Genera banners, ads sociales y variaciones de video optimizadas a conversion; para performance marketers y media buyers que necesitan volumen para testear. Starter $39/mes, Professional $249/mes, Ultimate $999/mes. Fortaleza: volumen + scoring de conversion. Hueco: es una fabrica de creativos, no un OS de estrategia/calendario/marca.",
+          "source": "adlegends.ai/best-ai-ad-tools"
+        },
+        {
+          "point": "Canva Magic Studio: la mejor relacion precio-capacidad multimodal del mercado",
+          "detail": "$14.99/mes empaqueta Magic Design, Dream Lab (imagen), Magic Write, Sheets, Magic Charts + video 2.0 + Affinity gratis. Free tier util (10 Magic Design, 5 Dream Lab/mes). 64% de marketers usan herramientas de diseno IA semanalmente (vs 21% en 2023). Es el rival de facto en amplitud e integracion — pero es una herramienta de EJECUCION/diseno, no un cerebro de estrategia de marketing.",
+          "source": "eesel.ai/blog/canva-ai-pricing + aiworthit.com/blog/canva-ai-review"
+        },
+        {
+          "point": "Icon.com: la senal mas fuerte del mercado — vende 'AI CMO / 14-en-1' a $39/mes",
+          "detail": "Respaldado por Founders Fund (Peter Thiel), execs de OpenAI/Ramp/Cognition; $9.2M funding; $0 a $5M ARR en 30 dias. Se posiciona como 'AI CMO' que hace research competitivo, hooks, ~68 ads en 30 min. Pitch: '$39/mo por 14-products-in-1, reemplaza $2K-$30K/mo en tools'. Quejas 2026 en foros/Trustpilot: renders lentos, exports atascados al 99%, glitches de UI. Valida que el mercado quiere consolidacion, pero su ejecucion aun cojea.",
+          "source": "crunchbase.com/organization/icon-ai + platform-review.com/reviews/icon-com"
+        },
+        {
+          "point": "Creatify: UGC/video ads baratos, nicho e-commerce",
+          "detail": "Free (10 creditos), Starter $19, Pro $49 (700+ avatares, Batch Mode, video hasta 10 min). Pega URL, elige avatar, genera ads para TikTok/IG. Fortaleza: volumen de UGC realista. Hueco: monofuncion (video ads), no cubre estrategia, calendario, email ni SEO.",
+          "source": "creatify.ai/pricing + ezugc.ai/review/creatify-ai"
+        },
+        {
+          "point": "HubSpot Breeze: IA de marca dentro del CRM, pero encerrada y cara",
+          "detail": "$0 a $4,700+/mes; pricing outcome-based nuevo (abril 2026): Customer Agent $0.50/conversacion resuelta, Prospecting $1.00/lead, Data Agent $0.10/respuesta. Queja fatal recurrente: 'it really only works in HubSpot' — si corres Salesforce u otras fuentes, choca techo. Datos de Breeze Intelligence son scrapeados y a veces desactualizados/duplicados. Agentes tras planes Professional caros. No es opcion para SMB sin HubSpot.",
+          "source": "martech.org/hubspot-moves-to-outcome-based-pricing + eesel.ai/blog/hubspot-breeze-ai-review"
+        },
+        {
+          "point": "Predis.ai / Ocoya / Simplified: capa social barata pero con jaulas de creditos",
+          "detail": "Predis $19 Core (SIN auto-posting), $40 Rise, $212 Enterprise+ (aun con tope de 10,000 creditos); enfoque Shopify. Ocoya $15 Bronze (100 creditos, 10 automations/mes). Simplified free-forever (5,000 palabras, 3 cuentas), $24 One, $399 Enterprise. Quejas: creditos que se agotan rapido, features clave (auto-post) fuera del plan barato, busqueda de competencia buggy.",
+          "source": "apaya.com/blog/best-ai-social-media-tools + socialrails.com/blog/predis-pricing"
+        },
+        {
+          "point": "Flair.ai: fotografia de producto IA con foco en consistencia de marca",
+          "detail": "Free ($0, 5 imagenes), Pro $10, Pro+ $35 (modelos custom + licencia comercial), Scale $55, Enterprise. Permite plantillas reutilizables que fuerzan consistencia de marca y genera variantes lifestyle desde una foto para A/B. Fortaleza: visual e-commerce de alta calidad. Hueco: solo imagen de producto, no un sistema de marketing.",
+          "source": "flair.ai/pricing + wizcommerce.com/blog/flair-ai-pricing"
+        },
+        {
+          "point": "El 'AI slop' y la fatiga de IA son el gran dolor transversal de 2026",
+          "detail": "'AI slop' es el insulto definitorio de 2026; 54% de estadounidenses reportan fatiga de IA; audiencias que detectan contenido IA confian/clican/convierten menos. Causa raiz: la IA se entrena en 'el promedio de internet', asi que su default suena como todos. Los que ganan usan IA en las DECISIONES (audience intelligence, optimizacion), no visible en el output — con voz de marca definida, guardrails y revision humana.",
+          "source": "averi.ai/blog/the-ai-content-crisis + mojo.biz/anti-ai-backlash-real"
+        }
+      ],
+      "what_the_best_do": [
+        "Consolidan: el mensaje ganador de 2026 es 'un solo sistema, no docenas de point solutions' — lo dicen explicitamente Copy.ai (elimina 'GTM bloat') e Icon ('14-en-1, reemplaza $2K-$30K/mo').",
+        "Anclan en la marca: Jasper (Brand Voice), Flair (plantillas que fuerzan consistencia) y Canva (Brand Kit) tratan la voz/identidad de marca como el activo central que evita el 'AI slop'.",
+        "Multimodal integrado: Canva domina en amplitud (texto+imagen+video+datos+app en $15/mes); las herramientas monofuncion (Creatify=video, Flair=foto, AdCreative=ads) pierden ante suites.",
+        "Precios de entrada bajos con free tier: Canva, Creatify, Flair, Simplified y Predis usan free/$10-$19 para adquirir, luego monetizan con creditos/seats.",
+        "Los mejores mueven la IA a la estrategia y la decision (audience intelligence, scoring de conversion tipo Anyword/AdCreative), no solo a generar output visible."
+      ],
+      "gaps_or_complaints": [
+        "Output generico / 'AI slop': queja #1 transversal (Jasper 'sounds so generic', 54% fatiga de IA) — nadie resuelve del todo la voz de marca autentica de punta a punta.",
+        "Jaulas de creditos y precios impredecibles: Predis, Ocoya y HubSpot Breeze (outcome-based) generan ansiedad de costo; features basicas (auto-post) fuera del plan barato.",
+        "Encierro de ecosistema: HubSpot Breeze 'only works in HubSpot'; datos scrapeados desactualizados.",
+        "Fragmentacion: el SMB/solopreneur usa Jasper+Surfer+Buffer+AdCreative+Canva por separado; los datos no fluyen entre silos y 'defeat the purpose of automation'.",
+        "El hueco del SMB con estrategia: Copy.ai se fue a enterprise ($249+), Icon apunta a e-commerce/ads y tiene bugs (renders lentos, exports al 99%). Falta un OS que de ESTRATEGIA + voz de marca + ejecucion coherente para el operador chico."
+      ],
+      "implications_for_papandi": [
+        "El espacio en blanco es un 'OS de marketing' real para el SMB/solopreneur de EE.UU.: estrategia + voz de marca + calendario + ejecucion multicanal en un sistema, no otra fabrica de output. Copy.ai dejo este segmento al irse a enterprise ($249+) e Icon lo valida pero cojea en ejecucion.",
+        "Posicionamiento anti-'AI slop': Papandi debe vender que la IA vive en las DECISIONES y en una voz de marca profunda y consistente (como su modelo de 'voz 2.0' compartida + reparto por avatar), no en generar contenido que 'suena a IA'. Esto ataca la queja #1 de 2026 directamente.",
+        "Modelo de negocio: evitar la jaula de creditos que odian los usuarios (Predis/Ocoya/Breeze). Si Papandi factura por uso, hacerlo transparente y predecible — es un diferenciador explotable dado el resentimiento contra el pricing outcome-based/creditos.",
+        "Precio ancla: el mercado ya normalizo $15-$49/mes para 'suite' (Canva $15, Creatify $49, Icon $39). Papandi para SMB debe entrar en esa banda o justificar prima con estrategia+coherencia que ninguno da.",
+        "Consolidacion como pitch de venta: replicar el mensaje 'reemplaza N herramientas' — pero cumplirlo con integracion real (calendario, canales, voz), no como Icon que promete 14-en-1 con bugs. La integracion real y la ausencia de silos de datos es el foso.",
+        "No competir en amplitud de diseno con Canva ni en volumen de ads con AdCreative: diferenciarse en la CAPA DE CEREBRO (estrategia, marca, orquestacion por avatar) que ninguna de esas herramientas de ejecucion tiene.",
+        "Vision global desde el back en ingles con salida por locale (ya en la estrategia Papandi) encaja: los competidores son mayormente monolingues/US-centric; la capa de estrategia+voz traducible es un vector de expansion que ellos no tienen."
+      ],
+      "sources": [
+        "https://leapshq.com/blog/jasper-ai-pricing",
+        "https://socialrails.com/blog/jasper-review",
+        "https://www.copy.ai/",
+        "https://www.eesel.ai/blog/copy-ai-review",
+        "https://www.adlegends.ai/best-ai-ad-tools",
+        "https://www.eesel.ai/blog/canva-ai-pricing",
+        "https://www.aiworthit.com/blog/canva-ai-review",
+        "https://www.crunchbase.com/organization/icon-ai",
+        "https://www.platform-review.com/reviews/icon-com",
+        "https://creatify.ai/pricing",
+        "https://www.ezugc.ai/review/creatify-ai",
+        "https://martech.org/hubspot-moves-to-outcome-based-pricing-for-some-breeze-ai-agents/",
+        "https://www.eesel.ai/blog/hubspot-breeze-ai-review",
+        "https://apaya.com/blog/best-ai-social-media-tools",
+        "https://socialrails.com/blog/predis-pricing",
+        "https://flair.ai/pricing",
+        "https://wizcommerce.com/blog/flair-ai-pricing/",
+        "https://www.averi.ai/blog/the-ai-content-crisis-why-your-brand-voice-sounds-like-everyone-else-s",
+        "https://mojo.biz/anti-ai-backlash-real-heres-how-smart-brands-are-using-ai-without-looking-they-are"
+      ]
+    },
+    {
+      "stream": "media_routers",
+      "key_findings": [
+        {
+          "point": "El mercado ya se dividió en 'agregadores/routers' (fal.ai, Replicate) vs 'modelos' (Kling, Veo, Seedance, FLUX, Sora). Papandi debe integrarse en la capa de router, no cablear un modelo.",
+          "detail": "fal.ai expone ~985 endpoints bajo UNA sola API/clave: imagen (406), video (450), audio (59), 3D (35), speech (35). Replicate ~200 modelos con mejores docs/comunidad. Ambos son pay-per-use (sin suscripción), con patrón async: fal.subscribe(modelId, {input}) + webhooks para trabajos largos de video. fal es ~30-50% más barato (hasta 80% en video) y más rápido en cold-start (<1s warm). Replicate excluye modelos propietarios como Sora 2; fal tiene Sora 2 y exclusivas como Kling O1.",
+          "source": "teamday.ai/blog/ai-image-video-api-providers-comparison-2026 ; teamday.ai/blog/fal-ai-vs-replicate-comparison"
+        },
+        {
+          "point": "'Un despliegue de producción mediano usa 14 modelos distintos' — el multi-modelo NO es lujo, es el estándar. Esto valida la tesis de Papandi como cerebro que enruta.",
+          "detail": "El artículo de comparación afirma que la mediana de despliegues productivos combina 14 modelos, con lógica de selección por tarea. El router recomendado enruta: tipografía/texto en imagen -> GPT Image; video cinematográfico -> Seedance; commodity barato -> SDXL ($0.003/img); audio+lipsync -> Seedance (audio nativo); edición profesional -> Runway. Papandi puede ser esa 'lógica de selección' como producto vendible.",
+          "source": "teamday.ai/blog/ai-image-video-api-providers-comparison-2026"
+        },
+        {
+          "point": "Consistencia de personaje EN IMAGEN: FLUX.1 Kontext es el estándar de facto para edición por texto sin fine-tuning.",
+          "detail": "FLUX.1 Kontext (Black Forest Labs) edita imágenes con instrucciones en lenguaje natural manteniendo identidad del personaje a través de múltiples ediciones; ~92% de coincidencia de identidad con una sola referencia 512x512. Variantes: [pro] (calidad SOTA), [max] (mejor tipografía + adherencia), [dev] (open-weight). Disponible en Replicate (flux-kontext-pro/max), fal, Together AI.",
+          "source": "replicate.com/blog/flux-kontext ; together.ai/blog/flux-1-kontext ; bfl.ai/models/flux-kontext"
+        },
+        {
+          "point": "Consistencia de personaje EN VIDEO + multiidioma: Kling 3.0 lidera (reference locking, Voice Binding, storyboards multi-shot).",
+          "detail": "Kling 3.0 mantiene personajes/props consistentes ENTRE tomas dentro de un clip vía reference locking (subes múltiples imágenes/videos que anclan personaje, ropa, props, entorno). Voice Binding fija la voz de un personaje a través de hasta 6 cortes y 5 idiomas; se combina con 'Soul ID' para rasgos faciales persistentes. Kling 2.6 Pro NO garantiza consistencia entre generaciones separadas; eso es feature de 3.0. Start/End frame disponible desde 2.1 y en Kling O1 (dual-keyframe, invierte el flujo image-to-video).",
+          "source": "invideo.io/blog/kling-3-0-complete-guide ; higgsfield.ai/blog/5-Best-AI-Video-Models-2026 ; fal.ai/models/fal-ai/kling-video/o1/image-to-video"
+        },
+        {
+          "point": "Seedance/Seedream (ByteDance) es el caballo de batalla para video cinematográfico con audio nativo y muchas referencias; Seedream es su modelo de imagen 4K.",
+          "detail": "Seedance 2.0 (live en fal desde 9-abr-2026): arquitectura multimodal unificada (texto+imagen+audio+video), clips hasta 15s a 720p, multi-shot + audio nativo + física realista en una sola generación, dos tiers (Fast $0.04/s, Pro). Seedance 2.5 (23-jun-2026): clip nativo de 30s, hasta 50 referencias, edición parcial del frame. Seedream 4.x/4.5: imagen hasta 4K con alta consistencia. Higgsfield lo corona en control de cámara/física (maneja tela, líquido, peso, colisiones; hasta 9 referencias).",
+          "source": "fal.ai/seedance-2.0 ; digitalapplied.com/blog/seedance-2-5-bytedance-ai-video-model-2026 ; seed.bytedance.com/en/seedream4_5 ; higgsfield.ai/blog/5-Best-AI-Video-Models-2026"
+        },
+        {
+          "point": "Google Veo 3.1: rey del audio sincronizado (diálogo con lipsync + SFX + ambiente) y escala atmosférica; API limpia por segundo en Gemini.",
+          "detail": "Veo 3.1 acepta hasta 3 imágenes de referencia para mantener identidad de personaje/producto entre escenas/ángulos. Genera 3 tipos de audio simultáneos (diálogo lip-synced, SFX, ambiente). API Gemini pay-per-second: Standard $0.40/s (720p y 1080p, audio incluido), Fast $0.15/s. Higgsfield lo corona en iluminación global, clima y profundidad de campo en composiciones grandes.",
+          "source": "developers.googleblog.com/introducing-veo-3-1 ; ai.google.dev/gemini-api/docs/pricing ; higgsfield.ai/blog/5-Best-AI-Video-Models-2026"
+        },
+        {
+          "point": "Higgsfield = router especializado en CÁMARA + avatar; Runway/Pika = modelo único con distinto foco. Avatares/lipsync puro: Hedra (Character-3) lidera.",
+          "detail": "Higgsfield agrega 15+ modelos (Sora 2, Veo 3.1, Kling 3.0) bajo una suscripción y su diferenciador es control de cámara preciso (dolly, orbit, push, handheld, simulación ARRI/RED) + 'Motion DNA' para avatares que respiran/gesticulan. Runway = control fino sobre un solo modelo (ads/entregables cliente). Pika = publicación diaria a Reels/TikTok/Shorts. Para talking-head/lipsync puro, Hedra Character-3 (imagen+texto+audio) califica 9/10.",
+          "source": "growwithba.com/blog/higgsfield-vs-runway-vs-pika-2026 ; morphed.app/blog/higgsfield-alternatives ; pixflow.net/blog/best-ai-video-generator"
+        },
+        {
+          "point": "OpenArt.ai y AvatarHype son productos de nivel-app (no APIs), útiles como referencia de UX de 'Story/personaje consistente', no como backend.",
+          "detail": "OpenArt corre 100+ modelos (Sora 2, Kling 3.0, Seedance) en una suscripción; resolvió personaje consistente con 1 imagen de referencia y ofrece 'Story' + 'OpenArt Suite' (imagen/video/personaje/audio en un panel). Es competidor de UX, no proveedor de API. AvatarHype es en realidad un CURSO/plantillas para hacer ads UGC (6 formatos: UGC, podcast, voiceover, animado, imágenes, trends) con GPTs privados y librería de prompts — pago único de por vida; señal de que el mercado quiere 'recetas' accionables, no solo modelos.",
+          "source": "openart.ai/whats-new ; openart.ai/features/ai-character ; avatarhype.online/en/lab ; shhots.ai/blog/best-ai-avatar-solutions-for-ugc-product-ads"
+        },
+        {
+          "point": "Midjourney, Luma y Sora 2 tienen fricción de acceso por API que Papandi debe considerar al enrutar.",
+          "detail": "Midjourney V7/V8 es principalmente imagen, opera vía Discord SIN API dedicada de video (image-to-video hasta 21s). Luma Ray3.x tiene salida HDR EXR profesional (workflows ACES) pero acceso vía web/app, no REST tradicional. Sora 2: excelente en física/realismo (15-25s, 1080p, audio sincronizado) pero SIN REST público estable (acceso restringido) — y una fuente reporta que fue discontinuado el 24-sep-2026, señal de volatilidad de proveedores propietarios.",
+          "source": "slashdot.org/software/comparison/Midjourney-vs-Sora-2 ; lumalabs.ai/learning-hub/luma-video-models-guide ; synergylabs.co/blog/sora-2-api-explained ; higgsfield.ai/blog/5-Best-AI-Video-Models-2026"
+        }
+      ],
+      "what_the_best_do": [
+        "Router primero, modelo después: los ganadores (fal.ai, Higgsfield, OpenArt) exponen decenas/cientos de modelos bajo UNA clave/suscripción y dejan que el usuario o el agente elijan; nadie serio se casa con un solo modelo.",
+        "Enrutan por tarea, no por marca: tipografía->GPT Image; cinematográfico+física->Seedance; audio/lipsync->Veo 3.1 o Seedance; personaje-en-video multiidioma->Kling 3.0; edición-de-imagen-con-personaje->FLUX Kontext; cámara->Higgsfield; commodity barato->SDXL.",
+        "Async + webhooks como patrón base para video largo (fal.subscribe + webhook de finalización), no polling bloqueante.",
+        "Consistencia como feature de primera clase: reference images (1-3 en Veo, hasta 9-50 en Seedance, N en Kling), reference locking / Soul ID / Voice Binding, y start/end frame para transiciones controladas.",
+        "Empaquetan 'recetas' accionables (formatos UGC/podcast/voiceover, plantillas de prompt, storyboards) — el valor percibido está en el QUÉ-HACER, no solo en el acceso al modelo (ver AvatarHype y OpenArt Story)."
+      ],
+      "implications_for_papandi": [
+        "Posición: Papandi es el CEREBRO (estrategia + qué generar + qué modelo elegir + el prompt exacto); las manos son fal.ai/Replicate como capa de acceso unificada. Integrar sobre fal.ai da ~985 endpoints con una sola clave, async/webhooks y el mejor costo/velocidad — evita cablear proveedores uno por uno y evita el lock-in que el propio CLAUDE.md prohíbe.",
+        "Construir una 'tabla de enrutamiento' interna como activo de producto: mapea intención de marketing -> modelo. Ej: 'imagen de producto con texto legible'->FLUX/GPT Image; 'personaje de marca consistente en carrusel'->FLUX Kontext (1 ref, ~92% identidad); 'anuncio hablado con lipsync'->Veo 3.1 ($0.15-0.40/s) o Seedance; 'mini-película multi-toma con la misma mascota'->Kling 3.0 (reference locking + Voice Binding); 'clip social rápido'->MiniMax Hailuo/Pika; 'toma con movimiento de cámara específico'->Higgsfield. Esta tabla es la propiedad intelectual defendible.",
+        "Diseñar por 'referencias' desde el inicio: el flujo de Papandi debe capturar imagen de referencia de marca/personaje y start/end frame, porque TODOS los modelos top ya los consumen (Veo hasta 3, Seedance hasta 9-50, Kling N). Sin esto, Papandi no puede prometer consistencia de marca.",
+        "Entregar 'el prompt exacto' + elección de modelo como salida accionable (coherente con la memoria papandi-entregable-accionable): el usuario pega el prompt en el generador O Papandi lo ejecuta vía fal. AvatarHype demuestra que hay demanda pagante por plantillas/recetas por formato, no solo por acceso a modelos.",
+        "Abstraer al proveedor por volatilidad: Sora 2 pasó de exclusiva a reportarse discontinuado (24-sep-2026), Midjourney/Luma no tienen REST estable. Papandi debe tratar cada modelo como intercambiable detrás del router y degradar con gracia (fallback por capacidad: si 'audio nativo' -> Veo 3.1/Seedance; si cae uno, el otro), replicando el patrón de degradación que ya usa el propio Router de pretel-os.",
+        "Costeo por tarea listo para el ledger: los precios son públicos y por unidad (FLUX $0.05/img, SDXL $0.003/img, Seedream $0.04/img; Kling $0.09/s, Seedance Fast $0.04/s, Veo Std $0.40/s / Fast $0.15/s). Papandi puede pre-estimar y atribuir costo por project_id antes de generar (encaja con sandia-cost-ledger y el tope MEDIA_BUDGET_USD)."
+      ],
+      "gaps_or_complaints": [
+        "Fechas/versiones se mueven muy rápido y las fuentes se contradicen: Kling aparece como 2.1/2.6/3.0; Seedance 2.0/2.5; Veo 3/3.1. Antes de cablear, verificar la versión y el precio exactos en la doc oficial del proveedor (o en fal) en el momento del build.",
+        "Reporte contradictorio: una fuente dice que Sora 2 fue discontinuado el 24-sep-2026 mientras otras lo listan como accesible vía fal — señal de riesgo de proveedor, verificar disponibilidad real antes de depender de él.",
+        "Muchos comparativos provienen de blogs de vendors (Higgsfield, invideo, OpenArt) con sesgo; los datos de precio y de features de API (Gemini/Veo, fal, Replicate, Black Forest Labs) están mejor respaldados por docs oficiales y deben tratarse como la fuente de verdad.",
+        "Falta acceso API real y estable para Midjourney y Luma (Discord/web-app), lo que limita su uso como 'manos' automatizables — probablemente fuera del MVP de Papandi.",
+        "No se validó latencia real de extremo a extremo ni límites de rate por proveedor; crítico para UX si Papandi ejecuta generación en línea vs. cola async."
+      ],
+      "sources": [
+        "https://www.teamday.ai/blog/ai-image-video-api-providers-comparison-2026",
+        "https://www.teamday.ai/blog/fal-ai-vs-replicate-comparison",
+        "https://fal.ai/seedance-2.0",
+        "https://fal.ai/models/fal-ai/kling-video/o1/image-to-video",
+        "https://fal.ai/explore/bytedance",
+        "https://seed.bytedance.com/en/seedream4_5",
+        "https://www.digitalapplied.com/blog/seedance-2-5-bytedance-ai-video-model-2026",
+        "https://invideo.io/blog/kling-3-0-complete-guide/",
+        "https://ofox.ai/blog/kling-2-6-pro-video-api-english-complete-2026/",
+        "https://replicate.com/blog/flux-kontext",
+        "https://www.together.ai/blog/flux-1-kontext",
+        "https://bfl.ai/models/flux-kontext",
+        "https://developers.googleblog.com/introducing-veo-3-1-and-new-creative-capabilities-in-the-gemini-api/",
+        "https://ai.google.dev/gemini-api/docs/pricing",
+        "https://www.veo3ai.io/blog/veo-3-1-pricing-2026",
+        "https://higgsfield.ai/blog/5-Best-AI-Video-Models-2026-Tested-Compared",
+        "https://growwithba.com/blog/higgsfield-vs-runway-vs-pika-2026",
+        "https://morphed.app/blog/higgsfield-alternatives",
+        "https://pixflow.net/blog/best-ai-video-generator/",
+        "https://openart.ai/whats-new",
+        "https://openart.ai/features/ai-character/",
+        "https://avatarhype.online/en/lab",
+        "https://shhots.ai/blog/best-ai-avatar-solutions-for-ugc-product-ads/",
+        "https://slashdot.org/software/comparison/Midjourney-vs-Sora-2/",
+        "https://lumalabs.ai/learning-hub/luma-video-models-guide-ray3.14-veo-sora-kling-compared",
+        "https://www.synergylabs.co/blog/sora-2-api-explained-what-developers-can-do-now-whats-next"
+      ]
+    },
+    {
+      "stream": "product_ux_dam",
+      "key_findings": [
+        {
+          "point": "Visual-first, board-based DAM beats folder trees — Air is the reference UX",
+          "detail": "Users describe Air as 'refreshingly intuitive' because the 'visual-first layout makes browsing feel more like a design tool than a traditional DAM.' Assets show as thumbnails on Boards/sub-boards (not folders), with switchable Gallery / Table / Kanban views. The Kanban view is singled out as 'particularly great for managing creative approvals.' Users love saved views ('I love being able to set a certain viewing/sorting structure and save that view'), version stacking with side-by-side compare, image/video annotation, and AI auto-tagging. Result: 'no heavy training required,' faster onboarding.",
+          "source": "https://air.inc/resources/best-dam-solutions + https://picflow.com/compare/dam/air-inc"
+        },
+        {
+          "point": "The #1 DAM pain is search/filtering at scale — even leaders like Frontify fail here",
+          "detail": "Frontify G2/review complaints: 'difficulty narrowing searches to specific folders or metadata,' search precision breaks down in large libraries, filtering/visual-search 'lag behind dedicated DAM platforms,' metadata/tagging is 'more lightweight,' and there is 'no AI-assisted tagging.' Also cited: confusing UI with complex back-end, unexpected errors/glitches interrupting workflows, ~5-month implementation, and costly tier-gating ('functionalities would be more logical to have in every tier instead of having to upgrade').",
+          "source": "https://imagekit.io/frontify-alternatives/ + https://www.dash.app/blog/frontify-digital-asset-management"
+        },
+        {
+          "point": "Credit-per-regeneration is the most hated pattern in AI creative tools — it kills iteration",
+          "detail": "Canva reviewers: 'every single attempt to regenerate a prompt uses a credit, which can vanish in a flash when you're just trying to get an image right… penalizes you for experimenting.' Designers report burning '3000+ credits in less than an hour' fixing AI's own mistakes. Medium/design analysis: credit models create a 'race against the clock' where 'predictive anxiety over credit drain limits experimentation, with designers sticking to safe, minimal use rather than exploring variations.' This directly contradicts how creative work operates ('the artboard is a graveyard of discarded ideas'). Credit-based pricing grew 126% YoY in 2025 but finance leaders 'can't clearly explain what they're paying for.'",
+          "source": "https://www.eesel.ai/blog/canva-ai-reviews + https://medium.com/design-bootcamp/credit-limits-and-the-death-of-design-exploration-1798256671aa + https://forum.figma.com/share-your-feedback-26/figma-make-ai-credit-limits-not-feasible-51713/"
+        },
+        {
+          "point": "Editable outputs (not flat PNGs) are the single biggest UX differentiator users cite",
+          "detail": "Canva's most-praised trait: 'output is real editable Canva designs, not flattened images… generative tools that produce flat-PNG outputs require manual recreation to refine.' Users value 'templates that behave' — layouts that already follow spacing/hierarchy rules so they can iterate rather than restart. Magic Switch/resize across formats while keeping consistency is called 'the quiet time-saver.' The lesson: AI generation should drop into an editable, structured canvas, not a dead-end image.",
+          "source": "https://aitoolanalysis.com/canva-magic-studio-review/ + https://aiflowreview.com/canva-magic-studio-review/"
+        },
+        {
+          "point": "Brand kit must be pushed INTO the workflow, not stored as a reference doc",
+          "detail": "Canva praise: 'Brand Kit guardrails — colors, fonts, and logos that stay one click away… it pushes brand choices into the workflow' to prevent drift. Industry framing: AI-enabled brand hubs should be 'active governance engines' that automatically flag off-brand colors, surface the right logo, and check usage rights BEFORE assets go live. But real complaint: governance today is 'often limited to lightweight brand kits or approval workflows rather than enterprise-grade enforcement'; brands stay inconsistent when 'guidelines aren't connected to systems — no single source of truth, no locked templates, no controlled asset library.'",
+          "source": "https://www.frontify.com/en/guide/ai-tools-for-brand-management + https://aiflowreview.com/canva-magic-studio-review/"
+        },
+        {
+          "point": "AI generation controls users demand: reference images, character/style consistency, weighted influence",
+          "detail": "Across AI image tools the concrete controls power users rely on are reference-based: Midjourney's Omni/Character Reference (--cref) for 'consistent characters across images' and Style Reference (--sref) to 'apply moodboards/aesthetic themes,' both with a 0–100 weight to tune influence. Even so users note results are inconsistent ('colors are pretty consistent, but not always the style even with reference controls'), so iteration UI matters. Runway markets on 'creative control' as the differentiator. Takeaway: expose reference-image + adjustable-influence controls, not just a prompt box.",
+          "source": "https://christytuckerlearning.com/ai-images-with-consistent-style-in-midjourney/ + https://printify.com/blog/midjourney-prompts/"
+        },
+        {
+          "point": "Approval/proofing: linear email-chain review is the pain; automated routing + annotations is the win — but seat-based pricing enrages teams",
+          "detail": "Core frustration: 'creative projects feel like a mess of lost feedback, emails, and never-ending review cycles… long email chains, unclear comments, scattered revisions.' What teams want (Ziflow strengths): frame-accurate annotations directly on the asset, parallel/conditional review stages, automatic routing to the right reviewer, and clear status visibility. What frustrates: Ziflow's 'pricing model punishes growth — external clients, stakeholders and freelancers all require reviewer seats, no unlimited reviewer option'; notifications 'get spammy'; external reviewers find it 'less intuitive.' Video review is often 'an afterthought.'",
+          "source": "https://www.ziflow.com/blog/ziflow-vs-filestage + https://filestage.io/blog/ziflow-alternatives/"
+        },
+        {
+          "point": "Tiered, risk-based approval gates are the best-practice governance model for AI content",
+          "detail": "Recommended framework: three validation layers — (1) pre-generation filtering (block bad prompts before creation), (2) real-time validation against brand/compliance/facts during generation, (3) post-generation review before publish. Approval is graduated by risk: low-risk social posts = automated checks + single approver (2–4h); medium-risk blogs/emails = full validation + marketing/compliance review (1–2 days); high-risk exec comms/positioning = multi-level incl. legal (3–7 days). Customizable review stages with automatic routing 'eliminate tedious back-and-forth while keeping human judgment.' Named bottlenecks to design out: unclear approval ownership, no visibility into status, scattered feedback, approval delays.",
+          "source": "https://www.typeface.ai/blog/content-quality-control-in-ai-marketing-enterprise-governance-and-best-practices"
+        },
+        {
+          "point": "Asset chaos is the quantified problem campaign tools exist to solve",
+          "detail": "Concrete cost data: finding the correct logo/creative version can take 'up to 20 minutes'; creative pros 'spend up to 35% of their workdays searching for existing assets rather than creating,' which drives duplicate re-creation of content that already exists. Assets 'scattered across shared drives, email threads and personal folders' slow launches, break brand consistency, and cause 'missed handoffs, slipped dates, last-minute fire drills.' The winning pattern: a single source of truth where every asset has a designated location, owner, and documented history, with files connected directly to the approval workflow.",
+          "source": "https://monday.com/blog/project-management/marketing-asset-management/ + https://monday.com/blog/project-management/marketing-campaign-tools/"
+        }
+      ],
+      "implications_for_papandi": [
+        "Build the asset library as a VISUAL board, not a folder tree. Copy Air's model: thumbnail-first Boards + sub-boards, with switchable Gallery / Table / Kanban views, saved per-board views, and version stacking with side-by-side compare. Since Papandi is US/English-first, ship English UI and default to Kanban-for-approvals as the campaign view.",
+        "Do NOT charge credits per regeneration inside the creative loop. This is the single most hated pattern across Canva, Figma Make, and Lovable. Either bundle generous iteration into the subscription, meter at the campaign/asset level (not per-tweak), or make exploration free and only meter final high-res export. Cost anxiety demonstrably makes users stop iterating — the opposite of what an AI marketing OS wants.",
+        "Every AI generation must land in an EDITABLE, structured object (layers, text, brand tokens), never a flat PNG. This is Canva's top-cited advantage. Papandi's generated assets should be re-openable and re-editable so users refine in-place instead of re-prompting from zero.",
+        "Push the brand kit INTO the generation flow as active guardrails, not a static PDF. Colors/fonts/logos one click away; auto-flag off-brand output; ideally validate brand compliance at generation time. Papandi already frames a 'brand voice/casting' layer (Fase 2) — wire those tokens directly into generation controls and pre/post checks, becoming the 'active governance engine' the market says is missing.",
+        "Expose reference-image + adjustable-influence controls in the generation UI, not just a text prompt. Mirror Midjourney's character-ref/style-ref with a 0–100 strength slider so users get consistent characters/style across a campaign's assets. Consistency-across-a-set is a marketing-specific need generic tools handle poorly — a differentiation wedge.",
+        "Design search/filtering as a first-class feature from day one — it's where even Frontify fails at scale. Ship AI auto-tagging, metadata + folder-scoped filtering, and visual/semantic search. Papandi's LLM/embedding stack is a natural advantage here; make 'never lose an asset' a headline promise (users lose up to 20 min and 35% of their day to asset hunting).",
+        "Bake in tiered, risk-based approval gates with annotation-on-asset and automatic routing — not email chains. Support pre-generation, real-time, and post-generation checks; auto-route low-risk (auto + 1 approver) vs high-risk (multi-level) content. Show live status to kill the 'where is my approval' bottleneck.",
+        "Avoid seat-based pricing for reviewers/external stakeholders. Ziflow's biggest complaint is that clients/freelancers each need a paid reviewer seat. Let external reviewers comment/approve via link with no seat cost — a concrete pricing differentiator for agencies and small teams.",
+        "Make external-reviewer UX dead simple. Both Ziflow and Frontify are criticized as unintuitive for non-technical outside reviewers; a frictionless, no-login approval link is a real edge, especially for Papandi's likely SMB/solo-marketer early adopters.",
+        "Treat AI as a production accelerator with a human final pass, and design the UI to expect it. Reviewers consistently note AI output needs 'a final human pass for spacing, hierarchy, tone' to avoid the generic look. Build an explicit, low-friction 'polish/review' step into the workflow rather than pretending output is publish-ready."
+      ],
+      "what_the_best_do": [
+        "Air: visual board/sub-board organization with Gallery/Table/Kanban views, saved views, version stacking + side-by-side compare, in-asset annotation, AI auto-tag, zero-training onboarding",
+        "Canva Magic Studio: AI outputs are editable designs (not flat PNGs), brand kit guardrails one click away, Magic Switch resize-across-formats keeps consistency, templates enforce spacing/hierarchy",
+        "Midjourney/Runway: reference-image controls (character-ref, style-ref) with 0–100 influence weight for consistent characters/style across a set; marketed on 'creative control'",
+        "Ziflow: conditional/parallel review stages, SLA triggers, frame-accurate annotations, automatic routing to correct reviewer, status visibility",
+        "Typeface/enterprise governance: three-layer validation (pre-gen filter, real-time validation, post-gen review) + graduated risk-based approval SLAs with auto-routing"
+      ],
+      "gaps_or_complaints": [
+        "Credit-per-regeneration penalizes exploration (Canva, Figma Make, Lovable) — users burn thousands of credits and then stop iterating out of cost anxiety",
+        "Search/filtering breaks down at scale even in market leaders (Frontify): weak metadata, no AI tagging, can't scope search to folders",
+        "Seat-based reviewer pricing punishes growth — every external client/freelancer needs a paid seat (Ziflow); no unlimited-reviewer option",
+        "Non-technical/external reviewers find proofing tools unintuitive; notifications get spammy",
+        "Governance is usually 'lightweight brand kits + approval workflows,' not real enterprise enforcement; guidelines aren't connected to a locked-template/controlled-library system",
+        "AI output looks generic ('everyone else's Canva post') and needs a human pass; flat-PNG generators force manual re-creation",
+        "Long implementation (Frontify ~5 months) delays ROI; complex back-end UI needs training",
+        "Video review is often an afterthought bolted onto static-asset tools"
+      ],
+      "sources": [
+        "https://imagekit.io/frontify-alternatives/",
+        "https://air.inc/resources/best-dam-solutions",
+        "https://picflow.com/compare/dam/air-inc",
+        "https://www.dash.app/blog/frontify-digital-asset-management",
+        "https://www.eesel.ai/blog/canva-ai-reviews",
+        "https://aitoolanalysis.com/canva-magic-studio-review/",
+        "https://aiflowreview.com/canva-magic-studio-review/",
+        "https://medium.com/design-bootcamp/credit-limits-and-the-death-of-design-exploration-1798256671aa",
+        "https://forum.figma.com/share-your-feedback-26/figma-make-ai-credit-limits-not-feasible-51713/",
+        "https://christytuckerlearning.com/ai-images-with-consistent-style-in-midjourney/",
+        "https://printify.com/blog/midjourney-prompts/",
+        "https://www.ziflow.com/blog/ziflow-vs-filestage",
+        "https://filestage.io/blog/ziflow-alternatives/",
+        "https://www.typeface.ai/blog/content-quality-control-in-ai-marketing-enterprise-governance-and-best-practices",
+        "https://www.frontify.com/en/guide/ai-tools-for-brand-management",
+        "https://monday.com/blog/project-management/marketing-asset-management/"
+      ]
+    },
+    {
+      "stream": "brand_coherence_campaigns",
+      "key_findings": [
+        {
+          "point": "La coherencia se logra separando el 'core inmutable' del 'sistema adaptable' — no bloqueando todo",
+          "detail": "El principio operativo de las marcas de clase mundial es 'modificar cómo apareces sin cambiar quién eres'. Coca-Cola trata logo, script Spencerian, rojo y botella como 'infraestructura de largo plazo' (locked desde 1880s), mientras topics culturales, canales y ejecuciones de campaña varían libremente. Es 'nostalgia adaptativa': contemporáneo y atemporal a la vez. La distinción clave que toda pieza debe respetar: qué elementos son core (nunca cambian) vs. expresión de campaña (cambian por gancho).",
+          "source": "https://resoundcreative.com/what-138-years-of-coca-cola-teaches-about-brand-consistency/"
+        },
+        {
+          "point": "Brand guidelines != design system: uno dice 'las reglas', el otro dice 'cómo construirlo consistente cada vez'",
+          "detail": "Guidelines responden '¿cuáles son las reglas?' (color, tipografía, uso de logo across web/social/print/físico). Un design system responde '¿cómo lo construimos consistente siempre?' — componentes reutilizables, estados, tokens, comportamiento. Papandi necesita AMBOS: reglas legibles + un sistema que las aplique automáticamente a cada pieza generada. 68% de las empresas reporta que la consistencia de marca contribuye 10-20%+ al crecimiento de ingresos; identidades holísticas suben ingresos hasta 23%.",
+          "source": "https://whatifdesign.co/feeds/blog/brand-guidelines-vs-design-system"
+        },
+        {
+          "point": "Voz vs. tono: la VOZ nunca cambia, el TONO siempre cambia según contexto — y se cuantifica",
+          "detail": "Metodología concreta: destilar la voz en 3-5 adjetivos con ejemplos de qué significan en la práctica. Usar escalas numéricas (framework Nielsen Norman: Funny-Serious, Formal-Casual, Respectful-Irreverent, Enthusiastic-Matter-of-fact) para dar un perfil cuantificado tipo '80% casual, 20% formal' o '7/10 en entusiasmo'. La IA sigue reglas documentadas de forma fiable (tono, terminología, estructura) SI están fundamentadas en el sistema; falla en ironía sutil, humor y contexto cultural por segmento. Voz consistente sube retención 23% e ingresos hasta 33%.",
+          "source": "https://www.columnfivemedia.com/brand-voice-vs-tone/"
+        },
+        {
+          "point": "El 'Big Idea' / plataforma de campaña es el North Star que une ejecuciones sin importar el gancho",
+          "detail": "Un Big Idea es 'un North Star estratégico que guía la expresión creativa con claridad y consistencia — across campaigns, across years'. El truco es adaptar la idea a cada canal manteniendo un look & feel cohesivo: consistente en mensaje core, inventivo en formatos. Caso real: Johnnie Walker tenía 7 campañas con 7 ejecuciones desconectadas que no se apoyaban entre sí; se resolvió unificando bajo 'Keep Walking'. Sin plataforma creativa fuerte, las campañas se fragmentan y pierden consistencia con el tiempo.",
+          "source": "https://www.smartinsights.com/traffic-building-strategy/campaign-planning/four-steps-developing-big-idea-campaign/"
+        },
+        {
+          "point": "Atomización de contenido (hub-and-spoke): un activo core se divide en decenas de piezas coherentes",
+          "detail": "En el hub va un activo sustancial (whitepaper, webinar, keynote, research report). De ahí radian spokes: blog posts, infografías, clips de video, carruseles LinkedIn, secuencias de email. Proceso de 5 pasos: 1) identificar activo core, 2) auditar formatos derivados, 3) mapear al buyer journey (awareness/consideration/decision), 4) rollout escalonado, 5) medir y refinar. Regla de coherencia: cada derivado se RESHAPE para su canal (no republicar sin cambios) manteniendo diseño, voz y mensajes clave unificados. Atomización != repurposing: atomizar rompe en unidades autónomas más pequeñas.",
+          "source": "https://bluetext.com/blog/the-content-atomization-playbook-one-idea-dozens-of-deliverables/"
+        },
+        {
+          "point": "Governance por plantillas con regiones 'locked vs flexible' es lo que hace confiable la generación a escala",
+          "detail": "Principio: 'lock what matters, cut friction, give non-designers a safe way to create on-brand faster'. Locked = logos, fuentes, paleta, layout, disclaimers legales, bloques de mensaje aprobados. Flexible = datos personalizados, info de listing/evento, smart fields que auto-poblan de fuentes aprobadas. Tres carriles de aprobación por riesgo: alto (revisión estricta), medio (aprobación agilizada), bajo (self-serve/auto-clear). 'Las plantillas locked son lo que hace confiable la automatización — el contenido se genera a escala porque las reglas de marca ya están dentro'. Consistencia sube ingresos +20%.",
+          "source": "https://www.marq.com/blog/brand-governance/"
+        },
+        {
+          "point": "El estado del arte 2025: codificar guidelines en un 'StyleID' legible por máquina — Coca-Cola Project Fizzion",
+          "detail": "Coca-Cola + Adobe (mayo 2025): mientras los diseñadores trabajan (layouts, tipografía, decisiones en tiempo real), Fizzion 'captura la intención creativa y la codifica en un StyleID — una identidad legible por máquina que aplica reglas de marca automáticamente across formatos, plataformas y mercados'. Transforma guidelines estáticas en 'activos inteligentes y adaptativos', produciendo contenido on-brand 10x más rápido sin comprometer integridad. Modelo de gobernanza explícito: 'Designers Lead. AI Follows' — la IA aprende del diseñador, no lo reemplaza. Es exactamente la tesis de un OS de marketing con IA.",
+          "source": "https://www.coca-colacompany.com/media-center/the-coca-cola-company-introduces-fizzion"
+        },
+        {
+          "point": "El DAM (biblioteca de assets) es la infraestructura que hace posible reutilizar sin recrear",
+          "detail": "Equipos sin DAM pierden 20-30% del tiempo en tareas de assets. El DAM maximiza el ROI del contenido: en vez de recrear, se adapta y extiende lo existente. Best practices: tagging/metadata consistente para búsqueda, control de versiones que reduce inconsistencia (assets viejos reusados, trabajo duplicado, confusión de aprobación). El punto de dolor real: suben archivos sin metadata, duplican en carpetas, saltan aprobaciones → los assets se pierden y frenan campañas. El sistema solo crea valor si el equipo lo usa consistentemente (adopción es el cuello de botella real).",
+          "source": "https://stockpress.co/resources/5-best-practices-for-smart-digital-asset-management/"
+        },
+        {
+          "point": "Content pillars: 3-7 temas core que son la fuente única de la que sale TODO el contenido",
+          "detail": "Los content pillars son los temas/categorías centrales que la marca representa, alineados a audiencia y objetivos. Un solo pillar genera guía completa, serie de blogs, contenido social, scripts de video y campañas de email — todos reforzando el mismo mensaje core. Son el mecanismo estructural que garantiza que campañas distintas 'hablen del mismo mundo' aunque el gancho cambie: la coherencia temática viene de derivar todo de un set fijo de pilares, no de coordinar pieza por pieza.",
+          "source": "https://kontent.ai/blog/content-pillars/"
+        }
+      ],
+      "implications_for_papandi": [
+        "Papandi debe modelar la identidad de marca en DOS capas separadas explícitamente: (1) CORE INMUTABLE (logo, paleta, tipografía, voz-en-adjetivos, promesa) que se inyecta como guardrail en CADA pieza generada, y (2) CAPA DE CAMPAÑA/GANCHO que varía. Esto es el equivalente de 'modifica cómo apareces sin cambiar quién eres' de Coca-Cola y resuelve el problema del stream: mantener identidad sin importar el gancho.",
+        "El equivalente al 'StyleID' de Project Fizzion es la ventaja competitiva directa de Papandi: un objeto de marca legible por máquina (design tokens + reglas de voz cuantificadas + assets aprobados) que se pasa como contexto/guardrail a TODA generación. Papandi ya tiene la infraestructura conceptual (design_spec, brand guidelines por proyecto) — formalizarlo como un 'brand StyleID' inyectado en cada prompt de generación es la implementación de referencia del líder del mercado.",
+        "Adoptar el modelo 'Big Idea / plataforma de campaña' como entidad de primera clase: una campaña en Papandi no es una lista de piezas sueltas, es UNA idea rectora + N ejecuciones derivadas. El caso Johnnie Walker (7 campañas desconectadas → 'Keep Walking') es el anti-patrón que Papandi debe prevenir estructuralmente: forzar que cada pieza declare a qué Big Idea pertenece.",
+        "Cuantificar la voz (escala tipo '80% casual / 7/10 entusiasmo', framework NN/g de 4 dimensiones) en vez de solo adjetivos prosaicos. Esto es load-bearing para un OS con IA: la IA sigue reglas cuantificadas de forma fiable pero falla en ironía/humor sutil — Papandi debe capturar la voz como parámetros numéricos + ejemplos concretos (do/don't), no como texto libre, para que la generación sea reproducible.",
+        "Implementar el modelo 'locked vs flexible regions' + carriles de aprobación por riesgo en el motor de plantillas/generación. Las regiones locked (logo, disclaimers, layout) hacen CONFIABLE la generación automática; las flexibles (gancho, imagen, copy de campaña) son donde la IA opera. Los 3 carriles (alto/medio/bajo riesgo → revisión estricta / agilizada / auto-clear) definen cuándo Papandi genera-y-publica solo vs. cuándo pide aprobación humana.",
+        "Estructurar la atomización hub-and-spoke como flujo nativo: el operador crea UN activo core (o Big Idea) y Papandi genera los spokes (blog, carrusel, clips, email) reshaped por canal — NO republicando idéntico. Mapear cada spoke al buyer journey (awareness/consideration/decision) y a un content pillar fijo garantiza coherencia temática automática entre campañas.",
+        "Papandi necesita una capa DAM/biblioteca de assets reutilizables con metadata y versionado desde el diseño inicial. El dolor real del mercado (20-30% del tiempo perdido buscando assets, duplicados, versiones viejas reusadas) es precisamente lo que un OS resuelve — el reto no es tecnológico sino de ADOPCIÓN: Papandi debe hacer que reutilizar sea más fácil que recrear (Coca-Cola/Marq: 'make doing the right thing easier than doing the wrong thing').",
+        "Encuadre de mensaje comercial para EE.UU./inglés: el estado del arte que Papandi replica es literalmente 'Designers Lead. AI Follows' (Coca-Cola/Adobe). Papandi puede posicionarse como el StyleID/brand-governance-en-una-caja para PYMES que no tienen equipo de Adobe — democratizar exactamente el sistema que hoy solo tienen las marcas Fortune 500."
+      ],
+      "what_the_best_do": [
+        "Tratan la identidad visual como INFRAESTRUCTURA de largo plazo, no decoración: Coca-Cola mantiene logo/script/color/botella locked por 138 años mientras varía todo lo demás ('nostalgia adaptativa')",
+        "Separan explícitamente CORE inmutable de EXPRESIÓN adaptable — la regla operativa es 'modifica cómo apareces sin cambiar quién eres'",
+        "Anclan cada campaña a un Big Idea / plataforma creativa que actúa de North Star; adaptan a cada canal manteniendo look & feel cohesivo (consistente en mensaje, inventivo en formato)",
+        "Cuantifican la voz de marca (3-5 adjetivos + escalas numéricas tipo NN/g) para que sea reproducible por humanos Y por IA",
+        "Codifican las guidelines en sistemas legibles por máquina (Project Fizzion / StyleID) que aplican reglas automáticamente across formatos, plataformas y mercados — 10x más rápido, on-brand por construcción",
+        "Usan atomización hub-and-spoke: un activo core → decenas de derivados reshaped por canal, mapeados al buyer journey",
+        "Derivan todo el contenido de un set fijo de 3-7 content pillars, garantizando coherencia temática entre campañas distintas",
+        "Operan governance por plantillas con regiones locked (logo/legal/layout) vs flexible (personalización), con carriles de aprobación por nivel de riesgo",
+        "Centralizan assets en un DAM con metadata y versionado para reutilizar en vez de recrear (evitando el 20-30% de tiempo perdido)",
+        "Aplican el modelo 'Designers Lead, AI Follows': la IA aprende del criterio humano y lo escala, no lo reemplaza"
+      ],
+      "gaps_or_complaints": [
+        "Punto de dolor real recurrente en DAM/governance: la ADOPCIÓN es el cuello de botella, no la tecnología — equipos suben archivos sin metadata, duplican en carpetas, saltan aprobaciones, y terminan bypasseando el sistema cuando la aprobación es lenta. Cualquier sistema (incluido Papandi) muere si crear on-brand no es más fácil que la alternativa.",
+        "La IA es fiable siguiendo reglas documentadas (tono, terminología, estructura) pero NO fiable en ironía sutil, humor, contexto cultural por segmento y la calibración emocional que hace que el thought leadership 'suene a persona real'. Papandi no debe prometer voz perfecta 100% automática — necesita el humano en el loop para estas capas.",
+        "No pude acceder a discusiones directas de Reddit (r/marketing) — el fetch de reddit.com fue bloqueado y las búsquedas devolvieron guías de vendors en vez de quejas crudas de practitioners. Las quejas reportadas vienen filtradas por fuentes de vendors (DAM/governance), que tienen sesgo de venta; conviene validar con foros reales antes de tratar como verdad dura.",
+        "Riesgo de erosión de marca citado por Marq: aprobaciones lentas hacen que los equipos 'bypasseen el sistema por completo', reintroduciendo logos viejos e imágenes no aprobadas. El carril de auto-clear debe ser lo bastante generoso para que valga la pena usar el sistema.",
+        "Varias cifras de impacto (consistencia sube ingresos +20/23/33%, retención +23%) provienen de blogs de vendors (Marq, Column Five, etc.) que las citan sin encadenar a la fuente primaria; tratar como direccionales, no como dato duro verificado."
+      ],
+      "sources": [
+        "https://whatifdesign.co/feeds/blog/brand-guidelines-vs-design-system",
+        "https://bluetext.com/blog/the-content-atomization-playbook-one-idea-dozens-of-deliverables/",
+        "https://www.columnfivemedia.com/brand-voice-vs-tone/",
+        "https://www.smartinsights.com/traffic-building-strategy/campaign-planning/four-steps-developing-big-idea-campaign/",
+        "https://resoundcreative.com/what-138-years-of-coca-cola-teaches-about-brand-consistency/",
+        "https://www.coca-colacompany.com/media-center/the-coca-cola-company-introduces-fizzion",
+        "https://business.adobe.com/blog/adobe-and-coca-cola-co-innovate-on-project-fizzion",
+        "https://www.fastcompany.com/91334830/project-fizzion-coca-cola-ai-copilot-adobe",
+        "https://www.marq.com/blog/brand-governance/",
+        "https://stockpress.co/resources/5-best-practices-for-smart-digital-asset-management/",
+        "https://kontent.ai/blog/content-pillars/",
+        "https://www.frontify.com/en/guide/ai-for-brand-management",
+        "https://www.adsoftheworld.com/campaigns/designers-lead-ai-follows"
+      ]
+    },
+    {
+      "stream": "best_agencies",
+      "key_findings": [
+        {
+          "point": "El mundo tiene dos podios distintos: el creativo y el AI-native. No los confundas.",
+          "detail": "En 2025 los rankings creativos los lideran Le Pub (Milan), Serviceplan (Munich) y Publicis Conseil (Paris) por agencia individual; Ogilvy, DDB y VML por red. Wieden+Kennedy fue Agency of the Year de Ad Age Y Global Agency of the Year de Adweek; Mischief fue U.S. Agency of the Year de Adweek en 2023 y 2025. Ninguna de estas ganó por tecnologia: ganan por trabajo culturalmente potente y efectividad probada. El podio AI-native es economico, no de premios.",
+          "source": "https://www.statista.com/statistics/492041/gunn-report-most-creative-agencies/"
+        },
+        {
+          "point": "El diferenciador #1 de las mejores es RIGOR estrategico que da permiso para arriesgar, no la ejecucion.",
+          "detail": "Mischief: 'Our rigor gives us permission to be crazy' — ganan Effie y WARC de efectividad Y son las mas atrevidas. W+K: 'Fail Harder', reaccionan a la cultura no a la logistica, 'take action first, ads second', juegan el juego largo (evolucion de marca vs. moda de TikTok). El patron es identico: base analitica dura debajo, audacia arriba. El promedio invierte el orden — ejecuta rapido sin insight, o arriesga sin fundamento.",
+          "source": "https://adage.com/events-awards/a-list-creativity/aa-mischief-2026/"
+        },
+        {
+          "point": "El brief es el punto de falla mas caro de la industria, y casi nadie lo hace bien.",
+          "detail": "Estudio IPA/BetterBriefs (1,700+ profesionales, 70+ paises): 33% del presupuesto de marketing se desperdicia por briefs pobres. 80% de marketers creen que escriben buenos briefs; solo 10% de agencias coinciden. En direccion estrategica: 78% de marketers dicen que su brief es claro, solo 5% de agencias coinciden. 69-73% coinciden en que los re-briefs pasan demasiado. Un buen brief exige 'pensamiento reductivo': todo lo que necesitas y nada mas, un solo insight diferenciador del que cascada todo.",
+          "source": "https://ipa.co.uk/news/betterbriefs"
+        },
+        {
+          "point": "Los tres pilares historicos de valor de agencia (acceso, expertise, ejecucion) se estan erosionando estructuralmente.",
+          "detail": "Acceso a inventario de medios lo automatizan las plataformas; expertise de canal lo replican equipos in-house con IA; ejecucion a escala pierde su ventaja de costo-labor por la economia de automatizacion. Forrester: 47% de CMOs dicen que las plataformas de agencia fallan en automatizacion con IA; 32% las ven intercambiables — amenaza directa al poder de precio. El gasto se concentra en Alphabet/Amazon/Meta, reduciendo el rol coordinador de la agencia.",
+          "source": "https://star.global/posts/ai-impact-on-advertising-agencies-growth-model/"
+        },
+        {
+          "point": "El playbook AI-native tiene metricas duras: el PMF real es 'la IA hace una parte material del trabajo a alto margen bruto', no revenue ni retencion.",
+          "detail": "Emergence Capital: revenue per employee (RPE) es 'el test mas simple de si la IA de verdad hace el trabajo a escala' — si no es mayor que un proveedor legacy, la IA no da leverage. AINS puede lograr 5-10x en velocidad/throughput con 50%+ de margen bruto owning el full stack. Senal de fracaso ('mirage PMF'): margenes planos, entrega humana-pesada, trabajo bespoke que crece con cada cliente. Crosby Law mide 'HURT' (minutos de revision humana por documento); mientras HURT tiende a cero, el margen tiende a software.",
+          "source": "https://www.emcap.com/thoughts/the-ai-native-services-playbook"
+        },
+        {
+          "point": "La productizacion viene del PATRON, no del dia uno: los operadores AI-native descubren la regla al escalar.",
+          "detail": "Emergence: 'empezamos a ver patrones al llegar a ~80 clientes. Antes no sabiamos que preferencias de cliente eran reglas y cuales excepciones.' Estrategia: construir custom primero (genera revenue y revela problemas comunes), luego productizar cuando emergen patrones — 'tu decimo agente de agendamiento de salud se vuelve un producto estandar con customizacion minima.' Disciplina critica: enfocarse en 1-2 jobs-to-be-done; la amplitud es 'el camino mas rapido a mirage PMF'.",
+          "source": "https://www.emcap.com/thoughts/the-ai-native-services-playbook"
+        },
+        {
+          "point": "El modelo economico AI-native abandona horas facturables por outcomes/suscripcion/creditos.",
+          "detail": "El shift es de precio labor-based a outcome-based anclado a revenue/profit/retencion/lead-quality. Modelos de creditos funcionan para trabajo continuo variable (normaliza tareas de distinto tamano, ata precio a output no a horas). Emergencia de 'stickiness fabricada' via software leave-behind cuando la relacion no es naturalmente recurrente. Caso solo real: un operador corre 12 retainers a $750-1,000 con <$500/mes en herramientas, produciendo el equivalente de un equipo pequeno.",
+          "source": "https://www.unkoa.com/one-person-agency-10x-output-how-solo-marketers-use-ai-to-scale-in-2025/"
+        },
+        {
+          "point": "El data flywheel es el foso: cada engagement debe mejorar la IA, acelerar la entrega y hacer el outcome mas predecible.",
+          "detail": "Emergence: 'cada lead, llamada, email y poliza genera data que alimenta su IA' (caso Harper). Cuando la empresa 'se vuelve la capa de infraestructura, no solo la capa de servicio', los switching costs suben dramaticamente (system-of-record). Este es el mecanismo por el que un AI-native supera a una agencia tradicional: no vende output una vez, compone ventaja con cada corrida.",
+          "source": "https://www.emcap.com/thoughts/the-ai-native-services-playbook"
+        },
+        {
+          "point": "Trabajo nativo del contexto (community-native) le gana a copy generico — verificado con numeros crudos.",
+          "detail": "Comparativo real de Reddit marketing: agencia mediocre logro 80 upvotes antes de estancarse y un post removido por moderadores por 'demasiado promocional'; agencias que entienden el contexto lograron 540/320/210 upvotes con posts vivos y comentarios positivos. La leccion transversal: la calidad no viene del presupuesto sino de entender las normas del canal/comunidad y producir algo que se siente nativo.",
+          "source": "https://www.indiehackers.com/post/best-reddit-marketing-agency-2026-i-hired-10-agencies-and-3-understood-how-reddit-actually-works-27305ad351"
+        },
+        {
+          "point": "Los criterios de evaluacion 2026 pesan mas la MADUREZ OPERATIVA: adaptar creativo por plataforma, sostener calidad a volumen y plazos.",
+          "detail": "Los mejores tienen 'always-on capacity' para entregar creativo rapido y a escala; velocidad y escalabilidad ahora pesan tanto como la calidad. IDEO/design-thinking aporta el rigor del proceso: tres fases (Inspiracion, Ideacion, Implementacion), human-centered ('empieza con las personas, termina con soluciones'), iterativo y de aprender-haciendo. Advertencia: perseguir premios temprano produce trabajo para jurados, no para clientes — 'a short-term play that catches up with you'.",
+          "source": "https://www.superside.com/blog/ad-creative-agencies"
+        }
+      ],
+      "what_the_best_do": [
+        "Ponen RIGOR estrategico debajo de la audacia: base analitica dura primero, ideas atrevidas despues (Mischief: 'el rigor nos da permiso para estar locos'; W+K: 'Fail Harder' pero jugando el juego largo).",
+        "Destilan a UN insight diferenciador y practican 'pensamiento reductivo' en el brief — todo lo que necesitas, nada mas — porque el brief es donde se desperdicia el 33% del presupuesto de la industria.",
+        "Reaccionan a la cultura, no a la logistica: 'action first, ads second'; el trabajo entra en la conversacion en vez de solo comprar alcance.",
+        "Miden efectividad, no solo premios (Mischief gana Effie/WARC); tratan los premios como subproducto del buen trabajo, no como el objetivo.",
+        "Sostienen calidad a volumen: capacidad always-on, adaptan creativo por plataforma, maduran su operacion para manejar plazos y complejidad de produccion.",
+        "Los AI-native colapsan software+servicio en un solo sistema, poseen el full stack y persiguen 50%+ de margen bruto con 5-10x de velocidad.",
+        "Productizan del PATRON (no del dia uno): custom primero, estandarizan cuando emergen las reglas al escalar; se enfocan en 1-2 jobs-to-be-done.",
+        "Construyen un data flywheel: cada engagement mejora la IA y hace la entrega mas rapida y predecible; se vuelven capa de infraestructura, no solo de servicio."
+      ],
+      "implications_for_papandi": [
+        "El diferenciador defendible de Papandi NO es 'IA que produce rapido' (eso se commoditiza) sino el RIGOR ESTRATEGICO codificado: si Papandi obliga a un insight unico y a un brief reductivo antes de generar cualquier pieza, replica exactamente lo que separa a Mischief/W+K del promedio. La doctrina de 'oferta por lo que HACE cada pieza' (memoria papandi-oferta-funcionalidad) y 'entregable accionable' ya apunta ahi — reforzarlo con un gate de brief.",
+        "El brief es el punto de mayor apalancamiento del producto. Dado que 33% del presupuesto se pierde ahi y agencias/marketers no coinciden en que es un buen brief, un modulo de Papandi que produzca un brief de calidad-agencia (un insight, direccion estrategica clara, lenguaje conciso) es un wedge diferenciable y medible. Es el eslabon entre la Inteligencia Temporal y el Estudio de Produccion.",
+        "Papandi debe medirse por RPE-equivalente y 'HURT' (minutos de revision humana del operador por pieza), no por volumen de output. El caso de exito es 'la IA hace una parte material a alto margen'; instrumentar cuanto tiene que corregir el operador por pieza es la metrica de PMF real (encaja con el ledger de costo por llamada en project_llm_calls).",
+        "Construir el data flywheel explicitamente: cada corrida (keyword research, pieza, calendario) debe mejorar el contexto del proyecto para la siguiente. Papandi ya tiene la infraestructura (buckets/projects/lessons/embeddings); el mensaje de producto y el diseno deben hacer que cada engagement componga ventaja, no solo entregue output una vez.",
+        "Productizar del patron, no del dia uno: no intentar cubrir todo desde el inicio. Enfocarse en 1-2 jobs-to-be-done (ej. oferta por funcionalidad + fase 2 por avatar ya son ese foco), correr con clientes reales, y estandarizar recetas cuando emerjan las reglas — la 'amplitud' es el camino mas rapido al fracaso segun el playbook AI-native.",
+        "Ser context-native, no generico: el ejemplo de Reddit (80 vs 540 upvotes) valida que la ventaja esta en entender las normas del canal/comunidad. Para el mercado US/ingles primario (memoria papandi-language-strategy), el output debe sentirse nativo del canal y del avatar, no traducido — refuerza la decision de traducir UI al final pero pensar el copy en ingles nativo.",
+        "Posicionar el modelo economico lejos de horas: outcomes/suscripcion/creditos, no facturacion por hora. El tope MEDIA_BUDGET_USD y el ledger por project_id ya empujan a un modelo de creditos/consumo; alinear el pricing de Papandi con eso lo diferencia de agencias tradicionales atrapadas en billable-hours.",
+        "Mantener el 'glass-box': los mejores hacen trabajo culturalmente potente Y prueban efectividad. Papandi debe mostrar el QUE HACER accionable (memoria papandi-entregable-accionable) manteniendo visible el rigor detras — el rigor es lo que da permiso para arriesgar y lo que un cliente paga sobre una herramienta generica."
+      ],
+      "gaps_or_complaints": [
+        "Muchos 'rankings' de agencias (Superside, inBeat, todaymade) son listicles de vendors con sesgo comercial; prioricé Statista/Gunn, Ad Age, Adweek, IPA y Emergence Capital que son mas autoritativos.",
+        "El caso del operador solo ($750-1k x 12 retainers, <$500/mes) viene de un blog (Unkoa/Medium) sin auditoria independiente — tratarlo como ilustrativo, no como benchmark verificado.",
+        "Las cifras de productividad AI-native (70-80% de operaciones automatizadas, 150-300% de ganancia) provienen de fuentes con interes en vender la narrativa; el playbook de Emergence Capital es mas creible porque advierte explicitamente del 'mirage PMF'.",
+        "No encontré un desglose publico y verificado del PROCESO interno paso-a-paso de W+K o Mischief (esas metodologias son propietarias); los principios citados vienen de entrevistas de prensa, no de documentacion operativa.",
+        "Faltaria research primario en foros de practicantes (r/agency, r/advertising) sobre fricciones reales de adoptar IA — las busquedas de Reddit devolvieron principalmente contenido de Reddit-marketing, no de operacion de agencia."
+      ],
+      "sources": [
+        "https://www.statista.com/statistics/492041/gunn-report-most-creative-agencies/",
+        "https://www.adweek.com/agencies/wieden-kennedy-adweek-2025-global-agency-of-the-year/",
+        "https://adage.com/events-awards/a-list-creativity/aa-mischief-2026/",
+        "https://www.adweek.com/agencies/mischief-no-fixed-address-adweek-2025-us-agency-of-the-year/",
+        "https://ipa.co.uk/news/betterbriefs",
+        "https://www.thedrum.com/news/2021/10/18/research-reveals-major-gap-between-client-and-agency-perception-briefing-process",
+        "https://star.global/posts/ai-impact-on-advertising-agencies-growth-model/",
+        "https://www.emcap.com/thoughts/the-ai-native-services-playbook",
+        "https://www.unkoa.com/one-person-agency-10x-output-how-solo-marketers-use-ai-to-scale-in-2025/",
+        "https://www.indiehackers.com/post/best-reddit-marketing-agency-2026-i-hired-10-agencies-and-3-understood-how-reddit-actually-works-27305ad351",
+        "https://designthinking.ideo.com/",
+        "https://www.superside.com/blog/ad-creative-agencies"
+      ]
+    },
+    {
+      "stream": "business_model_global",
+      "key_findings": [
+        {
+          "point": "El precio por asiento (per-seat) está colapsando en herramientas de IA; ganan hibrido, creditos y usage-based",
+          "detail": "Entre las top 500 empresas de IA/SaaS, el modelo per-seat cayó de 21% a 15% en 12 meses mientras el hibrido subió de 27% a 41%. Los modelos de creditos crecieron 126% interanual en 2025 — fueron LA innovacion de pricing del año. Razon estructural: si una IA reemplaza el trabajo de varios analistas con un agente, cobrar 'por cabeza' deja de reflejar el valor. Bain: ~65% de 30+ vendors SaaS que lanzaron GenAI adoptaron hibrido.",
+          "source": "getmonetizely.com / flexera.com / bvp.com"
+        },
+        {
+          "point": "El outcome-based pricing (cobrar por resultado) suena ideal pero es viable solo para el 5-10% de empresas de IA",
+          "detail": "Intercom Fin cobra $0.99 por ticket resuelto y generó decenas de millones en un año. PERO: la atribucion limpia es prerequisito y casi nunca existe cuando el resultado es co-producido con el cliente (IA genera lead, humano cierra: ¿qué cobras?). Tasas de completado de agentes: 50-60% en tareas complejas — 40-50% de interacciones consumen compute y no generan ingreso bajo outcome puro. Genera 'impuesto administrativo' de reuniones de reconciliacion para validar facturas. Consenso: la mayoria termina en el espectro usage-based aunque su marketing diga 'outcome'.",
+          "source": "bvp.com / getmonetizely.com / drivetrain.ai / forbes.com (Parloa)"
+        },
+        {
+          "point": "Margenes de IA son 50-60% vs 80-90% de SaaS clasico — el pricing debe cubrir compute",
+          "detail": "El costo de compute material hace que la disciplina de pricing sea existencial. El 'ROI blando' (copilots que solo dan consejos) 'mata la disposicion a pagar' de cara a las renovaciones 2026. Consumption puro (por token/API call) funciona solo para compradores tecnicos: los usuarios 'no se despiertan pensando en tokens' y 'se vuelven reacios a usar el producto' cuando se les cobra asi.",
+          "source": "bvp.com"
+        },
+        {
+          "point": "Los productos de IA baratos tienen churn brutal: bajo $50/mes retienen solo 23% de ingreso a 12 meses",
+          "detail": "Gross Revenue Retention por precio: IA <$50/mes = 23% GRR (se pierde 3/4 del ingreso en un año); $50-249 = 45%; >$250 = 70% (patron de SaaS tradicional). SaaS B2B tradicional mediana = 63%. 'La maldicion del AI wrapper': si no entregas valor medible por encima de alternativas gratis como ChatGPT, el usuario cancela en su primer ciclo de uso. Precio mas alto + workflow critico = retencion sana.",
+          "source": "userpilot.com/blog/customer-churn"
+        },
+        {
+          "point": "Las 7 causas reales de churn en IA: la activacion es la unica palanca que escala",
+          "detail": "(1) segmento de cliente equivocado, (2) sobreventa que crea expectativas incumplidas, (3) activacion fallida (no se llegó a un resultado concreto), (4) nunca adoptaron features/integraciones pegajosas, (5) adopcion de un solo caso de uso con vida util de 'proyecto', (6) descubrimiento limitado (el cliente solo ve ~30% de las features), (7) el que renueva no puede justificar el gasto. 'Prompts son portables, la data es facil de mover' — se elimina el lock-in tradicional. El tiempo-a-valor-concreto determina la retencion mas que cualquier otra cosa.",
+          "source": "userpilot.com/blog/customer-churn"
+        },
+        {
+          "point": "Churn general SaaS: 44% cancela porque NO puede lograr su objetivo; el uso cae 41% el trimestre antes de cancelar",
+          "detail": "44% de los que se van no pudieron lograr su meta. Mala onboarding = 40-60% de drop-off tras signup y >20% del churn voluntario. Usuarios que adoptan 3+ features core tienen 40% mas retencion (70% mas a 12 meses). Señal temprana: el uso del producto cae 41% en promedio el trimestre previo a cancelar — detectable semanas antes si hay instrumentacion.",
+          "source": "shno.co / saasultra.com / userlens.io"
+        },
+        {
+          "point": "Quejas concretas de usuarios de Jasper/Copy.ai: output generico, tono 'sobre-entusiasta', necesidad de fact-check, y facturacion turbia",
+          "detail": "Reseñas reales reportan: salida generica/repetitiva que requiere edicion fuerte, preocupacion por deteccion de IA y SEO, tono demasiado entusiasta, necesidad de verificar afirmaciones antes de publicar, y (Jasper) practicas de facturacion 'que rozan lo fraudulento' con cobros tras intentar cancelar el trial. Reddit sobre Copy.ai: 'texto crudo de IA es generico, facil de encontrar, no se queda arriba mucho tiempo' — no gana SEO por si solo. El 'premium' de Jasper (brand voice, agentes, campañas, colaboracion) es dificil de justificar si solo necesitas drafts ocasionales.",
+          "source": "trustpilot.com/review/www.jasper.ai / copy.ai / eyesift.com / deeperinsights.com"
+        },
+        {
+          "point": "Brand safety: la responsabilidad legal del output de IA recae en el ANUNCIANTE, no en la herramienta",
+          "detail": "Los reguladores dejaron claro que la responsabilidad por outputs de IA es del anunciante (precedente: caso del chatbot de Air Canada — la empresa respondió por lo que dijo su IA). 53% de expertos de medios en EE.UU. dicen que tener anuncios cerca de contenido GenAI es un reto top de 2026; ~100% ve riesgo de brand-safety/misinformation. IAB publicó su primer AI Transparency & Disclosure Framework (enero 2026) con disclosures al consumidor + metadata legible por maquina via estandar C2PA.",
+          "source": "emarketer.com / adexchanger.com / forbes.com"
+        },
+        {
+          "point": "Cumplimiento: patchwork de leyes estatales US + EU AI Act (etiquetado obligatorio ago 2026) + reglas de plataforma",
+          "detail": "EU AI Act exige etiquetar contenido 'significativamente generado por IA' desde 2-ago-2026, con disclosure visible + metadata legible por maquina. NY aprobó (jun 2025) el Synthetic Performer Disclosure Bill (obliga a revelar 'talento' generado por IA en anuncios). Meta, TikTok exigen que el usuario etiquete contenido foto-realista generado/alterado por IA. Etiquetas aceptables: 'AI-generated content', 'This image was created using artificial intelligence'.",
+          "source": "pandectes.io / adexchanger.com / bloomberglaw.com"
+        },
+        {
+          "point": "Medicion/atribucion: el contenido SI genera ingreso pero solo 36% puede medirlo y 74% de empresas aun no ve ROI de su IA",
+          "detail": "Mas de la mitad de marketers B2B atribuyen ventas/ingreso directamente al content marketing; marcas exitosas logran retornos mediana 4.33:1; startups SaaS muestran 200-500% de ROI de contenido a 12 meses. PERO solo 36% de marketers puede medir con precision el ROI de contenido y 74% de empresas aun no muestra ROI real de su uso de IA. Modelos de atribucion data-driven mejoran ROI 15-20%. Ganancia de eficiencia tipica: crear contenido baja de 10h a 2h.",
+          "source": "genesysgrowth.com / thegutenberg.com / digitalapplied.com / business.google.com"
+        },
+        {
+          "point": "Localizacion: traducir NO basta — la transcreacion (recrear el mensaje) es lo que preserva intencion, tono y emocion",
+          "detail": "Traduccion = precision linguistica; localizacion = adaptar formatos, moneda, unidades, elementos visuales, cumplimiento; transcreacion = recrear el mensaje desde cero para evocar la MISMA respuesta emocional. La IA (NMT/redes neuronales) sigue cometiendo errores de significado que dañan reputacion y confianza; 'no entiende matiz cultural, señales emocionales ni contexto local — cuando faltan, el engagement cae, la confianza se erosiona y el contenido se siente generico'. Hablantes nativos captan connotaciones, dobles sentidos y referencias que la IA pierde.",
+          "source": "1stopasia.com / veracontent.com / lokalise.com / localizejs.com"
+        },
+        {
+          "point": "El modelo ganador de localizacion global es hibrido: IA para velocidad/consistencia + humano para matiz cultural",
+          "detail": "El flujo mas efectivo usa IA para acelerar y mantener consistencia terminologica, y linguistas humanos para revision final, matiz cultural y transcreacion. La IA no iguala la sutileza, creatividad e inteligencia emocional del humano — pero combinar escala de IA con criterio humano crea contenido que resuena globalmente. Errores de traduccion automatica son una causa documentada de fallos de marca en expansion global.",
+          "source": "phrase.com / 1stopasia.com / localizejs.com"
+        }
+      ],
+      "implications_for_papandi": [
+        "Precio: NO cobrar por asiento como default. Para el mercado US, un hibrido (base mensual predecible + creditos por generacion de assets/campañas) es lo mas alineado con como se compra la IA hoy y protege el margen (recuerda: IA = 50-60% margen, no 80-90%). Evitar el segmento <$50/mes como oferta central: retiene solo 23% del ingreso a 12 meses. Empujar planes anuales (mejora NRR 10-20 puntos).",
+        "Anclar precio a OUTCOME solo donde Papandi pueda demostrar atribucion limpia (p.ej. un asset publicado que Papandi generó de punta a punta). No prometer outcome puro donde el resultado sea co-producido con el cliente — cae en la trampa de atribucion y reuniones de reconciliacion. Es la misma leccion que ya vive en memoria: 'el unico candado es el margen' y 'mostrar que HACE cada pieza'.",
+        "Activacion es la unica palanca de churn que escala: el onboarding de Papandi debe llevar al usuario a UN resultado concreto y publicable en la primera sesion. Instrumentar la caida de uso (señal -41% pre-churn) y empujar la adopcion de 3+ features core (integraciones, brand voice, calendario) porque el uso de un solo caso = vida util de 'proyecto' y cancelacion.",
+        "Anti-'AI wrapper': Papandi debe entregar valor medible por encima de ChatGPT crudo o cancelan en el primer ciclo. El OS completo (investigacion + estudio de produccion + calendario + inteligencia temporal + gateway) es exactamente el 'workflow layer' pegajoso que Jasper cobra premium — pero solo retiene si el usuario lo usa, no solo lo tiene.",
+        "Combatir las quejas documentadas de Jasper/Copy.ai por diseño: output generico y tono 'sobre-entusiasta' son la queja #1. El entregable accionable de Papandi (mostrar QUE HACER + el prompt exacto que el usuario pega) ya ataca esto; reforzar con brand voice real y evitar fact-check obligatorio integrando la investigacion (DataForSEO) al output.",
+        "Brand-safety como feature, no afterthought: como la responsabilidad legal recae en el ANUNCIANTE (cliente de Papandi), Papandi debe generar disclosures de IA automaticos (C2PA/metadata + etiqueta visible) y avisos de cumplimiento por plataforma (Meta/TikTok) y por jurisdiccion. De cara a la expansion, el EU AI Act obliga etiquetado desde ago-2026 — construirlo ahora es ventaja competitiva.",
+        "Medicion es el gap del mercado (solo 36% puede medir ROI; 74% no ve ROI de su IA): si Papandi cierra el loop de atribucion (asset -> engagement -> pipeline/ingreso) se diferencia de todos los generadores de contenido. Esto tambien habilita el pricing por outcome de forma creible y da al 'que renueva' la justificacion de gasto que hoy le falta (causa #7 de churn).",
+        "Expansion global: NO vender 'traduccion'. Papandi debe posicionar transcreacion/localizacion cultural (adaptar formatos, moneda, visuales, y recrear el mensaje por locale) — coherente con la estrategia ya en memoria (back en ingles, salida por locale, traducir UI al final). El modelo tecnico ganador es hibrido: IA para velocidad/consistencia + revision humana o QA cultural para matiz. Un 'modo transcreacion' con checkpoint humano evita los errores de significado que dañan marcas en expansion."
+      ],
+      "what_the_best_do": [
+        "Intercom (Fin): outcome-based a $0.99/resolucion — funciona porque el resultado (ticket resuelto) es atribuible a la IA de forma limpia y binaria.",
+        "Hybrid como estandar de facto (~65% de vendors SaaS con GenAI segun Bain): base predecible + creditos/usage para features de IA.",
+        "Ganadores de retencion: apuntan a segmentos de alto valor donde el workflow es mission-critical, hacen onboarding high-touch, 'land sharp expand later' (scope inicial estrecho para no crear brechas de expectativa), aceleran el descubrimiento de features con guias in-app, y empujan planes anuales.",
+        "Localizacion best-in-class: flujo hibrido IA+humano — IA para velocidad y consistencia terminologica, linguista humano para transcreacion y QA cultural final.",
+        "Brand-safety: adoptan el IAB AI Transparency Framework (ene 2026) con disclosures al consumidor + metadata C2PA legible por maquina, y hacen del compliance parte del workflow creativo (tools aprobados, revisor asignado, reglas de disclosure)."
+      ],
+      "gaps_or_complaints": [
+        "Muchas cifras de pricing provienen de blogs de consultoras/vendors (getmonetizely, flexera, chargebee); el dato de Bain (~65% hibrido) es la fuente mas dura pero fue citada de segunda mano, no leida en el reporte original de Bain.",
+        "Las estadisticas de GRR por precio (23%/45%/70%) vienen de un solo articulo (Userpilot) y no pude verificar su muestra o metodologia — usar como direccional, no como verdad absoluta.",
+        "Las quejas de Jasper/Copy.ai provienen de agregadores de reseñas (Trustpilot, G2 via terceros) y de Reddit citado indirectamente; no abri hilos crudos de Reddit por limite de tiempo — recomiendo una pasada dedicada a r/marketing, r/SaaS y r/artificial para churn real de usuarios.",
+        "Las cifras de ROI de contenido (4.33:1, 200-500%) provienen de blogs de marketing y probablemente tienen sesgo optimista de la industria; el contrapunto (solo 36% mide ROI, 74% sin ROI de IA) es mas creible como estado real del mercado.",
+        "Falta data cuantitativa dura del tamaño de mercado de localizacion/transcreacion y de cuanto pagan los clientes por adaptacion cultural vs traduccion — no se cubrio en esta ronda."
+      ],
+      "sources": [
+        "https://www.getmonetizely.com/blogs/the-2026-guide-to-saas-ai-and-agentic-pricing-models",
+        "https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook",
+        "https://www.flexera.com/blog/saas-management/from-seats-to-consumption-why-saas-pricing-has-entered-its-hybrid-era/",
+        "https://www.mindstudio.ai/blog/saas-pricing-ai-agent-era",
+        "https://userpilot.com/blog/customer-churn/",
+        "https://www.saasultra.com/saas-churn-rate-statistics-benchmarks/",
+        "https://www.shno.co/marketing-statistics/saas-onboarding-statistics",
+        "https://userlens.io/blog/impact-of-onboarding-on-saas-retention",
+        "https://www.trustpilot.com/review/www.jasper.ai",
+        "https://www.copy.ai/go-to-market-tools/jasper-review",
+        "https://www.eyesift.com/blog/jasper-ai-review/",
+        "https://deeperinsights.com/ai-review/copy-ai-review-pros-cons-and-features/",
+        "https://www.emarketer.com/content/faq-on-brand-safety--how-ai-content-creator-marketing-reshaping-risk-2026",
+        "https://pandectes.io/blog/labeling-ai-generated-content-what-the-new-rules-require/",
+        "https://www.adexchanger.com/data-driven-thinking/ai-disclosure-requirements-navigating-state-laws-and-platform-rules/",
+        "https://www.bloomberglaw.com/external/document/XBLNMJMK000000/copyrights-professional-perspective-ai-advertising-the-right-of-",
+        "https://business.google.com/us/think/measurement/roi-and-ai-powered-measurement/",
+        "https://www.thegutenberg.com/blog/ai-content-roi-how-to-turn-ai-content-into-measurable-marketing-outcomes/",
+        "https://genesysgrowth.com/blog/content-marketing-roi-stats-for-marketing-leaders",
+        "https://www.digitalapplied.com/blog/measuring-ai-marketing-roi-framework-guide",
+        "https://www.1stopasia.com/blog/beyond-translation-how-ai-is-transforming-transcreation-and-cultural-adaptation/",
+        "https://veracontent.com/mix/cultural-adaptation-in-localization/",
+        "https://phrase.com/blog/posts/ai-driven-translation-global-content-marketing/",
+        "https://lokalise.com/blog/transcreation-vs-localization/",
+        "https://localizejs.com/articles/ai-translation-software-what-top-global-companies-got-wrong-and-how-to-fix-it",
+        "https://www.getmonetizely.com/articles/why-outcome-based-ai-pricing-models-are-gaining-traction-and-their-hidden-pitfalls",
+        "https://www.drivetrain.ai/post/outcome-based-pricing",
+        "https://www.forbes.com/sites/parloa/2026/01/06/outcome-based-pricing-the-most-expensive-myth-in-enterprise-ai/"
+      ]
+    }
+  ],
+  "critique": {
+    "missing": [
+      "NO HAY DATOS DE DISPOSICIÓN A PAGAR NI TAMAÑO DE MERCADO PARA EL SEGMENTO REAL DE PAPANDI. Todos los hallazgos son sobre expectativas y quejas, pero cero sobre cuánto pagaría un solopreneur/SMB hispanohablante-que-vende-en-EEUU específicamente, cuántos hay, ni su CAC. El ancla de precio ($15-49/mes) se deriva de competidores, no de willingness-to-pay medido del ICP. Sin esto no se puede decidir scope ni modelo de negocio.",
+      "FALTA DEFINICIÓN DEL ICP Y DEL 'JOB' PRIMARIO. Los streams mezclan tres compradores incompatibles (consumidor final que desconfía de la IA, marketer B2B enterprise, agencia, solopreneur) y extrapolan a Papandi como si fueran uno. No se investigó quién es exactamente el usuario de Papandi ni cuál es su Job-To-Be-Done #1 vs. nice-to-have. Todo el scoping cuelga de esto.",
+      "CERO VOZ CRUDA DEL COMPRADOR OBJETIVO. Los propios autores admiten (3 de 5 streams) que no pudieron acceder a Reddit/foros y sintetizaron quejas desde blogs de vendors. No hay una sola entrevista, encuesta propia ni post verbatim del cliente real de Papandi. Toda la sección 'lo que odian' es consenso inferido, no evidencia primaria.",
+      "NO HAY ANÁLISIS DE COSTO UNITARIO NI MÁRGENES DE PAPANDI. El stream best_agencies dice que el PMF real de un AI-native es 'la IA hace el trabajo a alto margen bruto (50%+)' medido por RPE/HURT, pero NADIE calculó el costo de generación por deliverable de Papandi vs. lo que puede cobrar. Con precios de media ($0.40/s de video Veo, etc.) y un tope de $20, hay que verificar si el modelo 'no cobrar por regeneración' que recomiendan es siquiera viable económicamente. Es una contradicción latente sin resolver.",
+      "FALTA EVIDENCIA DE RETENCIÓN / CHURN, NO SOLO DE ADQUISICIÓN. Todo el research es sobre por qué compran y qué esperan; nada sobre por qué se van ni cuánto duran los usuarios en estas herramientas. Para un SaaS de suscripción el churn define la viabilidad más que la adquisición, y no hay ni un dato.",
+      "NO SE DIMENSIONA EL RIESGO REGULATORIO/LEGAL DEL DISCLOSURE DE IA. El stream buyer_expectations dice que 80-91% quiere etiquetado de IA y que el etiquetado penaliza la calidad percibida — pero no se investigó si hay obligación legal (EU AI Act, FTC, etc.) de etiquetar, lo cual convierte una decisión de producto en un requisito no negociable. Hueco crítico para el scope.",
+      "FALTA VALIDACIÓN DE LA TESIS CENTRAL 'CEREBRO/OS DE ESTRATEGIA'. El pitch de 'capa de cerebro que ninguna herramienta de ejecución tiene' se afirma como espacio en blanco, pero no hay evidencia de que los usuarios QUIERAN pagar por estrategia (vs. ejecución barata). Icon.com se cita como validación ('AI CMO'), pero Icon vende ejecución de ads a $39, no estrategia — es evidencia débil o contraria a la tesis, no a favor.",
+      "NO HAY DATOS DE INTEGRACIÓN/DISTRIBUCIÓN. Los competidores ganan por estar dentro de ecosistemas (HubSpot CRM, Shopify, Canva). No se investigó cómo Papandi llega al usuario ni con qué se integra para publicar (APIs de Meta/TikTok/LinkedIn, límites de rate, políticas de contenido IA de cada plataforma). Sin canal de distribución/publicación el 'OS multicanal' no existe.",
+      "AUSENCIA TOTAL DE HORIZONTE TEMPORAL / VOLATILIDAD DE MODELOS COMO RIESGO CUANTIFICADO. El stream media_routers muestra que Sora 2 pasó de exclusiva a 'discontinuado' en meses y las versiones se contradicen. Pero no se cuantificó el riesgo de dependencia de proveedor (qué % del valor de Papandi depende de un modelo que puede desaparecer) ni el costo de mantener la 'tabla de enrutamiento' actualizada.",
+      "FALTA EL CASO NEGATIVO / POR QUÉ NO CONSTRUIR. Ningún stream investigó por qué Copy.ai ABANDONÓ el SMB (se cita como 'dejó hueco', pero irse de un segmento suele significar que no era rentable, no que estaba libre). No se buscó evidencia de startups que intentaron el 'OS de marketing para SMB' y fracasaron. Sesgo de confirmación fuerte: todo apunta a 'construir', nada busca desconfirmar."
+    ],
+    "contradictions": [
+      "ETIQUETAR IA: DEMANDA vs. PENALIZACIÓN. El mismo stream (buyer_expectations) sostiene a la vez que 80-91% de consumidores EXIGEN etiquetado de IA y que etiquetar 'AI-made' BAJA la calidad percibida de contenido idéntico. La recomendación a Papandi ('hacer trivial que el usuario divulgue IA') choca de frente con el hallazgo de que la divulgación penaliza. El research no resuelve esta paradoja; la despacha con 'la salida es calidad', que no es accionable.",
+      "'REEMPLAZA LA VOZ' vs. 'AMPLIFICA LA VOZ'. buyer_expectations insiste en 'la IA hace el volumen, el humano queda como autor' (human-in-the-loop). competitors_offerings elogia a Icon.com por generar '~68 ads en 30 min' automáticamente y lo llama 'la señal más fuerte del mercado'. Uno dice que el mercado castiga la automatización sin humano; el otro celebra la automatización masiva. No se reconcilia cuál gana.",
+      "MODELO DE PRECIO USO vs. ANTI-CRÉDITOS. buyer_expectations recomienda pay-as-you-go (39% lo prefiere) y product_ux_dam dice que el crédito-por-regeneración es 'el patrón más odiado' que mata la iteración. Ambos son 'por uso'. La distinción (medir al final vs. por tweak) existe pero la recomendación queda contradictoria: cobrar por uso genera exactamente la ansiedad de costo que el otro stream dice evitar. Además choca con el tope MEDIA_BUDGET_USD=20 del propio Papandi.",
+      "GENERACIONAL: GEN Z ANTI-IA vs. GEN Z PRO-IA. buyer_expectations dice que 54% de Gen Z desconfía más de marcas con IA pesada (más anti-IA que boomers) y a la vez que Gen Z/Millennials lideran la percepción de que 'la IA empeoró la calidad' (57%) — pero Gen Z es también el mayor usuario de herramientas IA. La tesis 'la desconfianza es generacional y creciente' no se cruza con adopción real por edad; puede ser desconfianza declarada, no comportamiento.",
+      "TAMAÑO DEL DESPLIEGUE MULTI-MODELO. media_routers afirma que 'un despliegue de producción mediano usa 14 modelos' y lo usa para validar la tesis del router — pero esa cifra viene de UN blog (teamday.ai), coincide sospechosamente con el pitch '14-en-1' de Icon, y no está corroborada. Se trata como dato duro cuando es marketing de vendor. Contradice el propio disclaimer del stream de que 'los comparativos de vendors tienen sesgo'.",
+      "BRASIL: ABIERTO A IA vs. EXIGENTE DE TRANSPARENCIA. Se dice que Brasil acepta que la IA haga compras por ellos (40%) Y que 90% exige transparencia en imágenes IA. Presentado como 'matiz cultural', pero puede indicar que las muestras/preguntas no son comparables (aceptar IA transaccional ≠ aceptar IA en contenido). El 'núcleo humano universal' cross-cultural se sostiene sobre 'fraseo convergente', que los propios autores admiten es sugestivo, no un instrumento controlado."
+    ],
+    "next_research": [
+      "Investigación PRIMARIA con el ICP real: 10-20 entrevistas + una encuesta a solopreneurs/PYMES hispanos que venden a mercado US-inglés, para medir (a) willingness-to-pay concreta, (b) su JTBD #1, (c) qué herramientas usan hoy y por qué pagan/cancelan. Todo el scoping depende de esto y hoy está en cero.",
+      "Modelado económico unitario de Papandi: costo real de generar cada tipo de deliverable (texto+imagen+video vía fal/Replicate) contra el precio-ancla del mercado, para validar si el modelo 'iteración ilimitada / no cobrar por regeneración' es viable con el tope MEDIA_BUDGET_USD y qué margen bruto/RPE deja. Sin esto no se sabe si el negocio cierra.",
+      "Due diligence del 'cementerio': buscar startups de 'AI marketing OS para SMB' que fracasaron o pivotaron (empezando por por qué Copy.ai abandonó el SMB), y postmortems, para desconfirmar la hipótesis del 'espacio en blanco' antes de invertir. El research actual solo confirma; falta el caso negativo.",
+      "Panorama legal/regulatorio de disclosure de IA en los mercados objetivo (FTC en EEUU, EU AI Act, reglas de Meta/TikTok/LinkedIn/Google sobre contenido IA): determinar qué etiquetado es OBLIGATORIO vs. opcional, porque convierte una feature de producto en un requisito no negociable y afecta el scope del MVP.",
+      "Retención/churn benchmark del segmento: obtener tasas de churn, LTV y razones de cancelación de SaaS de marketing IA para SMB (no solo reviews de adquisición), para dimensionar viabilidad real del modelo de suscripción vs. el foco actual en adquisición.",
+      "Validación directa de la tesis 'estrategia/cerebro se vende': test de mensajería (landing + smoke test / fake-door) contrastando 'OS de estrategia+marca' vs. 'fábrica barata de output' con el ICP, para ver por cuál pagan realmente antes de construir la capa de cerebro cara.",
+      "Corroborar las cifras load-bearing con fuentes primarias: la de '14 modelos por despliegue', los porcentajes de impacto de consistencia de marca (+20/23/33%), y las estadísticas de tiempo perdido buscando assets (35%/20min) — todas hoy provienen de blogs de vendors y se están tratando como datos duros.",
+      "Investigación técnica de distribución/publicación: APIs, límites de rate, latencia end-to-end y políticas de contenido-IA de las plataformas donde Papandi publicaría (Meta, TikTok, LinkedIn, X, email), porque el 'OS multicanal' es hoy una promesa sin validar en su capa de ejecución/entrega."
+    ]
+  }
+}
