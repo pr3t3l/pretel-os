@@ -1,0 +1,455 @@
+{
+  "findings": [
+    {
+      "stream": "video_generators",
+      "key_findings": [
+        {
+          "point": "Google Veo 3.1 es el premium de referencia: 8s/clip (extendible ~148s), 720p/1080p/4K, 9:16 nativo, audio nativo con lipsync, y 'Ingredients' (hasta 3 imagenes de referencia) + first/last frame. En fal.ai: $0.20/s sin audio, $0.40/s con audio (720p/1080p); 4K $0.40-0.60/s; Veo 3 Fast a mitad de precio ($0.10-0.15/s). Todo output lleva watermark invisible SynthID y bloquea personas reales/celebridades.",
+          "detail": "API estable en fal.ai y Replicate (Veo 3.1 + Fast). Modos: text-to-video, image-to-video, reference-to-video, first/last-frame. 24 FPS. La cifra 'hasta 4 imagenes de referencia' aparece en una fuente secundaria (getimg.ai) y es dudosa; 3 es lo documentado consistentemente.",
+          "source": "https://fal.ai/models/fal-ai/veo3.1 y https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1"
+        },
+        {
+          "point": "OpenAI Sora 2 esta MUERTO como plataforma: la app de consumo cerro el 26-abr-2026 y la API se apaga el 24-sep-2026 (no acepta requests nuevos despues). Precio mientras vive: sora-2 $0.10/s 720p ($0.05 batch); sora-2-pro $0.30-0.70/s segun resolucion. Duraciones 4/8/12s (Pro 10/15/25s), portrait soportado, audio sincronizado.",
+          "detail": "No hay Sora 3 anunciado a jul-2026; hay rumores de un modelo interno 'Spud' sin confirmar (dudoso). Construir integracion sobre Sora 2 hoy es deuda garantizada.",
+          "source": "https://costgoat.com/pricing/sora y https://www.mindstudio.ai/blog/openai-shutting-down-sora-what-happened"
+        },
+        {
+          "point": "Kling 3.0 (Kuaishou) en fal.ai (Pro): 3-15s por clip, audio nativo multi-speaker (chino/ingles nativo, otros idiomas auto-traducidos a ingles), start+end frame, elementos de referencia para inyectar personaje/objeto, multi-shot. Precio verificado: $0.112/s sin audio, $0.168/s con audio, $0.196/s con control de voz. En image-to-video el aspect ratio lo fija la imagen inicial (asi logras 9:16). Limite: concurrencia 1 por usuario en fal.",
+          "detail": "Existe tier Standard mas barato (~$0.084/s segun Atlas Cloud, no verificado en pagina oficial). Kling O1 (dic-2025) es el modelo unificado generacion+edicion: en fal.ai expone reference-to-video y video-edit por lenguaje natural a $0.168/s. Claims de '4K 60fps multi-shot' vienen de blogs, dudosos.",
+          "source": "https://fal.ai/models/fal-ai/kling-video/v3/pro/image-to-video y https://fal.ai/models/fal-ai/kling-video/o1/video-to-video/edit"
+        },
+        {
+          "point": "ByteDance Seedance 2.0 (en fal.ai desde 9-abr-2026, fal es partner oficial) es el mejor ratio capacidad/flexibilidad para reels: 4-15s (o 'auto'), multi-shot con cortes naturales en una sola generacion, 9:16 entre 6 aspect ratios, audio nativo sin costo extra (dialogo con lipsync se marca entre comillas dobles en el prompt), y referencias masivas: hasta 9 imagenes + 3 videos + 3 audios por generacion. Precios: 720p $0.3034/s, 720p Fast $0.2419/s, 1080p $0.682/s. Latencia: 'bajo 2 minutos'.",
+          "detail": "Seedance 2.5 (anunciado 23-jun-2026): clips nativos de 30s (un reel completo en una pasada), hasta 50 referencias, 4K. Estado a jul-2026: beta enterprise, lanzamiento publico 'inicios de julio'; NO confirmado en fal.ai todavia — vigilar, sera el game-changer del formato.",
+          "source": "https://fal.ai/seedance-2.0 , https://fal.ai/models/bytedance/seedance-2.0/text-to-video y https://www.digitalapplied.com/blog/seedance-2-5-bytedance-ai-video-model-2026"
+        },
+        {
+          "point": "Runway API (docs oficiales): $0.01/credito; Gen-4 Turbo 5 cr/s = $0.05/s; Gen-4.5 12 cr/s = $0.12/s; Act-Two (transferencia de performance/gestos a un personaje, util para talking head dirigido) 5 cr/s = $0.05/s. Generaciones de 4-15s segun producto, resoluciones 480p-4K. Sin audio nativo documentado en estos endpoints — el audio es pipeline aparte en Runway.",
+          "detail": "API propia estable (dev portal), no via fal. Para Papandi es un segundo proveedor, no el primario, porque rompe la capa unica fal/Replicate.",
+          "source": "https://docs.dev.runwayml.com/guides/pricing/"
+        },
+        {
+          "point": "Alibaba Wan 2.6 en fal.ai es el value-king con audio: hasta 15s, 720p/1080p, 9:16 nativo, dialogo multi-persona con lipsync (chino/ingles), y reference-to-video unico: subes un video de 3-8s de un personaje y extrae apariencia + VOZ para generar escenas nuevas consistentes (hasta 3 videos de referencia). Precio: $0.10/s 720p, $0.15/s 1080p; variantes Flash desde $0.05/s. Wan 2.7 ya existe en fal a $0.10/s con first/last frame.",
+          "detail": "Prompts limitados a 2,000 caracteres. Es la opcion barata seria para b-roll y para talking head consistente sin plataforma de avatares.",
+          "source": "https://fal.ai/wan-2.6 y https://fal.ai/wan-2.7"
+        },
+        {
+          "point": "Pika en API real es Pika 2.2 via fal.ai (el flagship 2.5 con Pikaffects/Pikaformance vive en pika.art, subscription): t2v 5-10s, hasta 1080p, 7 aspect ratios incl. 9:16, SIN audio nativo, i2v solo via 'Pika Scenes'. Precio por clip: $0.20/5s en 720p, $0.45/5s en 1080p (~$0.04-0.09/s).",
+          "detail": "Barato para drafts, pero generacion atras del estado del arte y sin audio: rol de borrador, no de entregable final.",
+          "source": "https://fal.ai/models/fal-ai/pika/v2.2/text-to-video"
+        },
+        {
+          "point": "Luma Ray 3.2 en fal.ai (tier Partner): 5s en image-to-video (10s no disponible en i2v), 540p/720p/1080p, HDR 16-bit a 2x precio y HDR+EXR a 3x. Por clip de 5s: $0.15 en 540p, $0.30 en 720p, $1.20 en 1080p. Sin audio nativo documentado.",
+          "detail": "El 540p a $0.03/s es el draft mas barato del mercado para previsualizar movimiento; el 1080p es caro relativo a Wan/Kling. HDR/EXR apunta a pipelines pro de color, irrelevante para reels.",
+          "source": "https://fal.ai/models/luma/agent/ray/v3.2/image-to-video"
+        },
+        {
+          "point": "Hedra lanzo Platform API completa en feb-2026 (api.hedra.com): acceso programatico a Character-3 y Omnia (avatares parlantes: foto + audio/guion -> video con lipsync, micro-expresiones y movimiento de cuerpo) y ademas agrega modelos de terceros (Veo, Kling, Nano Banana...). Modelo de cobro: creditos de la MISMA suscripcion web ($15/$30/$75 mes); Character-3 720p = 6 creditos/s (~$0.03-0.05/s efectivo segun plan — cifra derivada, tratar como estimacion). No esta en fal.ai.",
+          "detail": "Es el especialista en talking head largo (minutos, no clips de 8s). Alternativas de lipsync dentro de fal: sync.so lipsync 1.9 (~$0.70/min sobre video existente) y HeyGen avatar ($0.10-0.14/s) — cifras de agregadores, moderada confianza.",
+          "source": "https://www.hedra.com/docs/pages/developer/getting_started/quickstart y https://magichour.ai/blog/guide-to-hedra-ai"
+        },
+        {
+          "point": "Higgsfield NO es un modelo sino una plataforma/agregador (30+ modelos: Soul, Cinema Studio, Kling, Veo, Hailuo...) con acceso programatico via MCP (mcp.higgsfield.ai) y Cloud API. Cobro por creditos ligados a la suscripcion, sin precio por segundo publico. Videos hasta 15s, 9:16 soportado, y 'Soul training' para personajes consistentes desde fotos de referencia (AI Influencer Studio, ene-2026, apunta a TikTok/Reels).",
+          "detail": "Interesante como benchmark de producto (compiten por el mismo usuario que Papandi), no como proveedor de manos: duplicaria el rol de fal.ai con peor transparencia de costo. Cifras de 'videogenapi.com higgsfield_v1' son de un reseller no oficial, dudosas.",
+          "source": "https://higgsfield.ai/mcp"
+        },
+        {
+          "point": "Cobertura fal.ai vs Replicate: fal.ai expone Veo 3/3.1(+Fast), Kling 3.0/O1, Seedance 2.0 (partner oficial), Wan 2.5-2.7, Pika 2.2, Luma Ray 3.2, HeyGen, sync-lipsync — practicamente todo el stack necesario bajo una sola cuenta. Replicate cubre Veo 3.1(+Fast), Kling 3.0 (+Omni), Seedance 2.0(+Fast), Wan 2.5-2.7, Hailuo 2.3, Ray 3.2, Pixverse, LTXV 2, Grok Imagine. Los grandes ausentes de ambos: Runway (API propia), Hedra (API propia), Higgsfield (MCP propio), Sora (muriendo).",
+          "detail": "La doctrina 'fal.ai/Replicate las manos' es viable al 100% para b-roll y escena narrativa; para talking head largo el mejor especialista (Hedra) requiere una integracion directa adicional.",
+          "source": "https://replicate.com/collections/image-to-video y https://fal.ai/pricing"
+        },
+        {
+          "point": "Mapa por tipo de reel — Talking head: Hedra Character-3/Omnia (minutos, mas barato por segundo) o Wan 2.6 reference-to-video (clona apariencia+voz, $0.10/s) o Kling 3.0 con voice control ($0.196/s) para clips cortos; Runway Act-Two si se dirige la actuacion. B-roll de producto: image-to-video desde foto del producto con Wan Flash ($0.05/s), Kling 3.0 std, o Seedance Fast; draft ultra-barato con Ray 3.2 540p ($0.03/s). Escena narrativa con dialogo: Veo 3.1 (maxima calidad, $0.40/s con audio), Seedance 2.0 (multi-shot 15s en una pasada, refs masivas) o Kling 3.0 ($0.168/s, mejor precio con audio).",
+          "detail": "Costo realista de un reel de 30s compuesto por 3-4 clips: ~$1.50 (Wan/Kling barato) a ~$12 (Veo 3.1 con audio en todo). El texto-overlay del gancho (doctrina 2.7 de Papandi) se agrega en edicion, no en el modelo.",
+          "source": "sintesis de las fuentes anteriores"
+        }
+      ],
+      "hard_constraints": [
+        "Sora 2 API se apaga el 24-sep-2026 (app muerta desde 26-abr-2026): prohibido construir sobre Sora; cualquier mencion en specs debe salir.",
+        "Ningun modelo GA genera mas de 15s por clip hoy (Veo 8s, Sora-2-Pro 25s pero muriendo); un reel de 30-60s ES una compilacion de 3-8 clips + edicion. Seedance 2.5 (30s nativos) esta en beta enterprise, no prometerlo.",
+        "Todo output de Veo lleva watermark invisible SynthID y Veo bloquea personas que se parezcan a individuos reales/celebridades — no sirve para avatar del cliente real; para eso: Hedra, Wan reference-to-video o Kling elements.",
+        "El audio nativo cuesta ~1.5-2x el precio sin audio (Veo $0.20->$0.40/s; Kling $0.112->$0.168/s); presupuestar por segundo CON audio.",
+        "9:16 vertical esta soportado en todos los modelos relevantes (Veo, Seedance, Kling via imagen inicial, Wan, Pika), pero en Kling i2v el aspect lo determina la imagen de inicio — el pipeline debe generar la imagen inicial ya en 9:16.",
+        "Kling en fal.ai tiene concurrencia 1 por usuario; los renders toman 1-5 min tipicos (Seedance <2 min documentado): la UX debe ser asincrona con polling, nunca sincrona.",
+        "Hedra e Higgsfield cobran por creditos atados a suscripcion (no pay-per-second puro): peor encaje con el ledger de costos por project_id de sandia que fal.ai.",
+        "Los prompts tienen dialectos por modelo (Seedance: dialogo entre comillas dobles; Veo: ingredients de 3 imagenes; Kling: start/end frame + elements; Wan: video-ref de 3-8s, prompt max 2,000 chars): el video_prompt generico unico deja valor en la mesa."
+      ],
+      "implications_for_papandi": [
+        "La doctrina 'nosotros el cerebro, fal.ai las manos' esta validada: fal.ai solo cubre Veo, Kling 3.0/O1, Seedance 2.0, Wan 2.6/2.7, Pika, Ray y lipsync — un solo token, un solo ledger de costos, coherente con project_api_calls y MEDIA_BUDGET_USD.",
+        "El entregable glass-box del reel deberia evolucionar de 'un video_prompt' a 'video_prompt POR CLIP y POR MODELO recomendado': el usuario que pega el prompt en su generador (memoria C17) necesita el dialecto correcto (comillas para dialogo en Seedance, refs en Veo, start-frame 9:16 en Kling). Sin conectar generacion aun, esto ya sube el valor percibido.",
+        "Estrategia de dos tiers encaja con presupuesto sensible: draft con Wan Flash/Ray 540p (~$0.15-0.25 por clip de 5s) y final con Kling 3.0 con audio ($0.84/clip 5s) o Veo 3.1 ($2/clip 5s); un reel completo de 30s cuesta $1.50-12 reales — cabe en el tope de $20 con margen si se cachean drafts.",
+        "El guion por intervalos actual mapea 1:1 a la realidad tecnica (clips de 5-10s): mantener intervalos de 5-8s por escena hace que el entregable sea directamente ejecutable en cualquier modelo; documentar el dialogo hablado por intervalo habilita el lipsync nativo.",
+        "StyleID conecta directo con consistencia: Seedance acepta 9 imagenes de referencia, Veo 3, Kling elements, Wan clona desde video — la identidad visual del usuario (colores, personaje, producto) puede inyectarse como referencias generadas desde el StyleID cuando se conecte la generacion.",
+        "Para el avatar tipo talking-head del solopreneur (el formato reel mas comun), el camino no es Veo (bloquea rostros reales) sino Hedra API (integracion directa, credit-based) o Wan 2.6 reference-to-video dentro de fal — decidir esto antes de disenar la feature.",
+        "Higgsfield es competidor de producto (AI Influencer Studio para Reels/TikTok, ene-2026), no proveedor: vigilarlo en el stream de mercado.",
+        "Vigilar Seedance 2.5 en fal.ai (~julio 2026): 30s nativos + 50 referencias colapsaria el reel multi-clip a una sola generacion y cambiaria el pipeline de composicion; disenar el motor de coherencia agnostico al numero de clips."
+      ],
+      "sources": [
+        "https://fal.ai/models/fal-ai/veo3.1",
+        "https://fal.ai/models/fal-ai/veo3/fast",
+        "https://fal.ai/seedance-2.0",
+        "https://fal.ai/models/bytedance/seedance-2.0/text-to-video",
+        "https://fal.ai/models/fal-ai/kling-video/v3/pro/image-to-video",
+        "https://fal.ai/models/fal-ai/kling-video/v3/pro/text-to-video",
+        "https://fal.ai/models/fal-ai/kling-video/o1/video-to-video/edit",
+        "https://fal.ai/wan-2.6",
+        "https://fal.ai/wan-2.7",
+        "https://fal.ai/models/fal-ai/pika/v2.2/text-to-video",
+        "https://fal.ai/models/luma/agent/ray/v3.2/image-to-video",
+        "https://fal.ai/pricing",
+        "https://docs.dev.runwayml.com/guides/pricing/",
+        "https://costgoat.com/pricing/sora",
+        "https://www.mindstudio.ai/blog/openai-shutting-down-sora-what-happened",
+        "https://www.hedra.com/docs/pages/developer/getting_started/quickstart",
+        "https://www.hedra.com/plans",
+        "https://higgsfield.ai/mcp",
+        "https://replicate.com/collections/image-to-video",
+        "https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1",
+        "https://www.digitalapplied.com/blog/seedance-2-5-bytedance-ai-video-model-2026",
+        "https://magichour.ai/blog/guide-to-hedra-ai",
+        "https://www.atlascloud.ai/blog/guides/kling-3.0-review-features-pricing-ai-alternatives",
+        "https://evolink.ai/blog/kling-o1-review-complete-guide-unified-ai-video-model"
+      ]
+    },
+    {
+      "stream": "platform_rules",
+      "key_findings": [
+        {
+          "point": "Instagram Reels: specs técnicas y límite de recomendación a 3 minutos",
+          "detail": "Formato canónico 9:16 a 1080x1920, MP4/H.264, 30fps. Grabación in-app hasta 3 min (algunos accounts aún 90s por rollout gradual); subida desde carrete acepta hasta ~20 min como Reel, PERO Instagram declara que 'Reels de más de 3 minutos no se recomiendan a audiencias nuevas'. Sweet spot para reach: <90s. OJO: los valores exactos de duración máxima de subida (20 min) provienen de guías de terceros de 2026, no de página oficial verificada — marcar como probable, no confirmado.",
+          "source": "https://www.sellerpic.ai/blog/instagram-reel-size (tercero, cita límite oficial); https://posteverywhere.ai/blog/instagram-reels-aspect-ratio"
+        },
+        {
+          "point": "Zonas seguras de UI en Reels (dónde NO poner texto overlay)",
+          "detail": "Consenso de guías 2026 para canvas 1080x1920: mantener texto crítico fuera de ~220-250px superiores (barra de estado/navegación), ~440-450px inferiores (caption, username, barra de audio) y ~120px del borde derecho (stack like/comentar/compartir). En marzo 2026 Meta consolidó FB Stories/Reels e IG Stories/Reels en una zona segura 9:16 unificada (reportado por guías de specs de ads; no verifiqué la página de Meta directamente). Los píxeles exactos son mediciones de terceros — Meta no publica una cifra única oficial; tratarlos como banda de seguridad, no como constante.",
+          "source": "https://www.somake.ai/blog/instagram-reel-size-guide; https://superscale.ai/learn/meta-ad-sizes (afirmación marzo 2026 sin verificación oficial directa)"
+        },
+        {
+          "point": "TikTok: specs técnicas para cuentas de negocio",
+          "detail": "9:16 a 1080x1920 es el formato nativo recomendado. Grabación in-app hasta 10 min; subida hasta 60 min en cuentas seleccionadas. Archivo: ~287.6MB máx desde móvil; TikTok Studio (web) acepta hasta 4GB. Cifras de duración/peso provienen de guías de specs 2026, no de página de soporte oficial verificada en esta corrida — confiables pero marcar como no-oficial.",
+          "source": "https://fliki.ai/blog/tiktok-video-size; https://postfa.st/sizes/tiktok/video"
+        },
+        {
+          "point": "TikTok zonas seguras: el centro es la única zona garantizada",
+          "detail": "Guías 2026 convergen en: ~130-150px libres arriba (tabs For You/Following), ~484px libres abajo (caption, música, CTA), ~140px libres a la derecha (stack de iconos), ~44px a la izquierda. La banda central vertical es la única zona segura en todos los dispositivos. Píxeles = mediciones de terceros; TikTok publica templates de safe zone para ads pero no una cifra canónica pública única.",
+          "source": "https://zeely.ai/blog/tiktok-safe-zones/; https://tikadsuite.com/blog/tiktok-ad-safe-zones/"
+        },
+        {
+          "point": "TikTok música: cuentas business SOLO pueden usar la Commercial Music Library (OFICIAL)",
+          "detail": "Página oficial de soporte de TikTok: al postear contenido que promociona marca/producto/servicio, 'recomendamos que solo uses música de la Commercial Music Library (CML), pre-autorizada para uso comercial'. Las licencias de TikTok para música fuera de la CML NO cubren uso comercial — usar audio trending general en contenido de negocio expone a claims de copyright. La CML tiene ~1M de tracks. Si se usa música fuera de CML en branded content, hay que activar el disclosure y confirmar en 'Music Usage Confirmation' que se tienen licencias propias.",
+          "source": "https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-use-of-music-on-tiktok (OFICIAL); https://ads.tiktok.com/help/article/commercial-music-library (OFICIAL)"
+        },
+        {
+          "point": "Instagram/Meta música: cuentas business tienen catálogo restringido",
+          "detail": "Análogo a TikTok: las cuentas profesionales/business en Instagram no acceden al catálogo completo de música popular; Meta ofrece la Sound Collection libre de regalías para uso comercial. No fetché la página oficial de Meta Sound Collection en esta corrida — hallazgo de contexto general, verificar antes de codificarlo como regla dura.",
+          "source": "Conocimiento general + patrón confirmado en TikTok oficial; verificar en facebook.com/sound/collection"
+        },
+        {
+          "point": "YouTube Shorts: 3 minutos máx, regla de clasificación por aspect ratio (OFICIAL)",
+          "detail": "Página oficial de YouTube: Shorts hasta 3 minutos si son cuadrados o verticales (aspect ratio al menos tan alto como ancho), subidos desde 2024-10-15. 16:9 se clasifica como video normal aunque dure <3 min. Resolución servida máx 1080p. Caveat oficial clave: Shorts >1 min con claim activo de Content ID quedan bloqueados globalmente y no monetizables (sin strike al canal) — otro motivo para música licenciada.",
+          "source": "https://support.google.com/youtube/answer/15424877 (OFICIAL); https://support.google.com/youtube/answer/10059070 (OFICIAL)"
+        },
+        {
+          "point": "Política IA de TikTok: etiquetado obligatorio de AIGC realista, auto-label vía C2PA, SIN penalización de reach (OFICIAL)",
+          "detail": "TikTok exige etiquetar contenido 'completamente generado o significativamente editado por IA' que sea realista (caras sintéticas, voces clonadas, escenas que no ocurrieron). Auto-etiqueta cuando detecta C2PA Content Credentials en el archivo subido (primer video-platform en implementarlo) o cuando se usan efectos IA propios; el auto-label NO se puede quitar. Declaración oficial explícita: 'Activar el setting de contenido generado por IA no afectará la distribución de tu video'. No etiquetar AIGC realista puede resultar en remoción de contenido.",
+          "source": "https://support.tiktok.com/en/using-tiktok/creating-videos/ai-generated-content (OFICIAL); https://newsroom.tiktok.com/en-us/partnering-with-our-industry-to-advance-ai-transparency-and-literacy (OFICIAL)"
+        },
+        {
+          "point": "Política IA de Meta (IG/FB): label 'AI info' por detección C2PA o auto-disclosure; el label NO penaliza distribución (OFICIAL)",
+          "detail": "Meta aplica 'AI info' cuando detecta metadata C2PA de herramientas IA (Firefly, DALL-E, etc.) o cuando el usuario lo declara. Desde sept-2024: label visible para contenido detectado como generado por IA; para ediciones menores el label se movió al menú del post. Oficial: los labels son 'herramientas de transparencia sin penalización algorítmica' — PERO contenido IA calificado como falso/engañoso por fact-checkers sí se muestra más abajo en el Feed. Para ads de temas sociales/política el disclosure es obligatorio.",
+          "source": "https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/ (OFICIAL)"
+        },
+        {
+          "point": "Política IA de YouTube: toggle 'altered content' solo para IA realista; producción asistida por IA EXENTA (OFICIAL)",
+          "detail": "YouTube exige disclosure solo cuando el contenido realista podría confundirse con real: personas reales diciendo/haciendo lo que no hicieron, eventos/lugares alterados, escenas realistas que no ocurrieron. EXENTO explícitamente: guiones generados por IA, thumbnails, captions, contenido obviamente fantástico, filtros estéticos, upscaling. Oficial: 'Disclosear contenido IA no limitará la audiencia del video ni su elegibilidad para monetizar'. Evasión reiterada => etiquetado manual por YouTube, remoción o suspensión del Partner Program. Auto-label con C2PA también activo.",
+          "source": "https://support.google.com/youtube/answer/14328491 (OFICIAL)"
+        },
+        {
+          "point": "Watermarks cruzados: penalización confirmada oficialmente en Instagram y TikTok",
+          "detail": "Instagram (blog oficial de creators): contenido con watermarks visibles queda restringido de recomendaciones (Explore, Reels, feed); reposts idénticos son REEMPLAZADOS por el original en recomendaciones; cuentas con 10+ reposts sin edición sustancial en 30 días quedan totalmente inelegibles para recomendación. TikTok (originality policy oficial): contenido con watermark/logo de otra fuente cuenta como no-original => inelegible para For You feed y para Creator Rewards. Regla operativa: exportar SIEMPRE limpio, sin logo de plataforma ni de herramienta.",
+          "source": "https://creators.instagram.com/blog/recommendations-and-originality (OFICIAL); https://www.tiktok.com/creator-academy/article/tiktok-originality-policy (OFICIAL)"
+        },
+        {
+          "point": "Algoritmo IG 2026 para reach orgánico: watch time, sends per reach, likes per reach; originalidad y calidad HD",
+          "detail": "Mosseri confirmó (enero 2025) las 3 señales top: watch time, shares por DM (sends/reach) y likes/reach. Video borroso/low-res se deprioriza; contenido original recibe distribución significativamente mayor que reposts. Cifras tipo '40-60% más distribución' provienen de blogs de terceros — direccionalmente correctas, numéricamente no verificables. La recomendación oficial de Mosseri para Reels: sin watermarks, audio con licencia Meta, <3 min, original.",
+          "source": "https://creators.instagram.com/blog/recommendations-and-originality (OFICIAL); https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers (tercero)"
+        },
+        {
+          "point": "Facebook Reels: convergencia total video=Reel (2025) y specs",
+          "detail": "Según guías 2026, desde ~junio 2025 todo video subido a Facebook se publica como Reel sin restricción de duración/formato; 9:16 1080x1920 sigue siendo lo recomendado para reach. Para ADS los Reels sí tienen tope de 90s. La página oficial de Meta Business Help (help/1197310377458196) existe pero devolvió solo el título en el fetch — la afirmación de unificación es plausible y ampliamente reportada, pero no quedó anclada a página oficial en esta corrida: marcar como probable.",
+          "source": "https://quickframe.com/blog/facebook-reels-guide-for-marketers (tercero); https://www.facebook.com/business/help/1197310377458196 (oficial, contenido no accesible vía fetch)"
+        },
+        {
+          "point": "Pinterest video: specs para cuentas business",
+          "detail": "Video pins: mín 4 segundos, máx 15 minutos; MP4/MOV, H.264/H.265, máx 2GB. Ratios aceptados entre 1:2 y 1.91:1; recomendado 2:3 (1000x1500) o 9:16 (1080x1920). Sweet spot de engagement 6-15s. Página oficial de specs: help.pinterest.com/en/business/article/pinterest-product-specs (apareció en resultados; detalles citados vienen del agregado de búsqueda, no de fetch directo).",
+          "source": "https://help.pinterest.com/en/business/article/pinterest-product-specs (OFICIAL, no fetcheada); https://recurpost.com/blog/pinterest-pin-dimensions/"
+        },
+        {
+          "point": "Captions/subtítulos: norma de facto, no obligación",
+          "detail": "Ninguna plataforma OBLIGA subtítulos en contenido orgánico de negocio, pero: IG, TikTok y YouTube generan auto-captions por defecto y la mayoría del consumo de short-form es sin sonido, por lo que texto-overlay + captions quemados dentro de la zona segura es la práctica estándar que las propias plataformas recomiendan en sus creator academies. No encontré (ni busqué exhaustivamente) una página oficial única que lo codifique — norma de mejores prácticas, no regla dura.",
+          "source": "Convergencia de guías de terceros; sin ancla oficial única"
+        }
+      ],
+      "implications_for_papandi": [
+        "El video_prompt de Papandi debe emitir SIEMPRE un layout-contract junto al guion: canvas 1080x1920 (9:16), y una 'zona segura de texto' central — regla conservadora multi-plataforma: nada de texto crítico en el ~14% superior (~270px), ~25% inferior (~480px) ni ~13% derecho (~140px). Esto cubre IG/TikTok/Shorts/FB con un solo template y es verificable por el usuario (glass-box).",
+        "El guion por intervalos debe recomendar duración objetivo <60-90s: bajo 3 min todo califica como Short/Reel recomendable en las 3 plataformas grandes; sobre 3 min Instagram deja de recomendar a audiencias nuevas y YouTube lo saca de Shorts si no cumple ratio. Un solo master 9:16 <90s es publicable en las 5 plataformas sin re-edición.",
+        "Música: el entregable debe instruir explícitamente 'usa solo música del catálogo comercial de cada plataforma (TikTok CML / Meta Sound Collection) o música propia licenciada; nunca audio trending' — es la trampa legal #1 del solopreneur con cuenta business, está confirmada en fuentes oficiales de TikTok, y en YouTube un claim de Content ID bloquea el Short globalmente. Esto implica que el video_prompt NO debe prometer un track específico comercial.",
+        "Cuando Papandi conecte generación real (fal.ai/Replicate), los archivos pueden traer C2PA Content Credentials => TikTok/Meta/YouTube auto-etiquetarán 'AI-generated' y el label NO se puede quitar (TikTok). Buena noticia doctrinal: las 3 plataformas declaran oficialmente que el label NO penaliza distribución. Papandi debe (a) etiquetar proactivamente vía el toggle nativo en las instrucciones de publicación (glass-box + cero riesgo de remoción por no-disclosure), (b) nunca vender 'sin label' como feature.",
+        "El copy de publicación que genere Papandi debe incluir un checklist anti-penalización por pieza: sin watermark de ninguna plataforma ni de la herramienta de generación (TikTok logo en Reels = supresión confirmada por Instagram oficial; watermark ajeno = inelegible para For You en TikTok), export HD 1080p+ (low-res se deprioriza), y contenido original o con edición sustancial (10+ reposts/30 días = cuenta entera fuera de recomendaciones en IG).",
+        "Las señales de ranking que Papandi puede operacionalizar en el brief creativo: watch time (gancho en los primeros 1-2s dentro de la zona segura central), sends/reach (CTA de 'envíaselo a...'), y captions quemados porque el consumo es sin sonido. El gancho como texto-overlay (doctrina §2.7) es compatible con las safe zones SOLO si se ancla a la banda central.",
+        "Los píxeles exactos de safe zones son mediciones de terceros que cambian con la UI; Papandi debería tratarlos como configuración versionada (platform_rules table/config), no hardcodearlos en prompts, y re-verificar trimestralmente contra los templates oficiales de ads de cada plataforma.",
+        "Pendiente de verificación antes de codificar como regla dura: (1) límite de 20 min de subida de Reels, (2) unificación Facebook video=Reel de junio 2025, (3) zona segura 9:16 unificada de Meta de marzo 2026, (4) restricciones del catálogo musical de Meta para cuentas business. Las cuatro son plausibles y multi-reportadas pero no quedaron ancladas a página oficial en esta corrida."
+      ],
+      "hard_constraints": [
+        "Cuentas business en TikTok: solo Commercial Music Library o música con licencia propia; el audio general de TikTok NO está licenciado para uso comercial (fuente oficial TikTok).",
+        "TikTok: contenido realista completamente generado/significativamente editado por IA DEBE etiquetarse; el auto-label por C2PA no es removible; no etiquetar puede causar remoción (fuente oficial TikTok).",
+        "YouTube: video con ratio más ancho que 1:1 (p.ej. 16:9) nunca clasifica como Short, dure lo que dure; máx Short = 3 min (fuente oficial YouTube).",
+        "YouTube: Short >1 min con claim de Content ID queda bloqueado globalmente (fuente oficial YouTube).",
+        "Instagram: contenido con watermark visible de otra plataforma queda restringido de recomendaciones; reposts idénticos son reemplazados por el original; 10+ reposts sin edición en 30 días = cuenta inelegible para recomendación (blog oficial de creators de Instagram).",
+        "TikTok: watermark/logo de otra fuente = contenido no-original = inelegible para For You feed y Creator Rewards (originality policy oficial).",
+        "YouTube: disclosure obligatorio solo para IA realista que confunda (personas reales alteradas, eventos falsos realistas); guiones/thumbnails/captions por IA están exentos explícitamente (fuente oficial YouTube).",
+        "Las tres plataformas grandes declaran oficialmente que el label de IA por sí solo NO reduce distribución; lo que sí penaliza es IA engañosa marcada por fact-checkers (Meta) o no-disclosure reiterado (YouTube)."
+      ],
+      "sources": [
+        "https://support.google.com/youtube/answer/15424877",
+        "https://support.google.com/youtube/answer/10059070",
+        "https://support.google.com/youtube/answer/14328491",
+        "https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-use-of-music-on-tiktok",
+        "https://support.tiktok.com/en/using-tiktok/creating-videos/ai-generated-content",
+        "https://ads.tiktok.com/help/article/commercial-music-library",
+        "https://newsroom.tiktok.com/en-us/partnering-with-our-industry-to-advance-ai-transparency-and-literacy",
+        "https://www.tiktok.com/creator-academy/article/tiktok-originality-policy",
+        "https://creators.instagram.com/blog/recommendations-and-originality",
+        "https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/",
+        "https://www.facebook.com/business/help/1197310377458196",
+        "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+        "https://www.somake.ai/blog/instagram-reel-size-guide",
+        "https://www.sellerpic.ai/blog/instagram-reel-size",
+        "https://fliki.ai/blog/tiktok-video-size",
+        "https://zeely.ai/blog/tiktok-safe-zones/",
+        "https://tikadsuite.com/blog/tiktok-ad-safe-zones/",
+        "https://quickframe.com/blog/facebook-reels-guide-for-marketers",
+        "https://superscale.ai/learn/meta-ad-sizes",
+        "https://recurpost.com/blog/pinterest-pin-dimensions/",
+        "https://www.dataslayer.ai/blog/instagram-algorithm-2025-complete-guide-for-marketers"
+      ]
+    },
+    {
+      "stream": "what_performs",
+      "key_findings": [
+        {
+          "point": "El gancho va en los primeros 3s y es doctrina oficial de plataforma, no gurú-fluff",
+          "detail": "TikTok for Business (docs oficiales de ads) instruye: 'introduce tu propuesta de valor en los primeros 3 segundos' para recall/awareness y 'prioriza tu hook en los primeros 6 segundos'; la industria cita ~90% del impacto de ad recall capturado en los primeros 6s. Cifras de vendors tipo '87% decide en 3s' o '+19% retención con hook en 2s' circulan mucho (Zebracat, virvid.ai) pero NO son verificables — trátalas como direccionales. Lo sólido: la métrica '3-second retention/hold' existe como métrica nativa en TikTok/Meta y las plataformas la usan para distribución.",
+          "source": "https://ads.tiktok.com/help/article/creative-best-practices"
+        },
+        {
+          "point": "El famoso '85% ve video sin sonido' NO es cifra oficial de Meta — pero el sound-off viewing es real y los captions quemados tienen efecto medido",
+          "detail": "El 85% viene de Digiday (2016) citando a publishers, y Meta nunca lo confirmó ni lo expone en Insights (st4.ca lo desmenuza). Lo que sí reportó Facebook internamente: captions suben watch time ~12% en promedio y 76% de los video ads 'necesitan sonido para entenderse' (mal diseño). Conclusión práctica intacta: diseñar para mute-first; el hook debe funcionar como TEXTO en el primer frame porque un text-hook se lee en <1s mientras un hook hablado tarda 2-3s en procesarse (este último punto es de blogs de vendors — direccional, no medido).",
+          "source": "https://digiday.com/media/silent-world-facebook-video/ ; https://st4.ca/blog/85-really-facebook-without-sound ; https://instapage.com/blog/closed-captioning-mute-videos"
+        },
+        {
+          "point": "Duración: corto retiene más; sweet spot 15-35s para Reels, 30-60s para TikTok",
+          "detail": "Wistia (benchmark propio, semi-autoritativo): videos <1 min logran ~65% de engagement promedio. SocialInsider: Reels de 15-30s con mayor engagement rate. LinkedIn reporta +200% completion en videos ≤30s. La afirmación 'TikTok exige ≥75% completion para distribuir' circula en blogs pero no está en docs oficiales — dudosa como umbral exacto, válida como dirección (completion rate pesa en el algoritmo). Regla operativa: cada segundo extra debe ganarse; si el mensaje cabe en 20s, no estirar a 45s.",
+          "source": "https://www.socialinsider.io/blog/instagram-reels-length/ ; https://blog.hootsuite.com/social-media-video-length/"
+        },
+        {
+          "point": "Formato ganador para negocio pequeño: estilo UGC/crudo gana en CTR y costo, pero lo pulido convierte mejor en bottom-funnel",
+          "detail": "Consenso de agencias y case studies de Meta: creative estilo UGC (crudo, cámara en mano, persona real) rinde CTR 2-4x superior y CPA 25-50% menor que el ad de estudio, sobre todo en feed/top-of-funnel. Matiz importante (Modo25 y otros que sí testean): el creative pulido tiende a rendir mejor en conversión directa/promos. Ninguna de estas cifras viene de un dataset público auditable — son agregados de agencias; direccionales pero consistentes entre fuentes independientes. TikTok oficial sí tiene dato duro: mostrar el PRODUCTO en pantalla = +65% brand affinity y +25% recall, y los ads 'TikTok-first' (nativos, no repurposed) captan atención para el 74% de viewers.",
+          "source": "https://modo25.com/blog/paid-social/how-to-test-ugc-vs-polished-creative-in-paid-ads/ ; https://ads.tiktok.com/business/en/blog/creative-best-practices-top-performing-ads"
+        },
+        {
+          "point": "El público SÍ castiga el video visiblemente-IA: 36% baja su confianza en la marca (Animoto 2026), y el sentimiento negativo crece",
+          "detail": "Animoto State of Video 2026 (n=460 US, 22-64, más 100+ cualitativos): 82-83% ha visto video que sospechó era IA; 36% dice que le baja la percepción de la marca; 78% confía más en videos con personas reales; 88% pone brand trust al nivel de precio y calidad. Delatores: gestos robóticos (67%), voces no naturales (55%), falta de tono emocional (51%). IAB 2026: sentimiento negativo hacia ads IA subió 12 pts YoY; Gen Z es la más escéptica (39% negativo vs 20% millennials); los ejecutivos sobreestiman la aceptación por 37 puntos.",
+          "source": "https://www.businesswire.com/news/home/20260121875037/en/ ; https://studyfinds.com/why-consumers-trust-videos-people-more-than-ai/ ; https://www.iab.com/insights/the-ai-gap-widens/"
+        },
+        {
+          "point": "El castigo a la IA es por FORMATO, no binario: b-roll/producto/backend se acepta; rostros sintéticos y mensajes de confianza son la zona roja",
+          "detail": "Patrón consistente entre fuentes: IA en tareas de producción (edición, guion, b-roll, captions) es aceptada e incluso invisible; el rechazo se concentra en humanos sintéticos (gestos robóticos y voz falsa son los delatores #1 y #2 del estudio Animoto) y en contextos de alta confianza (mensajes de founder, testimonios). Investigación cualitativa habla de 'conditional authenticity': avatares IA aceptables solo con disclosure explícito. Sobre disclosure hay tensión real en la evidencia: IAB dice que 73% de consumidores jóvenes mantienen o suben intención de compra al saber que hubo IA, pero el experimento de NIM encontró que etiquetar el ad como IA provoca evaluación más crítica (menos natural, menos útil) con contenido idéntico. Pregunta abierta, no regla.",
+          "source": "https://www.iab.com/insights/the-ai-gap-widens/ ; https://www.nim.org/en/publications/detail/transparency-without-trust ; https://studyfinds.com/why-consumers-trust-videos-people-more-than-ai/"
+        },
+        {
+          "point": "Frecuencia realista para solopreneur: 3-5 posts/semana con consistencia vale más que volumen",
+          "detail": "Buffer (análisis de su propia base de cuentas): Instagram 3-5/semana ≈ +12% reach por post vs 1-2/semana; TikTok 2-5/semana ≈ +17% views por post; y su conclusión explícita: 'el número correcto es el que puedes sostener'. Adam Mosseri (Instagram, declaración pública): postear más no penaliza y aumenta descubrimiento, pero no a costa de quemarse. TikTok for Business sugiere 1-4/día — aspiracional para marcas con equipo, NO benchmark para solopreneur. El experimento citado en YouTube Shorts (3/semana vs 1/semana) no mostró diferencia significativa.",
+          "source": "https://buffer.com/resources/social-media-frequency-guide/ ; https://www.dashsocial.com/blog/how-often-should-you-post-on-instagram"
+        },
+        {
+          "point": "Estructura que retiene: text-hook en frame 1 → payoff progresivo con micro-ganchos → CTA única; densidad de texto 5-10 palabras/segundo",
+          "detail": "TikTok oficial da la única cifra dura de legibilidad: 5-10 palabras por segundo en overlays/captions. La estructura hook→cuerpo→CTA y los 'micro-hooks' (re-enganchar cada 3-7s con cambio visual o pregunta abierta) son consenso de práctica sin dataset público — direccional. Lo medible y verificable por el usuario final: 3-second retention y completion rate, ambas visibles en analytics nativos de TikTok/Instagram, son los predictores de distribución que las propias plataformas exponen.",
+          "source": "https://ads.tiktok.com/help/article/creative-best-practices"
+        },
+        {
+          "point": "Faceless (b-roll + voiceover + captions) es viable y barato, pero las cifras espectaculares del nicho son marketing de vendors",
+          "detail": "Claims tipo '86% percibe faceless como más auténtico' o '2-3x revenue per view' vienen de blogs de herramientas que venden faceless-AI (autofaceless.ai, virvid.ai) — NO citables como evidencia. Lo defendible: el algoritmo no discrimina faceless vs face (rankea por CTR/watch time/engagement), el formato reduce costo de producción, y el talking-head real conserva ventaja en trust/parasocial (consistente con el 78% de Animoto). Para un negocio local/servicio, la cara real del dueño sigue siendo el activo de conversión más fuerte; el faceless-AI es el lane de volumen/educacional.",
+          "source": "https://www.canvid.com/blog/faceless-videos-vs-talking-head ; https://www.businesswire.com/news/home/20260121875037/en/"
+        }
+      ],
+      "implications_for_papandi": [
+        "La doctrina 'gancho = texto-overlay' queda VALIDADA por evidencia independiente (sound-off viewing + legibilidad + captions +12% watch time). El entregable de reel debería elevar el hook a campo de primera clase: 'hook_text_overlay' (texto exacto del primer frame, ≤8 palabras) separado del guion hablado — es lo que el usuario puede copiar y verificar (glass-box).",
+        "Cuando se conecte la generación real de video (fal.ai/Replicate), el lane seguro es AI b-roll + voiceover + captions quemados; el lane rostro sintético/avatar carga un castigo de marca medido (36% baja confianza, gestos robóticos = delator #1). Papandi debería producir b-roll IA y pedir al usuario que grabe su cara para los formatos de confianza (founder, testimonio) — nunca generarla.",
+        "El guion por intervalos ya existente encaja con la evidencia si impone: intervalo 0-3s = propuesta de valor visible como texto (doctrina oficial TikTok), duración default 15-35s, una sola CTA, y densidad de overlay 5-10 palabras/segundo como regla de validación automática del brief.",
+        "Captions quemados deben ser default ON en todo video_prompt/entregable, no opción: es la intervención con efecto medido más barata (+12% watch time) y funciona para el 100% de los formatos.",
+        "Motor de coherencia > motor de volumen queda respaldado: la cadencia recomendable para el solopreneur es 3-5/semana sostenible (Buffer: +12-17% reach/views vs 1-2/semana; Mosseri: sin penalización por más, pero burnout mata calidad). Papandi puede vender 'plan semanal de 3-5 piezas coherentes' con datos detrás, en vez de prometer 1-4/día estilo agencia.",
+        "Glass-box accionable: el entregable puede decirle al usuario QUÉ métrica mirar para verificar (3-second retention y completion rate en analytics nativos de TikTok/IG) — son las dos métricas que las plataformas mismas exponen y usan para distribuir. Eso convierte el reel-brief en algo verificable sin jerga.",
+        "Sobre declarar el uso de IA: la evidencia está dividida (IAB: disclosure neutral-positivo en jóvenes; NIM: etiquetar provoca evaluación más crítica). No hard-codear una postura en el producto; tratarlo como decisión del usuario con contexto, y re-evaluar cuando haya más evidencia.",
+        "Recomendación de formato por objetivo, agnóstica al rubro: UGC-crudo/talking-head real para top-funnel y confianza; b-roll (real o IA) + voiceover para educacional/volumen; producto EN pantalla siempre que aplique (+65% brand affinity, dato oficial TikTok); pulido solo para promo/bottom-funnel."
+      ],
+      "hard_constraints": [
+        "No citar '85% ve video sin sonido' como dato oficial de Meta: es Digiday 2016 vía publishers y Meta nunca lo confirmó. Usar en su lugar el efecto medido de captions (+12% watch time, dato interno de Facebook reportado por prensa).",
+        "No generar rostros humanos sintéticos como default en reels de cliente: 36% de consumidores baja su percepción de marca ante video detectado como IA, y los delatores principales son gestos/voz sintéticos (Animoto State of Video 2026, n=460 US).",
+        "No usar como evidencia las cifras de blogs de vendors de herramientas faceless/AI-shorts (virvid.ai, zebracat, autofaceless, socialync, scenith): son contenido SEO no verificable, varias con pinta de generadas por LLM. Solo docs oficiales de plataforma, estudios con n declarado (Animoto, IAB, NIM) y benchmarks propios (Buffer, Wistia).",
+        "El umbral 'TikTok exige 75% completion para distribuir' NO está en docs oficiales — no prometerlo al usuario; sí es seguro decir que completion y 3-second retention pesan en distribución.",
+        "Cadencia prometida al solopreneur: máximo defendible con datos es 3-5/semana; prometer diario o 1-4/día no tiene respaldo para cuentas de una persona y contradice el hallazgo consistencia>volumen."
+      ],
+      "sources": [
+        "https://ads.tiktok.com/help/article/creative-best-practices",
+        "https://ads.tiktok.com/business/en/blog/creative-best-practices-top-performing-ads",
+        "https://www.businesswire.com/news/home/20260121875037/en/83-of-Consumers-Can-Spot-AI-Videos-36-Say-It-Lowers-Brand-Trust-According-to-Animotos-New-Report",
+        "https://studyfinds.com/why-consumers-trust-videos-people-more-than-ai/",
+        "https://www.iab.com/insights/the-ai-gap-widens/",
+        "https://www.nim.org/en/publications/detail/transparency-without-trust",
+        "https://buffer.com/resources/social-media-frequency-guide/",
+        "https://digiday.com/media/silent-world-facebook-video/",
+        "https://st4.ca/blog/85-really-facebook-without-sound",
+        "https://instapage.com/blog/closed-captioning-mute-videos",
+        "https://www.socialinsider.io/blog/instagram-reels-length/",
+        "https://blog.hootsuite.com/social-media-video-length/",
+        "https://modo25.com/blog/paid-social/how-to-test-ugc-vs-polished-creative-in-paid-ads/",
+        "https://www.dashsocial.com/blog/how-often-should-you-post-on-instagram",
+        "https://www.canvid.com/blog/faceless-videos-vs-talking-head",
+        "https://www.marketingprofs.com/charts/2026/54424/ai-ads-the-perception-gap-between-marketers-and-consumers"
+      ]
+    },
+    {
+      "stream": "ai_reel_pipelines",
+      "key_findings": [
+        {
+          "point": "La práctica real 2026 es un pipeline híbrido con CapCut como 'timeline HQ', no generación de un solo botón",
+          "detail": "El stack practicante documentado para reels faceless: guion (AutoShorts/manual) -> voz (HeyGen/ElevenLabs) -> clips IA (Kling/WaveSpeed) o recorte de long-form (Opus Pro) -> ENSAMBLE en CapCut ('donde todos los assets — clips, secuencias IA, captions y avatares — se juntan') -> captions (Crayo/CapCut auto-captions) -> export 9:16 con integración TikTok. Incluso el propio CapCut admite que su script-to-video 'requiere edición manual para llegar a calidad publicable' y que el footage matching es genérico.",
+          "source": "https://medium.com/activated-thinker/the-ultimate-2026-tech-stack-for-faceless-tiktok-reels-creators-ebfb4fc7bd53 + https://fluxnote.io/guides/capcut-ai-video-generator-review"
+        },
+        {
+          "point": "Generación de clips es el costo dominante y varía 8x según modelo: Kling 2.5 Turbo Pro $0.07/s, Wan 2.5 $0.05/s, Veo 3 $0.40/s (fal.ai oficial)",
+          "detail": "Verificado en fal.ai/pricing: Wan 2.5 = $0.05/seg, Kling 2.5 Turbo Pro = $0.07/seg, Veo 3 = $0.40/seg. Para un reel de 15-30s con 3-5 clips de 5s (20-25s de footage bruto): Kling ~$1.40-1.75 por corrida limpia; con 2-3 reintentos realistas (norma en producción) $3-6. Con Veo 3: $8-10 limpio, $16-30 con reintentos. Agregadores secundarios reportan Kling 3.0 ~$0.029/s y Sora 2 Pro $0.30-0.50/s (no verificado en página oficial; marcar como dudoso).",
+          "source": "https://fal.ai/pricing (verificado por fetch); secundario: https://fluxnote.io/blog/ai-video-generation-pricing-guide-2026"
+        },
+        {
+          "point": "El voiceover es despreciable en costo: ElevenLabs API $0.05-0.10 por 1.000 caracteres = ~$0.02-0.05 por reel de 30s",
+          "detail": "Verificado en elevenlabs.io/pricing/api: TTS Multilingual v2/v3 = $0.10/1k chars, Flash/Turbo = $0.05/1k chars, con pay-as-you-go sin compromiso. Un guion de 30s son ~350-450 caracteres. Fuentes secundarias estiman ~$0.27/minuto de narración en Multilingual v2. El voiceover NO es la barrera de costo; los clips sí.",
+          "source": "https://elevenlabs.io/pricing/api (verificado por fetch)"
+        },
+        {
+          "point": "El ensamble por API es barato y commodity: $0.10-0.35 por reel de 30s renderizado (Shotstack, Creatomate, JSON2Video)",
+          "detail": "Verificado por fetch en las tres páginas oficiales: Shotstack suscripción $0.20/min renderizado ($39/mes base, 1080p max, overage +30%). Creatomate: 1 min 720p ≈ 14 créditos; plan Essential 2.000 créditos ≈ 2.8h de 720p (~$0.17/reel 30s); TTS cuesta créditos extra. JSON2Video: 1 crédito = 1 seg de video; Hobby $16.95/mes = 3.000 créditos (50 min) ≈ $0.17 por reel de 30s CON TTS incluido (Azure + ElevenLabs dentro del mismo crédito) y auto-sizing de duraciones — la fricción clásica de Shotstack es que exige start/length fijos para cada elemento, malo para contenido de duración variable.",
+          "source": "https://shotstack.io/pricing/ + https://creatomate.com/pricing + https://json2video.com/pricing/ (los tres verificados por fetch)"
+        },
+        {
+          "point": "Remotion (ensamble programático React) es gratis solo para empresas de ≤3 personas; como SaaS que automatiza para clientes cae en 'Automators': $0.01/render con mínimo $100/mes",
+          "detail": "Licencia oficial: free license = individuos y empresas hasta 3 personas, con render local y Lambda self-hosted incluidos. 'Remotion for Automators' (automatización tipo Papandi) = $0.01 por render cobrado en bloques de $10, mínimo $100/mes; Enterprise mínimo $500/mes. Más el costo de cómputo AWS Lambda propio (centavos por minuto). Es la ruta de máximo control (captions con estilo de marca, plantillas propias) pero con piso fijo mensual y equipo React requerido.",
+          "source": "https://www.remotion.dev/docs/license + https://www.remotion.pro/license"
+        },
+        {
+          "point": "Captions automáticos: transcripción pura cuesta casi nada ($0.006/min Whisper/AssemblyAI); captions estilizados quemados en video via API cuestan $0.10-0.15/min",
+          "detail": "Whisper y AssemblyAI batch = $0.006/min (transcripción a texto/SRT). APIs de captions estilizados (ZapCap $0.10/min, Submagic ~$0.10-0.69/min según plan, Captions/Mirage $0.15/min) cobran más porque incluyen el render. Para la ruta CapCut, los auto-captions de CapCut son gratis dentro de la app. Un SRT + palabras con timestamps de Whisper es el entregable glass-box más barato y verificable.",
+          "source": "https://futureagi.com/blog/speech-to-text-apis-in-2026-benchmarks-pricing-developer-s-decision-guide/ + https://zapcap.ai/api/alternatives/submagic/ + https://www.submagic.co/pricing"
+        },
+        {
+          "point": "Costo total realista por reel terminado de 15-30s, por ruta",
+          "detail": "RUTA A (paquete + usuario ensambla en CapCut): clips Kling $3-6 (con reintentos) + VO ElevenLabs $0.02-0.05 + captions CapCut gratis = ~$3-6 en API + 20-60 min de trabajo del usuario. RUTA B (ensamble automático full-API): mismos clips $3-6 + render JSON2Video/Shotstack $0.10-0.35 con TTS y captions quemados = ~$3.50-6.50 en API, ~0 min de usuario, pero cero control fino. RUTA C (calidad premium Veo 3): $16-30+ por reel — inviable para solopreneur recurrente. RUTA D (competidor todo-incluido tipo Creatify): $39-99/mes por suscripción con créditos que se queman en re-renders por errores de lip-sync. La generación de clips domina el costo en TODAS las rutas; el ensamble es <10% del costo.",
+          "source": "Cálculo propio sobre precios verificados en fal.ai/pricing, elevenlabs.io/pricing/api, json2video.com/pricing, shotstack.io/pricing"
+        },
+        {
+          "point": "Los competidores de marketing-IA entregan 'video terminado' pero con calidad que los usuarios corrigen a mano: el patrón de quejas es consistente",
+          "detail": "Creatify (G2 4.8/1.246 reviews pero patrón: 'bien para borradores y volumen, frustrante para estándar de producción'): lip-sync pobre, avatares uncanny, re-renders que queman créditos, quejas de facturación/cancelación. Icon.com: ejecución calificada 4/10 en una review, ~1 de cada 3 intentos utilizable sin edición pesada, renders atascados al 99%, IA que alucina features del producto, cancelación solo via soporte. Predis.ai: reels genéricos, 'diseño bueno pero no excelente, por debajo de Canva', créditos impredecibles; su fortaleza real son carousels, no video. Ocoya: copywriting-first, video débil. Ninguno resuelve el gap calidad-publicable; venden velocidad y volumen.",
+          "source": "https://www.g2.com/products/creatify-labs-inc-creatify-ai/reviews + https://easyai.indevs.in/icon-ai-admaker/ + https://www.airpost.ai/blog/icon-ai-admaker-review + https://socialrails.com/blog/predis-review + https://digitalbydefault.ai/blog/predis-ai-social-content-review-2026"
+        },
+        {
+          "point": "Para el no-experto, la evidencia favorece el híbrido: paquete verificable + ensamble asistido, no el video negro-caja terminado",
+          "detail": "El consenso practicante (Reddit vía agregadores, stack Medium 2026) es que CapCut gana para novatos por control + gratis + auto-captions + export directo a TikTok, mientras los generadores full-auto sirven para borradores. La queja #1 contra los 'terminados' (Creatify/Icon) no es lentitud sino output que igual hay que editar — es decir, pagan por 'terminado' y reciben 'borrador opaco'. El punto óptimo observado: el sistema produce los assets y un ensamble por defecto, y el usuario retiene la capa de edición final. Marcar como dudoso: no existe estudio cuantitativo neutral de conversión 'paquete vs terminado'; esto es triangulación de reviews + guías practicantes.",
+          "source": "https://www.aitooldiscovery.com/guides/ai-video-generator-reddit + https://medium.com/activated-thinker/the-ultimate-2026-tech-stack-for-faceless-tiktok-reels-creators-ebfb4fc7bd53 + patrón de quejas en G2/reviews de Creatify e Icon"
+        }
+      ],
+      "implications_for_papandi": [
+        "El entregable actual de Papandi (guion por intervalos + un video_prompt) ya coincide con la mitad cara-de-trabajo del pipeline real; el gap no es 'generar video' sino empaquetar: guion + prompts POR CLIP (no uno global) + guion de VO listo para ElevenLabs + SRT/captions + orden de ensamble CapCut-ready. Eso es glass-box puro y cuesta $0 en generación.",
+        "Si Papandi conecta generación, la ruta doctrinal ('nosotros el cerebro, fal.ai las manos') es viable a ~$3-6 por reel con Kling 2.5 Turbo Pro / Wan 2.5 vía fal.ai; Veo 3 ($0.40/s) queda descartado por presupuesto salvo como opción premium explícita. El tope MEDIA_BUDGET_USD=20 existente alcanza para ~3-6 reels con reintentos.",
+        "El ensamble automático NO es el moat ni el costo: por ~$0.17-0.35/reel (JSON2Video con TTS incluido, o Shotstack) Papandi puede ofrecer un 'primer corte automático' además del paquete. JSON2Video es el mejor fit técnico para contenido de duración variable (auto-sizing) y funde TTS en el mismo crédito; Shotstack exige timings fijos calculados por Papandi.",
+        "El posicionamiento ganador contra Creatify/Icon/Predis es exactamente la queja que ellos generan: sus usuarios pagan 'video terminado' y reciben borradores opacos que igual editan. Papandi debe vender 'paquete verificable + borrador ensamblado que TÚ terminas en CapCut en 10 minutos' — convierte la debilidad (no generamos el terminado) en la promesa glass-box.",
+        "Remotion solo tiene sentido si Papandi quiere plantillas de captions/branding propias con control total: implica React + mínimo $100/mes (licencia Automators) + cómputo. Para MVP, una API de render commodity (JSON2Video/Shotstack) o el paquete CapCut-ready dominan en costo/esfuerzo.",
+        "El voiceover debe incluirse desde ya: ElevenLabs API cuesta centavos por reel ($0.02-0.05) y el guion por intervalos que Papandi ya produce es el input directo. Es la mejora de mayor valor percibido por dólar de todo el pipeline.",
+        "Secuencia sugerida de producto: (1) hoy = paquete CapCut-ready (prompts por clip + guion VO + captions SRT + checklist de ensamble); (2) siguiente = VO real vía ElevenLabs adjunto al paquete; (3) después = clips vía fal.ai con presupuesto visible por reel; (4) opcional = primer corte automático vía render API, siempre entregando también los assets sueltos para que el usuario lo rearme."
+      ],
+      "hard_constraints": [
+        "La generación de clips domina el costo total (>90%): Kling 2.5 Turbo Pro $0.07/s y Wan 2.5 $0.05/s en fal.ai; los reintentos (norma real: 2-3x) multiplican el costo — presupuestar $3-6 por reel de 15-30s, no $1.50.",
+        "Veo 3 a $0.40/s en fal.ai = $16-30+ por reel con reintentos: incompatible con solopreneur presupuesto-sensible salvo como tier premium opt-in.",
+        "Remotion NO es gratis para un SaaS que automatiza renders para clientes: licencia 'Automators' $0.01/render con mínimo $100/mes (Enterprise $500/mes), más cómputo propio.",
+        "Shotstack exige start/length fijos por elemento — con VO de duración variable, Papandi tendría que calcular todos los timings (Whisper word-timestamps o duración del audio TTS) antes de armar el JSON.",
+        "Las APIs de render cobran por minuto renderizado, no por reel: cada re-render de corrección cuesta de nuevo; el free tier de JSON2Video lleva watermark.",
+        "ElevenLabs precios verificados julio 2026 ($0.05-0.10/1k chars) tras una baja reciente de hasta 55%: revalidar antes de fijar pricing propio, el mercado de TTS está deflacionando.",
+        "Cifras NO verificadas en fuente oficial (solo agregadores): Kling 3.0 ~$0.029/s, Sora 2 Pro $0.30-0.50/s, Hailuo $0.28-0.49/video — tratar como estimaciones hasta confirmar en fal.ai/models.",
+        "No existe medición neutral de 'paquete vs terminado' en conversión/retención: la recomendación de ruta híbrida es triangulación cualitativa (reviews + guías practicantes), no dato duro."
+      ],
+      "sources": [
+        "https://fal.ai/pricing",
+        "https://elevenlabs.io/pricing/api",
+        "https://json2video.com/pricing/",
+        "https://shotstack.io/pricing/",
+        "https://creatomate.com/pricing",
+        "https://www.remotion.dev/docs/license",
+        "https://www.remotion.pro/license",
+        "https://medium.com/activated-thinker/the-ultimate-2026-tech-stack-for-faceless-tiktok-reels-creators-ebfb4fc7bd53",
+        "https://fluxnote.io/guides/capcut-ai-video-generator-review",
+        "https://fluxnote.io/blog/ai-video-generation-pricing-guide-2026",
+        "https://www.g2.com/products/creatify-labs-inc-creatify-ai/reviews",
+        "https://easyai.indevs.in/icon-ai-admaker/",
+        "https://www.airpost.ai/blog/icon-ai-admaker-review",
+        "https://socialrails.com/blog/predis-review",
+        "https://digitalbydefault.ai/blog/predis-ai-social-content-review-2026",
+        "https://futureagi.com/blog/speech-to-text-apis-in-2026-benchmarks-pricing-developer-s-decision-guide/",
+        "https://zapcap.ai/api/alternatives/submagic/",
+        "https://www.submagic.co/pricing",
+        "https://www.aitooldiscovery.com/guides/ai-video-generator-reddit",
+        "https://json2video.com/how-to/shotstack-alternative/"
+      ]
+    }
+  ],
+  "critique": {
+    "missing": [
+      "Calidad real de output por modelo para los 3 casos de uso (b-roll de producto, talking head, escena narrativa): todo el research es precio/features; no hay ni un benchmark ciego, ELO (Artificial Analysis / lmarena video arena) ni bake-off propio. Sin dato de calidad no se puede elegir entre Kling 3.0 ($0.168/s) y Wan 2.6 ($0.10/s) — la diferencia de precio es irrelevante si uno rinde 1 clip usable de 2 y el otro 1 de 4.",
+      "Tasa de yield/reintentos POR MODELO: el stream de pipelines asume '2-3 reintentos es la norma' sin fuente y aplica el mismo multiplicador a todos los modelos. El costo real por reel depende más del yield que del precio por segundo. Es el número que más mueve el presupuesto y no está medido para ninguno.",
+      "El paso de imagen inicial 9:16 está ausente: el propio research dice que Kling i2v fija el aspect ratio con la imagen de inicio y que StyleID se inyecta vía imágenes de referencia, pero no hay nada sobre QUÉ modelo de imagen genera esos start-frames/referencias, su costo, ni cómo se produce desde el StyleID de Papandi. El pipeline i2v no existe sin este eslabón.",
+      "Incoherencia de resolución no resuelta: platform_rules/what_performs dicen 'export HD 1080p+ obligatorio, low-res se deprioriza', pero el modelo de costos de $3-6/reel está calculado a precios ~720p. A 1080p: Wan sube a $0.15/s, Seedance a $0.682/s. Falta el cost model a 1080p o validar la ruta 720p+upscaler (y el costo del upscaler, que tampoco aparece).",
+      "Términos de servicio y derechos comerciales por modelo: nada sobre si Kling (Kuaishou), Wan (Alibaba) y Seedance (ByteDance) permiten uso comercial y REVENTA del output a clientes de un SaaS, indemnización de IP, ni política de subir el rostro/voz de una persona real (Wan reference-to-video clona apariencia+voz — eso es territorio deepfake/consentimiento y las plataformas prohíben personas reales sintéticas sin disclosure). Es riesgo legal directo del producto, no un detalle.",
+      "Contradicción de producto sin resolver internamente: video_generators propone Hedra/Wan/Kling para el avatar talking-head del solopreneur, mientras what_performs tiene como hard constraint 'no generar rostros humanos sintéticos como default' (36% baja confianza, gestos robóticos = delator #1). El research entrega ambas direcciones sin decidir; el pipeline necesita una postura: ¿el lane avatar existe o no?",
+      "Verificación C2PA end-to-end: se afirma que los archivos de fal.ai 'pueden traer' C2PA y que las plataformas auto-etiquetan, pero no se verificó (a) qué modelos de fal emiten realmente C2PA/SynthID en el archivo, (b) si un re-render en JSON2Video/Shotstack/CapCut PRESERVA o destruye esa metadata. Cambia si el disclosure es automático o responsabilidad manual del usuario.",
+      "Música de fondo en la ruta de ensamble automático: la regla 'solo CML/Sound Collection' aplica a audio nativo de plataforma, pero si Papandi renderiza un video final con track incluido necesita licencia propia (Artlist/Epidemic/API de música). El pipeline B (render full-API) no tiene resuelto el audio bed — solo TTS.",
+      "Rate limits y concurrencia a escala multi-usuario: solo se documenta 'Kling concurrencia 1 por usuario en fal'. ¿Por usuario = por cuenta/token? Con un token compartido (como el ledger de sandia), un cliente rendereando bloquea a los demás. Faltan los límites de los otros modelos y el diseño de cola.",
+      "Willingness-to-pay: se conoce el costo ($3-6/reel) pero no cuánto pagaría el usuario ni el margen — el propio scope de research previo (Fase 0) lo marcó como el hueco maestro y esta corrida no lo toca. Sin eso, elegir entre pipeline barato (Wan) y premium (Veo) es prematuro.",
+      "Soporte de idioma español en audio nativo: Kling auto-traduce 'otros idiomas' a inglés, Wan es chino/inglés. Si algún avatar de Papandi habla español, el diálogo nativo con lipsync no está cubierto por los modelos baratos — solo ElevenLabs VO sobre b-roll. No está mapeado.",
+      "Precios de Replicate para los mismos modelos: se afirma 'fal.ai/Replicate las manos' pero solo se verificaron precios en fal; si Replicate difiere (suele hacerlo) la elección de proveedor primario carece de comparación real.",
+      "Evidencia de que el b-roll IA rinde: what_performs valida el formato faceless en general, pero cero datos de reach/retención de b-roll GENERADO POR IA vs stock/real. La apuesta central del lane seguro no tiene medición."
+    ],
+    "contradictions": [
+      "Precio de Kling: stream video_generators reporta Kling 3.0 Pro a $0.112/s sin audio y $0.168/s con audio (dice 'verificado' en fal.ai); stream ai_reel_pipelines verifica en fal.ai/pricing Kling 2.5 Turbo Pro a $0.07/s y marca 'Kling 3.0 ~$0.029/s' (agregador) como dudoso. $0.029 vs $0.112 para el mismo modelo es 4x de diferencia — al menos una de las dos corridas está desactualizada o confunde tiers Standard/Pro.",
+      "Costo por reel: video_generators concluye 'reel de 30s desde ~$1.50'; ai_reel_pipelines tiene como hard constraint explícito 'presupuestar $3-6, NO $1.50'. Ambos números se ofrecen como base de decisión y se niegan mutuamente (el primero es corrida limpia sin reintentos, el segundo incluye reintentos — pero el JSON no los reconcilia).",
+      "Generación de versiones cruzadas: ai_reel_pipelines construye todo su cost model sobre Kling 2.5 Turbo Pro, Wan 2.5 y Veo 3, mientras video_generators documenta Kling 3.0, Wan 2.6/2.7 y Veo 3.1 como el catálogo actual. Las recomendaciones de ruta ($3-6/reel con Kling 2.5) usan precios de modelos que el otro stream ya considera superados — con Kling 3.0 con audio el mismo reel sale $6-13, no $3-6.",
+      "Disclosure de IA: platform_rules afirma (oficial) que el label IA no penaliza distribución; what_performs cita NIM (etiquetar provoca evaluación más crítica del mismo contenido) contra IAB (73% de jóvenes mantiene/sube intención de compra). Plataforma-algoritmo vs percepción-consumidor apuntan en direcciones opuestas y el JSON lo deja como 'pregunta abierta' pese a que las implicaciones de platform_rules ordenan 'etiquetar proactivamente'.",
+      "Avatar sintético: video_generators propone como implicación 'decidir entre Hedra API o Wan reference-to-video para el talking-head del solopreneur'; what_performs prohíbe como hard constraint generar rostros sintéticos por default y dice 'pedir al usuario que grabe su cara — nunca generarla'. Direcciones de producto incompatibles dentro del mismo paquete de research.",
+      "Muerte de Sora 2: el claim más fuerte del stream (app cerrada 26-abr-2026, API muere 24-sep-2026) descansa solo en costgoat.com y un blog de mindstudio.ai — cero fuente oficial de OpenAI. Si es falso o impreciso, el hard constraint 'prohibido Sora' está mal fundado; si es cierto, demuestra que ningún precio de este JSON tiene más de ~6 meses de vida útil.",
+      "Referencias de Veo 3.1: la propia ficha admite que 'hasta 4 imágenes' (getimg.ai) contradice el '3' documentado — menor, pero muestra el patrón: los agregadores inflan specs y ambas corridas los citan con distinto rigor.",
+      "Seedance como 'mejor ratio capacidad/flexibilidad para reels' (video_generators) a $0.3034/s en 720p es MÁS CARO que Kling 3.0 con audio ($0.168/s) y 6x Wan Flash; ai_reel_pipelines ni lo incluye en sus rutas de costo. La etiqueta 'mejor ratio' no sobrevive al propio pricing del JSON salvo que multi-shot reduzca el número de clips — cálculo que nadie hizo.",
+      "Duración recomendada: what_performs dice sweet spot 15-35s; platform_rules dice '<60-90s' y las implicaciones de video_generators presupuestan reels de 30s con 3-4 clips. Tres objetivos de duración distintos = tres presupuestos distintos por pieza."
+    ],
+    "next_research": [
+      "Bake-off real con presupuesto acotado (~$10-15 dentro de MEDIA_BUDGET_USD): mismo brief de 3 clips (b-roll producto i2v, escena con diálogo, movimiento de cámara) en Kling 3.0, Wan 2.6 y Seedance 2.0 vía fal.ai; medir yield (clips usables / intentos), latencia real y adherencia al StyleID. Es la única forma de convertir precio/s en costo real por clip usable.",
+      "Re-verificar en fal.ai/models (fetch directo, mismo día) el precio vigente de: Kling 3.0 Pro vs 2.5 Turbo Pro (resolver la contradicción $0.029/$0.07/$0.112), Wan 2.6 vs 2.5, y recalcular el cost model completo a 1080p con audio — que es lo que las platform rules exigen exportar.",
+      "Confirmar el shutdown de Sora 2 en fuente oficial de OpenAI (blog/docs/deprecations) antes de purgar specs; hoy descansa en dos blogs de terceros.",
+      "Leer ToS comerciales de Kling, Wan y Seedance (y de fal.ai como intermediario): derecho a uso comercial y reventa del output a terceros, política de likeness real (subir cara/voz del cliente a reference-to-video), y titularidad del output. Bloqueante legal antes de conectar generación.",
+      "Test empírico C2PA: generar 1 clip por modelo en fal, inspeccionar metadata (c2patool), pasarlo por JSON2Video/Shotstack y re-inspeccionar. Determina si el disclosure en TikTok/Meta será automático o instrucción manual en el entregable.",
+      "Anclar a página oficial las 4 reglas de plataforma que el propio JSON marca como no-verificadas: límite 20 min de subida de Reels, unificación Facebook video=Reel, zona segura 9:16 unificada de Meta (mar-2026), y restricciones del Meta Sound Collection para cuentas business.",
+      "Cotizar Hedra API con números oficiales (hedra.com/plans + docs): qué tier habilita API, créditos/s reales de Character-3/Omnia, y si existe billing por API separado de la suscripción — la cifra actual ($0.03-0.05/s) es derivada. Solo si se decide que el lane avatar existe (resolver antes la contradicción avatar sintético vs hard constraint de what_performs).",
+      "Definir y costear el eslabón de imagen: qué modelo genera los start-frames 9:16 y las imágenes de referencia desde el StyleID (Nano Banana/FLUX en fal), costo por set, y si las referencias mantienen consistencia entre clips del mismo reel.",
+      "Monitoreo con trigger, no re-research: Seedance 2.5 en fal.ai (30s nativos colapsaría el pipeline multi-clip — diseñar agnóstico al número de clips y re-evaluar cuando aparezca en el catálogo, no antes).",
+      "Comparar precios Replicate vs fal.ai para los 3 modelos finalistas y decidir proveedor primario con datos; hoy 'fal/Replicate' se afirma como equivalente sin comparación.",
+      "Validar willingness-to-pay (Fase 0 pendiente) antes de elegir tier de calidad: con costo real $3-13/reel, el precio al usuario define si el pipeline default es Wan Flash o Kling 3.0 — es decisión de negocio, no técnica."
+    ]
+  }
+}
