@@ -132,6 +132,7 @@
 - [ ] **Selector de modelo** en la UI + generación **asíncrona** (cola + polling; Kling concurrencia 1 en fal).
 - [ ] **Variantes acumulativas**: cada generación se agrega (modelo · costo · prompt), nunca reemplaza; el usuario marca la que queda.
 - [ ] **Yield-ledger**: registrar intentos vs elegidas por modelo (el bake-off continuo, D-V4).
+- [ ] **Multi-shot packing** (verificado en fal 2026-07-01, `fal-ai/kling-video/v3/pro/*`): el guion canónico queda POR CLIP (agnóstico); el adapter de Kling agrupa clips en generaciones multi-shot de ≤15s vía `multi_prompt` ([{prompt, duration}], `shot_type: customize|intelligent`) → **misma voz y personaje dentro de cada generación** (resuelve el voice-drift), menos costuras; grupos encadenados con start/end frame. Precios: $0.112/s sin audio · $0.168/s audio nativo (EN/ZH) · $0.196/s voice control; 9:16 nativo; `generate_audio`. Seedance multi-shot equivalente; Seedance 2.5 (30s nativos) colapsará el reel a 1 generación cuando llegue a fal.
 - [ ] Start-frames 9:16 desde el StyleID (FLUX/Kontext, ~$0.10–0.24/reel) — fija el aspect en i2v y ancla la marca; producto = foto real como start frame (anti-alucinación).
 
 **3 — Personaje de marca (D-V2):**
