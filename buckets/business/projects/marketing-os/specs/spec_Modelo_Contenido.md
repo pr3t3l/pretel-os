@@ -119,6 +119,8 @@ Cada pieza nace con: `pillar_id` × `hook_id` × `template` (forma) × `channel`
 
 ## 8. Qué se re-hace en código (honesto)
 
+> **El plan de ejecución ordenado** (fases P1-P5, tests, migración, y la relación con la producción de video) vive en **`build_plan_modelo_contenido.md`**. Esta sección es el resumen; ese doc es el orden de trabajo. Ahí también se resuelve el **Seam 2** (dónde vive "la idea": se absorbe en el gancho como campo `angle`).
+
 - **`lib/wizard/phase2/canon.ts` (2.4)** → deja de emitir derivados; emite (a) el **ancla por pilar** + (b) la **política de ratio**. El candado "1 ancla + ≥5 derivados" se retira; la productividad la garantiza el candado de **≥10 ganchos por pilar**.
 - **`lib/schemas/content-plan.ts`** → `AtomizationMap` se reduce (ancla + ratio) o se pliega en `PillarSet`; `derivatives[]` se retira/repurpone.
 - **`lib/estudio/brief.ts`** → el brief de develop toma: **ángulo elegido (hook) + contexto del pilar + canal elegido**. Deja de depender de `derivative.note`/`kind` y del `rotateHook`-por-índice.
