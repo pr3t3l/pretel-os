@@ -75,6 +75,12 @@ El nuevo modelo es un **motor renovable**: `pilares × biblioteca-de-ángulos ×
 
 **El "set inicial" reemplaza a los 28:** al firmar, el sistema **pre-dibuja una primera tanda** de piezas (ángulo × canal) repartidas sobre las cadencias/ventanas de 2.2 — para que no mires un calendario en blanco — pero se entiende como *un primer sorteo del pozo*, extensible siempre, **NO** como el plan completo y final. La disciplina de mezcla (no 40 Reels) vive en **cómo se pesa ese sorteo** (investigación por canal: carrusel=educar, Reel=alcance, imagen=relleno…).
 
+**Dos precisiones (confusión frecuente):**
+1. **Los slots iniciales nacen VACÍOS de contenido.** Son ángulo × canal × fecha en estado ○ *planificada* — **NO** piezas desarrolladas. El contenido se genera **bajo demanda** (una por una, o «Desarrollar mi semana» en lote) — jamás automático al firmar. Es el candado de costo del operador ("no 28 llamadas a ciegas"). El calendario nace lleno de *compromisos*, no de *contenido*.
+2. **Convertir un ángulo en pieza NO es "asignarle una idea".** El ángulo YA es la idea (con la profundidad de su pilar); lo único que eliges es el **canal** (y, opcional, afinar la forma retórica o la apertura visual). Asignar una idea aparte era lo que hacía el derivado — justo lo que muere. Voz, oferta y keywords vienen de lo firmado, automáticas.
+
+**No son "28 piezas + 80 hooks" como dos montones.** Los ~28 slots son un **primer sorteo del pozo de ángulos**; cada slot toma un ángulo y lo empareja a un canal. Los ángulos — usados o no en ese primer sorteo — **siguen disponibles** para engendrar más piezas en más canales. El pozo (los ~40 ángulos por avatar) es la fuente; las 28 son la primera cosecha.
+
 **Reconciliación con `spec_Phase_Identidad.md §1.5` (ronda 4):** ahí se escribió *"el calendario se llena COMPLETO al firmar (las 28)… el plan se acaba"*. Esto lo **REVISA**: el calendario se llena con el **set inicial** (mismo beneficio de "qué toca hoy", mismos estados ○◐●✓), pero **no se acaba** — se re-alimenta desde la biblioteca de ángulos. Se elimina la honestidad incómoda del "plan finito"; el motor es renovable. *(Pendiente: actualizar Identidad §1.5.)*
 
 ---
