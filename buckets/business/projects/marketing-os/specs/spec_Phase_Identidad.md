@@ -33,7 +33,11 @@ Fundación (F0) → Oferta (F1) → Contenido (F2, cierra en 2.6)
 
 **Configuración por pieza** (de dónde sale cada cosa): gancho de apertura = `rotateHook` (pilar+índice+fecha, determinista) · tipo de texto = el `kind` de 2.4 (no editable, lo fijó el plan) · apertura visual (video) = Papandi elige o el operador selecciona · voz/personaje/identidad = del kit + identidad firmada · doctrina por canal = automática por `kind` (C3). El operador puede afinar la apertura (estilo/visual) — todo lo demás viene firmado.
 
-**Decisión de producto pendiente (para esta spec o la de Producción):** desarrollar 28 piezas de a una = mucho clic para un usuario nuevo. Evaluar un botón **"Desarrollar mi primera semana"** (lote de los slots del calendario de los próximos N días) para que el usuario nuevo tenga contenido rápido — con revisión/aprobación pieza a pieza igual (la calidad no se automatiza, solo el disparo).
+**Decisiones del operador (2026-07-06, ronda 4):**
+- **«Desarrollar mi semana» APROBADO**: botón que desarrolla en lote los slots de los próximos 7 días (~5-7 llamadas, no 28), cada pieza anclada a la FECHA de su slot (publishDate → integridad temporal). La revisión/aprobación sigue pieza a pieza — el lote dispara, no aprueba. **Una-por-una se mantiene SIEMPRE** (control fino; y mientras se debuggea, es el modo por defecto — jamás 28 llamadas a ciegas).
+- **Las 28 NO son genéricas**: cada pieza nació canal-específica en 2.4 (kind = canal×formato de los canales firmados 2.2). El develop encadena kind → tipo → doctrina del canal (C3) → plantilla del corpus. UNA idea multiplicable a VARIOS canales = Etapa D (gancho-céntrico), no el plan base.
+- **El calendario se llena COMPLETO al firmar** (el plan es el mapa de trabajo, no el registro de lo producido), y cada slot muestra su ESTADO: ○ planificada → ◐ desarrollada → ● aprobada → ✓ publicada. Razones: sin plan visible no hay "qué toca hoy"; desarrollar DESDE el slot ancla la fecha (ganchos estacionales/temporalidad contra el día de publicación); el estado ○ es honesto (compromiso, no contenido).
+- **Slots vencidos sin desarrollar SE REPROGRAMAN** al siguiente hueco del canal, con aviso glass-box ("N piezas se corrieron — no se pierden"). Hoy quedan atrás en silencio: eso viola la doctrina; entra al build de B/D.
 
 ## 2. Qué vive en Identidad
 
