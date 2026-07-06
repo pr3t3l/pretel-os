@@ -119,7 +119,7 @@ Cada pieza nace con: `pillar_id` × `hook_id` × `template` (forma) × `channel`
 
 ## 8. Qué se re-hace en código (honesto)
 
-> **El plan de ejecución ordenado** (fases P1-P5, tests, migración, y la relación con la producción de video) vive en **`build_plan_modelo_contenido.md`**. Esta sección es el resumen; ese doc es el orden de trabajo. Ahí también se resuelve el **Seam 2** (dónde vive "la idea": se absorbe en el gancho como campo `angle`).
+> **El plan de ejecución ordenado** (fases P1-P5, tests, migración, y la relación con la producción de video) vive en **`build_plan_modelo_contenido.md`**. Esta sección es el resumen; ese doc es el orden de trabajo. Ahí también se resuelve el **Seam 2** (dónde vive "la idea"): **NO hay campo nuevo** — la idea vive en el **TEXTO del gancho** (rico), bajo el modelo de 3 capas DOLOR × FORMA × ESCENA. El `note` hoy ni se imprime al develop (campo muerto), así que eliminarlo no pierde nada. *(Un borrador previo proponía un campo `angle`; se descartó — re-introducía el `note`.)*
 
 - **`lib/wizard/phase2/canon.ts` (2.4)** → deja de emitir derivados; emite (a) el **ancla por pilar** + (b) la **política de ratio**. El candado "1 ancla + ≥5 derivados" se retira; la productividad la garantiza el candado de **≥10 ganchos por pilar**.
 - **`lib/schemas/content-plan.ts`** → `AtomizationMap` se reduce (ancla + ratio) o se pliega en `PillarSet`; `derivatives[]` se retira/repurpone.
