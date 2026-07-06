@@ -567,6 +567,8 @@ Skill propuesto para V2 (no V1).
 
 ## 7. Sub-paso 2.4 — Atomization
 
+> ⏳ **CAMBIO PROPUESTO C17 (pendiente firma del operador) — autoridad `spec_Modelo_Contenido.md`.** Este modelo de *"1 ancla + N derivados como unidad planificable"* se **reemplaza**: el **ÁNGULO (gancho, §8) pasa a ser la unidad** y una **PIEZA = ángulo × canal**. El **derivado muere** (era una 2ª idea redundante, casada por índice con el gancho vía `rotateHook`); el **ancla sobrevive**. El plan deja de ser la cola finita de ~28 y pasa a ser **generativo** (los mismos pilares dan años de contenido; las "28" pasan a ser el *set inicial*). Esta §7 se conserva como registro histórico hasta ratificar. Ver `_audit_change_ledger.md` **C17**.
+
 ### Propósito
 Cada pilar produce **1 pieza long-form anchor** + **N derivatives**. Sin atomización, el costo por pieza es prohibitivo y el operador abandona el plan en semana 3. Modelo Vaynerchuk: 1 keynote → 64 piezas. V1 reduce a 1:5 mínimo (1 long-form → ≥5 derivatives).
 

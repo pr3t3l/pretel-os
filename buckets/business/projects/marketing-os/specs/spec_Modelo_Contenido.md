@@ -3,7 +3,7 @@
 **Estado:** v1 borrador — para firma del operador.
 **Decisión de arquitectura (2026-07-06, esta sesión):** el **derivado** (2.4 "La multiplicación": idea `note` + canal `kind`) se **elimina como capa**; el **ángulo (gancho, 2.5) es la unidad de producción**; la **pieza = ángulo × canal**. El operador aceptó explícitamente rehacer lo ya construido si mejora el sistema.
 **Decide:** cuál es la unidad de contenido, cómo se relacionan pilares/ganchos/piezas, cómo se genera contenido sin límite finito, y cómo el sistema aprende (la cascada de diagnóstico).
-**Supersede:** el concepto de "atomización / derivados" de `spec_Phase_2_Contenido.md §2.4`. La ratio dar:pedir de 2.4 se reubica (§5). El ancla sobrevive (§3).
+**Supersede (se ratifica como C17 en `_audit_change_ledger.md` al firmar):** el concepto de "atomización / derivados como unidad" de `spec_Phase_2_Contenido.md` **§7 (Atomization)** — el paso 2.4 del wizard deja de emitir derivados. **§8 (Hook Library)** se mantiene pero el gancho pasa a ser la UNIDAD, no una biblioteca de aperturas. La ratio dar:pedir se reubica (§5); el ancla sobrevive (§3). **Afecta (deben actualizarse al firmar):** `Overall_WF.md` (Lifecycle Fase 2), `spec_Estudio_Produccion_Publicacion.md` (input del develop), `spec_Inteligencia_Temporal.md` + su build_plan (calendario finito→generativo), `spec_Phase_Identidad.md` §1.5 (calendario generativo).
 **Fuentes:** doctrina del Cerebro de Ganchos (3 capas, operador 2026-07-02) · `docs/research/doctrina-por-canal.md` (formato/gate por canal) · decisión del operador esta sesión · schema actual `lib/schemas/content-plan.ts`.
 
 ---
