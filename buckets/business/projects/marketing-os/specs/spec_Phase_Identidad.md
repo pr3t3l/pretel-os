@@ -21,15 +21,26 @@ Fundación (F0) → Oferta (F1) → Contenido (F2, cierra en 2.6)
    → DISTRIBUCIÓN (calendario/publicación) → MEDICIÓN → AJUSTE
 ```
 
-- El **evergreen NO se inicia**: nace al firmar 2.4/2.6 (el plan finito ya agendado en el calendario ES el always-on). Identidad es el único paso entre firmar el plan y producirlo.
 - Las **campañas se OFRECEN** después (radar/lanzamiento) — jamás son requisito.
+
+### 1.5 Qué pasa después de firmar 2.6 (el flujo del evergreen — aclaración del operador 2026-07-06)
+
+**NADA se genera automáticamente al firmar.** "El evergreen" = el CRONOGRAMA, no contenido producido. El flujo real:
+
+1. **Se calcula el PLAN** (`buildPublicationPlan`): el calendario muestra las ~28 piezas del avatar repartidas semana a semana (cada slot = pilar × pieza de 2.4, con su gancho rotado, en los días recomendados de 2.2). El cronograma nace lleno; las piezas nacen vacías de contenido.
+2. **Las ~28 IDEAS aparecen en el Estudio**, agrupadas por pilar (C1), cada una mostrando el gancho de marca que la abrirá.
+3. **El operador DESARROLLA cada pieza bajo demanda** — desde la card del Estudio o el slot del calendario. Una por una; nada se produce solo.
+
+**Configuración por pieza** (de dónde sale cada cosa): gancho de apertura = `rotateHook` (pilar+índice+fecha, determinista) · tipo de texto = el `kind` de 2.4 (no editable, lo fijó el plan) · apertura visual (video) = Papandi elige o el operador selecciona · voz/personaje/identidad = del kit + identidad firmada · doctrina por canal = automática por `kind` (C3). El operador puede afinar la apertura (estilo/visual) — todo lo demás viene firmado.
+
+**Decisión de producto pendiente (para esta spec o la de Producción):** desarrollar 28 piezas de a una = mucho clic para un usuario nuevo. Evaluar un botón **"Desarrollar mi primera semana"** (lote de los slots del calendario de los próximos N días) para que el usuario nuevo tenga contenido rápido — con revisión/aprobación pieza a pieza igual (la calidad no se automatiza, solo el disparo).
 
 ## 2. Qué vive en Identidad
 
 ### 2.1 Identidad visual (el artefacto 2.0.5 se mantiene; cambia el hogar y gana firma)
 
 - Paleta · estilo · mood · composición · motivos · tipografía · do/dont — igual que hoy.
-- **Gana firma formal** (`GateSignature`, patrón G-Phase-X): sin firma, los gates de Producción no abren.
+- **Gana firma formal SOLO la identidad visual** (`GateSignature`, patrón G-Phase-X): es la FUNDACIÓN que TODA pieza hereda y cambiarla obliga a reprocesar → sign-once-governs-all. Sin firma, los gates de Producción no abren. **Los personajes y sets NO se firman** (§2.2 — son biblioteca viva, no fundación).
 - **UX educacional con 3 rutas** al entrar (decisión del operador):
   1. **«Ya tengo marca»** → importar (URL / CSS / PDF / logo / colores) → Papandi la lee y **da feedback educado** (contraste, coherencia con el avatar, legibilidad) — nunca la acepta muda.
   2. **«No tengo nada»** → co-crear: Papandi propone desde los OBJETIVOS del proyecto + el avatar (psicología del color por audiencia/sector) — **cada color y tipografía CON su porqué** (glass-box; el porqué es citable).
@@ -52,6 +63,7 @@ identity/cast (artefacto compartido del proyecto)
 - **Selección con foto-chips** en campaña/pieza: "elige tu personaje" (las caras) · "elige tu set" (los lugares).
 - **Cascada de resolución: pieza > campaña > default de marca.** La campaña puede traer variante temática (ej. personaje con bandera del 4 de Julio) con aprobación previa — ver spec de campañas (R1 §3).
 - **Varios sets/personajes: soportado nativo** (era la pregunta del operador — sí vale la pena; el modelo es N de cada uno con defaults).
+- **NO se firman ni se bloquean (aclaración del operador 2026-07-06):** la biblioteca es VIVA — agregar/quitar/cambiar personajes y sets es libre en todo momento, sin re-firmar nada. El flag `aprobado` de un asset NO es una firma de fase: es solo "esta imagen está lista para mandar a Kling" (calidad), reversible cuando quieras. Se firma la FUNDACIÓN (colores/tipografía §2.1); la biblioteca se curó, no se congela.
 - **Migración**: el `set_kit` actual (personaje+set+voz singulares) se convierte en el primer elemento de cada biblioteca + defaults. Sin pérdida.
 
 ## 3. Los gates que Identidad habilita (tabla R3, aprobada)
@@ -83,6 +95,14 @@ Patrón: `GateSignature` + "Se abre al firmar el paso anterior". El botón Desar
 - Cascada: pieza sin override usa default de marca; con override de campaña usa el de campaña (tests puros).
 - Gates: pieza de video sin personaje aprobado → candado con link; email nunca bloqueado (tests + verificación visual del operador en prod).
 - `npm run verify` verde por sub-fase; deploy continuo.
+
+## 6b. Doctrina transversal — FIRMADO ES VISIBLE (corrección del operador 2026-07-06)
+
+**Aplica a TODAS las fases (0/1/2/Identidad), no solo a esta** — pendiente reflejar también en `spec_UX_Experience`:
+
+> Firmar = candado de **EDICIÓN** (editar re-abre la conversación y re-procesa los datos). NUNCA candado de **LECTURA**. Todo lo firmado se ve como **vista humana read-only, SIEMPRE legible sin re-firmar**.
+
+Estado actual (bug de UX detectado): en Fase 2 el paso firmado ES un `<details>` colapsado por defecto — la vista read-only existe pero está escondida, y el operador cree que la única forma de verla es "Enmendar" (que sí edita). Olvida lo que firmó. Fix: el paso firmado muestra un **resumen legible aunque esté colapsado** (los titulares de lo firmado), expandir da la vista completa read-only, y **"Enmendar" queda como acción SEPARADA y explícita** (nunca el único camino para leer). El operador debe poder releer todo lo firmado sin riesgo de re-procesar. Esta fase Identidad nace ya con este patrón; las fases 0-2 se corrigen en un sweep aparte.
 
 ## 7. Fuera de alcance de esta spec
 
