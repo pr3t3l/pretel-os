@@ -46,6 +46,8 @@ Mi propuesta previa (un campo `angle` en el gancho) **re-introducía el `note`**
 
 ## 2. Fases de ejecución (ordenadas, con tests)
 
+> **Regla de seguridad (sandia despliega en CADA push):** el rework va **additive → migrate → contract** (expand-contract). Primero se AÑADEN los campos nuevos (`pillar.anchor`, `PillarSet.ratio_policy_plain`) y se enriquecen los prompts (2.3 + 2.5), **sin borrar `AtomizationMap` todavía** — `brief.ts` y `plan.ts` la importan, y borrarla de golpe rompe la compilación y el deploy a papandi.com. Se migran los consumidores (P2/P3) y **solo al final** se elimina `AtomizationMap` + el paso 2.4. Cada push compila verde (`npm run verify`) antes de desplegar. Transitoriamente 2.3 y 2.4 conviven (el ratio aparece en ambos) — es normal en una migración expand-contract.
+
 ### P1 — Schema + prompts (la raíz)
 - `content-plan.ts`: `Pillar` gana `anchor`; `PillarSet` gana `ratio_policy_plain`; **borrar** `Atomization`/`AtomizationMap`/`atomGateReady`. `Hook` NO cambia de schema (`{hook_id, template, text, pillar}`). `pillarsGateReady` (4 fuerzas) se queda.
 - `canon.ts`: quitar `"2.4"` de `P2Step`/`P2_STEP_IDS`/`P2_GUION`/`P2_ARTIFACT`; borrar `shapes["2.4"]`, su caso en `parseP2Proposal`, `composeAtomMsg`; **enriquecer** `shapes["2.3"]` (anchor + ratio); **subir la calidad** de `shapes["2.5"]` (el `text` = la idea completa, no 1-2 frases sueltas).
