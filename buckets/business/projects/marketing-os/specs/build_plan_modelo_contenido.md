@@ -159,6 +159,42 @@ La receta de Capa 2 YA codifica lo que el modelo final espera, distinto por tipo
 
 ---
 
+## 4b. LA CARD DE ÁNGULO — definición de UI por formato (feedback del operador 2026-07-07)
+
+**Corrección de arquitectura:** NO hay página paralela. La biblioteca de ángulos vive EN el Estudio
+(la página que el operador ama, con su maquinaria completa: modal E3 cacheado, ratio strip, drawer
+con progreso y slides, galería con previews). `/angulos` fue el andamio de prueba → redirige al
+Estudio al completar el merge. El plan con estados ○◐●✓ vive en el CALENDARIO (swap generativo).
+
+**La card de ángulo** = la card `est-pcard idea` del Estudio actual, con el ángulo como sustancia:
+- **Chip de formato** (color por familia — la misma `FORMAT_META` compartida).
+- **El ÁNGULO como título** (el texto del gancho ES la idea — DOLOR, capa obligatoria).
+- **Select CANAL×FORMATO por card** (est-mini-select; opciones = canales FIRMADOS 2.2 expandidos
+  con su ROL — `channelFormatOptions`). El operador elige por pieza, no global.
+- **Selectores de capas** (se componen, nunca obligatorias — Papandi decide lo no elegido):
+
+| Formato elegido | 🎬 ESCENA (apertura visual) | 💬 FORMA (estilo de apertura, E3 cacheado) | Por qué (doctrina) |
+|---|---|---|---|
+| Reel / TikTok video / Short | **SÍ** (16 ganchos visuales) | SÍ | el 1er segundo físico decide la distribución |
+| Carrusel (IG/TikTok) | no | SÍ — viste el slide 1 | sin movimiento; slide 1 = gancho con tensión |
+| Imagen / Pin / Stories | no | SÍ — viste el overlay/título | pin: título+overlay SEO automático (C3) |
+| LinkedIn / Blog | no | SÍ — viste la 1ª línea / titular | media default ON automática, sin selector |
+| **Email** | no | SÍ — **moldea el ASUNTO** | texto plano; la imagen RESTA (ni un selector visual) |
+| Reddit / Grupos FB / X | no | SÍ — moldea el título/1ª línea | reglas de comunidad automáticas (C3) |
+
+- **Dar/pedir: NO se elige por pieza** — lo decide el MODO del pilar (2.3, `pieceIntent`); la UI lo
+  MUESTRA (badge del grupo: "da valor"/"pide la venta") y AVISA al desarrollar un «pedir» fuera del
+  ratio (política en `PillarSet.ratio_policy_plain`, fallback 2.4 durante la transición). Nunca bloquea.
+- **La doctrina del canal NUNCA es un selector** — entra sola al prompt (C3).
+- **Botón**: `Desarrollar idea →` (est-btn-develop) → `produce {hookId, channel, visualHook?, hookTemplateId?}`.
+
+**Seams del merge (además de los ya cableados):** `suggest-hooks` gana dual-path `hookId` (hoy
+rota por índice); `estudio-choices` claves pasan de `pillar:index:goal` → `pillar:hookId:goal`
+(additive); el ratio strip lee 2.3 con fallback 2.4; los contadores de "cola restante /
+multiplicar más" se retiran (el pozo es generativo, no se agota).
+
+---
+
 ## 5. Verificación global
 - `npm run verify` verde por fase; deploy continuo.
 - **End-to-end:** firmar 2.x → calendario con slots ○ (vacíos) → desarrollar un slot (gancho×canal) → pieza coherente (el cuerpo abre con SU gancho) → si es video: `design_spec` (personaje+set descritos por clip) → Kling (imagen del personaje como ancla) → variante.
