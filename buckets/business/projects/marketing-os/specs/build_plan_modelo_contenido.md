@@ -20,7 +20,7 @@ Mi propuesta previa (un campo `angle` en el gancho) **re-introducía el `note`**
 
 **Consecuencia (SIN campo `angle`):** el único cambio a 2.5 es que el prompt genera ganchos **RICOS** — el texto carga la idea completa (como tu ejemplo: 3 frases con reframe), no un teaser de 4 palabras. El develop desarrolla ESE gancho + pilar. El `note` se elimina sin pérdida (no se usaba). El `anchor` se muda al pilar (2.3). **Nada de `angle`, nada de `note`.**
 
-*Sobre los 4.550:* NO es overengineering — es la capa FORMA, y funciona por **retrieval** (E0 SQL → ≤40 candidatos → E1 re-rank → 5 picks), no "vadear 4.550". Su `psychology`+`goal` guían el desarrollo. Caveats reales: (a) hoy están **sub-cableados** — el `psychology`/`goal` no llegan del todo al develop (ensamblador fix #10); (b) `source='vault_personal'` → **licencia**: cambiar a originales Papandi antes de abrir a más usuarios. Válido, pero hay que wire-arlo y re-licenciarlo.
+*Sobre los 4.550:* NO es overengineering — es la capa FORMA, y funciona por **retrieval** (E0 SQL → ≤40 candidatos → E1 re-rank → 5 picks), no "vadear 4.550". Su `psychology`+`goal` guían el desarrollo. Caveat real: hoy están **sub-cableados** — el `psychology`/`goal` no llegan del todo al develop (ensamblador fix #10); hay que wire-arlos. *(Licencia: OK — el operador confirmó que los compró para uso libre, 2026-07-06; sin restricción para el SaaS.)*
 
 ---
 
@@ -123,6 +123,8 @@ La receta de Capa 2 YA codifica lo que el modelo final espera, distinto por tipo
 | Captions karaoke (WhisperX/FFmpeg/Creatomate), safe zones + overlay en VIDEO, botones ritmo/loop/duración, frame chaining, concat automático de clips | ❌ **planeado** (Etapa G) |
 
 **Lo que debes saber:** el cambio de modelo **NO rompe la generación de video** — el video consume el `design_spec` + personaje + clips que la Capa 2 sigue produciendo. Los 8 botones de personalización + la post-producción son **Etapa G (output-side)**, un backlog aparte. Y los **10 fixes del ensamblador** (imprimir el `note`→ahora el gancho rico, `psychology`/`goal`, promesa de marca, keywords con volumen, etc.) son el **backlog de CALIDAD del develop** — también aparte, pero varios se pueden colar en P2.
+
+**Preguntas del operador (extracción de frame + post-producción):** sacar el último frame de un clip = **canvas client-side ($0)**, trivial. El caso "clip 1 termina y no está listo para cortar" tiene dos salidas: **(a) barata/ya** — que el develop escriba cada clip para CERRAR en un beat limpio ("posición de entrega") → el corte siempre funciona, sin cadena; **(b) Etapa G** — frame chaining real (último frame → `start_image` del siguiente) para movimiento continuo, con orquestación secuencial + deriva generacional. Para "mantener el mismo set" en cortes basta la imagen del set + su descripción repetida. La **post-producción** (concat FFmpeg → **WhisperX ALINEA la narración YA conocida del guion** → captions karaoke → overlay en safe zones → export; ~5% del costo de generar; render Creatomate/Shotstack o worker FFmpeg propio) es output-side y mayormente **determinista** → se especifica en el **build plan de Etapa G**.
 
 ---
 
