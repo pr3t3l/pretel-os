@@ -3,7 +3,8 @@
 **Project:** business/marketing-os  
 **Document type:** lifecycle overview  
 **Status:** living document; architecture corrected for Sandi Marketing MVP  
-**Last updated:** 2026-06-26 (C15 — refinamiento de la frontera híbrida DENTRO de Fase 2: reparto de conciencia 2.1 + voz 2.0 = COMPARTIDOS del buyer persona; las piezas 2.2–2.5 son por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición — próximo paso: keyword research por-avatar)  
+**Last updated:** 2026-07-06 (C17 — muere el derivado/atomización 2.4; el ÁNGULO (gancho) es la unidad de producción; pieza = ángulo × canal; plan generativo, no la cola finita de 28; cascada de diagnóstico con el PILAR como raíz — ver `spec_Modelo_Contenido.md` + `build_plan_modelo_contenido.md` + `build_plan_etapa_G_video.md`)  
+*Prev: 2026-06-26 (C15 — refinamiento de la frontera híbrida DENTRO de Fase 2: reparto de conciencia 2.1 + voz 2.0 = COMPARTIDOS del buyer persona; las piezas 2.2–2.5 son por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición — próximo paso: keyword research por-avatar)*  
 *Prev: 2026-06-25 (auditoría Fase 0/1→2: C5 — la oferta es del buyer persona, una sola compartida; lo que se ramifica por avatar es la estrategia de CONTENIDO, nunca la oferta; decisiones 1.x históricas marcadas superseded vs doctrina v1.8 / decision `a2ef7e37`)*  
 *Prev: 2026-06-06 (parallel multi-avatar orchestration + strategies entity + Phases 3/4/5)*
 
@@ -328,7 +329,7 @@ The lifecycle remains the product methodology:
    Output: `offer_spec.json` + `offer_statement.md`. Convert research into value equation, offer stack, pricing, risk reversal, urgency, and positioning.
 
 3. **Phase 2 — Contenido**  
-   Output: `content_plan.json` + `content_assets/`. Convert offer into content pillars, hooks, derivatives, and channel-ready assets.
+   Output: `content_plan.json` + `content_assets/`. Convert offer into content pillars (each with its **anchor**), hooks (the **ÁNGULOS = the production unit**), and channel-ready **pieces (piece = angle × channel)**. **The derivative/atomization layer (old 2.4) was removed — see C17 / `spec_Modelo_Contenido.md`; the plan is generative (renewable), not a finite queue of 28.**
 
 4. **Phase 3 — Publicar / Distribuir**  
    Output: `publish_plan.json` + `tracking_manifest.json`. Calendar, tracking (UTM/pixel/conversion events), exclusion lists, targeting. Runs per strategy. Carries the economics baseline to Phase 4.
