@@ -6,6 +6,17 @@
 
 ---
 
+## Estado de ejecución — 2026-07-07
+
+- **P1** ✅ schema (`Pillar.anchor`, `PillarSet.ratio_policy_plain`) + prompts 2.3/2.5 — sandia `8f8be87`
+- **P2** ✅ develop dual-path `gancho × canal` (`brief.ts` rama C17 + `produce`) — `be5f885`
+- **P3** ✅ plan generativo `buildGenerativePlan` (set inicial del pozo, slots ○) — `f67c864`
+- **P4-lite** ✅ laboratorio `/projects/[id]/angulos` (`c599fd8`→`40418eb`) — **VALIDADO por el operador 2026-07-07** en los 4 tipos: Reel (guion + prompts Kling), email (asunto/preheader/cuerpo/P.S., sin imagen), LinkedIn (texto + 1 imagen), carrusel (6 slides + 6 prompts, personaje consistente, paleta de marca). Costo controlado (candado anti-doble + caché: ver = $0, solo generar-nuevo paga).
+- **PENDIENTE**: (a) promover al **Estudio real** (biblioteca de ángulos integrada + calendario generativo con estados de slot + canales reales de 2.2 + formato por rol + tag `hook_id`); (b) **P5** contracción (borrar 2.4/atomización + migrar).
+- **Refinamiento DIFERIDO (operador 2026-07-07)**: mejorar las instrucciones de VIDEO en el ensamblador + afinar el output de cada tipo de publicación "de a pocos". No bloquea la integración.
+
+---
+
 ## 0. Dónde vive "la idea" — CORRECCIÓN (el operador cazó un error de diseño)
 
 Mi propuesta previa (un campo `angle` en el gancho) **re-introducía el `note`** — justo lo que este plan mata. Verificado contra `docs/app/ensamblador-de-prompts.md` (Anexo fila 7 + fix #2): **el `note` HOY NI SE IMPRIME al prompt de develop** — es un campo cargado-sin-usar; el develop ya arma la idea desde pilar + gancho + kind. No hay especificidad que "rescatar" con un campo nuevo.
