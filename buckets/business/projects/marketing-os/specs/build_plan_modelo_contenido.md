@@ -169,8 +169,13 @@ Estudio al completar el merge. El plan con estados ○◐●✓ vive en el CALEN
 **La card de ángulo** = la card `est-pcard idea` del Estudio actual, con el ángulo como sustancia:
 - **Chip de formato** (color por familia — la misma `FORMAT_META` compartida).
 - **El ÁNGULO como título** (el texto del gancho ES la idea — DOLOR, capa obligatoria).
-- **Select CANAL×FORMATO por card** (est-mini-select; opciones = canales FIRMADOS 2.2 expandidos
-  con su ROL — `channelFormatOptions`). El operador elige por pieza, no global.
+- **CANALES como CHIPS DE ESTADO por card** (no un select global — corrección del operador 2026-07-07):
+  cada canal firmado de 2.2 (con su formato×rol, `channelFormatOptions`) es un chip que muestra el
+  estado de ESA pieza (ángulo × canal): **○** sin desarrollar (clic → despliega las capas + Desarrollar) ·
+  **◐ ● ✓** ya desarrollada (clic → abre el drawer). **Un ángulo → N piezas, una por canal.** Esto
+  resuelve *"tuvo buena acogida en Reel → desarrollar para email/carrusel"*: clic en otro chip. Es la
+  **Etapa D (multiplicar la ganadora) integrada en la card**, no una feature aparte. El Estudio VIEJO
+  NO tenía esto — el canal venía FIJO del derivado; es la capacidad nueva de C17 que el operador quiere.
 - **Selectores de capas** (se componen, nunca obligatorias — Papandi decide lo no elegido):
 
 | Formato elegido | 🎬 ESCENA (apertura visual) | 💬 FORMA (estilo de apertura, E3 cacheado) | Por qué (doctrina) |
@@ -182,9 +187,15 @@ Estudio al completar el merge. El plan con estados ○◐●✓ vive en el CALEN
 | **Email** | no | SÍ — **moldea el ASUNTO** | texto plano; la imagen RESTA (ni un selector visual) |
 | Reddit / Grupos FB / X | no | SÍ — moldea el título/1ª línea | reglas de comunidad automáticas (C3) |
 
-- **Dar/pedir: NO se elige por pieza** — lo decide el MODO del pilar (2.3, `pieceIntent`); la UI lo
-  MUESTRA (badge del grupo: "da valor"/"pide la venta") y AVISA al desarrollar un «pedir» fuera del
-  ratio (política en `PillarSet.ratio_policy_plain`, fallback 2.4 durante la transición). Nunca bloquea.
+- **Dar/pedir — CÓMO SE SABE (pregunta del operador):** dos señales, estratégica y táctica, NO se
+  elige a mano. **(1) Estratégica (default): el MODO del pilar** (2.3) — `reforzar` empuja la oferta
+  (pedir); los demás dan (dar). **(2) Táctica (tu intuición del catálogo): el `goal` de la FORMA
+  elegida** — los 4.550 traen `goal` ∈ {get_views, get_followers, get_engagement, **get_sales**};
+  **get_sales = pedir**, el resto = **dar** (`inferGoal` ya mapea modo→goal; falta el camino inverso
+  goal→intent). Refinar `pieceIntent(pillarMode, formGoal?)`: si hay FORMA elegida, su `goal` manda;
+  si no, el modo del pilar. **La card muestra el badge dar/pedir y se actualiza al elegir la forma**
+  (glass-box: "esta pieza PIDE porque su estilo es get_sales"). El ratio 3:1 (`ratio_policy_plain`,
+  fallback 2.4) cuenta las piezas reales y AVISA fuera de política — jamás bloquea.
 - **La doctrina del canal NUNCA es un selector** — entra sola al prompt (C3).
 - **Botón**: `Desarrollar idea →` (est-btn-develop) → `produce {hookId, channel, visualHook?, hookTemplateId?}`.
 
