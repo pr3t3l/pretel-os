@@ -67,7 +67,22 @@ El presupuesto de atención del modelo es finito y no es plano: pesa más el **i
 
 **D. POR MODO DEL PILAR (el dial de venta).** `pillar.mode` decide `offer_mode`: `reforzar` → "LA OFERTA (cítala explícitamente, con sus palabras)" con más presupuesto (400 chars hoy); cualquier otro (agitar/resolve) → "LA SOLUCIÓN (contexto — este pilar NO vende… SOLO el CIERRE apunta a esta puerta)" con menos (300). Porqué: la coherencia oferta↔contenido es doctrinal — un pilar REINFORCE repite las palabras exactas de la oferta; uno RESOLVE agita sin vender y solo el cierre abre la puerta. El modo también sesga la selección de formas retóricas (E1: `MODE_AFFINITY` en hooks-brain).
 
-**E. ELECCIÓN DEL OPERADOR (personalización runtime).** Dos diales por pieza: el **gancho visual** (catálogo `visual-hooks.ts` — moldea el CLIP 1) y la **forma retórica** (catálogo `hooks_catalog` vía suggest-hooks E0→E1→re-rank). Se insertan junto al gancho/formato porque **visten** la apertura. Regla E3 (impresa en el prompt): *la plantilla aporta solo la FORMA; la sustancia — el dolor, los términos, la verdad investigada — viene ÚNICAMENTE del proyecto; los [corchetes] se llenan con ESTE proyecto, nada inventado.* Es la jerarquía DOLOR × FORMA × ESCENA del Cerebro de Ganchos: tres capas que se componen, nunca compiten.
+**E. ELECCIÓN DEL OPERADOR (personalización runtime).** Dos diales por pieza: el **gancho visual** (catálogo `visual-hooks.ts` — moldea el CLIP 1) y la **forma retórica** (catálogo `hooks_catalog` vía suggest-hooks E0→E1→re-rank). Se insertan junto al ángulo/formato porque **enmarcan** la apertura. Es la jerarquía DOLOR × FORMA × ESCENA del Cerebro de Ganchos: tres capas que se componen, nunca compiten.
+
+> **LA DOCTRINA DEL MOLDE — enmarca, NO comprime** (corrección del operador, 2026-07-08; ADR en `decision_record`).
+>
+> La regla E3 original decía *«los [corchetes] se llenan con la SUSTANCIA del dolor»*. El modelo lo leía como **«resume el ángulo en una frase»** y devolvía cinco paráfrasis **más pobres que el ángulo original**. Diagnóstico del operador: *«no veo una mejora real, siento que simplemente refraseó o creó un nuevo ángulo en lugar de frame el que ya teníamos dentro de uno de los moldes»*. Tenía razón: un ángulo firmado en 2.5 **ya es su mejor versión de sí mismo** — comprimirlo solo puede empeorarlo. El molde no compite con el ángulo; su único aporte es el **tejido conectivo**.
+>
+> Las cinco reglas, impresas en `buildHookRerankSystem`:
+> 1. Las **palabras del ángulo** son el contenido de los `[corchetes]` — literales, solo se ajusta concordancia. Prohibido parafrasear, resumir o «mejorar».
+> 2. Si el ángulo tiene **más ideas que corchetes**, las sobrantes se **encadenan** con el conectivo del molde. `filled` nunca puede decir menos que el ángulo.
+> 3. Si el molde deja una **promesa abierta** (`— this is why`), la cierra **lo que hace el negocio** (esencia 0.1) — lo único que puede añadirse que no esté en el ángulo. Sin 0.1 firmado la promesa queda abierta y **la cumple el cuerpo de la pieza**; jamás se inventa el cierre.
+> 4. **Idioma:** `filled` va en el idioma del ÁNGULO (aunque el system prompt esté en español); el `why` en español, es para el operador.
+> 5. Cero `[corchetes]` en `filled`.
+>
+> **La frase aprobada es la que se escribe.** `filled` viaja al develop como `hookFilled` y se imprime como `APERTURA APROBADA … ÚSALA TAL CUAL`; el molde con corchetes **ya no se imprime** (antes solo viajaba `hookTemplateId` y el develop rellenaba otra vez desde cero: el operador aprobaba una frase y se escribía otra).
+>
+> **Guardia determinista:** `keepsAngle(pain, filled)` (`hooks-brain.ts`, cero tokens) mide qué proporción de las palabras distintivas del ángulo sobrevive en `filled` (umbral `ANGLE_FIDELITY_MIN = 0.45`). Si el modelo reescribe igual, la UI lo **dice** («⚠ se alejó de tu ángulo»); no se esconde ni se auto-corrige en silencio.
 
 ### 2.2 El orden canónico (v2.0.0 actual, con su lógica)
 
@@ -76,7 +91,7 @@ El presupuesto de atención del modelo es finito y no es plano: pesa más el **i
 | 1 | Rol + misión + "idioma del mercado" | A | fijo | primacía absoluta: quién eres y qué produces |
 | 2 | PILAR (mensaje·fuerza·modo) | B | completo | la misión editorial de la pieza |
 | 3 | GANCHO 2.5 | B | verbatim | el primer segundo — no se parafrasea la selección |
-| 4 | FORMA RETÓRICA elegida + regla E3 | E | completo | viste al gancho; debe leerse pegada a él |
+| 4 | APERTURA APROBADA (`hookFilled`) — o molde crudo + doctrina «enmarca, no comprime» | E | completo | enmarca al ángulo; debe leerse pegada a él |
 | 5 | AUDIENCIA (avatar) | B/A | resumido (hoy JSON crudo 1600) | el espejo: a quién muestran texto e imagen |
 | 6 | PERSONAJE DE MARCA (D-V2) | A | completo | identidad visual persistente; ancla de casting |
 | 7 | JOURNEY (matriz 2.2) | B | 1 línea, omisible | temperatura del lector (frío/tibio/caliente) |
@@ -127,16 +142,18 @@ PILAR: La tienda sube y se desploma sin patrón visible; la montaña rusa no es 
 talento sino falta de sistema — nombramos el ciclo y lo hacemos visible. · fuerza=ongoing_pains · modo=agitar.
 ⟵ 2.3 pillars.what_it_says + force_attacked + mode (avatar etsy_ceramist) — consumo FUERTE
 
-GANCHO de apertura: "Your best month on Etsy wasn't luck — and your worst month wasn't either."
-⟵ 2.5 hook_library.hooks[2].text (rotación derivativeIndex % 10) — FUERTE
-⚠ hooks[2].template ("problem_agitate") entra al Brief pero NO se imprime; expires_at/temporality NO se filtran
+ÁNGULO de la pieza (gancho firmado en 2.5 — la sustancia, SAGRADA: sus palabras y su verdad no se
+reescriben) · arquetipo: problem_agitate: "Your best month on Etsy wasn't luck — and your worst
+month wasn't either."
+⟵ 2.5 hook_library.hooks[].text (C17: elegido por hook_id, no rotado por índice) — FUERTE
+⚠ expires_at/temporality NO se filtran
 
-FORMA RETÓRICA ELEGIDA (del catálogo — el operador la escogió para la APERTURA): «Nobody in
-[niche] talks about [uncomfortable truth] — and that silence is costing you» · psicología:
-Curiosity Gap + Loss Aversion. RELLÉNALA con EL DOLOR del proyecto (el gancho/pilar de arriba):
-la plantilla aporta solo la FORMA; la sustancia (el dolor, los términos, la verdad investigada)
-viene ÚNICAMENTE del proyecto. Los [corchetes] se llenan con ESTE proyecto — nada inventado.
-⟵ hooks_catalog vía getHooksByIds(hookTemplateId): template + psychology — FUERTE
+APERTURA APROBADA (el operador la leyó y la eligió — ÚSALA TAL CUAL para abrir la pieza; solo
+puedes recortarla si el formato exige menos palabras, jamás reescribirla): «Nobody in handmade
+talks about this: your best month on Etsy wasn't luck — and your worst month wasn't either — and
+that silence is costing you» · psicología del molde: Curiosity Gap + Loss Aversion.
+⟵ hookFilled (lo que el operador leyó en el modal) + hooks_catalog[hookTemplateId].psychology — FUERTE
+   Sin `hookFilled` se cae al molde crudo + la doctrina «ENMARCA el ángulo, NO lo comprime».
 ⚠ goal=get_views existe en el catálogo y guía el re-rank, pero no llega al develop
 
 AUDIENCIA (a QUIÉN le hablas — la imagen debe MOSTRARLA a ella, en su situación real):
@@ -412,8 +429,7 @@ Criterio de orden: (bugs que rompen confianza del usuario) > (señal ya cargada 
   - fix: Serializar `"kw" [vol/mes real · KD · intent]` como ya hace step-proposal (route.ts:117-125) y filtrar por afinidad al journey/awareness de la pieza.
 - **personas (0.3).avatars[avatarKey] → AUDIENCIA** — problema: JSON.stringify crudo cortado a 1600 chars (produce/route.ts:130) — corta forces_of_progress a mitad de objeto y mete llaves/ruido; si avatarKey no matchea cae a avatars[0] EN SILENCIO (pieza del avatar equivocado).
   - fix: Proyección estructurada (essence, where_we_meet, 3 ongoing_pains, 2 anxiety, habit) como la forcesLine de step-proposal:136, y 409/warn cuando el avatar no existe.
-- **hook_library (2.5).hooks[].template** — problema: Entra al Brief (brief.ts:78) pero no se imprime — el modelo no sabe qué molde retórico honra el gancho al continuar la pieza.
-  - fix: Extender la línea GANCHO en prompts.ts:168 a `GANCHO de apertura (molde ${brief.hook.template}): "..."`.
+- ~~**hook_library (2.5).hooks[].template** — problema: Entra al Brief (brief.ts:78) pero no se imprime — el modelo no sabe qué molde retórico honra el gancho al continuar la pieza.~~ **DIAGNÓSTICO ERRÓNEO (cerrado 2026-07-08).** `Hook.template` es el **arquetipo** del gancho (`"problem_agitate"`), **no un molde retórico**. El fix propuesto se implementó y produjo `molde retórico «problem_agitate» — honra su estructura`: se le pedía al modelo honrar la estructura de una *etiqueta*. Revertido: la línea imprime `· arquetipo: problem_agitate` y declara el ángulo SAGRADO. Los moldes retóricos reales viven en `hooks_catalog` (fila 4).
 - **channel_journey_matrix (2.2).journey_moments** — problema: Match por heurística de tokens label↔kind (produce/route.ts:140-142): 'Blog/SEO' vs kind 'artículo' no comparten token >2 chars → la etapa del journey se pierde en silencio.
   - fix: Guardar channel_key en cada derivative al generar 2.4 y matchear por key; loggear cuando no hay match en vez de omitir.
 - **business_context (0.1).refined_idea / why_now** — problema: Doble truncado (route 600/300 → prompt 500/200, prompts.ts:182-184): el segundo corte es el efectivo y parte frases a la mitad.
