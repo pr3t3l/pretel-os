@@ -74,7 +74,8 @@ Queries (`current-user`/`artifacts`/`pieces`) · las 11 mutations (`develop`/`su
 
 > **ESTADO 2026-07-08 — N1, N2a, N2b+N3 HECHOS y desplegados** (sandia `116eea9`, `dbe8f72`, `4425b2a`).
 > `git diff` sobre `estudio/page.tsx` **vacío en cada commit** — la regla dura se cumplió.
-> Falta: **N5** (paridad/pulido con el operador) y el **SWAP** (aprobación final).
+> **N4+ (misma fecha, ronda de calidad con el operador):** la card `est-acard` (borde/sombra/división dolor↔elección) + chips `short` (`398fab4`) · **C17.1 doctrina del molde** (enmarca, no comprime; `hookFilled` verbatim al develop; guardias `keepsAngle`/`addsFabricatedUrgency`; pozo intercalado por categoría; retag C12 de `hooks_catalog` 5→25 en dos tandas revisadas a mano; caché versionado `HOOK_BRAIN_VERSION`) — sandia `488dee5`→`1bcf0e8`, decisión `8a7480b4`, ledger C17.1 · **✎ editar la apertura** (persiste `form_filled`, sobrevive recarga, viaja verbatim; carrera de escritura y guardado-silencioso cerrados) — `056f0a2`.
+> Falta: **N5** (paridad/pulido con el operador) y el **SWAP** (aprobación final). Pendientes de decisión del operador: pase de etiquetado LLM del catálogo (`requires_urgency` + `scaffold_asserts`, ~91 llamadas Haiku) y verificador adversarial del `filled`.
 
 - **N1 · Shared components.** Copiar `EstudioDrawer`/`SuggestModal`/`CopyButton`/`ProgressRail` a `components/estudio/piece-drawer.tsx` (+ `pieceTitle`/`parseClips` a `lib/estudio/`). `verify` verde; `/estudio` intacto (usa sus copias).
 - **N2 · La card de ángulo.** El grid de ángulos por pilar con chips de canal-estado + capas condicionales + badge dar/pedir. Sin drawer aún (Desarrollar → toast).
