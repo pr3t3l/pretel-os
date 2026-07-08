@@ -72,6 +72,10 @@ Queries (`current-user`/`artifacts`/`pieces`) · las 11 mutations (`develop`/`su
 
 ## D. FASES DE BUILD (verificables · `/estudio` vive en cada una)
 
+> **ESTADO 2026-07-08 — N1, N2a, N2b+N3 HECHOS y desplegados** (sandia `116eea9`, `dbe8f72`, `4425b2a`).
+> `git diff` sobre `estudio/page.tsx` **vacío en cada commit** — la regla dura se cumplió.
+> Falta: **N5** (paridad/pulido con el operador) y el **SWAP** (aprobación final).
+
 - **N1 · Shared components.** Copiar `EstudioDrawer`/`SuggestModal`/`CopyButton`/`ProgressRail` a `components/estudio/piece-drawer.tsx` (+ `pieceTitle`/`parseClips` a `lib/estudio/`). `verify` verde; `/estudio` intacto (usa sus copias).
 - **N2 · La card de ángulo.** El grid de ángulos por pilar con chips de canal-estado + capas condicionales + badge dar/pedir. Sin drawer aún (Desarrollar → toast).
 - **N3 · Piezas + drawer.** La galería de piezas desarrolladas (`est-pcard`) + el drawer copiado (aprobar/producir/video/overlay). Flujo completo.
