@@ -87,11 +87,14 @@ La auditoría por-términos no vio esto: **C17 es una migración A MEDIAS**. `co
 | **2.5 ganchos** | 🟡 el *shape* reescrito a «ángulo completo» (40, 10/pilar), **pero** educación + `hooksGateReady`(≥10) + `composeHooksMsg` siguen «banco de aperturas» | el gancho ES el ángulo (la unidad), no una apertura |
 | **mensajería de fase** | ❌ apertura «6 paradas… de pilares a piezas», `msgVictoriaPaso`/`msgCierreFase` narran la atomización | 5 paradas; sin «de pilares a piezas» |
 
-**El CONTRACT pendiente (código — es el P5 de C17, entrelazado con el swap):**
-- [ ] Quitar 2.4 del wizard: `P2_STEP_IDS`, `P2_GUION`, `P2_ARTIFACT`, `buildP2System`, `parseP2Proposal`, `composeAtomMsg`, la mensajería (apertura/victoria/cierre). **Bloqueado por el swap** (`/estudio` lee 2.4).
-- [ ] Dedup ratio (dejar en 2.3, quitar de 2.4). **NO bloqueado por el swap** — se puede ya.
-- [ ] Terminar el reframe de 2.5: educación + `hooksGateReady` + `composeHooksMsg` → «el ángulo es la unidad». **NO bloqueado.**
-- [ ] Borrar `Atomization`/`AtomizationMap`/`atomGateReady` de `content-plan.ts` (contract). **Bloqueado por el swap.**
+**El CONTRACT (código — el P5 de C17) — ✅ HECHO (swap aprobado por el operador, 2026-07-08):**
+- [x] SWAP: nav → Ángulos/Media/Agenda; `/estudio` + `/calendar` jubiladas; radar-redirect → /agenda (sandia `49057dd`, `8718ea2`).
+- [x] Borrado `lib/calendar/plan.ts` (buildPublicationPlan/buildGenerativePlan finitos) (`614e111`).
+- [x] `brief.ts`/`produce`/`suggest-hooks` a solo-C17 (fuera `rotateHook`, `derivative_index`, el path legacy) (`fa31872`).
+- [x] Quitado el paso **2.4** del wizard (canon + step-proposal + phase2-thread + phase-2/page); ratio ya no se pide dos veces (`54dceff`).
+- [x] Borrado `Atomization`/`AtomizationMap`/`atomGateReady` de `content-plan.ts` + reframe de la educación de 2.5 (`3cb27cb`).
+
+**El código ya no tiene el modelo viejo.** Queda solo la reconciliación DOCUMENTAL (abajo).
 
 **Consecuencia para los docs:** `spec_Phase_2_Contenido` y `Overall_WF.md` no necesitan «arreglar §8» — necesitan **describir el modelo objetivo por capa** (2.3 con ancla+ratio, 2.4 muerta, 2.5 = ángulo) y **marcar honestamente que el contract está pendiente con el swap**. Es más profundo que lo que la auditoría por-términos reportó.
 
