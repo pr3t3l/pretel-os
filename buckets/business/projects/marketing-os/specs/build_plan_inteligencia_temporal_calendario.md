@@ -2,16 +2,25 @@
 
 **✅ EJECUTADO (2026-07, `sandia` main) — M1-M5 + calendario construidos, probados y desplegados:** M1 migración (`80d98da`) + accesores (`b8e83d0`) · M2 `date-holidays` (`be5a7bb`) · M3 radar lógica (`c77ae75`) + UI (`e0bc5c9`) · M4 calendario lógica (`2aaafc0`) + UI diseño Papandi (`476d413`) · M5 generación date-aware (`be150b8`) + flag "vencido" (`2c61031`) · nav (`7554ec2`). **145 tests + `next build` verdes.** Fase 2 firmada 100% (4 avatares). Validado en vivo: el Freelance regeneró con 2 ganchos seasonal anclados a Jul-4 + back-to-school.
 
-**Status:** v1.0 propuesto (2026-06-30) · **Gate de arranque:** Fase 2 FIRMADA (voz 2.0 · reparto 2.1 · canales+cadencias 2.2 · pilares 2.3 · multiplicación 2.4 · ganchos 2.5, los 4 avatares Papandi). El operador cierra planning y pide, en orden: **calendario → migrar lo ya construido/firmado → módulo de Producción.**
+**Status:** v1.0 propuesto (2026-06-30) · **Gate de arranque:** Fase 2 FIRMADA (voz 2.0 · reparto 2.1 · canales+cadencias 2.2 · pilares 2.3 · ~~multiplicación 2.4~~ (C17: murió) · ganchos 2.5, los 4 avatares Papandi). El operador cierra planning y pide, en orden: **calendario → migrar lo ya construido/firmado → módulo de Producción.**
 **Doctrina que gobierna:** `spec_Inteligencia_Temporal.md` (v0.2 — el radar) + `spec_Estudio_Produccion_Publicacion.md §6` (el calendario) + `lookup_posting_cadence_2026.md` (cadencias/ventanas) + `lookup_event_calendar_2026.md` (eventos base) + reglas duras del repo sandia (UI nunca llama `supabase.from()` directo; data solo vía `lib/api`; DB solo por `supabase/migrations`; `npm run verify` es el gate).
 **Alcance:** el **calendario** + el **motor temporal** + la **MIGRACIÓN** de lo ya construido/firmado. **NO** incluye el módulo de Producción completo — ese viene después y *llena* los slots del calendario.
+
+> **⚠️ RECONCILIACIÓN C17 (2026-07-09).** M1-M3 + M5 (el **motor temporal**: migración, `date-holidays`,
+> radar, generación date-aware, higiene) **sobreviven y están en producción**. Lo que C17 + el swap
+> (2026-07-08) cambiaron: **M4 (el calendario) construyó un plan CALCULADO de cadencias 2.2** vía
+> `buildPublicationPlan` — esa superficie la **jubiló el swap** y la reemplazó la **Agenda** (`/agenda`,
+> `scheduled_posts`: lee lo que el operador agenda, no un plan computado). El radar que M4 estrenó
+> (`/api/radar/upcoming`) lo consume hoy la Agenda. La **«2.4 multiplicación»** del gate murió (el ángulo 2.5
+> ES la unidad; plan **generativo**). El motor NO se toca; solo la superficie de destino cambió de nombre
+> (ver `spec_Superficies_Produccion.md` + `spec_Campanas.md`).
 
 ---
 
 ## 0. Estado real (lo ya construido y firmado)
 
 - **App:** `sandia-marketing` — Next.js App Router + TS + Tailwind + Supabase (proyecto `qxhfmsojpjmnlzaduzao`) + TanStack Query. Deployada en Vercel desde `main`.
-- **Firmado en DB** (`project_phase_artifacts`, `content_json.status='signed'`, llaveado por `avatar_key`): Fase 0/1 + **Fase 2 completa** (2.0 voz · 2.1 reparto · 2.2 matriz canal×avatar con `how_measured` + cadencias · 2.3 pilares · 2.4 multiplicación · 2.5 ganchos —40/avatar). 4 avatares Papandi.
+- **Firmado en DB** (`project_phase_artifacts`, `content_json.status='signed'`, llaveado por `avatar_key`): Fase 0/1 + **Fase 2 completa** (2.0 voz · 2.1 reparto · 2.2 matriz canal×avatar con `how_measured` + cadencias · 2.3 pilares [C17: +`anchor`+`ratio_policy_plain`] · ~~2.4 multiplicación~~ (C17: murió) · 2.5 ganchos —40/avatar, = los ÁNGULOS). 4 avatares Papandi.
 - **La 2.2 ya dejó la semilla del calendario:** matriz canal×avatar con cadencias (`lookup_posting_cadence_2026`).
 - **Lo que el esquema AÚN no tiene:** `market_geo` (proyecto) · `temporality` en ganchos/piezas · `project_events` (el radar) · cache de holidays.
 
@@ -42,6 +51,12 @@
 **Done:** el radar devuelve `upcoming_events[]` para un proyecto (geo + nicho + propias), con su fuente visible (glass-box).
 
 ### M4 — El calendario (consumidor del radar)
+
+> **C17:** esta superficie (plan CALCULADO de cadencias vía `buildPublicationPlan`) la **jubiló el swap
+> 2026-07-08**. La reemplaza **Agenda** (`/agenda`, `scheduled_posts` — lee lo agendado, no un plan
+> computado). El **radar** que M4 estrenó sobrevive y lo consume la Agenda (`/api/radar/upcoming`). Lee lo
+> de abajo como historia de M4; la superficie viva es `spec_Superficies_Produccion.md §3`.
+
 1. Línea de tiempo: slots desde cadencias 2.2 firmadas × ventanas (`lookup_posting_cadence`) calibradas por avatar/`market_geo`.
 2. Franja **"fechas que se acercan"** (radar) con lead time + **"preparar campaña"**.
 **Done:** calendario navegable por avatar; muestra cadencia + las fechas próximas; reprogramable a mano.

@@ -4,8 +4,24 @@
 **Status**: **BORRADOR v0.2** (diseño capturado; **5 decisiones** de fondo cerradas — ver §10. **▶ SIGUIENTE paso del proyecto: la trinity propia, justo antes de arrancar producción** — §11). **Cambios v0.2 (mandato 2026-06-29):** (1) **+ Capa 3 — fechas propias declaradas por el usuario** (era pendiente, ahora de primera clase); (2) **§8 vuelto un mapa de migración accionable** (qué campo cambia en cada spec / en lo ya construido); (3) **fuente de la capa civil decidida (D-IT5): librería/API de holidays por país**.
 **Last updated**: 2026-06-29
 **Origen:** mandato del operador 2026-06-29, durante la sim de Fase 2 (Paso 6, ganchos). Al regenerar un gancho salió *"You had a great November. Then January hit…"* y luego *"…they drop in February…"* — anclados a una temporada que **ya pasó** (era junio). El operador lo identificó como patrón, no como gancho feo: *"que el sistema sepa qué fechas especiales se aproximan y cómo explotarlas va a ser un gran factor diferenciador… algo agnóstico del proyecto y que se mantiene a lo largo del tiempo."*
-**Decisión de alcance:** sub-spec **APARTE** (decisión D-IT4, §10). Referenciado por el Estudio (§6 calendario + §3.1 modelo de pieza), por Fase 2 §2.5 (ganchos) y por Fase 4 (medición). La tabla base de eventos vive en **`lookup_event_calendar_2026.md`** (como `lookup_posting_cadence_2026.md` es a la cadencia, esta es a las fechas).
-**Consumidores:** el calendario del Estudio (ofensiva), el modelo de pieza/gancho (atributo de temporalidad + higiene), los generadores de contenido (producir consciente de la fecha).
+**Decisión de alcance:** sub-spec **APARTE** (decisión D-IT4, §10). Referenciado por **Agenda** (ofensiva) + **Media** (higiene) + el modelo de **pieza ángulo×canal**, por Fase 2 §2.5 (ganchos) y por Fase 4 (medición). La tabla base de eventos vive en **`lookup_event_calendar_2026.md`** (como `lookup_posting_cadence_2026.md` es a la cadencia, esta es a las fechas).
+**Consumidores (C17):** la **Agenda** (`/agenda`, ofensiva), el modelo de **pieza = ángulo × canal** + el gancho (temporalidad + higiene), los generadores date-aware.
+
+> **⚠️ RECONCILIACIÓN C17 (2026-07-09).** El **MOTOR sobrevive intacto** — el radar de 5 capas, la
+> ofensiva/higiene, `market_geo`, el modelo de evento y la temporalidad de ganchos son válidos y están **en
+> producción** (`lib/radar/`, `date-holidays`, generación date-aware M5). Lo que C17 (firmado 2026-07-06) + el
+> swap (2026-07-08) cambiaron son las **superficies** que este spec nombra como «Estudio»:
+>
+> | Este spec dice | Hoy (C17) |
+> |---|---|
+> | «calendario del Estudio §6» (ofensiva) | **Agenda** (`/agenda`, `scheduled_posts`) — ya consume `/api/radar/upcoming` |
+> | «pieza del Estudio §3.1» | la pieza = **ángulo × canal** (`spec_Superficies §1`) — gana `temporality` igual |
+> | «biblioteca» (vencidos, filtro) | **Media** (`/media`) |
+> | «cola de producción (§3)» / plan finito | **generativo** — el operador elige ángulo×canal bajo demanda; no hay cola |
+> | Fase 2 «2.4 multiplicación» | muerta — el ángulo (2.5) ES la unidad |
+>
+> El **enganche con campañas** vive ahora en `spec_Campanas.md` (evento del radar → «Montar campaña»).
+> Autoridad de superficies: `spec_Superficies_Produccion.md`. Las §§1-7 y §10 (el motor) se leen tal cual.
 
 ---
 
@@ -94,7 +110,7 @@ expires_at        // = valid_window.end → cuándo se marca "vencido"
 ## 6. La ofensiva — cómo se explota una fecha
 
 1. **Lead time:** cada evento sabe con cuánta anticipación arrancar (Black Friday: semanas; un festivo simple: días). El radar **avisa con tiempo**, no el día de.
-2. **El calendario del Estudio (§6) la overlaya** como oportunidad: *"El día del padre llega en 3 semanas — ¿armamos campaña?"* → entra a la cola de producción (§3) la(s) pieza(s) para ese momento.
+2. **La Agenda la overlaya** como oportunidad: *"El día del padre llega en 3 semanas — ¿montamos campaña?"* → el operador desarrolla (ángulo × canal) la(s) pieza(s) para ese momento **bajo demanda** (no hay cola finita; el enganche de campaña vive en `spec_Campanas`).
 3. **Generación consciente de la fecha:** al producir una pieza/gancho de temporada, el generador recibe **el evento próximo + la fecha de hoy** como input → escribe para el momento **correcto** (en junio: *"Father's Day just passed and the calendar went quiet"*, no Nov/Enero). Esto es *"que el generador sepa qué día es"* — pero **bien hecho**: no un parche de inyectar la fecha, sino el **evento del radar** como dato de entrada del brief (§2 del Estudio). Cierra el bug que originó este spec.
 
 ## 7. La higiene — el vencimiento
@@ -112,7 +128,7 @@ expires_at        // = valid_window.end → cuándo se marca "vencido"
 ### 8.1 Relación (sin duplicar)
 | Spec | Relación |
 |---|---|
-| **Estudio §6 (calendario)** | **consume** el radar: overlaya fechas próximas como oportunidades + dispara la ofensiva. Calendario = *cuándo publicar*; radar = *qué fechas explotar* — hermanos. |
+| **Agenda** (`/agenda`) | **consume** el radar (`/api/radar/upcoming`, ya en producción): marca fechas próximas + dispara la ofensiva. Agenda = *cuándo publicar* (`scheduled_posts`); radar = *qué fechas explotar* — hermanos. |
 | **`lookup_posting_cadence_2026`** | hermano metodológico: aquel = *cuándo publicar* (cadencia/ventanas); este = *qué fechas explotar*. Comparten `market_geo` + el modificador B2B/B2C. |
 | **Módulo C (costos)** | producir piezas de temporada cuenta como costo (cruza con el COGS, no duplica). |
 
@@ -127,16 +143,16 @@ expires_at        // = valid_window.end → cuándo se marca "vencido"
 ### 8.3 (B) Lo que es spec (se construye en su Trinity)
 | Dónde | Cambio |
 |---|---|
-| **Estudio §3.1 (pieza)** | la pieza gana `temporality` + (`event_ref`, `valid_window`, `expires_at`) — mismos campos que el gancho |
-| **Estudio §6 (calendario)** | franja "fechas que se acercan" + botón "preparar campaña" (consume el radar) |
+| **Pieza (ángulo × canal)** | la pieza gana `temporality` + (`event_ref`, `valid_window`, `expires_at`) — mismos campos que el gancho |
+| **Agenda** (`/agenda`) | marcadores del radar «fechas que se acercan» + «Montar campaña» (`spec_Campanas`); ya consume el radar |
 | **Fase 4 (medición)** | emitir atribución **fecha→ingreso** → alimenta la **capa 4** (`user_measured`) |
 | **Setup Agent / Fase 0** | UI para que el usuario **añada/edite sus fechas propias** (capa 3) + el paso de derivación de nicho (capa 2) revisable |
 | **Adapter de holidays** | interfaz `HolidaySource` que envuelve la librería (D-IT5) — cambiar de proveedor sin tocar el radar |
 
 ## 9. La UI (esbozo — se detalla en su trinity)
-- En el **calendario** del Estudio: una franja de "fechas que se acercan" con su lead time + botón *"preparar campaña"*.
-- En la **biblioteca**: filtro/etiqueta perenne vs de-temporada; los **vencidos** marcados con *"refrescar"*.
-- En **producción**: al generar contenido de temporada, el evento próximo visible en el brief (glass-box: *"esta pieza está anclada a [evento]; vence el [fecha]"*).
+- En la **Agenda** (`/agenda`): marcadores del radar «fechas que se acercan» con su lead time + *«Montar campaña»* (`spec_Campanas`).
+- En **Media** (`/media`): filtro/etiqueta perenne vs de-temporada; los **vencidos** marcados con *«refrescar»*.
+- En **Ángulos** (`/angulos`): al desarrollar un ángulo de temporada, el evento próximo visible en el brief (glass-box: *«esta pieza está anclada a [evento]; vence el [fecha]»*).
 
 ## 10. Decisiones cerradas
 

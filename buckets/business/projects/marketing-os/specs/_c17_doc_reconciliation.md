@@ -43,10 +43,14 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
       ángulo») + nota de cabecera en fixture §3 y Anexo A (filas 6–10 históricas). Fix falso «4 obligatorios»
       en la nota de pipeline. **Preservadas** las secciones C17.1 (molde) ya correctas. Inventario histórico
       A/B conservado bajo el banner.
-- [ ] `specs/build_plan_inteligencia_temporal_calendario.md` — quitar «2.4 multiplicación»; nota: la
-      superficie calendario (M4) la reemplaza **Agenda/`scheduled_posts`** (conservar el motor temporal).
-- [ ] `spec_Inteligencia_Temporal.md` — remapear §8/§9 (Estudio §6 calendario, Estudio §3.1 pieza,
-      «biblioteca») → Agenda/Media/ángulo; el plan es generativo. (El motor radar/temporalidad sobrevive.)
+- [x] `specs/build_plan_inteligencia_temporal_calendario.md` ✅ (2026-07-09) — banner: M1-M3+M5 (motor
+      temporal) sobreviven en producción; M4 (calendario CALCULADO vía `buildPublicationPlan`) jubilado por el
+      swap → **Agenda/`scheduled_posts`**; radar (`/api/radar/upcoming`) lo consume la Agenda; «2.4
+      multiplicación» del gate/DB anotada muerta; nota C17 en M4.
+- [x] `spec_Inteligencia_Temporal.md` ✅ (2026-07-09) — banner (motor intacto) + remapeo de superficies:
+      cabecera «Consumidores», §6.2 ofensiva, §8.1/§8.3 mapa de migración, §9 UI → **Agenda/Media/Ángulos**;
+      pieza = ángulo×canal; plan generativo (sin «cola»); enganche de campaña → `spec_Campanas`. §§1-7/§10 (el
+      motor) intactas.
 
 ## C. P1 — referencias muertas de carga / contradicciones
 - [x] `docs/research/campanas-marketing-real.md` ✅ (2026-07-09) — banner en §3 que la marca SUPERSEDED por
