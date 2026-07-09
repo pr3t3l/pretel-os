@@ -128,10 +128,17 @@ y el diagnóstico por pilar (C17).
 `buildPublicationPlan` (las 28 finitas) · el auto-agendado de derivados · la galería plana en
 `/angulos` · el campo `suggestedDate`-como-única-agenda (lo sustituye `scheduled_posts`).
 
-## Abierto / a confirmar antes de la Fase C
+## Estado de ejecución
 
-- Nombre de la página: **«Media»** vs «Biblioteca».
-- ¿El **re-share evergreen** entra en v1 o v2? (define si `scheduled_posts` nace con `is_reshare` o
-  se añade luego — mi voto: el campo nace, la UI del re-share puede esperar a v2).
-- ¿La **franja de métricas** se dibuja ya apagada en las cards de Media, o se pospone del todo?
-  (mi voto: dibujarla apagada — comunica que viene y reserva el espacio).
+- **Fase A ✅** desplegada (sandia `0fa422e`): la media dentro del ángulo; se quitó la galería plana.
+- **Fase B ✅** desplegada (sandia `bbd5dd4`): la página **Media** (`/projects/[id]/media`) —
+  biblioteca del proyecto + filtros + franja de métricas apagada; enlaza a la pieza en `/angulos`
+  vía `?piece=<id>` (un solo drawer, cero duplicación). Nav «Media» entre Producir y Calendario.
+- **Fase C** — pendiente (el Calendario, el grande).
+
+## Decisiones firmadas (2026-07-08)
+
+- Nombre: **«Media»**.
+- **Re-share evergreen:** el campo `is_reshare` nace con `scheduled_posts`; la UI del re-share es v2.
+- **Franja de métricas:** dibujada **apagada** en las cards de Media (reserva espacio, comunica que
+  viene).
