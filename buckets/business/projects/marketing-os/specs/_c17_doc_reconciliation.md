@@ -73,6 +73,28 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
       `spec_Phase_3_Distribucion`, `spec_Admin_Cost_Intelligence`, `spec_Phase_0_Setup_Agent`
       (cross-refs «Estudio/Calendario» → superficies nuevas).
 
+## D-bis. FASE 2 — el estado REAL capa por capa (auditoría de CÓDIGO, la que faltaba)
+
+La auditoría por-términos no vio esto: **C17 es una migración A MEDIAS**. `content-plan.ts` + `canon.ts`
+(el wizard) muestran additive+migrate hechos, **contract NO**. El mundo viejo sigue enchufado:
+
+| Capa (2.x) | Estado real en el código | El doc debe decir |
+|---|---|---|
+| 2.0 voz · 2.1 reparto · 2.2 matriz | sin cambio de modelo | (los canales se expanden a formatos en `/angulos` vía `channelFormatOptions`, downstream) |
+| **2.3 pilares** | ✅ ganó `anchor` + `ratio_policy_plain` (migró de 2.4) | el pilar LLEVA su ancla + la política de ratio |
+| **2.4 atomización** | ❌ **SIGUE VIVA Y COMPLETA en el wizard** (`P2_STEP_IDS`, `P2_GUION["2.4"]`, `composeAtomMsg`, `AtomizationMap`, `atomGateReady` «1 ancla+5 derivados») — solo la consume `/estudio` muerto | MUERTA; el operador NO debería firmar derivados |
+| **ratio** | ❌ pedido DOS veces (2.3 C17 + 2.4 viejo) — duplicado | vive solo en 2.3 |
+| **2.5 ganchos** | 🟡 el *shape* reescrito a «ángulo completo» (40, 10/pilar), **pero** educación + `hooksGateReady`(≥10) + `composeHooksMsg` siguen «banco de aperturas» | el gancho ES el ángulo (la unidad), no una apertura |
+| **mensajería de fase** | ❌ apertura «6 paradas… de pilares a piezas», `msgVictoriaPaso`/`msgCierreFase` narran la atomización | 5 paradas; sin «de pilares a piezas» |
+
+**El CONTRACT pendiente (código — es el P5 de C17, entrelazado con el swap):**
+- [ ] Quitar 2.4 del wizard: `P2_STEP_IDS`, `P2_GUION`, `P2_ARTIFACT`, `buildP2System`, `parseP2Proposal`, `composeAtomMsg`, la mensajería (apertura/victoria/cierre). **Bloqueado por el swap** (`/estudio` lee 2.4).
+- [ ] Dedup ratio (dejar en 2.3, quitar de 2.4). **NO bloqueado por el swap** — se puede ya.
+- [ ] Terminar el reframe de 2.5: educación + `hooksGateReady` + `composeHooksMsg` → «el ángulo es la unidad». **NO bloqueado.**
+- [ ] Borrar `Atomization`/`AtomizationMap`/`atomGateReady` de `content-plan.ts` (contract). **Bloqueado por el swap.**
+
+**Consecuencia para los docs:** `spec_Phase_2_Contenido` y `Overall_WF.md` no necesitan «arreglar §8» — necesitan **describir el modelo objetivo por capa** (2.3 con ancla+ratio, 2.4 muerta, 2.5 = ángulo) y **marcar honestamente que el contract está pendiente con el swap**. Es más profundo que lo que la auditoría por-términos reportó.
+
 ## E. Cierre
 - [ ] Fila en `_audit_change_ledger.md` que registre la reconciliación (C18: doc-debt C17 saldada).
 - [ ] Ledger C17 row: marcar sus landing-targets como hechos.
