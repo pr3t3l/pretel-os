@@ -47,7 +47,7 @@ Sin números de cadencia, pero con la doctrina que los gobierna:
 ## Principios transversales
 
 1. **Escalera de cadencia**: arrancar en el piso sostenible → subir a la meta cuando el flujo ruede → los datos propios calibran (Phase 4). Consistencia > rachas (3/sem sostenidas > 7 una semana y 0 la siguiente).
-2. **Cross-platform por diseño (D-047; refinado C16 2026-06-27)**: la misma pieza ancla alimenta varias redes con entregables **SEPARADOS**, pero el formato lo decide **el canal Y el avatar**, NO un mapa fijo — IG admite Reels/video además de carrusel; *"IG=imágenes / TikTok=video"* era un **EJEMPLO, no ley** (C16). La atomización (2.4) produce cada derivado en el formato que ese canal×avatar usa.
+2. **Cross-platform por diseño (D-047; refinado C16 2026-06-27)**: el mismo **ÁNGULO** alimenta varias redes con entregables **SEPARADOS** (C17: `pieza = ángulo × canal`, sin «atomización 2.4»), pero el formato lo decide **el canal Y el avatar**, NO un mapa fijo — IG admite Reels/video además de carrusel; *"IG=imágenes / TikTok=video"* era un **EJEMPLO, no ley** (C16). El develop produce la pieza en el formato que ese canal×avatar usa.
 3. **Viable solo con piezas listas**: estas cargas asumen que Papandi entrega cada pieza hecha (carrusel desde plantilla = minutos). Sin eso, son sobre-compromiso (flag de la matriz).
 4. **Trigger de notificaciones (mandato, task `7493e337`)**: cada slot del calendario notifica al usuario CON el copy listo adentro; "publicado" alimenta la medición. Nace en Phase 3.
 

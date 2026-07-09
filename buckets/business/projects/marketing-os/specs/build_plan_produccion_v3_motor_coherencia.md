@@ -4,6 +4,13 @@
 
 **Gobierna:** la research 2026-07 (hallazgo maestro: el mercado rechaza lo **no-verificable**, no la IA) + las decisiones del operador (§1) + la doctrina de sandia (data por `lib/api`; DB por `supabase/migrations`; `npm run verify` + `npm run build` son el gate; sin client lock-in).
 
+> **⚠️ C17 (2026-07-09):** el **motor de coherencia** (StyleID + Gateway v3 + brief + glass-box + §2.7
+> coherencia≠atención) **sobrevive intacto** — es el corazón del producto. Cambió el modelo de contenido:
+> la **«atomización hub-and-spoke» (1 core → N spokes) murió** → hoy `pieza = ángulo × canal` (generativo). El
+> grid **«Estudio v2»** lo reemplazaron **Ángulos** (`/angulos`) + **Media** (`/media`) en el swap 2026-07-08.
+> El **Modelo de Campaña (Big Idea)** vive en `spec_Campanas.md`. El **gancho por derivado/rotación** murió:
+> el operador ELIGE el ángulo. Autoridad: `spec_Superficies_Produccion.md` + `spec_Modelo_Contenido.md`.
+
 ---
 
 ## 1. Decisiones registradas (del operador, 2026-07-01)
@@ -57,7 +64,7 @@
 |---|---|---|
 | `lib/gateway/` (Replicate + mock) | v2 (P5) | **Gateway v3 — router fal.ai**: tabla intención→modelo + **async/webhooks** (mata timeouts + rate-limit) + **imagen de referencia + start/end frame** |
 | `brand_voice` (2.0) + import de identidad (construido, sin desplegar) | parcial | **StyleID por proyecto**: voz cuantificada 0-100 + design tokens (paleta/fuentes) + **assets de referencia** (logo/personaje) en Storage → inyectado en cada prompt |
-| Estudio v2 (grid+detalle+develop) | v2 (P2-P4) | **piezas organizadas por Campaña**; el develop hereda StyleID + brief; glass-box reforzado |
+| **Ángulos + Media** (ex «Estudio v2 grid») | v2 (P2-P4) | piezas por **ángulo** (agrupables por Campaña → `spec_Campanas`); el develop hereda StyleID + brief; glass-box reforzado |
 | `project_api_calls` (cost ledger) | live | + **markup 1.20** + superficie de saldo (D4) |
 | — | — | **Storage** (Supabase) para assets de marca + media; **modelo Campaña** (Big Idea + brief + piezas) |
 
@@ -80,7 +87,7 @@
   - **Brief-gate de 1 insight** que venda el valor ÚNICO de Papandi (no una metáfora genérica del problema) — el diferenciador #1.
   - **Capa de texto-overlay** (§2.7): fondo IA limpio + **gancho de texto grande, legible y editable** sobre la portada; por-slide clasifica **foto vs diagrama/UI/texto** (los de texto → fondo limpio + overlay, matan los garabatos).
   - **Portada primero**: la slide 1 se diseña como scroll-stopper (hook + tensión visual).
-  - Modelo de **Campaña** (Big Idea) + piezas que heredan el StyleID + glass-box + atomización hub-and-spoke (1 core → N spokes por canal).
+  - Modelo de **Campaña** (Big Idea → `spec_Campanas`) + piezas que heredan el StyleID + glass-box; **C17:** `pieza = ángulo × canal` (la «atomización hub-and-spoke 1 core → N spokes» murió).
 - **F3 — Biblioteca + Aprobación:** Storage + biblioteca board-based + carriles de aprobación por riesgo + **link de aprobación sin seat** + auto-tag/búsqueda semántica (stack embeddings).
 - **F4 — Billing:** Stripe silla + uso (fal×1.20) + allowance de activación + saldo, sobre el cost ledger.
 - **F5 — Métricas + auto-mejora + Global:** HURT + métricas de relación (no vanity) + data flywheel; transcreación con checkpoint + disclosures de IA (C2PA/EU AI Act) por plataforma.
@@ -113,7 +120,7 @@
 - [ ] **Capa de texto-overlay:** componer el **gancho** (texto grande, legible, tipografía del StyleID) sobre el fondo IA — **editable, no quemado**; export con el texto encima.
 - [ ] **Portada = scroll-stopper:** la slide 1 se diseña con hook + visual con tensión; el prompt del fondo deja **zona segura** para el texto.
 - [ ] **Prompts SIN pedir texto en la imagen** (evita los garabatos "papagnda pleosodyd"); el texto vive SOLO en la capa overlay.
-- [ ] Modelo de **Campaña** (Big Idea) + atomización hub-and-spoke.
+- [ ] Modelo de **Campaña** (Big Idea → `spec_Campanas`); pieza = ángulo × canal [C17: sin atomización hub-and-spoke].
 - [ ] Gate verde + commit.
 
 ## 6.5 Tareas — F-Video V1 (tras la research de video + decisiones D-V1..V4)
@@ -121,7 +128,7 @@
 **0 — Fix de ESENCIA (prerequisito de TODO el contenido, no solo video):**
 - [ ] Cargar `business_context` (0.1: idea + diferenciadores firmados + why_now) al brief como bloque **ESENCIA**; la pieza debe respirarlo y el CTA nace de ahí (no genérico).
 - [ ] La **oferta SIEMPRE presente** en el brief, dosificada por modo del pilar (agitar = implícita/puerta al final; reforzar = explícita). Hoy solo entra en "reforzar" → por eso los CTAs genéricos.
-- [ ] Gancho por derivado (rotación sobre la biblioteca 2.5), no siempre `hooks[0]`.
+- [x] ~~Gancho por derivado (rotación sobre la biblioteca 2.5)~~ → **C17:** el operador ELIGE el ángulo (gancho 2.5); sin rotación por índice.
 
 **1 — El guion de reel enriquecido (sin costo de generación):**
 - [ ] Campos nuevos: `hook_text_overlay` (≤8 palabras, frame 1), narración/diálogo por intervalo (marcado para audio nativo), duración objetivo 15–35s, CTA única, densidad 5–10 palabras/s.

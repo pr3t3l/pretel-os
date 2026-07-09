@@ -4,6 +4,11 @@
 **La fuente de verdad:** `cag_transcript_fase1_fase2.md` (CAG #4) — el transcript literal que el operador pegó como contraste. Este plan se deriva de AHÍ, no del build actual.
 **Supersede:** el plan v1 (este mismo archivo, en git) y la tanda T1/T1' que produjo. v1 acertó la anatomía del mensaje (el CAG de 8 movimientos) pero erró la arquitectura: trató el paso como una página que se revela con un chat anexo. El transcript muestra otra cosa.
 
+> **C17 (2026-07-09):** este plan v2 (2026-06-12) precede a C17. Donde menciona «2.4 atomización» o
+> «multiplicador» en Fase 2, leer: **murió** — el pilar 2.3 lleva su `anchor` + `ratio_policy_plain`, y el
+> **ÁNGULO (2.5) es la unidad** (`pieza = ángulo × canal`, generativo). Autoridad: `spec_Modelo_Contenido.md`
+> + `spec_Superficies_Produccion.md`. La anatomía del mensaje y la doctrina de interacción se leen tal cual.
+
 ---
 
 ## 1. El error raíz, glass-box (por qué T1 y T1' no fueron la interacción)
@@ -107,7 +112,7 @@ etapas: [
 
 **2.2 — La matriz**: instrumento (canal = UNA función; el error clásico "en todos lados lo mismo") → dato propio (dónde vive SU avatar, LITERAL del research) → tabla de canales (qué se publica · ritmo "N por semana" · cómo se mide) bajo las reglas USER-CORRECTED: **grandes superficies ON por defecto** (excluir exige caso escrito) · **IG=imágenes / TikTok=video** (entregables separados) · cadencias del lookup `posting_cadence` CON fuentes linkeadas · la válvula ("si no alcanzas a producir, se degrada el formato, no se excluye el canal") · **el trigger de notificaciones visible como compromiso del producto** ("cada slot te avisará con el copy listo") → descartes CON caso escrito → candados (momentos cubiertos · métrica por fila · carga semanal anti-quemazón) → cristiano ("tu semana es…") → "2.2 ok". Variante B lista para la objeción de cadencias.
 
-**2.3 — Los 4 pilares**: el instrumento LITERAL que el operador mandó conservar (territorio por fuerza psicológica; el error clásico tema/canal; **REFORZAR vs RESOLVER** heredado de su oferta, con los dos accidentes que evita) → tabla de pilares (fuerza · modo · de qué habla · canales) → candados (ninguna palanca huérfana · palabras de la oferta para lo reforzado · delegados con dueño · multiplicador alimentado) → cristiano → "2.3 ok".
+**2.3 — Los 4 pilares**: el instrumento LITERAL que el operador mandó conservar (territorio por fuerza psicológica; el error clásico tema/canal; **REFORZAR vs RESOLVER** heredado de su oferta, con los dos accidentes que evita) → tabla de pilares (fuerza · modo · de qué habla · canales) → candados (ninguna palanca huérfana · palabras de la oferta para lo reforzado · delegados con dueño · ancla + ratio del pilar alimentados [C17: migraron de 2.4 al 2.3]) → cristiano → "2.3 ok".
 
 **2.4 — La multiplicación**: DOS instrumentos (atomización 1→6 con su porqué de supervivencia; ratio dar:pedir con ajuste razonado a SU caso) → mapa por pilar (ancla en el idioma del avatar + 6 derivados, IG/TikTok separados; ventanas por EVENTO donde aplique) → candados → cristiano → "2.4 ok" → **sub-etapa de producción: la pieza ancla 1 COMPLETA** (artículo con fuentes + carrusel + guion TikTok con tiempos + email A/B + foro + quote card + stories), candados de voz pasados a la vista → disposición.
 
@@ -128,7 +133,7 @@ etapas: [
 | **R1** | El motor (`StepThread` + render rico + intérprete + persistencia del hilo) + **el paso 1.2 COMPLETO** con sus 3 etapas, reparaciones preparadas y vista-del-cliente | "¿1.2 se siente como el transcript del paso 2?" — incluida una corrección real respondida con sustancia |
 | **R2** | Fase 1 completa al hilo: 1.x (montando la lectura proactiva ya construida) + 1.3 (4 decisiones "1A, 2A…" + re-score) + 1.4 (3 tarjetas + dominio en vivo + exploración de nombre + página + celebración de fase) | "¿puedo correr la Oferta de HF entera como nuestra sesión?" |
 | **R3** | Fase 2 conversacional 1ª mitad: apertura de fase + 2.0 voz + 2.1 reparto + 2.2 matriz (variante B de cadencias cableada al lookup) | "¿la Fase 2 educa y propone como lo vivimos?" |
-| **R4** | Fase 2 2ª mitad: 2.3 pilares + 2.4 atomización con producción de la pieza ancla + 2.5 estantería de ganchos + gate global + celebración | "¿el cierre se siente como nuestro cierre?" |
+| **R4** | Fase 2 2ª mitad: 2.3 pilares (con `anchor`+`ratio_policy_plain`) + 2.5 **ÁNGULOS** (la unidad) + gate global + celebración [C17: la «2.4 atomización» murió] | "¿el cierre se siente como nuestro cierre?" |
 
 **Criterio de hecho por paso:** ¿la conversación del transcript podría haber pasado aquí, con los datos de HF? — educa con el instrumento y su error clásico · cita lo MEDIDO · pre-decide si aplica · propone completo con porqués y comparables · responde una corrección con glass-box y re-propuesta · candados a la vista · en cristiano · firma corta · victoria. Juez: el operador, contra el CAG #4.
 

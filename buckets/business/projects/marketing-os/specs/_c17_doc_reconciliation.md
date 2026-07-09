@@ -57,12 +57,14 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
       `spec_Campanas.md` (ahí se reconcilia `PlanSlot`/`buildCampaignSlots`/`rotateHook`/`kit_variant`/«plan
       finito»/derivados 2.4 → `scheduled_posts`/ángulo×canal/`CastOverride`/evergreen generativo). §1/§2
       (hallazgos + decisiones) siguen VÁLIDOS y citados por el spec — se conservan como registro de investigación.
-- [ ] `specs/build_plan_produccion_v3_motor_coherencia.md` — «Gancho por derivado (rotación)» (124);
-      «Estudio v2 grid» (60) → Ángulos/Media.
-- [ ] `specs/build_plan_experiencia_canonica.md` — R4 «2.4 atomización» (131), pilar «multiplicador» (110)
-      → 2.3 anchor+ratio / 2.5 ángulos.
-- [ ] `specs/lookup_posting_cadence_2026.md` — «atomización (2.4) produce cada derivado» (50, 53) → ángulo×canal.
-- [ ] `docs/app/README.md` — la entrada de índice de `pipeline-de-ideas` (11) describe el modelo muerto.
+- [x] `specs/build_plan_produccion_v3_motor_coherencia.md` ✅ (2026-07-09) — banner (motor coherencia intacto)
+      + fix: «Estudio v2 grid»→Ángulos/Media, «atomización hub-and-spoke»→ángulo×canal, «gancho por derivado
+      (rotación)»→el operador elige, Campaña→`spec_Campanas`.
+- [x] `specs/build_plan_experiencia_canonica.md` ✅ (2026-07-09) — banner C17 + R4 «2.4 atomización»→2.3
+      anchor+ratio / 2.5 ÁNGULOS; candado «multiplicador alimentado»→ancla+ratio del pilar.
+- [x] `specs/lookup_posting_cadence_2026.md` ✅ (2026-07-09) — «atomización 2.4 produce cada derivado»→«el
+      ángulo alimenta varias redes; pieza = ángulo×canal»; preservado C16 (ejemplo≠ley).
+- [x] `docs/app/README.md` ✅ (2026-07-09) — entrada de índice de `pipeline-de-ideas` marcada SUPERSEDED (C17).
 
 ## D. P2 — snapshots, cross-refs, menor
 - [ ] `docs/app/design-audit-2026-07.md` — cubrir `/angulos`, `/media`, `/agenda`; marcar `/estudio` y
