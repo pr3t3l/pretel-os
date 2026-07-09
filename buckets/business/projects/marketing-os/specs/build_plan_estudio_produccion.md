@@ -1,5 +1,8 @@
 # Build Plan — Producción del Estudio (texto primero) en `sandia-marketing`
 
+> ## ⚠️ SUPERSEDED por C17 (2026-07-08)
+> Este build plan construyó la superficie vieja del **Estudio** (grid + «Desarrollar idea») sobre el **derivado / cola / atomización 2.4** (`buildBrief` desde un derivado, match derivado↔pieza por índice, la pieza aprobada llena un slot del calendario computado). **C17** lo jubiló: el **ÁNGULO** (gancho 2.5) es la unidad, **PIEZA = ángulo × canal**, el plan es generativo. La producción vive ahora en **Ángulos** (`build_plan_estudio_angulos.md`) + **Media** + **Agenda** (`build_plan_media_calendario.md`). **NO construir desde este doc** — referencia histórica.
+
 **Status:** v2 **EJECUTADO** (2026-06-30) — UI v2 (grid + detalle + "Desarrollar idea" + AI Gateway scaffold) construida, verificada (179 tests) y desplegada; ver §6.4 para los SHAs. **Trinity:** spec ✅ (`spec_Estudio_Produccion_Publicacion.md §2-3`) · plan = este doc · tasks = registradas en pretel-os.
 **Gate de arranque:** Fase 2 FIRMADA al 100% (los 4 avatares, 2.0→2.6) + el calendario vivo (los slots esperan piezas; el drawer dice "el copy llega con producción" — esto lo cumple).
 **Doctrina que gobierna:** `spec_Estudio §2` (el plan firmado **ES el brief** — el lever #1 anti-genérico) + `§3` (pipeline de 5 pasos + plantillas del corpus + **la DOCTRINA filtra el craft**) + **C4/C12/C1** (sin prueba social · sin urgencia fabricada · valor por funcionalidad) + **BP-001** (manual antes de automático) + reglas duras de sandia (data vía `lib/api`; DB por `supabase/migrations`; `npm run verify` es el gate).

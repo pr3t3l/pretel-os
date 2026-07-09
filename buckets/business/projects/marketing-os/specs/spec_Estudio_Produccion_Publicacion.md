@@ -1,5 +1,9 @@
 # El Estudio — Producción & Publicación (post-plan)
 
+> ## ⚠️ SUPERSEDED por C17 (2026-07-08)
+> Este spec describe **el mundo viejo**: «El Estudio» como superficie de producción, el **derivado / atomización 2.4** (`note` + `kind`), la cola finita y el calendario computado. **C17** (`spec_Modelo_Contenido.md`, firmado 2026-07-06) invirtió el modelo: el **ÁNGULO** (gancho 2.5) es la unidad, **PIEZA = ángulo × canal**, el plan es generativo. La producción se reconstruyó en **Ángulos** (`/angulos`) + **Media** + **Agenda** — ver `build_plan_estudio_angulos.md` y `build_plan_media_calendario.md`.
+> **NO construir desde este doc.** Su doctrina buena (contrato de honestidad §0 · pipeline de calidad §3.2–3.6 · imagen §3.5 · video §3.6 · wrapper §4 · biblioteca §5 · timing §6.5–6.6 · pricing §9) se **COSECHA** hacia el `spec_Superficies` nuevo (pendiente). Se conserva como referencia histórica hasta que la cosecha termine. Ver el work-order `_c17_doc_reconciliation.md`.
+
 **Project**: business/marketing-os
 **Status**: **BORRADOR COMPLETO v0.1** (las 12 secciones §0–11 redactadas con el operador; NO es ley, NO codear hasta firmar). Pendiente: revisión final + bajar las decisiones abiertas (§11) + trinity antes de build.
 **Last updated**: 2026-06-28

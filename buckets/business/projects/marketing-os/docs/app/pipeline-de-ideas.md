@@ -1,5 +1,8 @@
 # El pipeline de ideas — de dónde sale todo lo que ves en el Estudio
 
+> ## ⚠️ SUPERSEDED por C17 (2026-07-08)
+> Todo este Q&A describe el modelo **muerto**: las ~28 ideas = **derivados de 2.4** («Multiplicación»), el gancho que **rota** como apertura (`rotateHook`, `hooks[N mod n]`), la cola finita, el botón «Multiplicar más». **C17** lo invirtió: las ideas SON los **ángulos** (la biblioteca de ganchos 2.5, ricos y sagrados); cada ángulo se desarrolla a cualquier canal habilitado (**PIEZA = ángulo × canal**); el pozo es **generativo** (no hay 28 finitas, ni rotación, ni «multiplicar»). Ver `spec_Modelo_Contenido.md` + `build_plan_estudio_angulos.md`. **Se reescribe** en la reconciliación (`_c17_doc_reconciliation.md`).
+
 *Respuestas del sistema a las preguntas del operador (2026-07-06). Cada afirmación es verificable en el código citado.*
 
 ## ¿De dónde salen las ~28 ideas por avatar?
