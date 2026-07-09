@@ -2,42 +2,55 @@
 
 **Estado:** v1 borrador — para firma del operador antes de construir (Etapa B del plan de control 2026-07).
 **Decide:** dónde se DEFINE la identidad de marca (visual + personajes + sets + voz del personaje), cómo se educa al definirla, y qué gates habilita en Producción.
-**Fuentes:** decisiones del operador (rondas 1-3, 2026-07-06) · `docs/research/doctrina-por-canal.md` (gates) · `docs/research/campanas-marketing-real.md` (overrides por campaña) · `spec_UX_Experience.md` (P1-P7) · `spec_Estudio_Produccion_Publicacion.md` §3.8 (Estudio = taller + biblioteca).
+**Fuentes:** decisiones del operador (rondas 1-3, 2026-07-06) · `docs/research/doctrina-por-canal.md` (gates) · `docs/research/campanas-marketing-real.md` (overrides por campaña) · `spec_UX_Experience.md` (P1-P7) · `spec_Superficies_Produccion.md` (Ángulos = taller · Media = biblioteca · Agenda = distribución).
 
 ---
 
 ## 0. La tesis
 
-**Identidad = donde DEFINES (una vez, con firma) · Estudio = el TALLER (produces) + la BIBLIOTECA (todo lo creado).**
+**Identidad = donde DEFINES (una vez, con firma) · Producción (Ángulos) = el TALLER · Media = la BIBLIOTECA.**
 
-Es el patrón de la industria (Canva Brand Kit, HubSpot brand settings, Adobe Express: la definición de marca vive aparte del editor) y es lo que la propia `spec_Estudio §3.8` ya firmó: "Pieza aprobada → biblioteca de assets → cola de publicación". Hoy la identidad visual y el Set de Rodaje viven como strips DENTRO del Estudio — definición mezclada con producción. Esta fase los separa.
+Es el patrón de la industria (Canva Brand Kit, HubSpot brand settings, Adobe Express: la definición de marca vive aparte del editor). Hoy la identidad visual y el Set de Rodaje viven como strips DENTRO de la producción (Ángulos) — definición mezclada con producción. Esta fase los separa. Autoridad de las superficies: `spec_Superficies_Produccion.md`.
 
 ## 1. El ciclo de vida queda
 
 ```
 Fundación (F0) → Oferta (F1) → Contenido (F2, cierra en 2.6)
    → IDENTIDAD (nueva)
-   → PRODUCCIÓN (Estudio: taller + galería)
-   → DISTRIBUCIÓN (calendario/publicación) → MEDICIÓN → AJUSTE
+   → PRODUCCIÓN (Ángulos: taller · Media: galería)
+   → DISTRIBUCIÓN (Agenda) → MEDICIÓN → AJUSTE
 ```
 
 - Las **campañas se OFRECEN** después (radar/lanzamiento) — jamás son requisito.
 
-### 1.5 Qué pasa después de firmar 2.6 (el flujo del evergreen — aclaración del operador 2026-07-06)
+### 1.5 Qué pasa después de firmar 2.6 (el flujo — REESCRITO a C17, 2026-07-08)
 
-**NADA se genera automáticamente al firmar.** "El evergreen" = el CRONOGRAMA, no contenido producido. El flujo real:
+> El §1.5 original describía el modelo muerto (`buildPublicationPlan`, las ~28, `rotateHook`, «pieza de
+> 2.4»). C17 lo invirtió y el swap 2026-07-08 lo ejecutó. Autoridad de las superficies: `spec_Superficies_Produccion.md`.
 
-1. **Se calcula el PLAN** (`buildPublicationPlan`): el calendario muestra las ~28 piezas del avatar repartidas semana a semana (cada slot = pilar × pieza de 2.4, con su gancho rotado, en los días recomendados de 2.2). El cronograma nace lleno; las piezas nacen vacías de contenido.
-2. **Las ~28 IDEAS aparecen en el Estudio**, agrupadas por pilar (C1), cada una mostrando el gancho de marca que la abrirá.
-3. **El operador DESARROLLA cada pieza bajo demanda** — desde la card del Estudio o el slot del calendario. Una por una; nada se produce solo.
+**NADA se genera automáticamente al firmar.** Firmar la Fase 2 no produce contenido: deja LISTOS los
+INSUMOS (voz, reparto, matriz, pilares con su ancla, y la biblioteca de **ÁNGULOS** 2.5). El flujo real:
 
-**Configuración por pieza** (de dónde sale cada cosa): gancho de apertura = `rotateHook` (pilar+índice+fecha, determinista) · tipo de texto = el `kind` de 2.4 (no editable, lo fijó el plan) · apertura visual (video) = Papandi elige o el operador selecciona · voz/personaje/identidad = del kit + identidad firmada · doctrina por canal = automática por `kind` (C3). El operador puede afinar la apertura (estilo/visual) — todo lo demás viene firmado.
+1. **Los ÁNGULOS aparecen en Ángulos** (`/angulos`), agrupados por pilar. Cada gancho de 2.5 es un ángulo
+   desarrollable. **NO hay una cola finita de 28** — el pozo es **generativo** (los mismos pilares dan años
+   de contenido).
+2. **El operador PRODUCE bajo demanda**: elige un ángulo, elige un canal, desarrolla — **pieza = ángulo ×
+   canal**. Una a una; nada se produce solo. El mismo ángulo se lleva a varios canales (Etapa D integrada).
+3. **Agendar es un paso APARTE** (Agenda `/agenda`): las piezas producidas/aprobadas se asignan a un
+   día/hora/canal (`scheduled_posts`). El calendario NO nace lleno de un plan calculado — se llena con lo
+   que el operador agenda.
 
-**Decisiones del operador (2026-07-06, ronda 4):**
-- **«Desarrollar mi semana» APROBADO**: botón que desarrolla en lote los slots de los próximos 7 días (~5-7 llamadas, no 28), cada pieza anclada a la FECHA de su slot (publishDate → integridad temporal). La revisión/aprobación sigue pieza a pieza — el lote dispara, no aprueba. **Una-por-una se mantiene SIEMPRE** (control fino; y mientras se debuggea, es el modo por defecto — jamás 28 llamadas a ciegas).
-- **Las 28 NO son genéricas**: cada pieza nació canal-específica en 2.4 (kind = canal×formato de los canales firmados 2.2). El develop encadena kind → tipo → doctrina del canal (C3) → plantilla del corpus. UNA idea multiplicable a VARIOS canales = Etapa D (gancho-céntrico), no el plan base.
-- **El calendario se llena COMPLETO al firmar** (el plan es el mapa de trabajo, no el registro de lo producido), y cada slot muestra su ESTADO: ○ planificada → ◐ desarrollada → ● aprobada → ✓ publicada. Razones: sin plan visible no hay "qué toca hoy"; desarrollar DESDE el slot ancla la fecha (ganchos estacionales/temporalidad contra el día de publicación); el estado ○ es honesto (compromiso, no contenido).
-- **Slots vencidos sin desarrollar SE REPROGRAMAN** al siguiente hueco del canal, con aviso glass-box ("N piezas se corrieron — no se pierden"). Hoy quedan atrás en silencio: eso viola la doctrina; entra al build de B/D.
+**Configuración por pieza** (C17): gancho = el ángulo ELEGIDO (2.5, sin rotación) · canal = el ELEGIDO
+(decide formato + doctrina por canal C3) · apertura (FORMA molde + ESCENA visual) = el operador la afina
+(Cerebro de Ganchos; el molde ENMARCA, C17.1) · voz/personaje/identidad = del kit + identidad firmada.
+
+**Decisiones del operador que sobreviven a C17:**
+- **Producir en lote** («desarrolla mi semana»): un botón que dispara el develop de las piezas AGENDADAS de
+  los próximos 7 días (~5-7 llamadas). La aprobación sigue pieza a pieza. (Pendiente de build.)
+- **Cada pieza nace canal-específica** (el canal decide formato + doctrina). Un ángulo a varios canales ES
+  el modelo base, no un extra.
+- **La Agenda muestra el ESTADO** de cada pieza agendada (◐ borrador → ● lista → ✓ publicada). El estado
+  vive en la pieza; la agenda le pone fecha.
 
 ## 2. Qué vive en Identidad
 
@@ -81,10 +94,11 @@ identity/cast (artefacto compartido del proyecto)
 
 Patrón: `GateSignature` + "Se abre al firmar el paso anterior". El botón Desarrollar de piezas visuales muestra el candado educativo con link a Identidad (ya existe el precedente del kit→video).
 
-## 4. El Estudio después de esta fase
+## 4. La producción (Ángulos) después de esta fase
 
 - Pierde: los strips de definición (identidad y rodaje) → quedan como **resumen readonly** con link "editar en Identidad".
-- Gana foco: **taller** (ideas por pilar → desarrollar → aprobar → generar) + **galería** de todo lo creado (la biblioteca que pidió el operador).
+- Gana foco: **Ángulos** = el taller (ángulos por pilar → desarrollar → aprobar → generar); **Media** = la
+  galería de todo lo creado (la biblioteca que pidió el operador).
 
 ## 5. Implementación (fases del build, tras la firma de esta spec)
 

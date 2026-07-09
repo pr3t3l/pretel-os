@@ -30,11 +30,10 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
 - [x] `spec_Estudio_Produccion_Publicacion.md` — banner SUPERSEDED (2026-07-08).
 - [x] `specs/build_plan_estudio_produccion.md` — banner SUPERSEDED (2026-07-08).
 - [x] `docs/app/pipeline-de-ideas.md` — banner SUPERSEDED (2026-07-08); reescribir al modelo ángulo/generativo.
-- [ ] `spec_Phase_Identidad.md §1.5` — reescribir al modelo generativo (quitar `buildPublicationPlan`,
-      las 28, `rotateHook`, «pieza de 2.4»; conservar slot-vacío + develop bajo demanda + ○◐●✓).
-      Renombrar Estudio/Calendario → Ángulos/Media/Agenda. **Bloquea la firma de Identidad.**
-- [ ] `spec_Phase_2_Contenido.md` — la mitad no hecha de C17: §8 «Hook Library → el ÁNGULO es la
-      unidad» + banner; subir header (dice v1.3/2026-06-27); §0 output («derivatives» como asset muere).
+- [x] `spec_Phase_Identidad.md §1.5` ✅ reescrito a C17 (generativo, sin buildPublicationPlan/28/rotateHook);
+      §0/§1/§4/Fuentes renombrados Estudio/Calendario → Ángulos/Media/Agenda. Ya no bloquea la firma.
+- [x] `spec_Phase_2_Contenido.md` ✅ header v2.0 (C17) + nota de doc + banner §8 (el ÁNGULO es la unidad) +
+      §0 output («derivatives» como asset muere). (Las §§ de atomización quedan como historia; §7 ya tiene banner.)
 - [ ] `docs/app/ensamblador-de-prompts.md` — arreglar el núcleo del compilador (sigue vivo el derivado):
       Capa 0 obligatorios (quitar 2.4, línea 28) · Capa 1 (`Target={pillar,hook_id,channel}`, sin
       `rotateHook`, línea 30) · Capa 2 (`kind` del canal, línea 32) · el fixture §3 (124–130, 282) ·

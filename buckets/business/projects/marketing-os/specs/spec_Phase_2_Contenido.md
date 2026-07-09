@@ -2,8 +2,10 @@
 
 **Project**: business/marketing-os
 **Phase ID**: phase-2
-**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado) + v1.2 (C15, 2026-06-26: reparto 2.1 COMPARTIDO del buyer persona; piezas 2.2–2.5 por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición, no etiqueta) + v1.3 (C16, 2026-06-27: atomización 2.4 — el formato sigue al canal×avatar, NO un mapa fijo; se retira "IG=imágenes/TikTok=video" como ley)
-**Last updated**: 2026-06-27
+**Status**: spec drafted v1.1 (post audit R4) + alineación doctrina v1.8 (audit consistencia 2026-06-25: C4 anti-prueba-social en PILLAR_C, C5 oferta única del buyer persona, C14 idioma del mercado) + v1.2 (C15, 2026-06-26: reparto 2.1 COMPARTIDO del buyer persona; piezas 2.2–2.5 por avatar desde `where_we_meet` + `forces_of_progress`; per-avatar awareness solo con medición, no etiqueta) + v1.3 (C16, 2026-06-27: atomización 2.4 — el formato sigue al canal×avatar, NO un mapa fijo; se retira "IG=imágenes/TikTok=video" como ley) + **v2.0 (C17, 2026-07-08): el ÁNGULO (gancho 2.5) es la UNIDAD; PIEZA = ángulo × canal; el paso 2.4 «atomización/derivados» RETIRADO del wizard y del código; el ancla + el ratio migraron al pilar 2.3. Ver `spec_Modelo_Contenido.md` + `spec_Superficies_Produccion.md`.**
+**Last updated**: 2026-07-08 (C17)
+
+> ⚠️ **C17 (2026-07-08):** este spec conserva secciones del modelo viejo por historia (§6.3, §7 con su banner, las §§ de atomización). **Lo VIGENTE:** 2.0 voz · 2.1 reparto · 2.2 matriz · 2.3 pilares (con `anchor` + `ratio_policy_plain`) · **2.5 = los ÁNGULOS (la unidad)**. **NO existe 2.4** — se retiró. Donde leas «derivado», «atomización» o «las 28», es historia.
 **Implementation correction:** This methodology now targets `C:\Users\prett\Documents\sandia-marketing` (Next.js + Supabase), not a Python/FastMCP module inside `pretel-os`. Persist outputs in `project_phase_artifacts`, decisions in `project_decisions`, and learnings in `project_lessons`. n8n is not part of the MVP; revisit only for Phase 3 distribution/publication.
 
 **Audit references**:
@@ -22,7 +24,7 @@
 
 Phase 2 convierte la oferta (Phase 1) en piezas de contenido que respetan simultáneamente: (a) el awareness level del prospecto (Schwartz, mapeado en Phase 0.2), (b) la fase del Customer Journey del avatar (5 stages), (c) la función específica de cada canal del `business_context.channel`, (d) las 4 fuerzas del avatar (cada fuerza requiere un formato distinto), (e) las `negative_personas` (auto-rechazo de copy que apele a anti-target), (f) los gaps explícitos de `phase_2_handoff` heredados de Phase 1 (objections / anxieties / habits / pulls uncovered).
 
-**Output canónico**: `content_plan.json` (matriz Customer Journey × awareness level × canal × formato × fuerza_atacada) + `content_assets/` (los assets reales: long-forms, derivatives, hooks library, emails, copy, CTAs).
+**Output canónico**: `content_plan.json` (matriz Customer Journey × awareness level × canal × formato × fuerza_atacada) + la biblioteca de **ÁNGULOS** (2.5) — la unidad. (C17: «derivatives» como clase de asset MURIÓ; la pieza = ángulo × canal se produce bajo demanda en Ángulos.)
 
 ### Pertenencia a una Estrategia (D-009/D-010, ver `Overall_WF.md`)
 
@@ -731,9 +733,17 @@ Skill propuesto para V2.
 
 ---
 
-## 8. Sub-paso 2.5 — Hook Library
+## 8. Sub-paso 2.5 — Los ÁNGULOS (C17: la UNIDAD de producción)
 
-### Propósito
+> ⚠️ **REENCUADRE C17 (2026-07-08).** El gancho de 2.5 **ES un ÁNGULO**: la idea completa, desarrollable
+> por sí misma — la **unidad de producción**, no solo «la primera línea». **PIEZA = ángulo × canal** (el
+> mismo ángulo se lleva a Reel, email, blog… cada uno una pieza distinta). El pozo es **generativo** (no
+> hay cola finita de 28). La mecánica de abajo (≥10 por pilar, ≥4 plantillas, filtro de voz + anti-personas,
+> memoria de rendimiento) **se conserva** — solo lee «hook/gancho» como «ángulo/unidad» e ignora cualquier
+> framing de «apertura que rota sobre un derivado». Autoridad: `spec_Modelo_Contenido.md §8` +
+> `spec_Superficies_Produccion.md §1`.
+
+### Propósito (framing histórico pre-C17)
 Banco reutilizable de **ganchos** (primeras 1–3 oraciones / segundos de un asset). El hook decide si el avatar consume el asset; sin biblioteca de hooks pre-testeada, cada pieza nueva re-inventa el primer segundo y pierde la mayoría de impresiones.
 
 ### Output: `hook_library.json`
