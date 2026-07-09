@@ -1,0 +1,210 @@
+                                                          
+ 
+ 
+Crawleos Automatizados con Integración de 
+GPT 
+Screaming Frog SEO Spider es una herramienta que emula el comportamiento de los 
+rastreadores de buscadores como Google o Bing. Actúa como una araña web 
+(crawler) que navega entre las páginas de un sitio, detectando su estructura, enlaces 
+internos y elementos técnicos. 
+Funcionamiento principal 
+La herramienta dispone de dos modos fundamentales: 
+●​ Modo Spider: Parte de una URL inicial y sigue los enlaces internos 
+descubriendo nuevas páginas automáticamente.​
+ 
+●​ Modo Lista: Permite analizar un conjunto específico de URLs proporcionadas 
+por el usuario.​
+ 
+Utilidad principal 
+Su principal valor reside en la capacidad de realizar auditorías SEO técnicas a gran 
+escala, identificando errores de estructura, contenido y etiquetas meta que pueden 
+afectar el rendimiento de un sitio en buscadores. 
+Ejemplos comunes de detección de errores 
+●​ Páginas sin encabezado H1.​
+ 
+●​ URLs duplicadas o con parámetros inconsistentes.​
+ 
+●​ Contenidos repetidos o mal canonicalizados.​
+ 
+●​ Problemas de títulos o meta descripciones duplicadas, ausentes o con longitud 
+incorrecta.​
+ 
+ 
+
+                                                          
+ 
+ 
+Diferencias entre Screaming Frog y las 
+Herramientas de Scraping 
+Aunque ambas técnicas recopilan información web, Screaming Frog se distingue por 
+su enfoque SEO estructurado: 
+●​ Está orientado a detectar patrones técnicos (estado de las URLs, metadatos, 
+encabezados, directivas, etc.).​
+ 
+●​ Mantiene un proceso estandarizado de auditoría, sin depender de scripts 
+personalizados complejos. 
+En cambio, las herramientas de scraping (como BeautifulSoup, Scrapy o ParseHub) se 
+diseñan para extraer datos específicos de cualquier página, no necesariamente con 
+fines SEO. 
+Limitaciones principales de Screaming Frog 
+●​ Solo puede rastrear un sitio web a la vez.​
+ 
+●​ No dispone de una API oficial, lo que dificulta su integración directa en flujos de 
+automatización con otras herramientas. 
+Adquisición e Instalación de Screaming Frog 
+Modelo de precios 
+Screaming Frog cuenta con una versión gratuita limitada (hasta 500 URLs por rastreo) 
+y una versión profesional de pago (239 € anuales). 
+Proceso de instalación 
+●​ Buscar “Screaming Frog SEO Spider” en Google.​
+ 
+●​ Acceder al sitio oficial y descargar el instalador correspondiente al sistema 
+operativo (Windows, macOS o Linux).​
+ 
+●​ Instalar la aplicación siguiendo las instrucciones del asistente.​
+ 
+●​ Activar la licencia ingresando la clave en el menú Licencia → Activar licencia.​
+ 
+
+                                                          
+ 
+ 
+Una vez activada, la herramienta permite rastreos completos, exportación avanzada y 
+uso de JavaScript personalizado. 
+Demostración Práctica de Screaming Frog 
+Ejecución de un rastreo básico 
+Para realizar un rastreo inicial: 
+●​ Introducir la URL raíz del sitio.​
+ 
+●​ Seleccionar el modo “Spider”.​
+ 
+●​ Iniciar el análisis.​
+ 
+Durante el rastreo, Screaming Frog recopila información sobre: 
+●​ Tipos de contenido: HTML, CSS, JavaScript, imágenes, PDF, entre otros.​
+ 
+●​ Estructura de enlaces internos y profundidad de clic.​
+ 
+●​ Etiquetas SEO (Title, Meta Description, H1, H2, etc.).​
+ 
+Análisis de la interfaz y filtros principales 
+●​ URL: Detecta errores en la estructura (mayúsculas, guiones bajos, caracteres 
+especiales).​
+ 
+●​ Títulos de página: Señala títulos faltantes, duplicados o con longitudes 
+incorrectas.​
+ 
+●​ Meta description: Identifica descripciones ausentes o redundantes.​
+ 
+●​ Directivas: Muestra etiquetas como index, nofollow, canonical o robots.txt 
+aplicadas.​
+ 
+Este análisis técnico permite descubrir oportunidades de optimización y problemas de 
+rastreo antes de que afecten la indexación. 
+
+                                                          
+ 
+ 
+Integración de Inteligencia Artificial (GPT) en 
+Screaming Frog 
+Objetivo de la integración 
+Combinar el poder del rastreo técnico de Screaming Frog con la capacidad de 
+procesamiento del lenguaje de GPT permite automatizar tareas de análisis 
+semántico, generación de contenido y clasificación de información SEO. 
+Configuración paso a paso 
+ Habilitar el renderizado de JavaScript 
+●​ Ir a Configuración → Spider → Renderizado.​
+ 
+●​ Activar la opción JavaScript.​
+ Esto permite ejecutar scripts personalizados que se comunican con la API de 
+OpenAI.​
+ 
+Añadir un script personalizado 
+●​ Abrir Configuración → Personalizado → JavaScript personalizado.​
+ 
+●​ Seleccionar “Añadir desde biblioteca” para acceder a plantillas predefinidas.​
+ 
+Editar la plantilla (Template)​
+ Dentro del editor, ajustar tres elementos esenciales: 
+●​ API Key: Insertar la clave de acceso de OpenAI.​
+ 
+●​ Constante question: Definir el prompt o instrucción para GPT (por ejemplo, 
+“Resume el contenido de esta página en 3 líneas”).​
+ 
+●​ Constante userContentList: Indicar qué partes del HTML se enviarán a la 
+IA: texto del body, title, H1, meta description, etc.​
+ 
+Con esto, Screaming Frog podrá enviar los datos de cada URL al modelo GPT y recibir 
+una respuesta procesada dentro de la misma interfaz. 
+ 
+
+                                                          
+ 
+ 
+Casos de Uso Prácticos con GPT Integrado 
+Resumir contenido automáticamente 
+Configura el prompt: 
+“Resume el contenido principal de esta página en 3 oraciones concisas.” 
+Resultado: cada URL obtiene un resumen sintético en una nueva columna de 
+resultados. Ideal para auditar consistencia temática o detectar contenidos poco 
+relevantes. 
+Generar texto alternativo (Alt Text) para imágenes 
+Utiliza la plantilla “Generate alt text for images”.​
+ Screaming Frog recopila las URLs de las imágenes y las envía a GPT, que devuelve 
+descripciones objetivas y útiles para SEO. 
+Clasificar tipo de contenido o intención de página 
+Prompt ejemplo: 
+“Clasifica esta página como Informativa, Transaccional o Navegacional 
+según su contenido principal.” 
+Esto permite segmentar URLs por intención SEO de manera automatizada. 
+Evaluar la calidad del contenido 
+Prompt ejemplo: 
+“Evalúa si el contenido de esta página responde claramente a la intención 
+de búsqueda del título.” 
+Los resultados se pueden exportar y combinar con métricas de rendimiento en Google 
+Search Console. 
+Visualización de resultados 
+Los datos generados por GPT se muestran en la pestaña “JavaScript 
+personalizado”, pudiendo exportarse a CSV o Excel para análisis posterior. 
+ 
+
+                                                          
+ 
+ 
+Observaciones Clave 
+●​ Screaming Frog es una herramienta de rastreo profesional centrada en SEO 
+técnico.​
+ 
+●​ Su capacidad de análisis se amplía significativamente al integrar GPT mediante 
+scripts de JavaScript personalizados.​
+ 
+●​ El renderizado con JavaScript permite conectar la herramienta a APIs externas, 
+como la de OpenAI.​
+ 
+●​ Los prompts bien diseñados determinan la calidad del resultado: deben ser 
+claros, específicos y contextuales.​
+ 
+●​ Esta integración transforma Screaming Frog en una plataforma híbrida: crawler 
++ asistente de análisis semántico.​
+ 
+●​ Los casos de uso más efectivos incluyen resumen de contenido, generación de 
+textos alternativos, clasificación de intención y validación de calidad editorial.​
+ 
+●​ Los resultados pueden exportarse y reutilizarse en flujos de automatización 
+más amplios (Airtable, Sheets, n8n, Zapier, etc.). 
+Conclusión 
+La integración de GPT en Screaming Frog representa una evolución natural en la 
+auditoría SEO moderna. Este enfoque fusiona la precisión técnica del rastreo 
+estructural con la capacidad interpretativa y lingüística de la inteligencia 
+artificial. 
+Gracias a esta sinergia, los analistas SEO pueden: 
+●​ Reducir el tiempo de revisión de contenido.​
+ 
+●​ Detectar problemas semánticos y estructurales de manera automatizada.​
+ 
+●​ Obtener insights profundos sobre intención de búsqueda y calidad de 
+redacción. 
+En definitiva, el uso conjunto de Screaming Frog y GPT convierte la auditoría técnica 
+tradicional en un proceso inteligente, capaz de comprender no solo cómo está 
+construido un sitio web, sino también qué comunica y cómo lo perciben los 
+motores de búsqueda y los usuarios. 

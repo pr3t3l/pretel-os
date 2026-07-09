@@ -1,0 +1,20 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Schema.org 
+Es el sitio web oficial de la comunidad que crea y mantiene los esquemas para 
+datos estructurados. Es la fuente principal para consultar todos los tipos de 
+datos, jerarquías y propiedades disponibles. 
+URL: https://schema.org/ 
+●​ Validador de Marcado de Schema 
+Herramienta oficial de Schema.org que permite probar y validar el código de los 
+datos estructurados. Ayuda a identificar si la sintaxis del código es correcta 
+antes de implementarlo en una web. 
+URL: https://validator.schema.org/ 
+●​ Prueba de resultados enriquecidos de Google 
+Es una herramienta proporcionada por Google para comprobar qué resultados 
+enriquecidos se pueden generar a partir de los datos estructurados de una 
+página. Valida el código y muestra si es apto para aparecer de forma destacada 
+en los resultados de búsqueda. 
+URL: https://search.google.com/test/rich-results 

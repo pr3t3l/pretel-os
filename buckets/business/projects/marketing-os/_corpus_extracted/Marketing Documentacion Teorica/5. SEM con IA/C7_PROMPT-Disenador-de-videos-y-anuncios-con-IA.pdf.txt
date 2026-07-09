@@ -1,0 +1,150 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Creación de una Herramienta de "Diseñador de Anuncios 
+IA" 
+Crea una nueva funcionalidad.  
+Asunto del proyecto: Creación de una Herramienta de “Diseñador de Anuncios 
+IA” 
+ Visión General: Quiero que construyas una aplicación web que actúe como un 
+diseñador gráfico experto, especializado en crear anuncios de alto rendimiento 
+para plataformas como Google y Meta. El objetivo es que yo pueda subir una 
+foto de mi producto, darle unas pocas instrucciones de texto y obtener 
+instantáneamente tres versiones de anuncios listas para usar, optimizadas, 
+para generar clics y ventas. Además, necesito poder refinar y editar cada 
+anuncio de forma individual con simples comandos de texto. 
+1. Diseño y Experiencia de Usuario: 
+Apariencia: Debe tener un aspecto muy moderno, profesional y limpio, con un 
+tema oscuro que no canse la vista. 
+Estructura de la Pantalla: La pantalla principal debe estar dividida en dos 
+secciones verticales. 
+A la izquierda: "El Panel de Control" Aquí es donde yo introduzco toda la 
+información. 
+A la derecha: "La Galería de Resultados" Aquí es donde aparecen los anuncios 
+que crea la IA. 
+En móviles, el panel de control debería aparecer encima de la galería. 
+2. Funcionalidad Detallada del "Panel de Control" (Lado Izquierdo): 
+
+                                                          
+ 
+ 
+Paso 1: Subir la Imagen del Producto: 
+Quiero una caja grande y clara para subir la imagen. 
+Debe permitir subir la imagen de tres formas: haciendo clic para buscar el 
+archivo, arrastrando y soltando el archivo sobre la caja, y (muy importante) 
+pegando una imagen directamente desde mi portapapeles (Ctrl+V). 
+Una vez subida, debe mostrarme una vista previa de la imagen y un pequeño 
+botón para poder quitarla y subir otra. 
+Paso 2: Definir los Textos del Anuncio: 
+Nombre del producto: Un campo de texto obligatorio. 
+Llamada a la Acción (CTA): Otro campo de texto obligatorio (Ej: "Compra 
+Ahora", "50% Descuento"). 
+Descripción: Un campo de texto más grande, pero este es opcional, por si 
+quiero añadir más detalles. 
+Paso 3: Añadir Precios (Opcional): 
+Tres campos de texto pequeños y opcionales para: "Precio Original", "Precio de 
+Oferta" y "% de Descuento". 
+El Botón Principal: Un botón grande y llamativo que diga "Generar Anuncios". 
+Comportamiento Inteligente: Este botón debe estar desactivado (en gris) si no 
+he subido una imagen o no he rellenado los campos obligatorios. Cuando hago 
+clic, el texto debe cambiar a "Generando..." y el botón debe desactivarse para 
+que no pueda hacer clic de nuevo mientras trabaja. 
+Mensajes de Error: Si olvido algo, debe aparecer un mensaje claro en esta 
+sección que me diga qué falta (ej: "Por favor, sube una imagen"). 
+3. Funcionalidad Detallada de "La Galería de Resultados" (Lado Derecho): 
+
+                                                          
+ 
+ 
+Estado Inicial: Antes de generar nada, debe mostrar un mensaje amigable 
+como "Tus anuncios aparecerán aquí. ¡Completa los pasos de la izquierda para 
+empezar!". 
+Mientras Genera: Debe mostrar una animación de carga vistosa y un texto que 
+me informe del progreso, como "Generando anuncio cuadrado (1 de 3)...". 
+Resultados Finales: Aquí deben aparecer siempre tres imágenes, cada una en 
+su propia "tarjeta". Los tamaños son obligatorios e innegociables: 
+Formato Cuadrado: Exactamente 1200x1200 píxeles. 
+Formato Horizontal: Exactamente 1200x675 píxeles. 
+Formato Vertical: Exactamente 960x1280 píxeles. 
+La "Tarjeta" de cada Anuncio Generado: 
+Debe mostrar la imagen, su título (ej: "Formato Cuadrado (1:1)") y sus 
+dimensiones. 
+La función más importante: Edición con Texto: Debajo de cada imagen, quiero 
+un campo de texto donde pueda escribir una orden simple como "cambia el 
+fondo a uno azul" o "quita el precio". Al lado, un botón de "Editar" para aplicar 
+ese cambio solo a esa imagen. 
+Botón de "Regenerar": Un botón para descartar esa versión y pedirle a la IA 
+que la vuelva a crear desde cero, usando la información original. 
+Botón de "Descargar": Un botón para guardar esa imagen en mi ordenador. 
+Carga Individual: Si estoy editando o regenerando una imagen, solo esa tarjeta 
+debe mostrar una animación de carga, no toda la pantalla. Las otras dos deben 
+seguir visibles y utilizables. 
+4. Las "Reglas de Oro" para la IA (Comportamiento del Diseñador): 
+
+                                                          
+ 
+ 
+Esto es crucial. La IA debe comportarse de una manera muy específica: 
+Regla #1: El Producto es Sagrado. La IA debe usar la foto que yo subo como 
+base. Puede cambiar el fondo, añadir texto y mejorarla, pero jamás debe 
+cambiar el producto en sí. Si subo un zapato negro, el anuncio debe mostrar 
+ese mismo zapato negro. 
+Regla #2: Las Dimensiones son Ley. La IA debe entregar cada imagen en las 
+dimensiones exactas que he especificado. No son aproximaciones. Este es un 
+requisito técnico fundamental. La mejor manera de asegurar esto es que, 
+internamente, la herramienta recorte mi imagen original a cada tamaño antes 
+de enviársela a la IA. 
+Regla #3: Ceñirse al Guion. La IA solo puede usar el texto que yo le he 
+proporcionado en los campos (nombre, CTA, precios, etc.). No debe inventarse 
+ni añadir ningún texto adicional por su cuenta. 
+Regla #4: Las Ediciones Conservan el Formato. Cuando pido una edición, la IA 
+debe realizar el cambio pero mantener las dimensiones originales de esa 
+imagen. Si edito la imagen vertical, el resultado debe ser una imagen vertical 
+con las mismas medidas. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+                                                          
+ 
+ 
+●​ Video Ads 100% Transaccionales 
+Actúa como un director creativo y publicista experto en vídeos de alto 
+rendimiento para campañas digitales en Google Ads, Meta Ads, TikTok Ads y 
+YouTube Shorts. Voy a subirte una imagen del producto y te indicaré su precio 
+original, precio en oferta y una llamada a la acción. Tu objetivo es crear el guion 
+y la descripción visual exacta para generar un vídeo publicitario de 10 
+segundos, en formato 1080x1920, 100% transaccional y enfocado en vender el 
+producto de forma directa y emocional. 
+Cuando recibas la imagen del producto y los precios, analiza el tipo de 
+producto, su estética y el público objetivo. Diseña un vídeo de 10 segundos con 
+estructura persuasiva: de 0 a 2 segundos, impacto visual inicial con el producto 
+en primer plano, transición moderna, música dinámica o efecto visual potente; 
+de 2 a 5 segundos, muestra el producto en uso o desde diferentes ángulos, 
+resaltando su atractivo visual; de 5 a 8 segundos, muestra el precio original 
+tachado y el nuevo precio destacado con efecto de aparición o zoom; y de 8 a 
+10 segundos, cierra con una llamada a la acción potente como “Cómpralo 
+ahora”, “No te quedes sin el tuyo”, “Solo hoy – Envío gratis” o “Aprovecha la 
+oferta”. Indica claramente el estilo visual y de cámara, la iluminación, la música 
+y el tono publicitario (energético, elegante, juvenil o premium). Asegúrate de 
+que el resultado transmita urgencia, deseo y acción inmediata. El objetivo del 
+vídeo es transmitir exclusividad y potencia para impulsar la compra inmediata. 
+La duración será de 10 segundos, en formato vertical 1080x1920. 
+La escena 1 (0–2 s) mostrará un primer plano del producto girando con 
+iluminación brillante y fondo metálico; la escena 2 (2–5 s) presentará el 
+producto en uso en un entorno real, con cámara lenta y efecto de resalte; la 
+escena 3 (5–8 s) mostrará “ANTES: 169 €” tachado y “AHORA: 135 €” en 
+grande con color rojo neón; y la escena 4 (8–10 s) cerrará con el logo de la 
+marca y el texto “¡Cómpralo ahora!” animado con efecto de botón y sonido de 
+
+                                                          
+ 
+ 
+clic. La música debe ser energética, moderna y mantener un ritmo publicitario 
+atractivo. 

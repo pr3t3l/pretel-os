@@ -1,0 +1,34 @@
+                                                          
+ 
+ 
+Recursos  
+●​ ChatGPT 
+Inteligencia artificial conversacional utilizada para realizar análisis de mercado, 
+obtener datos demográficos y generar listados de palabras clave para 
+estrategias de marketing. 
+URL: https://chatgpt.com 
+●​ Semrush 
+Herramienta de SEO de pago que se conecta a la API de Google para obtener 
+datos precisos sobre el volumen de búsqueda de palabras clave y analizar a la 
+competencia. 
+URL: https://semrush.com 
+●​ Ahrefs 
+Otra herramienta de SEO profesional de pago, similar a Semrush, utilizada 
+para la investigación de palabras clave y análisis de la competencia. 
+URL: https://ahrefs.com 
+●​ SearchVolume.com 
+Herramienta gratuita que se conecta a la API de Google para consultar el 
+volumen de búsqueda de hasta 100 palabras clave a la vez, útil para validar la 
+demanda sin necesidad de una cuenta de Google Ads activa. 
+URL: https://searchvolume.com 
+ 
+ 
+
+                                                          
+ 
+ 
+●​ Google Keyword Planner 
+Herramienta oficial de Google para la planificación de palabras clave. Ofrece 
+datos exactos de volumen de búsqueda, pero requiere tener una cuenta de 
+Google Ads con campañas activas. 
+URL: https://ads.google.com 

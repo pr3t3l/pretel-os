@@ -1,0 +1,126 @@
+                                                          
+ 
+ 
+Creatividad Publicitaria Asistida por IA 
+La incorporación de sistemas de Inteligencia Artificial en el marketing digital ha 
+redefinido la manera de producir imágenes y vídeos promocionales. Estas tecnologías 
+permiten automatizar tareas creativas que antes requerían equipos especializados, 
+acelerando la producción y manteniendo altos estándares visuales. Herramientas 
+como AI Studio y Gemini (con el modelo Veo) ejemplifican esta transformación al 
+facilitar la generación de anuncios estáticos y audiovisuales a partir de pocos insumos 
+básicos. 
+Diseño de Imágenes Publicitarias con AI Studio 
+El desarrollo de un Diseñador de Anuncios IA se orienta a crear un asistente capaz de 
+generar anuncios de alto rendimiento solo con la información esencial del producto. 
+Esto se puede agregar como una funcionalidad extra a una aplicación ya existente en 
+Google AI Studio. Esta herramienta/función opera como un entorno de diseño 
+estructurado, pensado para reducir fricciones y ofrecer resultados consistentes sin 
+requerir experiencia profesional en edición. 
+Interfaz y Experiencia de Usuario: La estructura visual se organiza para que el 
+usuario se concentre en la configuración y revisión de resultados sin distracciones. 
+Una estética moderna y de tema oscuro contribuye a la lectura cómoda y a que los 
+elementos gráficos sobresalgan. 
+En dispositivos de escritorio el espacio se divide en dos columnas: a la izquierda, el 
+Panel de Control, encargado de recibir los parámetros del anuncio; a la derecha, la 
+Galería de Resultados, donde se muestran las imágenes generadas. En dispositivos 
+móviles esta disposición se presenta de forma vertical, manteniendo la jerarquía entre 
+configuración y resultados. 
+Panel de Control 
+El proceso se organiza en tres etapas: 
+●​ Carga del Producto: La herramienta admite subir la imagen mediante 
+explorador de archivos, arrastrar y soltar, o pegar desde el portapapeles. Tras 
+la carga, se presenta una vista previa y la opción de eliminarla.​
+ 
+●​ Textos Publicitarios: El usuario introduce el nombre del producto y la llamada 
+a la acción como campos esenciales, acompañados de una descripción 
+opcional que aporta contexto.​
+ 
+
+                                                          
+ 
+ 
+●​ Precios y Ofertas: El sistema permite añadir precio original, precio de oferta y 
+porcentaje de descuento. Esta sección es opcional y se calcula o completa 
+manualmente según preferencia. 
+El botón Generar Anuncios permanece inactivo hasta que se cumplen los requisitos 
+indispensables: imagen del producto, nombre y CTA. Esto orienta al usuario y reduce 
+errores. 
+Galería de Resultados: La galería actúa como un espacio informativo y dinámico. 
+Antes de generar, un mensaje guía al usuario. Durante el proceso aparece una 
+animación de carga acompañada de un texto que indica progreso. Al finalizar, el 
+sistema produce siempre tres variaciones del anuncio en formatos estándar: 
+●​ Cuadrado 1:1 — 1200×1200 px​
+ 
+●​ Horizontal 16:9 — 1200×675 px​
+ 
+●​ Vertical 3:4 — 960×1280 px 
+Cada creatividad incluye herramientas para modificarla mediante instrucciones en 
+lenguaje natural, regenerar una variante o descargarla directamente. Las ediciones se 
+aplican sin alterar el formato ni la imagen original del producto. 
+Reglas que Rigen el Comportamiento de la IA: El funcionamiento del modelo se 
+sostiene en cuatro principios: 
+●​ El producto es intocable y no debe modificarse.​
+ 
+●​ Las dimensiones establecidas se respetan estrictamente.​
+ 
+●​ Los textos utilizados provienen exclusivamente del usuario.​
+ 
+●​ Las ediciones mantienen el formato original.​
+ 
+ 
+ 
+ 
+ 
+
+                                                          
+ 
+ 
+Generación de Vídeos Publicitarios con Gemini y 
+Veo 
+La creación de contenido audiovisual requiere un enfoque más narrativo. Con Gemini y 
+su modelo Veo, la calidad del resultado depende en gran medida del detalle incluido 
+en el prompt. Un diseño cuidadoso de la instrucción permite dirigir al modelo como si 
+se tratara de un equipo creativo. 
+Construcción de un Prompt Estructurado: El prompt funciona como un guion 
+técnico donde se definen: 
+●​ Rol asignado: se posiciona al sistema como un director creativo y publicista 
+experto para orientar estilo y tono.​
+ 
+●​ Objetivo: se solicita un vídeo breve —por ejemplo, 10 segundos— con 
+intención transaccional.​
+ 
+●​ Secuencia visual: el tiempo se desglosa en intervalos con acciones 
+específicas que maximizan la persuasión.​
+ 
+●​ Estética general: iluminación, estilo visual, música y tono del anuncio. 
+Un ejemplo de estructura persuasiva divide el vídeo en cuatro momentos: impacto 
+inicial, producto en uso, oferta destacada y cierre con logo y CTA. Este tipo de pauta 
+ayuda al modelo a generar un vídeo coherente, incluso cuando la duración final varía 
+ligeramente. 
+Cuando se introduce el prompt acompañado de la imagen del producto, el modelo 
+integra ambas entradas y produce un vídeo que muestra el artículo en distintos 
+ángulos, evidencia el descuento y concluye con un mensaje de acción directa, 
+siguiendo la estructura planteada. 
+Observaciones Clave 
+●​ La claridad de la interfaz en AI Studio determina la calidad del flujo creativo.​
+ 
+●​ Las reglas de comportamiento del modelo protegen la consistencia visual y la 
+fidelidad al producto.​
+ 
+●​ En Gemini, los prompts extensos y detallados actúan como un guion de 
+dirección y elevan la efectividad del vídeo final.​
+ 
+
+                                                          
+ 
+ 
+●​ Los resultados generados por IA pueden presentar pequeñas variaciones; la 
+iteración es parte natural del proceso. 
+Conclusión 
+Las herramientas basadas en IA como AI Studio y Gemini permiten producir anuncios 
+visuales y audiovisuales con rapidez y precisión. Su valor depende tanto de la 
+capacidad técnica de los modelos como de la claridad con la que se les instruye. Con 
+indicaciones bien estructuradas, los sistemas pueden replicar procesos creativos 
+complejos y ofrecer resultados alineados con objetivos de marketing, ampliando las 
+posibilidades de diseño y acelerando el desarrollo de campañas publicitarias efectivas. 
+ 

@@ -1,0 +1,64 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Google Colab 
+Es el entorno de programación mencionado en el video donde se ejecutan los 
+scripts de Python para realizar web scraping. Permite escribir y ejecutar código 
+directamente en el navegador sin necesidad de configuración previa. 
+URL: 
+colab.research.google.com/drive/1kj_cvAlAXx35p9iHTfbovAqGb1F8aujR#scroll
+To=su5QnA3F1818 
+●​ Value SERP 
+Un servicio de API externo recomendado en el video para obtener los 
+resultados de las páginas de búsqueda de Google (SERPs) de manera 
+programática. Es útil para conseguir las URLs del top de Google para una 
+palabra clave específica y luego aplicarles scraping. 
+URL: https://www.valueserp.com/ 
+●​ DataForSEO 
+Otra API externa mencionada que ofrece una amplia gama de soluciones de 
+datos para SEO, incluyendo la extracción de resultados de búsqueda (SERP 
+API). Se presenta como una herramienta más robusta para obtener datos de 
+Google y otros buscadores. 
+URL: https://dataforseo.com/ 
+ 
+ 
+ 
+
+                                                          
+ 
+ 
+●​ Librería Requests (Python) 
+Requests es una popular biblioteca HTTP para Python, diseñada para hacer 
+que las solicitudes web sean sencillas y legibles. Permite enviar solicitudes 
+HTTP/1.1 de forma elegante y simple, eliminando la complejidad de manejar 
+peticiones manualmente. Es ideal para todo, desde interactuar con APIs hasta 
+realizar web scraping básico. 
+URL: https://requests.readthedocs.io/en/latest/  
+●​ Librería Beautiful Soup (Python) 
+Beautiful Soup es una biblioteca de Python diseñada para extraer datos de 
+archivos HTML y XML. Crea un árbol de análisis sintáctico (parse tree) a partir del 
+documento para que puedas navegar, buscar y modificar su contenido de manera 
+idiomática y sencilla. Es muy utilizada en el web scraping para obtener la información 
+relevante de las páginas web. 
+URL: https://www.crummy.com/software/BeautifulSoup/bs4/doc/  
+●​ Selenium 
+Conjunto de herramientas de código abierto para automatizar navegadores 
+web. Aunque se utiliza principalmente para pruebas de aplicaciones web 
+(testing), también es muy popular para tareas de web scraping complejas que 
+requieren interactuar con elementos dinámicos de una página (como hacer clic 
+en botones, rellenar formularios o esperar a que el contenido se cargue con 
+JavaScript). Permite controlar navegadores reales como Chrome o Firefox a 
+través de distintos lenguajes de programación. 
+URL: https://www.selenium.dev/ 
+ 
+ 
+
+                                                          
+ 
+ 
+●​ Helium (Python) 
+La librería Helium (Python) es un módulo ligero para la automatización web que 
+actúa como una capa por encima de Selenium. 
+URL: https://github.com/mherrmann/helium?utm_source=chatgpt.com  
+ 

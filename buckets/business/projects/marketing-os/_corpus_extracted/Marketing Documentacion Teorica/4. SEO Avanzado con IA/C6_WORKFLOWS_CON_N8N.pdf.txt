@@ -1,0 +1,537 @@
+                                                          
+ 
+ 
+Automatizar Briefs de Contenido con n8n: 
+De la SERP al Documento Listo para 
+Redacción 
+En el entorno digital actual la eficiencia y la escalabilidad son requisitos indispensables 
+para la creación de contenidos. Automatizar tareas repetitivas permite a los equipos 
+centrar su tiempo en estrategia y creatividad. Saber usar n8n para orquestar un 
+workflow que genera briefs de contenido automáticamente: desde el análisis de la 
+SERP hasta la entrega de un brief final estructurado y accionable. 
+Fundamentos de n8n: Orquestación y 
+Automatización sin Servidores 
+n8n es una plataforma de automatización basada en nodos que conecta aplicaciones y 
+APIs mediante flujos visuales. Sus ventajas principales son: 
+●​ Planificación y ejecución de código sin necesidad de gestionar 
+infraestructura compleja.​
+ 
+●​ Descomposición de procesos complejos en nodos especializados; cada 
+nodo realiza una tarea concreta.​
+ 
+●​ Automatización de llamadas a APIs, con conectores que facilitan mantener 
+integraciones frente a cambios en las interfaces externas. 
+En la práctica, n8n actúa como un director de orquesta digital: coordina distintas 
+herramientas (APIs de búsqueda, scraping, LLMs) para que trabajen en un proceso 
+unificado y repetible. 
+Visión General del Workflow: De la SERP al Brief 
+El flujo de trabajo que proponemos transforma una investigación manual de horas en 
+una operación automatizada de minutos. Fases principales: 
+●​ Análisis de la SERP: obtener las principales URLs posicionadas para una 
+keyword.​
+ 
+
+                                                          
+ 
+ 
+●​ Extracción de contenido (scraping): convertir las páginas en texto limpio 
+(Markdown).​
+ 
+●​ Resumen y estructuración: usar un LLM para transformar cada página en 
+JSON con resumen, tópicos y subtemas.​
+ 
+●​ Generación del brief: consolidar los resúmenes y pedir a un LLM que redacte 
+el brief final con formato SEO-friendly. 
+Herramientas típicas dentro de n8n para este flujo: DataForSEO (SERP), Firecrawl 
+(scraping → Markdown), y modelos LLM (OpenAI / Anthropic) para extracción y 
+redacción. 
+Construcción del Workflow en n8n: Nodos y Lógica 
+A continuación se describe el flujo paso a paso, con los nodos y su propósito. 
+Nodo Formulario (On form submission)​
+ Dispara el workflow y recoge los parámetros del usuario: 
+●​ Título provisional del contenido.​
+ 
+●​ Keyword principal.​
+ 
+●​ Keywords secundarias.​
+ 
+●​ Idioma.​
+ 
+●​ Localización (país/región).​
+ 
+Nodo DataForSEO (Get Live Google Organic SERP Advanced)​
+ Consulta la API para obtener resultados orgánicos de la SERP: 
+●​ Mapea keyword, idioma y localización a la petición.​
+ 
+●​ Limita depth a top 10 o top 20 según coste/alcance.​
+ 
+●​ Devuelve lista de URLs y metadatos (titular, snippet, posicionamiento).​
+ 
+ 
+
+                                                          
+ 
+ 
+Nodo de Código (JavaScript)​
+ Preprocesa la lista de URLs: 
+●​ Filtra dominios no relevantes (redes sociales, foros).​
+ 
+●​ Opcional: prioriza dominios por autoridad o CTR estimado.​
+ 
+●​ Limita el número final de URLs (ej. top 3–5) para optimizar tiempo y coste.​
+ 
+●​ Convierte a array de objetos compatible con Loop Over Items.​
+ 
+Loop Over Items → Wait → Firecrawl (Scrape a URL and get its content)​
+ Procesamiento iterativo por cada URL: 
+●​ Loop Over Items: itera por cada URL.​
+ 
+●​ Wait: pausa corta (1–2 s) para respetar límites de rate y evitar bloqueos.​
+ 
+●​ Firecrawl: scrapea la URL y devuelve contenido limpio en Markdown.​
+ 
+○​ Configurar mapeo de URL desde el loop.​
+ 
+○​ Resultado: page_markdown, page_title, canonical, etc.​
+ 
+Nodo Information Extractor (JSON Tops) — primer pase​
+ Extrae de cada Markdown un JSON estructurado usando un LLM: 
+●​ JSON Schema (ejemplo):​
+ 
+{ 
+  "title": "ExtractedContent", 
+  "type": "object", 
+  "properties": { 
+    "serpResume": { 
+      "type": "string", 
+
+                                                          
+ 
+ 
+      
+"description": "Resumen detallado que cubre todos los temas tratados, de forma 
+concisa." 
+    }, 
+    "mainTopics": { 
+      "type": "array", 
+      "description": "Lista de las temáticas principales con su relevancia.", 
+      "items": { 
+        "type": "object", 
+        "properties": { 
+          "topic": { 
+            "type": "string", 
+            "description": "Nombre del tema principal." 
+          }, 
+          "relevance": { 
+            "type": "number", 
+            "minimum": 0, 
+            "maximum": 1, 
+            "description": "Valor entre 0 y 1 que indica cuán relevante es el tema dentro del 
+contenido (1 = máxima relevancia)." 
+          } 
+        }, 
+        "required": [ 
+          "topic", 
+          "relevance" 
+        ], 
+
+                                                          
+ 
+ 
+        "additionalProperties": false 
+      } 
+    }, 
+    "subTopics": { 
+      "type": "object", 
+      "description": "Mapa de subtemas; cada clave es el nombre del subtema.", 
+      "additionalProperties": { 
+        "type": "object", 
+        "properties": { 
+          "definition": { 
+            "type": "string", 
+            "description": "Definición breve del subtema." 
+          }, 
+          "bulletPoints": { 
+            "type": "array", 
+            "description": "Puntos clave que desarrollan el subtema.", 
+            "items": { 
+              "type": "string" 
+            } 
+          }, 
+          "relevance": { 
+            "type": "number", 
+            "minimum": 0, 
+            "maximum": 1, 
+
+                                                          
+ 
+ 
+            
+"description": "Valor entre 0 y 1 que indica la relevancia del subtema (1 = 
+máxima relevancia)." 
+          } 
+        }, 
+        "required": [ 
+          "definition", 
+          "bulletPoints", 
+          "relevance" 
+        ], 
+        "additionalProperties": false 
+      } 
+    } 
+  }, 
+  "required": [ 
+    "serpResume", 
+    "mainTopics", 
+    "subTopics" 
+  ], 
+  "additionalProperties": false 
+} 
+ 
+●​ System Prompt: Eres un modelo especializado en análisis de resultados de 
+búsqueda de Google. 
+TAREA PRINCIPAL 
+Analiza el contenido en detalle. 
+
+                                                          
+ 
+ 
+Extrae los temas clave, enfoques y ángulos tratados por cada URL. 
+Sin copiar contenido literal, sintetiza la información en lenguaje original. No te dejes 
+información relevante. 
+FORMATO DE RESPUESTA 
+Devuelve EXCLUSIVAMENTE un objeto JSON con esta estructura y en este orden 
+(recuerda: las llaves están duplicadas para que se impriman literalmente). 
+Los valores de relevance deben estar entre 0 (poca relevancia) y 1 (máxima 
+relevancia). 
+code 
+JSON 
+{{ 
+  "serpResume": "Resumen detallado de los contenidos obtenidos; debe abarcar todos 
+los temas tratados, de forma concisa y sin omitir información relevante.", 
+  "mainTopics": [ 
+    {{ 
+      "topic": "Tema principal 1", 
+      "relevance": 0.0 
+    }}, 
+    {{ 
+      "topic": "Tema principal 2", 
+      "relevance": 0.0 
+    }} 
+  ], 
+  "subTopics": {{ 
+    "Subtema 1": {{ 
+      "definition": "Definición breve del subtema.", 
+
+                                                          
+ 
+ 
+      "bulletPoints": [ 
+        "Punto clave 1", 
+        "Punto clave 2" 
+      ], 
+      "relevance": 0.0 
+    }}, 
+    "Subtema 2": {{ 
+      "definition": "Definición breve del subtema.", 
+      "bulletPoints": [ 
+        "Punto clave 1", 
+        "Punto clave 2" 
+      ], 
+      "relevance": 0.0 
+    }} 
+  }} 
+}} 
+No añadas comentarios, campos adicionales ni texto fuera del objeto JSON 
+especificado. Devuelve el json en español, independientemente del idioma de los 
+contenidos.​
+ 
+Nodo Aggregate 
+Una vez finalizado el loop, consolida todos los JSON individuales en un array único 
+para el procesamiento siguiente. 
+Nodo Information Extractor (Resumen consolidado)​
+ Toma la colección agregada y genera un meta-resumen: 
+●​ Mismo schema para consistencia.​
+ 
+
+                                                          
+ 
+ 
+●​ Prompt ajustado:  
+Eres un LLM experto en análisis y síntesis de datos estructurados. Tu función principal 
+es recibir un array de 10 objetos JSON, donde cada uno resume el contenido de una 
+página web posicionada en el top 10 de Google, y realizar un meta-resumen. Tu 
+objetivo es analizar, consolidar y sintetizar la información de estos 10 JSONs en un 
+único objeto JSON final. Este nuevo JSON debe mantener la estructura original 
+(serpResume, mainTopic, subTopics) pero integrando de manera exhaustiva toda la 
+profundidad y amplitud de los temas tratados en los JSONs de entrada, sin omitir 
+ningún topic o subtopic. 
+INSTRUCCIONES DETALLADAS: 
+Formato: Un solo objeto JSON válido (UTF-8, sin comas finales, sin comentarios, sin 
+texto adicional). 
+Análisis completo: Debes procesar la totalidad de estos 10 objetos para tu análisis. 
+Consolidación de mainTopic: Examina la sección mainTopic de cada uno de los 10 
+JSONs. Tu primera tarea es identificar todos los temas principales (topic) 
+mencionados. Agrupa aquellos topics que son semánticamente idénticos (no los juntes 
+si existen diferencias que puedan aportar valor), aunque estén expresados con 
+palabras diferentes (p. ej., "Historia del juego" y "Orígenes y evolución del juego" 
+deben ser tratados como un único tema, pero integrando todos los términos). Mantén 
+el relevance original. Si unificas, mantén el valor más alto. 
+Consolidación de subTopics: De manera similar a los mainTopic, revisa todos los 
+subTopics en los 10 JSONs de entrada. Agrupa los subtemas que traten sobre la 
+misma materia. Para cada subTopic consolidado, crea una nueva definition y 
+bulletPoints que sea una síntesis coherente y completa de las definiciones originales. 
+Debe capturar la esencia de todas las descripciones aportadas en los JSONs de 
+entrada para ese subtema. 
+Creación de serpResume: El campo serpResume en el JSON de salida no debe ser 
+una copia de ninguno de los resúmenes de entrada. En su lugar, debe ser un 
+meta-resumen que describa de forma global los serpResume obtenidos sin perder 
+detalles. 
+Integridad de la información: No pierdas ningún tema, regla o matiz técnico de los 
+inputs. Si un tema aparece sólo una vez pero es crucial, inclúyelo igual. 
+Formato de Salida 
+Devuelve exclusivamente un objeto JSON con esta estructura y en este orden. Los 
+valores de relevance deben estar entre 0 (poca relevancia) y 1 (máxima relevancia). 
+
+                                                          
+ 
+ 
+code 
+JSON 
+{ 
+  "serpResume": "Resumen detallado de los contenidos obtenidos; debe abarcar todos 
+los temas tratados, de forma concisa y sin omitir información relevante.", 
+  "mainTopics": [ 
+    { 
+      "topic": "Tema principal 1", 
+      "definition": "Definición breve del tema.", 
+      "relevance": 0.0 
+    }, 
+    { 
+      "topic": "Tema principal 2", 
+      "definition": "Definición breve del tema.", 
+      "relevance": 0.0 
+    } 
+  ], 
+  "subTopics": { 
+    "Subtema 1": { 
+      "definition": "Definición breve del subtema.", 
+      "bulletPoints": [ 
+        "Punto clave 1", 
+        "Punto clave 2" 
+      ], 
+      "relevance": 0.0 
+
+                                                          
+ 
+ 
+    }, 
+    "Subtema 2": { 
+      "definition": "Definición breve del subtema.", 
+      "bulletPoints": [ 
+        "Punto clave 1", 
+        "Punto clave 2" 
+      ], 
+      "relevance": 0.0 
+    } 
+  } 
+} 
+Nodo Message a model (Generación de Brief Final) 
+Llamada final a un LLM (GPT / Claude) para crear el brief: 
+●​ Input: JSON del meta-resumen.​
+ 
+●​ System Prompt Detallado: define rol, estilo, formato y estándares de salida. 
+Por ejemplo:​
+ 
+I will provide you with a JSON summary of the top 10 Google results for 
+the keyword: {{ $('On form submission').item.json['Keyword principal'] }}. 
+You will see that I provide an overview of what all the content is about, 
+the main topics covered, and, with less relevance, the subtopics. For 
+each topic, whether main or sub, I indicate its relevance, which is the 
+number of times that topic appears in the content and its importance in 
+relation to the user's query. 
+I need you to convert this summary into a heading structure (h1, h2, 
+h3...) that covers all the relevant content to be addressed. The most 
+relevant topics should be at the beginning and the least relevant at the 
+end. 
+
+                                                          
+ 
+ 
+In addition, you can add comments when you deem it appropriate, 
+adding topics that are not relevant enough to have their own section, but 
+that can be mentioned in a specific section, or add the entities you 
+consider relevant from the list that I will also provide you with. 
+The heading titles should sound natural and appealing. Do not capitalize 
+all words in the titles, only the first one. Add the appropriate heading tag 
+(h1, h2, h3, etc.) to the beginning of each title. For example: h2. [section 
+title] 
+Do this in {{ $('On form submission').item.json.Idioma }}. 
+...proven that...'), convoluted sentences, or an 'encyclopedia tone.' If it 
+sounds like it could be in an instruction manual or if it's an expression 
+that appears in many texts, delete it and rewrite it. 
+Don't be afraid to start a sentence with connectors that make the text 
+sound more natural, such as 'And,' 'But,' 'On the other hand,' 'However,' 
+'In addition,' 'Despite this,' or 'So.' 
+Content Quality Standards: 
+Do not repeat phrases or expressions within the text 
+Avoid using typical AI expressions or clichéd phrases commonly 
+associated with artificial intelligence 
+Ensure each sentence adds unique value and information 
+Vary your sentence structure and vocabulary throughout the piece 
+Make sure the content is informative and valuable to the reader 
+Do not overuse lists; only use them when they make sense for the 
+content being discussed 
+Your priority is not features, but benefits and emotions. Instead of “This 
+product is fast,” write “Imagine all the time you’ll save.” Use simple 
+metaphors and analogies to explain complex concepts. We want “aha 
+moments” in the reader’s mind, but without making it seem like you’re 
+selling them something. Remember, it’s like you’re having a 
+conversation with a good friend. 
+●​ Output: brief listo para entregar a un redactor o CMS. 
+
+                                                          
+ 
+ 
+Ejemplo de Prompt JSON para la Generación del 
+Brief 
+Estructura del prompt que alimenta al LLM final: 
+I will provide you with a JSON summary of the top 10 Google results for the keyword: {{ 
+$('On form submission').item.json['Keyword principal'] }}. You will see that I provide an 
+overview of what all the content is about, the main topics covered, and, with less 
+relevance, the subtopics. For each topic, whether main or sub, I indicate its relevance, 
+which is the number of times that topic appears in the content and its importance in 
+relation to the user's query. I need you to convert this summary into a heading structure 
+(h1, h2, h3...) that covers all the relevant content to be addressed. The most relevant 
+topics should be at the beginning and the least relevant at the end. 
+In addition, you can add comments when you deem it appropriate, adding topics that 
+are not relevant enough to have their own section, but that can be mentioned in a 
+specific section, or add the entities you consider relevant from the list that I will also 
+provide you with. The heading titles should sound natural and appealing. Do not 
+capitalize all words in the titles, only the first one. Add the appropriate heading tag (h1, 
+h2, h3, h4, etc.) to the beginning of each title. For example: h2. [section title] Do this in 
+{{ $('On form submission').item.json.Idioma }}. 
+Follow these essential guidelines: 
+**Role and Personality** 
+Your personality is that of a charismatic and content writer who is an expert in 
+copywriting. You are not a teacher giving a lecture; you are passionate about the 
+subject and are sharing valuable information with a good friend. Your goal is for the 
+reader to think, “Wow, this is useful, I want to know more!” 
+**Writing Style Requirements** 
+Adopt a professional tone with a conversational writing style - Always address the 
+reader as “you.” Imagine you are having coffee with that person. You want them to feel 
+heard, intelligent, and motivated, but without sounding like a suck-up or 
+condescending. Anticipate their questions and answer them before they ask, as your 
+main goal is to answer any questions that person may have - Don't be too enthusiastic. 
+- Write naturally, as a human would – avoid robotic or overly formal language - Ensure 
+the content is engaging and easy to read - Ensure the writing flows smoothly from one 
+idea to the next - Avoid at all costs: Corporate language (‘optimize,’ ‘synergy,’ 
+‘comprehensive solution’), passive voice (‘it has been proven that...’), convoluted 
+sentences, or an ‘encyclopedia tone.’ If it sounds like it could be in an instruction 
+manual or if it’s an expression that appears in many texts, delete it and rewrite it. - 
+
+                                                          
+ 
+ 
+Don’t be afraid to start a sentence with connectors that make the text sound more 
+natural, such as ‘And,’ ‘But,’ ‘On the other hand,’ ‘However,’ ‘In addition,’ ‘Despite this,’ 
+or ‘So.’ 
+**Content Quality Standards** 
+Do not repeat phrases or expressions within the text - Avoid using typical AI 
+expressions or clichéd phrases commonly associated with artificial intelligence - 
+Ensure each sentence adds unique value and information - Vary your sentence 
+structure and vocabulary throughout the piece - Make sure the content is informative 
+and valuable to the reader - Do not overuse lists; only use them when they make sense 
+for the content being discussed - Your priority is not features, but benefits and 
+emotions. Instead of “This product is fast,” write “Imagine all the time you’ll save.” Use 
+simple metaphors and analogies to explain complex concepts. We want “aha moments” 
+in the reader’s mind, but without making it seem like you’re selling them something. 
+Remember, it’s like you’re having a conversation with a good friend. 
+Al proporcionar este JSON como contexto, el LLM entrega un brief con estructura y 
+parámetro estandarizados. 
+Consideraciones Técnicas y Económicas 
+Nodos comunitarios y extensiones 
+●​ n8n dispone de nodos creados por la comunidad (DataForSEO, Firecrawl). No 
+vienen por defecto, pero son instalables desde la interfaz.​
+ 
+●​ Mantener versiones y credenciales seguras.​
+ 
+Costes aproximados 
+●​ DataForSEO: requiere saldo inicial; coste por consulta bajo pero dependiente 
+del volumen y profundidad.​
+ 
+●​ Firecrawl: créditos gratuitos limitados; planes de suscripción para scraping a 
+escala.​
+ 
+●​ LLMs (OpenAI / Anthropic): coste por token; tareas de extracción y 
+resúmenes suelen ser económicas, la generación final de briefs con prompts 
+detallados tiene coste superior pero manejable si se optimiza prompt y longitud.​
+ 
+●​ Ahorro vs coste: la automatización reduce horas humanas de investigación y 
+acelera time-to-market, justificando la inversión en la mayoría de casos 
+
+                                                          
+ 
+ 
+profesionales.​
+ 
+Alternativas y optimizaciones 
+●​ Introducir URLs manualmente (si se quiere ahorro en DataForSEO).​
+ 
+●​ Reducir número de URLs procesadas (top 3 en vez de top 10) para ahorrar 
+créditos.​
+ 
+●​ Cachear resultados de SERP para evitar llamadas repetidas en keywords con 
+baja volatilidad.​
+ 
+●​ Ajustar modelo LLM (incluir modelos más económicos para el primer pase y 
+reservar el modelo premium para la generación final). 
+Buenas prácticas técnicas 
+●​ Usar Wait y manejo de errores (retry, backoff) para robustez.​
+ 
+●​ Registrar logs y resultados (saves en Google Drive / S3) para auditoría y reuso.​
+ 
+●​ Validar siempre la salida del JSON contra el schema (schema validation) antes 
+de llamar al siguiente nodo. 
+Observaciones Clave  
+●​ n8n permite orquestar múltiples APIs sin necesidad de desarrollar 
+infraestructura propia.​
+ 
+●​ Flujo recomendado: SERP → scraping (Markdown) → extracción JSON por 
+URL → agregación → meta-resumen → brief final.​
+ 
+●​ El uso de JSON Schema garantiza salidas consistentes de los LLMs, 
+facilitando encadenamientos fiables.​
+ 
+●​ Pausas controladas (Wait) y límites en número de URLs son medidas 
+necesarias para evitar bloqueos y controlar costes.​
+ 
+●​ La calidad del brief final depende en gran medida de la precisión del prompt y 
+del schema empleados.​
+ 
+
+                                                          
+ 
+ 
+●​ Cachear resultados y priorizar top URLs reduce coste y tiempo de ejecución.​
+ 
+●​ Nodos comunitarios amplían capacidades, pero requieren control de versiones 
+y seguridad en credenciales.​
+ 
+●​ Combinando DataForSEO + Firecrawl + LLMs se automatiza una tarea que 
+manualmente consume muchas horas de investigación.​
+ 
+●​ Siempre revisar y enriquecer el contenido generado por IA para garantizar 
+precisión, originalidad y cumplimiento de voz de marca. 
+Conclusión 
+Automatizar la generación de briefs con n8n convierte un proceso tradicionalmente 
+manual y costoso en una operación reproducible, escalable y rápida. La arquitectura 
+propuesta (captura de SERP, scraping limpio, extracción estructurada y generación 
+final por LLM) permite obtener briefs sólidos y accionables en fracciones del tiempo 
+que exige el trabajo humano. 
+La clave del éxito radica en: definir JSON schemas claros, diseñar prompts 
+sistemáticos y robustos, gestionar límites de petición y costes, y mantener siempre una 
+capa de control humano para la verificación final. Con esta aproximación, los equipos 
+pueden centrar su esfuerzo creativo en lo que realmente aporta valor: la estrategia y la 
+calidad editorial. 
+ 

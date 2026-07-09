@@ -1,0 +1,16 @@
+                                                          
+ 
+ 
+Recursos  
+●​ JSON Editor Online 
+Herramienta web que permite visualizar, editar y validar el código JSON. En el 
+video se utiliza para pegar el JSON generado por la IA, asegurarse de que su 
+estructura es correcta y hacer las correcciones necesarias de forma sencilla. 
+URL: https://jsoneditoronline.org/ 
+●​ Claude AI 
+Inteligencia artificial alternativa a ChatGPT que se menciona como una 
+excelente opción para redactar el contenido final a partir del prompt JSON 
+estructurado. Según el video, ofrece resultados de alta calidad y con un 
+lenguaje muy natural. 
+URL: https://claude.ai/ 
+ 

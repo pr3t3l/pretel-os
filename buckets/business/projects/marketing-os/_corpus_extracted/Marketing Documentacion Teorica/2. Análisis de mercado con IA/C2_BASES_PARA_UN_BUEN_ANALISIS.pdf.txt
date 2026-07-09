@@ -1,0 +1,153 @@
+                                                          
+ 
+ 
+Fundamentos para Comprender un Proyecto 
+Comercial Antes de Implementar Estrategias 
+Digitales o de Inteligencia Artificial 
+Antes de comenzar cualquier acción práctica en marketing digital o en la aplicación de 
+inteligencia artificial al mundo empresarial, es necesario tener claridad sobre los 
+fundamentos que sostienen a cualquier negocio. Entender estos elementos es lo que 
+permite construir estrategias coherentes, realistas y con propósito. Sin una 
+comprensión sólida del funcionamiento del negocio, incluso las mejores herramientas 
+digitales carecerán de dirección y los resultados serán inconsistentes. 
+Producto o Servicio 
+El punto de partida de cualquier proyecto empresarial es identificar con precisión qué 
+se ofrece al mercado. No es lo mismo vender un producto tangible que ofrecer un 
+servicio intangible, y esta distinción tiene consecuencias directas en la comunicación, 
+el posicionamiento y la experiencia del cliente. 
+Producto: Es un bien físico que puede ser adquirido, poseído y utilizado. 
+Ejemplo: Un robot aspirador que limpia el hogar de forma automática. 
+Servicio: Se refiere a una acción o prestación que satisface una necesidad, pero que 
+no implica la entrega de un bien físico. 
+Ejemplo: Una empresa que alquila autocaravanas por periodos determinados. 
+También existen modelos híbridos, donde se combinan ambos conceptos: por ejemplo, 
+una empresa que vende un software (producto) pero que además ofrece 
+mantenimiento o soporte técnico (servicio). Comprender esta combinación es esencial 
+para definir la propuesta de valor. 
+Canal de Venta 
+El canal de venta es el medio a través del cual el producto o servicio llega al cliente 
+final. Este factor influye directamente en las estrategias de marketing, en la elección de 
+herramientas digitales y en el diseño de la experiencia del usuario. 
+ 
+ 
+
+                                                          
+ 
+ 
+Los canales más comunes son: 
+●​ Presencial: La venta se realiza en un punto físico, como una tienda o una 
+oficina.​
+ 
+●​ Online: Todo el proceso ocurre en entornos digitales, como una web o una 
+app.​
+ 
+●​ Mixto: Combina ambos mundos, permitiendo por ejemplo comprar online y 
+recoger en tienda.​
+ 
+Cada canal determina cómo se interactúa con el cliente y qué recursos tecnológicos o 
+humanos son necesarios. En un entorno online, la optimización de la web y las 
+campañas digitales son prioritarias; en un entorno presencial, lo son la atención 
+personalizada y el marketing local. 
+Tipo de Venta: B2B y B2C 
+Saber quién es el cliente final define la manera en que se estructura todo el proceso 
+comercial. Existen dos grandes modelos: 
+B2B (Business-to-Business): Las empresas venden a otras empresas. Este modelo 
+implica procesos más largos, decisiones racionales basadas en el retorno de inversión 
+y una comunicación orientada a resultados. 
+Ejemplo: Una agencia digital que ofrece servicios de posicionamiento SEO a negocios. 
+B2C (Business-to-Consumer): Las empresas venden directamente al consumidor 
+final. Las decisiones de compra suelen ser más rápidas y emocionales, influenciadas 
+por el precio o la conveniencia. 
+Ejemplo: Un e-commerce que vende ropa o accesorios a clientes individuales. 
+También existen variantes como B2B2C, donde una empresa vende a otra que a su 
+vez vende al consumidor final, o B2G, cuando el cliente es una institución 
+gubernamental. Entender el tipo de venta ayuda a definir el tono de comunicación, las 
+plataformas adecuadas y los indicadores de éxito. 
+ 
+ 
+
+                                                          
+ 
+ 
+Mercado 
+El mercado establece el alcance geográfico y cultural del negocio. Este parámetro 
+condiciona la logística, el idioma, las estrategias de contenido y la normativa aplicable. 
+●​ Local: El negocio opera en una ciudad o barrio específico. 
+Ejemplo: Una barbería con reserva online para clientes del área. 
+●​ Regional: Se extiende a una zona más amplia, como una comunidad 
+autónoma o estado.​
+ 
+●​ Nacional: Abarca todo el territorio de un país.​
+ 
+●​ Internacional: Implica presencia en varios países, con diferentes monedas, 
+idiomas y marcos legales. 
+A medida que se amplía el mercado, también aumenta la complejidad de la estrategia. 
+Por ejemplo, una marca que pasa de vender solo en España a vender en 
+Latinoamérica debe adaptar su comunicación a los modismos, horarios y preferencias 
+culturales de cada región. 
+Monetización 
+La monetización describe cómo una empresa genera ingresos. No se trata solo de 
+vender, sino de definir de qué manera cada interacción con el cliente se traduce en 
+valor económico. 
+Modelos más frecuentes: 
+●​ Transacción directa: Venta inmediata del producto o servicio. 
+Ejemplo: Un cliente compra una prenda en una tienda online.*​
+ 
+●​ Generación de leads: El objetivo es captar contactos potenciales para una 
+venta posterior. 
+Ejemplo: Un usuario que completa un formulario solicitando un presupuesto.*​
+ 
+●​ Suscripción: El cliente paga de forma recurrente por acceso continuo. 
+Ejemplo: Plataformas como Netflix o software de tipo SaaS.*​
+ 
+
+                                                          
+ 
+ 
+●​ Afiliación y comisiones: El negocio actúa como intermediario y recibe una 
+comisión por cada transacción exitosa. 
+Ejemplo: Booking.com gana por cada reserva gestionada.* 
+●​ Monetización de tráfico: Los ingresos se obtienen a través de publicidad 
+digital. 
+Ejemplo: Medios de comunicación online que viven de la publicidad.*​
+ 
+Definir el modelo de monetización es indispensable para establecer los indicadores 
+clave de rendimiento (KPIs) y orientar el diseño de la experiencia de usuario. 
+Ejercicio de Aplicación: Análisis de Modelos de 
+Negocio 
+Caso 1: Idealista 
+Aunque la plataforma es utilizada por consumidores, los principales clientes son las 
+agencias inmobiliarias que pagan por publicar anuncios o destacar propiedades. Por 
+tanto, Idealista tiene un modelo B2B, basado en monetización por cuotas y 
+servicios premium para profesionales. 
+Caso 2: Incapto (Café y cafeteras) 
+Incapto combina la venta de cafeteras y la suscripción de café para dos tipos de 
+clientes: empresas y particulares. Opera con un modelo mixto B2B y B2C, ajustando 
+su comunicación y estrategia de marketing según el público. 
+Observaciones Clave 
+●​ La definición del producto o servicio es el primer paso para construir una 
+propuesta de valor coherente.​
+ 
+●​ El canal de venta determina la experiencia del cliente y las herramientas de 
+marketing necesarias.​
+ 
+●​ Conocer el tipo de venta (B2B o B2C) permite adaptar el lenguaje, los 
+argumentos y las plataformas.​
+ 
+●​ El mercado objetivo marca la escala y complejidad de la estrategia, 
+especialmente en negocios internacionales.​
+ 
+
+                                                          
+ 
+ 
+●​ El modelo de monetización orienta los objetivos de conversión y las métricas 
+de éxito. 
+Conclusión 
+Todo proyecto de marketing digital o de inteligencia artificial aplicada a negocios debe 
+sustentarse en una comprensión integral del modelo comercial. Identificar qué se 
+ofrece, cómo se vende, a quién se dirige, dónde opera y de qué manera genera 
+ingresos constituye el mapa inicial sobre el que se construye cualquier estrategia. Solo 
+a partir de estos cimientos es posible diseñar acciones efectivas, medibles y alineadas 
+con los objetivos reales del negocio. 
+ 

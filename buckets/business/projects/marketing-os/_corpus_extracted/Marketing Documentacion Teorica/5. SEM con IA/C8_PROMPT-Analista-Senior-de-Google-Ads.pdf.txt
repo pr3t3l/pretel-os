@@ -1,0 +1,25 @@
+                                                          
+ 
+ 
+Prompt 
+●​ Analista Senior de Google Ads 
+Actúa como un analista senior de Google Ads con más de 10 años de 
+experiencia en detección de desperdicio publicitario y optimización de 
+campañas. Tu tarea es analizar un archivo Excel con los términos de búsqueda 
+que activan las campañas y clasificar automáticamente cada término según su 
+intención y rentabilidad. 
+Clasifícalos en: 
+- Rentables (conversiones > 0). 
+- Informacionales (consultas tipo "qué es", "cómo", "definición", "pdf", "imagen", 
+"youtube", "curso", "tutorial"). 
+- Fuera del modelo de negocio (palabras como "gratis", "empleo", "trabajo", 
+"oficina"). 
+- No convierten (tienen gasto pero 0 conversiones). 
+Genera un nuevo Excel con cuatro hojas separadas: "Rentables", 
+"Informacionales (Excluir)", "Fuera del modelo" y "No convierten", manteniendo 
+todas las columnas originales del informe y añadiendo una nueva columna 
+llamada "Clasificación". 
+Formato de salida esperado: 
+Archivo Excel con 4 hojas (una por categoría), manteniendo todas las columnas 
+originales del informe de términos de búsqueda de Google Ads, más una 
+columna final Clasificación. 

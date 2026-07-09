@@ -1,0 +1,21 @@
+                                                          
+ 
+ 
+Recursos  
+●​ ChatGPT 
+Herramienta de inteligencia artificial utilizada para analizar ficheros de datos 
+(Excel, PDF, etc.), generar informes detallados, detectar oportunidades de 
+mejora y ofrecer recomendaciones estratégicas sobre campañas de marketing. 
+URL: https://chat.openai.com/  
+●​ Google Ads 
+Plataforma de publicidad de Google desde la cual se extraen los datos de 
+rendimiento de las campañas para ser analizados por ChatGPT. 
+URL: https://ads.google.com/  
+●​ Meta Ads 
+Plataforma de publicidad de Meta (Facebook, Instagram) de donde también se 
+pueden extraer informes para su posterior análisis con IA. 
+URL: https://www.facebook.com/business/ads  
+●​ Looker Studio 
+Herramienta de visualización de datos mencionada como otro tipo de fuente 
+que puede ser analizada por ChatGPT para interpretar y resumir la información. 
+URL: https://lookerstudio.google.com/  

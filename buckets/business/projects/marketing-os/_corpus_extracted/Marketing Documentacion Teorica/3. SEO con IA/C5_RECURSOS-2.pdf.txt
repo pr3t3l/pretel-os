@@ -1,0 +1,120 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Chat GPT 
+Herramienta de inteligencia artificial que se usa para generar de forma rápida y 
+eficiente listados extensos de palabras clave, sus variaciones y términos long 
+tail a partir de una idea principal. 
+URL: https://chatgpt.com/ 
+●​ Planificador de palabras clave de Google Ads 
+Herramienta de Google que permite consultar el volumen de búsquedas 
+mensuales y las previsiones de las palabras clave para verificar su popularidad 
+y potencial. 
+URL: https://ads.google.com/home/tools/keyword-planner/ 
+●​ "Keyword Combiner" de Atrox Creative 
+Es un generador y combinador de palabras clave en línea que permite a los 
+usuarios mezclar listas de palabras para crear nuevas combinaciones. Es útil 
+para la investigación de palabras clave en SEO (Search Engine Optimization), 
+ya que ayuda a generar rápidamente variaciones de términos de búsqueda, 
+incluyendo palabras clave de cola larga. 
+URL: https://atroxcreative.com/keyword-combiner  
+ 
+ 
+ 
+ 
+
+                                                          
+ 
+ 
+Prompt para concatenar palabras claves longtail 
+Servicio de Alquiler de Autocaravanas 
+Tengo una web de servicios en la que alquilo autocaravanas a particulares de 
+toda España y voy a realizar un Keyword Research. Asume el rol de un 
+especialista en SEO y partiendo de la palabra clave principal ‘Alquiler 
+caravanas’ devuélveme toda la variedad semántica relacionada con cada 
+término. Por ejemplo, empezarías con el término ‘Alquiler’ y me devolverias 
+sinónimos o términos relacionados. Luego seguirías con el siguiente término. 
+Por último, dame términos que pueda concatenar con esta palabra clave y que 
+den lugar a nuevas palabras clave long tail. Para ello sigue el siguiente 
+proceso: 1) Dame toda la variedad semántica del primer término: ‘alquiler’. Que 
+sea un listado con únicamente las variaciones principales. 2) Dame toda la 
+variedad semántica del segundo término: ‘caravana’. De nuevo, quiero un 
+listado con únicamente las variaciones principales. 3) Devuélme otro listado de 
+palabras que creas que pueda tener volumen de búsqueda en Google España 
+para que pueda concatenar con la palabra clave principal y sus derivados y den 
+pie a nuevas palabras clave long tail. No lo concatenes, sólo devuélveme las 
+palabras que den pie a la long tail. Es decir, si la long tail fuera ‘alquiler de 
+caravanas por días’. Devuélveme únicamente ‘por dias’. Tampoco repitas 
+términos que me hayas dado en los puntos 1 y 2. 
+Prompt Keyword Research transaccional ChatGPT 
+Servicio de Alquiler de Autocaravanas 
+Tengo una web de servicios en la que alquilo autocaravanas a particulares de 
+toda España y tengo que realizar un Keyword Research transaccional para el 
+sector de alquiler de caravanas. Asume el rol de un especialista en SEO y 
+devuélveme un listado extenso de palabras clave que podría utilizar un usuario 
+interesado en contratar este servicio. Para ello sigue el siguiente proceso: 1) 
+Devuélveme un listado extenso de palabras clave principales, con alta 
+
+                                                          
+ 
+ 
+intencionalidad de contratación del servicio. 2) En un segundo listado, devuelve 
+variaciones de las palabras clave anteriores en función de los distintos 
+potenciales clientes que podríamos tener. Es decir, crea palabras clave long 
+tail. No añadas acentos en los términos de búsqueda. Estas keywords serán 
+utilizadas para construir la arquitectura SEO, por lo que deben permitir la 
+creación de páginas de productos, categorías y secciones comparativas de 
+productos. Tengo una web de servicios en el que alquilo autocaravanas a 
+particulares en España. 
+Prompt Arquitectura SEO transaccional en base a 
+un keywordresearch Servicio de Alquiler de 
+Autocaravanas 
+Te voy a facilitar un Keyword Research del sector del alquiler de caravanas. 
+Asume el rol de un especialista en SEO y en base a este Keyword Research 
+deberás creame una arquitectura SEO transaccional para estructurar los 
+contenidos de mi sitio web. Para ello sigue estos pasos: 1) Analiza el Keyword 
+Research que te he facilitado. 2) Diseña una estructura jerárquica en la que las 
+páginas principales sean lo más genéricas posibles dentro de su vertical. Los 
+subniveles que cuelguen de estas páginas principales deberán tener una 
+relación semántica con esta. Así pues, de “alquiler camper” colgaría, por 
+ejemplo, “alquiler camper barato”. 3)Organiza el esquema de la arquitectura en 
+formato árbol, con enlaces internos sugeridos para mejorar la distribución de 
+autoridad y la experiencia de usuario.  
+ 
+ 
+ 
+ 
+
+                                                          
+ 
+ 
+Prompt Keyword Research informacional ChatGPT, 
+para desarrollar calendario editorial. Servicio de 
+Alquiler de Autocaravanas 
+Tengo una web de servicios en la que alquilo autocaravanas a particulares de 
+Toda España y voy a realizar un Keyword Research. Asume el rol de un 
+especialista SEO y devuélveme un listado extenso de palabras clave que 
+podría utilizar un usuario interesado en informarse sobre este servicio. Para ello 
+sigue el siguiente proceso: 1) Devuélveme un listado extenso de palabras clave 
+que representen todas las posibles dudas genéricas que podría tener un 
+usuario antes de contratar mi servicio. 2) En un segundo listado, devuelve 
+variaciones de las palabras clave anteriores en función de los distintos 
+potenciales clientes que podríamos tener. Es decir, crea palabras clave 
+informacionales long tail. 3) Simplifica al máximo cada palabra clave, imitando 
+el cómo busca un usuario. Por ejemplo, en vez de darme una palabra clave 
+como “Tipos de caravanas disponibles para alquilar” me devolverías: tipos de 
+caravanas para alquilar. O en vez de “¿Necesito un permiso especial para 
+conducir una carvana?” me darías: permisos para conducir caravana. No 
+añadas acentos en los términos de búsqueda. Estas keywords serán utilizadas 
+para desarrollar contenidos informacionales como guías, artículos de blog, y 
+comparativas adaptadas a las necesidades de los usuarios en cada fase del 
+journey “Ahora quiero que me crees un calendario editorial para que pueda ir 
+publicando un contenido a la semana atacando cada una de las palabras clave 
+que me has facilitado. Para ello, en el calendario editorial incluye: 1) La palabra 
+clave principal que atacará ese artículo de blog. 2) Palabras clave secundarias 
+para la misma intención de búsqueda. 3) La semana que consideras que 
+debería publicarse cada contenido, teniendo en cuenta que las primeras 
+semanas haremos los contenidos más relevantes para el usuario. 4) Propuesta 
+de title y metadescription para cada contenido. 5) Propuesta de h1 para cada 
+contenido. Devuélveme este calendario en forma de tabla.” 

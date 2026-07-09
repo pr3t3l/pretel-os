@@ -1,0 +1,80 @@
+                                                          
+ 
+ 
+Prompt 
+●​ Generador de Propuestas para Anuncios de Meta 
+Hola, crea una nueva funcionalidad para profesionales del marketing digital. La 
+idea es que sea un 'Generador de Propuestas para Anuncios de Meta 
+(Facebook/Instagram)'. 
+El objetivo es que un usuario pueda introducir información básica sobre su 
+cliente y la aplicación, usando inteligencia artificial, genere una propuesta de 
+marketing súper completa y profesional. 
+Así es como me la imagino: 
+PANTALLA INICIAL - EL FORMULARIO: 
+Al entrar, el usuario verá un formulario muy limpio y fácil de usar. Debería tener 
+un diseño moderno y profesional. En este formulario, quiero que pida lo 
+siguiente: 
+Un área de texto grande para que pegue la información de la web de su cliente 
+(quiénes son, qué venden, etc.). 
+Un campo para describir el tipo de negocio (por ejemplo, "tienda de ropa 
+online", "software para empresas", "restaurante local"). 
+Un campo para poner el presupuesto mensual que tiene el cliente para 
+anuncios. 
+Un campo para indicar la ciudad o país al que se dirigirán los anuncios. 
+Unas casillas para que marque los objetivos principales, como "Conseguir más 
+visitas a la web", "Vender más productos", "Que la gente conozca mi marca", 
+etc. 
+
+                                                          
+ 
+ 
+Al final, habrá un botón grande y llamativo que diga algo como "Generar 
+Propuesta con IA". 
+LA MAGIA - ¿QUÉ PASA AL HACER CLIC?: 
+Cuando el usuario le dé al botón, la aplicación debe mostrar un mensaje de 
+carga, como "Generando tu propuesta... Esto puede tardar un momento", para 
+que sepa que se está trabajando. 
+Aquí es donde la IA entra en juego para crear toda la propuesta. Si algo sale 
+mal, debe mostrar un mensaje de error claro y un botón para volver a intentarlo. 
+LA PANTALLA DE RESULTADOS - LA PROPUESTA GENERADA: 
+Una vez lista, la propuesta debe mostrarse de forma muy organizada y visual, 
+dividida en secciones claras. Cada sección debe ser como una tarjeta con su 
+título. Quiero estas secciones: 
+Análisis del Negocio: Un resumen de la empresa, los problemas que soluciona 
+a sus clientes, qué la hace especial y una descripción de su cliente ideal (buyer 
+persona). 
+Estrategia de Campañas: ¡Esta es la parte más importante! Debe crear varias 
+campañas, una para cada objetivo que el usuario seleccionó. Dentro de cada 
+campaña, debe proponer diferentes "conjuntos de anuncios" con ideas de a 
+quién dirigir la publicidad (por ejemplo, "mujeres de 25 a 35 años interesadas 
+en moda sostenible" o "personas que visitaron la web en los últimos 30 días"). 
+Y lo más genial: para cada conjunto de anuncios, debe generar 2 o 3 ejemplos 
+de anuncios reales. Cada anuncio debe tener un aspecto similar a como se 
+vería en Facebook/Instagram y contener: 
+Un texto publicitario (copy) ya escrito, que sea persuasivo y use emojis. 
+¡Una imagen generada por IA! Quiero que para cada texto, la IA cree una 
+imagen que encaje con el anuncio. 
+
+                                                          
+ 
+ 
+Debajo de cada anuncio de ejemplo, debe haber botones para "Regenerar 
+imagen" (si no le gusta la que salió) y "Descargar imagen". 
+Más Ideas Visuales: Sugerencias de qué tipo de imágenes o videos podría 
+crear. 
+Métricas de Éxito (KPIs): Una tabla simple que diga qué números mirar para 
+saber si la campaña va bien (por ejemplo, coste por clic, ventas generadas, 
+etc.). 
+Recomendaciones Adicionales: Un par de consejos extra, como "instala el Píxel 
+de Meta" o "mejora tu página de aterrizaje". 
+DISEÑO Y FUNCIONES EXTRA: 
+El diseño general debe ser oscuro, elegante y profesional, con toques de color 
+azul en los títulos y botones para que resalte. 
+En la parte de arriba, debe haber un encabezado fijo con el título de la 
+aplicación. 
+Una vez que la propuesta se ha generado, en ese encabezado deben aparecer 
+botones para exportar todo el informe en tres formatos: PDF, Word y Excel. 
+Esto es clave para que el usuario pueda presentarle la propuesta a su cliente. 
+En resumen, quiero una herramienta que ahorre horas de trabajo a los expertos 
+en marketing, dándoles una propuesta estratégica y creativa casi al instante, 
+con textos e imágenes listos para usar y la posibilidad de exportarla fácilmente. 

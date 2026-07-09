@@ -1,0 +1,25 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Google Colab 
+Es una herramienta de Google que permite a los usuarios escribir y ejecutar 
+código Python a través de su navegador. En el video, se utiliza para correr un 
+script que automatiza el proceso de clustering de palabras clave, una tarea que 
+de otra manera sería manual y consumiría mucho tiempo. 
+URL: 
+https://colab.research.google.com/drive/10UecktNqyhLfJmi2qPjFLtXV1iBQy-jw 
+●​ Google Sheets 
+Aplicación de hoja de cálculo en línea que permite a los usuarios crear, editar y 
+compartir hojas de cálculo. Forma parte del conjunto de herramientas de 
+productividad de Google Workspace y se destaca por su colaboración en 
+tiempo real, integración con otras herramientas de Google y su accesibilidad 
+desde cualquier dispositivo con conexión a internet. 
+URL: https://www.google.com/sheets/about/ 
+●​ Value SERP 
+Un servicio de API externo recomendado en el video para obtener los 
+resultados de las páginas de búsqueda de Google (SERPs) de manera 
+programática. Es útil para conseguir las URLs del top de Google para una 
+palabra clave específica y luego aplicarles scraping. 
+URL: https://www.valueserp.com/ 
+ 

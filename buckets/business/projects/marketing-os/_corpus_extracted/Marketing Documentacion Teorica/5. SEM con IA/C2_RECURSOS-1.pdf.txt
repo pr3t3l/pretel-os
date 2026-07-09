@@ -1,0 +1,44 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Google Ads 
+Plataforma de publicidad de Google que permite crear anuncios en su motor de 
+búsqueda y en su red de sitios asociados. Se utiliza principalmente para 
+"recoger demanda" existente. 
+URL: https://ads.google.com/  
+●​ Bing Ads (ahora Microsoft Advertising) 
+Plataforma publicitaria de Microsoft para mostrar anuncios en el buscador Bing 
+y su red de socios. Al igual que Google Ads, se enfoca en capturar la demanda 
+de usuarios que ya están buscando. 
+URL: https://ads.microsoft.com/  
+●​ Meta Ads (Facebook & Instagram Ads) 
+Sistema de publicidad de Meta para crear y gestionar campañas en Facebook, 
+Instagram, Messenger y WhatsApp. Es una herramienta clave para "generar 
+demanda" al impactar a usuarios según sus intereses y demografía. 
+URL: https://www.facebook.com/business/ads  
+●​ TikTok Ads 
+Plataforma para crear anuncios en la red social TikTok. Ideal para "generar 
+demanda" y alcanzar a audiencias más jóvenes a través de contenido de video 
+corto y creativo. 
+URL: https://www.tiktok.com/business/ 
+ 
+
+                                                          
+ 
+ 
+●​ LinkedIn Ads 
+Herramienta publicitaria de LinkedIn, enfocada en el ámbito profesional (B2B). 
+Permite "generar demanda" segmentando por cargo, empresa, sector y otras 
+variables profesionales. 
+URL: https://www.linkedin.com/business/marketing/ads  
+●​ ChatGPT 
+Modelo de lenguaje de IA utilizado para procesar grandes volúmenes de datos 
+(como CSVs de términos de búsqueda), generar contenido (copys, ideas), 
+clasificar palabras clave y automatizar tareas repetitivas. 
+URL: https://chat.openai.com/  
+●​ Google AI Studio 
+Herramienta de IA mencionada para simplificar la revisión y optimización de 
+palabras clave y audiencias, así como para automatizar la creación de 
+estructuras de campañas. 
+URL: https://aistudio.google.com/  

@@ -1,0 +1,16 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Windsor.ai 
+Es una plataforma de IA que permite a los profesionales de marketing conectar 
+y centralizar datos de múltiples fuentes (como Facebook Ads, Google Ads, 
+TikTok, etc.) a través de conectores. Facilita la extracción de datos para crear 
+informes y paneles de control. 
+URL: https://windsor.ai/  
+●​ Google AI Studio 
+Es una plataforma de desarrollo de Google que utiliza modelos de IA como 
+Gemini para crear aplicaciones y herramientas a partir de descripciones en 
+lenguaje natural (prompts). Se utiliza para generar un panel de control de 
+rendimiento de campañas. 
+URL: https://aistudio.google.com/apps 

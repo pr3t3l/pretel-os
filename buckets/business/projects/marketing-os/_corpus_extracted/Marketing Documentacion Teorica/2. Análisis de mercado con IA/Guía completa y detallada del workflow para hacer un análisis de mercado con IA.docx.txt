@@ -1,0 +1,201 @@
+Guía completa y detallada del workflow para hacer un análisis de mercado con IA
+Visión general del proceso
+El módulo plantea que el análisis de mercado no es un trámite previo, sino el cimiento de todas las decisiones de negocio. Su función es obtener información veraz para diseñar estrategias fundamentadas, reducir la improvisación y convertir datos en decisiones. La IA entra como acelerador del análisis: permite procesar información más rápido, detectar patrones y generar insights útiles sin depender solo de intuiciones.
+El workflow completo, siguiendo la lógica del módulo, queda así:
+Entender el negocio antes de analizar el mercado.
+Cuantificar la demanda.
+Definir el buyer persona.
+Construir la propuesta de valor.
+Detectar puntos de dolor y objeciones.
+Identificar activadores de compra.
+Analizar la competencia.
+Integrar todo en una estrategia de marketing con IA.
+Ahora te lo desarrollo fase por fase.
+
+Fase 1. Entender el negocio antes de usar IA
+Antes de lanzar prompts, mirar keywords o investigar competidores, el módulo insiste en que primero hay que comprender el proyecto comercial. Si esta base no está clara, incluso las mejores herramientas digitales carecen de dirección.
+Qué se analiza aquí
+Se estudian cinco elementos:
+Producto o servicio.
+ Debes definir con precisión qué ofreces. No es igual vender un producto tangible que un servicio intangible, porque eso cambia la comunicación, el posicionamiento y la experiencia del cliente. También puede haber modelos híbridos, como software + soporte técnico.
+Canal de venta.
+ Debes identificar si vendes en canal presencial, online o mixto. Esto cambia totalmente el marketing: en online importan mucho la web y las campañas digitales; en presencial, la atención personal y el marketing local.
+Tipo de venta: B2B o B2C.
+ Aquí aparece la parte B2B del módulo.
+ En B2B, una empresa vende a otra empresa; el proceso suele ser más largo, la decisión es más racional y se basa en retorno de inversión, y la comunicación se orienta a resultados.
+ En B2C, la empresa vende al consumidor final; la decisión suele ser más rápida y emocional, influida por precio o conveniencia.
+Mercado.
+ Debes acotar si tu alcance es local, regional, nacional o internacional. Esto afecta idioma, logística, normativas, horarios y adaptación cultural.
+Monetización.
+ Debes aclarar cómo gana dinero el negocio: transacción directa, generación de leads, suscripción, afiliación o monetización de tráfico. Este punto determina los KPIs y la forma correcta de medir el éxito.
+Qué se debe hacer
+Antes de pasar a la investigación, deja por escrito una ficha del proyecto con estas preguntas:
+Qué vendo exactamente.
+A través de qué canal vendo.
+A quién vendo: empresa o consumidor.
+En qué territorio compito.
+Cómo convierto la relación en ingresos.
+Cómo hacerlo con IA
+La IA no sustituye esta definición, pero te ayuda a ordenarla. Puedes usarla para convertir una idea difusa en una estructura clara. Lo importante es que no le pidas a la IA “hazme el marketing”, sino “ordena conmigo los fundamentos del negocio”.
+Qué cambia si es B2B
+Aquí está una de las claves del workflow. Si tu negocio es B2B, desde el principio debes asumir que:
+el buyer persona puede ser un decisor profesional;
+la propuesta de valor debe hablar de resultados;
+el proceso de compra será más largo;
+la comunicación será menos impulsiva y más racional.
+
+Fase 2. Analizar la demanda
+Una vez entendido el negocio, el siguiente paso es medir si existe interés real. El módulo plantea que ya no basta con intuir que un producto podría interesar: hay que cuantificar la demanda.
+Qué se analiza aquí
+Se combinan dos tipos de datos:
+Datos demográficos.
+ Sirven para entender la composición de la población en una zona: edad, género, nivel socioeconómico, densidad urbana. El ejemplo del módulo explica que una barbería podría estudiar cuántos hombres jóvenes viven o transitan por un barrio, si hay competencia y cuál es la afluencia.
+Datos digitales.
+ Aquí entra el volumen de búsquedas. Se mide cuántas veces se consulta una palabra clave en un buscador, porque eso refleja interés activo por un producto o servicio.
+Herramientas que menciona el módulo
+Google Keyword Planner
+Semrush
+Ahrefs
+alternativas gratuitas como SearchVolume.com
+Qué se debe hacer
+Debes buscar dos cosas a la vez:
+Primero, si hay gente que encaja con tu público.
+ Segundo, si esa gente está buscando activamente lo que ofreces o algo relacionado.
+No basta con saber que hay público. Tampoco basta con saber que hay búsquedas. El módulo insiste en combinar contexto poblacional y demanda online para tener una visión completa.
+Cómo hacerlo
+Empieza por una lista de búsquedas que tu cliente haría. Luego clasifícalas por intención:
+Transaccionales: incluyen señales como “comprar”, “precio”, “oferta”.
+Informacionales: muestran interés por aprender, comparar o entender antes de decidir.
+Este punto es clave porque las keywords transaccionales te hablan de conversión, mientras que las informacionales te hablan de contenido, confianza y educación del mercado.
+Qué hace la IA aquí
+La IA actúa como apoyo analítico: te ayuda a generar listas de búsquedas, agruparlas, entender intenciones y convertir datos dispersos en conocimiento útil. El módulo la presenta como un asistente estratégico, no como sustituto del criterio humano.
+Matiz territorial
+También debes tener en cuenta el ecosistema del buscador dominante según país. El módulo menciona Google como referencia principal en Europa y Latinoamérica, pero recuerda que hay otros motores como Baidu, Yandex o Bing según región.
+
+Fase 3. Definir el buyer persona
+Con la demanda ya explorada, el siguiente paso es traducir el mercado a personas concretas. El buyer persona es una representación semi-ficticia del cliente ideal basada en datos reales. Sirve para entender quién es, qué busca, qué obstáculos tiene y cómo decide.
+Qué se analiza aquí
+Debes estudiar:
+datos demográficos;
+intereses;
+comportamientos;
+motivaciones;
+frustraciones;
+proceso de decisión.
+El módulo también diferencia entre buyer persona y avatar.
+ El buyer persona es la parte analítica; el avatar es la humanización narrativa de ese análisis.
+Qué se debe hacer
+Debes construir perfiles que sirvan para orientar marketing, producto y ventas. No se trata de “imaginar un cliente bonito”, sino de enfocar recursos y dejar claro a quién sí y a quién no va dirigida la estrategia.
+Cómo hacerlo con IA
+El módulo compara el método tradicional —entrevistas, análisis manual, mucha interpretación— con el uso de IA, que acelera el proceso al analizar grandes volúmenes de datos de navegación, compras, redes o bases de clientes. La IA permite detectar patrones y trabajar con más rapidez y escala.
+Qué cambia en B2B
+En B2B esto es todavía más importante, porque una misma empresa puede tener varios perfiles de decisión. El ejemplo del módulo sobre agencia de marketing muestra perfiles distintos según el tamaño de empresa: pequeña empresa, empresa mediana y multinacional, cada una con motivaciones y procesos de aprobación diferentes. Esto enseña que en B2B no hablas solo con “el mercado”, sino con tipos de organización y decisores distintos.
+
+Fase 4. Construir la propuesta de valor
+Una vez sabes qué demanda existe y a quién te diriges, debes responder la gran pregunta: por qué deberían elegirte a ti y no a la competencia. Esa es la propuesta de valor.
+Qué es
+El módulo la define como una declaración estratégica, no como un eslogan. Debe ser:
+relevante,
+diferente,
+creíble.
+Qué se debe hacer
+Debes identificar qué beneficio distintivo ofreces y después comunicarlo de forma coherente en todos los puntos de contacto:
+campañas publicitarias,
+web,
+email marketing,
+SEO y contenido.
+Cómo hacerlo con IA
+La IA puede ayudarte de tres formas:
+descubrir propuestas ocultas en opiniones o reseñas;
+enriquecer propuestas existentes;
+personalizar la propuesta por buyer persona.
+El módulo también propone usar prompts para crear propuestas de valor desde cero o adaptar una ya existente a distintos segmentos. Pero insiste en algo importante: el resultado de la IA es una base para reflexionar, no una verdad cerrada. Hay que seleccionar solo lo que encaja con la identidad real del negocio.
+Por qué esta fase es crítica
+Porque en digital no basta con atraer tráfico. El módulo subraya que una propuesta de valor clara mejora la conversión y puede ser más rentable que gastar más en adquisición.
+
+Fase 5. Detectar puntos de dolor y objeciones
+Con buyer persona y propuesta de valor ya definidos, debes estudiar qué frena a la persona antes de comprar. El módulo llama a esto puntos de dolor: obstáculos emocionales, prácticos o psicológicos que separan al cliente de la decisión final.
+Qué se analiza aquí
+El material explica que esta fase depende de cuatro pilares previos:
+buyer persona,
+demanda,
+propuesta de valor,
+customer journey.
+Qué se debe hacer
+Debes identificar objeciones recurrentes y resolverlas antes de que el cliente las formule. El módulo sugiere trabajar esto en todos los puntos de contacto:
+conversaciones directas;
+interacción presencial;
+web, email, anuncios o redes sociales.
+Cómo hacerlo con IA
+La práctica del módulo es muy clara: si ya tienes definidos los buyer persona, puedes pedir a la IA que te diga:
+los puntos de dolor de cada perfil al comprar;
+la solución para cada punto de dolor.
+Eso permite convertir objeciones generales en respuestas personalizadas.
+Clave estratégica
+Resolver puntos de dolor no solo aumenta ventas. También fortalece la confianza y mejora la percepción de marca.
+
+Fase 6. Identificar activadores de compra
+No basta con saber que alguien tiene una necesidad. El módulo distingue entre necesidad y activador de compra. El activador es el momento en que esa necesidad se vuelve prioritaria y empuja a actuar.
+Qué se analiza aquí
+Se trabaja sobre el customer journey:
+conciencia,
+consideración,
+compra.
+El activador es ese punto de inflexión donde el usuario pasa de observar a participar activamente en el mercado.
+Qué se debe hacer
+Debes detectar qué eventos o emociones disparan la compra. El módulo menciona ejemplos como mudanzas, promociones, problemas domésticos, descuentos o lanzamientos de nuevos modelos.
+Cómo hacerlo con IA
+Puedes pedirle a la IA que imagine los momentos de activación de compra de tus clientes potenciales. El ejemplo del módulo usa una tienda online de robots aspiradores y pide identificar esos momentos de activación. La respuesta luego sirve para segmentar mejor campañas, prever necesidades y crear contenido conectado con esos momentos.
+Qué cambia según el tipo de compra
+El módulo diferencia:
+compra reflexiva, más profunda y lenta;
+compra impulsiva, más inmediata y emocional.
+En B2B, por la propia definición del material, debes asumir más cercanía con la compra reflexiva: procesos más largos y decisiones más racionales.
+
+Fase 7. Analizar la competencia
+Solo después de entender demanda, buyer persona, propuesta, objeciones y activadores tiene sentido mirar bien a la competencia. El módulo plantea que una estrategia sólida empieza por el autoconocimiento y culmina con el análisis competitivo.
+Qué se analiza aquí
+Debes estudiar:
+competidores según canal,
+tácticas y aciertos,
+huecos del mercado,
+oportunidades de diferenciación.
+El material explica que la competencia no es homogénea:
+en SEO, compites con quien posiciona por las mismas keywords;
+en redes, con marcas o influencers visualmente similares;
+en publicidad, con quienes pujan por las mismas audiencias.
+Qué se debe hacer
+No se trata de copiar, sino de modelar. El módulo resume esta idea como:
+ver,
+copiar,
+mejorar.
+Es decir, estudiar qué funciona, entender su estructura y después añadir valor diferencial.
+Herramientas del módulo
+ChatGPT para una primera exploración,
+SEMrush,
+Similarweb,
+Social Blade,
+bibliotecas de anuncios de Meta, Google y TikTok.
+Consejo avanzado del módulo
+No analizar solo el entorno local. También conviene mirar mercados más maduros para detectar tendencias antes de que lleguen a tu contexto.
+
+Fase 8. Integrar todo en una estrategia de marketing con IA
+Aquí es donde el análisis deja de ser piezas sueltas y se convierte en sistema.
+El módulo, al reunir todos los temas, sugiere una lógica clara:
+Primero, entiendes qué negocio tienes.
+ Después, verificas que existe demanda.
+ Luego defines a quién hablas.
+ A continuación, decides por qué deberían elegirte.
+ Después, eliminas objeciones y detectas qué momentos activan la compra.
+ Por último, comparas todo esto con lo que hace el mercado para encontrar un espacio de diferenciación.
+Cómo usar la IA dentro de esta integración
+La IA aparece a lo largo de todo el proceso como apoyo para:
+acelerar el análisis,
+ordenar información,
+clasificar búsquedas,
+generar y refinar perfiles,
+proponer propuestas de valor,
+detectar objeciones,
+explorar activadores,
+mapear competidores.
+Pero hay una idea que el módulo repite de fondo: la IA no sustituye la estrategia humana. La verdadera ventaja está en interpretar correctamente los datos y convertirlos en decisiones.

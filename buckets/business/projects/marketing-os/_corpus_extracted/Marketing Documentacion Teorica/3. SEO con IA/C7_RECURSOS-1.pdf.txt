@@ -1,0 +1,76 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Chat GPT 
+Herramienta de inteligencia artificial utilizada para generar el código necesario 
+para crear las redirecciones en el archivo .htaccess. 
+URL: https://chatgpt.com/ 
+●​ TechnicalSEO.com 
+Herramienta en línea que permite probar las reglas de redirección del archivo 
+.htaccess para validar que el código funciona correctamente y no causará 
+errores en el sitio web. 
+URL: https://technicalseo.com/tools/htaccess/ 
+ 
+Prompt Generación y validación de Redirecciones  
+Quiero crear redirecciones 301 desde un conjunto de URLs origen hacia 
+nuevas URLs destino.​
+ Además, quiero una regla GLOBAL que siempre redirija cualquier URL pedida 
+SIN barra final a su versión CON barra final (salvo si el recurso parece un 
+archivo con extensión). 
+REQUISITOS 
+1.​ Mantén correspondencia 1:1 entre cada origen y su destino.​
+ 
+2.​ Usa 301 permanente.​
+ 
+
+                                                          
+ 
+ 
+3.​ Evita bucles y dobles barras (“//”).​
+ 
+ENTREGABLES​
+ Devuélvelo en el formato htacces:​
+ A) Apache (.htaccess) 
+●​ Incluye primero la REGLA GLOBAL “sin slash → con slash” aplicable a 
+cualquier ruta que no parezca archivo (sin punto en el último segmento).​
+ 
+●​ Después, añade las RewriteRules 301 específicas para cada mapeo.​
+ 
+●​ Muestra el bloque completo listo para pegar entre <IfModule 
+mod_rewrite.c> … </IfModule>.​
+ 
+MAPEO (ORIGEN → DESTINO) 
+●​ https://oldsite.example.com/ → https://newsite.example.com/​
+ 
+●​ https://oldsite.example.com/en/tickets → 
+https://newsite.example.com/en/tickets/​
+ 
+●​ https://oldsite.example.com/en/plan-your-visit → 
+https://newsite.example.com/en/plan-your-visit/​
+ 
+●​ https://oldsite.example.com/en/opening-hours → 
+https://newsite.example.com/en/opening-hours/​
+ 
+●​ https://oldsite.example.com/es/entradas → 
+https://newsite.example.com/es/entradas/​
+ 
+
+                                                          
+ 
+ 
+●​ https://oldsite.example.com/es/como-llegar → 
+https://newsite.example.com/es/como-llegar/​
+ 
+●​ https://oldsite.example.com/fr/billets → 
+https://newsite.example.com/fr/billets/​
+ 
+●​ https://oldsite.example.com/it/biglietti → 
+https://newsite.example.com/it/biglietti/​
+ 
+●​ https://oldsite.example.com/de/tickets → 
+https://newsite.example.com/de/tickets/​
+ 
+●​ https://oldsite.example.com/pt-br/ingressos → 
+https://newsite.example.com/pt-br/ingressos/ 
+ 

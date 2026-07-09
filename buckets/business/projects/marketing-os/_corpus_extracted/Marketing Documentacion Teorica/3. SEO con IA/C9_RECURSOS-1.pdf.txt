@@ -1,0 +1,17 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Google Search Console 
+Herramienta esencial que se muestra en el video para medir el rendimiento de 
+un sitio web en la Búsqueda de Google. Se utiliza para analizar el tráfico, las 
+impresiones y la posición media de las palabras clave, lo cual es crucial para 
+saber si un contenido está bien posicionado (en el top 10) y tiene posibilidades 
+de aparecer en los AI Overviews. 
+URL: https://search.google.com/search-console/about 
+●​ Documentación de Google sobre AI Overviews 
+Aunque no se menciona explícitamente, una de las pestañas abiertas en el 
+navegador del video corresponde a la documentación oficial de Google. Este es 
+el recurso principal para entender qué son los AI Overviews, cómo funcionan y 
+qué pueden hacer los propietarios de sitios web al respecto. 
+URL: https://developers.google.com/search/docs/appearance/ai-overviews 

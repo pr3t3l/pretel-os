@@ -1,0 +1,21 @@
+                                                          
+ 
+ 
+Recursos  
+●​ TextRazor 
+Herramienta de procesamiento de lenguaje natural que se utiliza en el video 
+para analizar un texto y extraer las "entidades" o conceptos clave que contiene. 
+El ponente la emplea para identificar los temas más relevantes de un artículo 
+sobre cocina molecular y así entender qué elementos son importantes para 
+tratar en un contenido similar. 
+URL: https://www.textrazor.com/demo 
+●​ Generador de JSON-Prompt (GPT Personalizado) 
+Un GPT personalizado dentro de la plataforma de ChatGPT que sirve para 
+crear prompts estructurados en formato JSON. En el video, se explica que las 
+entidades extraídas con TextRazor se pueden añadir a este generador para 
+crear una instrucción mucho más completa y profunda, con el objetivo de que la 
+inteligencia artificial redacte un contenido de mayor calidad y relevancia. 
+URL: 
+chatgpt.com/g/g-688895f72d40819198be2b1534d0f6c7-generador-de-json-pro
+mpt 
+ 

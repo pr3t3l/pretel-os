@@ -1,0 +1,22 @@
+                                                          
+ 
+ 
+Prompts 
+●​ Prompt 1 
+Tengo una tienda online de "robots aspiradores" en la que vendo directamente 
+a consumidores finales de toda España y necesito que realices un análisis de la 
+demanda de este tipo de productos en el mercado Español. Dime datos 
+relevantes sobre el tamaño de mercado y tendencias. 
+●​ Prompt 2 
+Teniendo en cuenta el análisis de mercado que acabas de hacer. Necesito que 
+te comportes como un experto en SEO y me digas las 100 keywords 
+transaccionales más importantes del mercado Español que usan los usuarios al 
+buscar en Google. No necesito su volumen de búsqueda, solo un listado de 
+palabras clave que usaré para crear la Arquitectura SEO de mi tienda online de 
+"robots aspiradores" 
+●​ Prompt 3 
+Tengo una web de servicios en las que ofrezco "alquileres de autocaravanas" a 
+consumidores finales de toda España y necesito que te comportes como un 
+experto en SEO y realices un listado de las 50 palabras clave informacionales 
+que los usuarios más buscan en Google. El listado no debe contener ninguna 
+keyword transaccional. Dame las palabras clave sin tildes. 

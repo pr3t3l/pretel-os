@@ -1,0 +1,15 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Centro de la Búsqueda de Google 
+Documentación oficial de Google que ofrece directrices y preguntas para 
+autoevaluar si el contenido de una web es de calidad. Ayuda a los creadores a 
+entender qué considera Google como contenido útil para posicionar mejor. 
+URL: https://developers.google.com/search/docs/fundamentals/creating-helpful-content?hl=es 
+●​ BIGSEO - Agencia de Marketing Digital 
+Página web de la agencia de marketing digital que imparte el curso. Se utiliza 
+en el video como ejemplo práctico para ilustrar conceptos de SEO, como la 
+estructura de URLs amigables (/agencia-seo/, /agencia-sem/) y el enlazado 
+interno. 
+URL: https://bigseo.com/ 

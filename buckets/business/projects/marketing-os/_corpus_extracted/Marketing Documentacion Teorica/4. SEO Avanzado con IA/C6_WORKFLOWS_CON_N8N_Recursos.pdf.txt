@@ -1,0 +1,38 @@
+                                                          
+ 
+ 
+Recursos  
+●​ n8n 
+Es una plataforma de automatización de flujos de trabajo que el video presenta 
+como una herramienta para llevar la automatización de tareas SEO un paso 
+más allá de los scripts. Permite planificar y ejecutar procesos complejos de 
+forma programada, como la extracción de datos de las SERPs y la generación 
+de contenido. 
+URL: https://n8n.io/ 
+ 
+●​ DataForSEO 
+El ponente la describe como una de las mejores API para SEO. En el video, se 
+utiliza dentro de un flujo de trabajo en n8n para obtener automáticamente los 
+resultados de búsqueda de Google (SERPs) para una palabra clave específica, 
+como el top 100 de resultados orgánicos. 
+URL: https://dataforseo.com/ 
+ 
+●​ Firecrawl 
+Es una herramienta de scraping que se utiliza en el flujo de trabajo de n8n para 
+extraer el contenido de las URLs obtenidas de los resultados de búsqueda. Su 
+función es obtener el texto de las páginas web para su posterior análisis y 
+resumen. 
+URL: https://firecrawl.dev/ 
+ 
+
+                                                          
+ 
+ 
+●​ Claude 
+Modelo de lenguaje grande (LLM) desarrollado por Anthropic, una empresa de 
+investigación de seguridad e inteligencia artificial. Está diseñado para ser útil, 
+inofensivo y honesto, y se utiliza para una variedad de tareas conversacionales 
+y de procesamiento de texto, como resumir, responder preguntas, escribir y 
+codificación. 
+URL: https://claude.com/  
+ 

@@ -1,0 +1,334 @@
+                                                          
+ 
+ 
+Diccionario de Términos de Marketing 
+Digital con IA 
+A 
+●​ Activadores de la compra: Factores psicológicos o emocionales que influyen 
+en la decisión de un cliente de adquirir un producto o servicio. 
+●​ Algoritmo: Conjunto de reglas y operaciones que utilizan los motores de 
+búsqueda como Google para determinar el orden en que se presentan los 
+resultados de búsqueda. 
+●​ Análisis de la demanda: Proceso que identifica la cantidad de personas 
+interesadas en un producto o servicio, así como las tendencias y patrones de 
+consumo. 
+●​ Análisis de mercado: Proceso de investigación que estudia las condiciones 
+del mercado, incluyendo consumidores, competencia y tendencias. 
+●​ Anchor Text: Texto visible de un enlace que, al hacer clic, redirige a otra 
+página web. Es importante para el SEO, ya que da pistas al motor de búsqueda 
+sobre el contenido de la página enlazada. 
+●​ Arquitectura SEO: Organización estructural de un sitio web para optimizar su 
+navegación y posicionamiento en los motores de búsqueda. 
+●​ Arquitectura SEO informacional: Organización estructural de un sitio web 
+diseñada para satisfacer la intención de búsqueda informacional de los 
+usuarios, ofreciendo contenido educativo o explicativo. 
+●​ Arquitectura SEO transaccional: Estructura de un sitio web optimizada para 
+guiar a los usuarios hacia la conversión, como realizar una compra o completar 
+un formulario. 
+●​ Avatar: Representación detallada y específica de un Buyer Persona, 
+incluyendo nombre, imagen, historia personal y características que lo 
+humanizan. 
+●​ Autoridad de Dominio (Domain Authority, DA): Métrica creada por Moz que 
+mide la relevancia y la calidad de un sitio web en una escala del 1 al 100. 
+B 
+●​ Backlink: Enlace que proviene de otro sitio web y apunta hacia el tuyo. Son 
+esenciales para aumentar la autoridad y mejorar el posicionamiento SEO. 
+●​ Bounce Rate (Tasa de Rebote): Porcentaje de visitantes que abandonan un 
+sitio web después de visitar una sola página, sin interactuar con el resto del 
+sitio. 
+●​ BreadcrumbList: Tipo de dato estructurado que muestra rutas de navegación 
+jerárquicas en una página web, mejorando la experiencia del usuario y el SEO. 
+
+                                                          
+ 
+ 
+●​ Buyer Persona: Representación semi-ficticia de un cliente ideal basada en 
+datos reales y análisis de mercado. Ayuda a enfocar estrategias de marketing 
+en las necesidades y comportamientos de los clientes. 
+●​ Búsqueda comercial: Tipo de consulta en la que el usuario evalúa diferentes 
+opciones antes de tomar una decisión de compra. 
+●​ Búsqueda reflexiva: Intención de búsqueda en la que el usuario busca 
+información detallada para considerar opciones y reflexionar antes de realizar 
+una acción. 
+C 
+●​ CPA (Coste Por Adquisición): Métrica que mide el costo asociado a generar 
+una conversión específica, como una compra o registro, a través de una 
+campaña de marketing. 
+●​ CPL (Coste Por Lead): Métrica que indica el costo promedio por cada lead o 
+contacto generado a través de una campaña de marketing. 
+●​ Call to Action (CTA): Llamado a la acción que guía al usuario hacia una 
+acción específica, como comprar, suscribirse o descargar algo. 
+●​ Calendario editorial: Herramienta de planificación que organiza la creación y 
+publicación de contenido en función de palabras clave, fechas y objetivos de 
+marketing. 
+●​ Canal de venta: Medio a través del cual una empresa ofrece sus productos o 
+servicios a los consumidores, como tiendas físicas, comercio electrónico o 
+distribuidores. 
+●​ Canibalización de Palabras Clave: Cuando varias páginas de un mismo sitio 
+web compiten por la misma palabra clave, afectando el posicionamiento 
+general. 
+●​ Canibalizaciones: Ocurren cuando varias páginas de un mismo sitio web 
+compiten por la misma palabra clave, afectando negativamente el 
+posicionamiento en los motores de búsqueda. 
+●​ Captación de audiencias: Estrategia de marketing enfocada en atraer nuevos 
+usuarios hacia un sitio web o plataforma mediante contenido relevante o 
+campañas específicas. 
+●​ Clusterizar: Proceso de agrupar páginas web relacionadas por temática para 
+mejorar la estructura de un sitio y facilitar la navegación y el SEO. 
+●​ Clusters: Grupos de contenido interconectados por un tema principal, 
+diseñados para mejorar la relevancia de un sitio web en una temática 
+específica. 
+●​ Conversión: Acción deseada realizada por el usuario, como llenar un 
+formulario, hacer una compra o registrarse en un evento. 
+●​ Compra Impulsiva: Decisión de compra rápida y emocional, sin análisis 
+previo. 
+
+                                                          
+ 
+ 
+●​ Compra Reflexiva: Decisión de compra analizada y planificada, basada en 
+evaluación de necesidades y opciones. 
+●​ Crawl Budget: Cantidad de páginas que un motor de búsqueda puede rastrear 
+en un sitio web dentro de un período determinado. 
+●​ Customer Journey: Camino que sigue un cliente desde que toma conciencia 
+de una necesidad o problema hasta que realiza una compra o acción 
+específica. 
+D 
+●​ Datos Demográficos: Información estadística sobre características como 
+edad, género, ubicación y nivel socioeconómico de una población. 
+●​ Datos Estructurados: Información organizada en un formato que los motores 
+de búsqueda pueden entender fácilmente, como Schema.org. 
+●​ Deep Link: Enlace que apunta a una página interna específica de un sitio web 
+en lugar de la página de inicio. 
+●​ Display Ads: Anuncios gráficos que aparecen en sitios web o aplicaciones 
+como parte de campañas publicitarias. 
+E 
+●​ Email Marketing: Estrategia de comunicación directa que utiliza correos 
+electrónicos para enviar mensajes promocionales, informativos o 
+personalizados a una audiencia específica. 
+●​ Embudo de Conversión (Conversion Funnel): Modelo que describe el 
+recorrido del usuario desde que conoce una marca hasta que realiza una 
+acción deseada, como una compra. 
+●​ Enlazado Interno: Estrategia que utiliza enlaces dentro de un sitio web para 
+conectar diferentes páginas y mejorar la navegación y el SEO. 
+●​ Estudio de Mercado: Análisis que recoge y examina datos sobre las 
+condiciones del mercado, incluyendo consumidores, competidores y 
+tendencias. 
+●​ Estrategia de Marketing: Plan de acción diseñado para alcanzar objetivos 
+comerciales mediante la promoción y distribución de productos o servicios. 
+●​ Experiencia de Usuario (UX): Percepción y sensación del usuario al 
+interactuar con un sitio web o una aplicación. 
+F 
+●​ FAQPage: Tipo de dato estructurado utilizado para marcar secciones de 
+preguntas frecuentes en un sitio web, mejorando su visibilidad en los 
+resultados de búsqueda. 
+
+                                                          
+ 
+ 
+●​ Featured Snippet: Resultado destacado en Google que proporciona una 
+respuesta directa a la consulta del usuario, generalmente en formato de 
+párrafo, lista o tabla. 
+●​ Frecuencia de Publicación: Regularidad con la que se crea y publica 
+contenido en un sitio web o red social. 
+G 
+●​ Generación de Audiencias: Proceso de identificar y atraer usuarios con 
+intereses comunes hacia una marca o producto, generalmente a través de 
+campañas de marketing segmentadas. 
+●​ Google Ads: Plataforma de publicidad de Google para crear campañas 
+pagadas en buscadores y sitios asociados. 
+●​ Google Analytics: Herramienta de análisis que permite medir y evaluar el 
+tráfico y comportamiento de los usuarios en un sitio web. 
+●​ Growth Hacking: Estrategias creativas de marketing enfocadas en el 
+crecimiento rápido de una empresa o producto. 
+H 
+●​ .htaccess: Archivo de configuración en servidores Apache que permite 
+gestionar redirecciones, restricciones de acceso y otras configuraciones 
+importantes. 
+●​ H1, H2, H3: Etiquetas HTML utilizadas para estructurar el contenido de una 
+página web en encabezados jerárquicos. 
+●​ Head Keywords: Palabras clave cortas y genéricas con alto volumen de 
+búsqueda, pero también con alta competencia. 
+●​ Hook o gancho: Elemento inicial de un mensaje o contenido diseñado para 
+captar la atención del usuario en los primeros segundos. 
+●​ HTML (HyperText Markup Language): Lenguaje de marcado utilizado para 
+crear páginas web. 
+I 
+●​ ImageObject: Tipo de dato estructurado que proporciona detalles sobre las 
+imágenes en una página web, como título, descripción y URL. 
+●​ Impresiones: Número de veces que un anuncio, página web o contenido se 
+muestra a los usuarios, independientemente de si interactúan con él. 
+●​ Inbound Marketing: Estrategia que atrae clientes mediante contenido valioso y 
+relevante en lugar de interrumpirlos con publicidad. 
+●​ Indexación: Proceso mediante el cual los motores de búsqueda almacenan 
+información sobre una página web para incluirla en sus resultados. 
+
+                                                          
+ 
+ 
+●​ Intención de búsqueda: Motivo principal que tiene un usuario al realizar una 
+consulta en un motor de búsqueda, como buscar información, comprar un 
+producto o realizar una acción. 
+●​ Intención de búsqueda informacional: Tipo de búsqueda en la que el usuario 
+busca aprender o resolver dudas sobre un tema específico. 
+●​ Intención de búsqueda transaccional: Tipo de búsqueda en la que el usuario 
+tiene la intención de realizar una compra o acción específica. 
+J 
+●​ JSON-LD: Formato de datos estructurados basado en JSON que facilita la 
+interpretación del contenido por parte de los motores de búsqueda. 
+K 
+●​ Keyword (Palabra Clave): Término o frase que los usuarios introducen en un 
+motor de búsqueda para encontrar información. 
+●​ Keyword Density: Porcentaje de veces que una palabra clave aparece en un 
+texto en relación con el total de palabras. 
+●​ Keyword Planner: Herramienta de Google Ads para investigar palabras clave, 
+su volumen de búsquedas y competencia. 
+●​ Keyword Research: Proceso de investigación para identificar las palabras 
+clave más relevantes para una estrategia SEO. 
+L 
+●​ Landing Page: Página específica diseñada para recibir tráfico y convertir 
+visitantes en leads o clientes. 
+●​ Lead Magnet: Recurso gratuito, como un e-book, guía o descuento, ofrecido a 
+los usuarios a cambio de su información de contacto, con el objetivo de generar 
+leads. 
+●​ Link Building: Estrategia de SEO que consiste en obtener enlaces de calidad 
+desde otros sitios web hacia el tuyo. 
+●​ Long-Tail Keywords: Palabras clave más largas y específicas que suelen 
+tener menos competencia y mayor tasa de conversión. 
+M 
+●​ Marketing Digital: Estrategias y tácticas utilizadas para promocionar productos 
+o servicios en canales digitales como redes sociales, motores de búsqueda, 
+correo electrónico y más. 
+●​ Meta Descripción: Texto breve que describe el contenido de una página y 
+aparece en los resultados de búsqueda debajo del título. 
+
+                                                          
+ 
+ 
+●​ Mobile First: Enfoque de diseño web que prioriza la experiencia del usuario en 
+dispositivos móviles. 
+●​ Monetización: Proceso de generar ingresos a partir de un sitio web o 
+contenido digital. 
+N 
+●​ Newsletter: Boletín informativo enviado periódicamente por correo electrónico 
+para mantener a los suscriptores actualizados sobre noticias, promociones o 
+contenido relevante. 
+●​ Nicho: Segmento específico de mercado con características, necesidades y 
+demandas únicas. 
+●​ Nurturing: Estrategia de marketing que consiste en cultivar relaciones con los 
+leads a lo largo del tiempo, proporcionándoles contenido valioso y 
+personalizado para guiarlos hacia la conversión. 
+O 
+●​ Océanos Azules: Estrategias que buscan crear nuevos mercados o nichos sin 
+competencia directa. 
+●​ Océanos Rojos: Mercados altamente competitivos donde muchas empresas 
+luchan por la misma demanda. 
+●​ Optimización On-Page: Prácticas SEO que se realizan directamente en el sitio 
+web, como mejorar títulos, URLs y contenido. 
+●​ Organización de Contenido: Técnica de estructurar información en un sitio 
+para mejorar la experiencia del usuario y el SEO. 
+●​ Outbound Marketing: Estrategias de marketing que incluyen métodos 
+tradicionales de promoción, como anuncios y llamadas en frío. 
+P 
+●​ PageRank: Algoritmo de Google que mide la relevancia de las páginas web 
+basándose en la cantidad y calidad de los enlaces entrantes. 
+●​ Palabra clave: Término o frase que los usuarios introducen en un motor de 
+búsqueda para encontrar información, productos o servicios. 
+●​ Palabra clave Informacional: Palabra clave utilizada por los usuarios que 
+buscan aprender sobre un tema o resolver una duda. 
+●​ Palabra clave Mixta: Término que combina intenciones informacionales y 
+transaccionales en una misma consulta. 
+●​ Palabra clave Transaccional: Palabra clave utilizada por los usuarios que 
+tienen la intención de realizar una compra o acción específica. 
+●​ Personas (Buyer Personas): Representaciones ficticias de clientes ideales 
+basadas en datos reales y análisis de mercado. 
+
+                                                          
+ 
+ 
+●​ PPC (Pay-Per-Click): Modelo de publicidad donde los anunciantes pagan por 
+cada clic en sus anuncios. 
+●​ Propuesta de Valor: Promesa única que hace un producto o servicio para 
+destacar frente a la competencia y atraer a los clientes. 
+●​ Publicidad Tradicional: Métodos de promoción fuera de línea, como 
+televisión, radio, prensa escrita y publicidad exterior. 
+R 
+●​ Ratio de Apertura: Métrica que mide el porcentaje de correos electrónicos 
+abiertos por los destinatarios en una campaña de email marketing. 
+●​ Recurrencia: Frecuencia con la que un cliente realiza compras repetidas de un 
+producto o servicio. 
+●​ Redirección 301: Tipo de redirección permanente que transfiere tanto a los 
+usuarios como a los motores de búsqueda de una URL antigua a una nueva, 
+preservando la autoridad de la página. 
+●​ Responsive: Diseño web adaptable que asegura que un sitio funcione 
+correctamente en diferentes dispositivos y tamaños de pantalla. 
+●​ Return on Investment (ROI): Métrica que mide el retorno financiero generado 
+por una inversión de marketing. 
+●​ Review: Tipo de dato estructurado que organiza reseñas y calificaciones de 
+usuarios, mejorando su presentación en los resultados de búsqueda. 
+●​ Rich Snippets: Resultados enriquecidos en Google que incluyen información 
+adicional como calificaciones, precios o imágenes. 
+●​ Robots.txt: Archivo que indica a los motores de búsqueda qué páginas deben 
+o no rastrear en un sitio web. 
+●​ ROI (Return on Investment): Indicador que mide el retorno financiero de una 
+inversión en relación con su costo. 
+●​ Rendimiento Web: Conjunto de métricas que evalúan la rapidez y eficiencia 
+de un sitio al cargar y responder a las interacciones del usuario. 
+S 
+●​ Schema.org: Vocabulario estándar utilizado para estructurar datos en un sitio 
+web y mejorar su interpretación por los motores de búsqueda. 
+●​ Segmentación: Proceso de dividir un mercado en grupos más pequeños con 
+características o necesidades similares. 
+●​ SEM (Search Engine Marketing): Estrategia de marketing digital que utiliza 
+campañas de anuncios pagados en motores de búsqueda para aumentar la 
+visibilidad de un sitio web. 
+●​ SEO (Search Engine Optimization): Conjunto de estrategias para mejorar la 
+visibilidad de un sitio web en los resultados orgánicos de búsqueda. 
+
+                                                          
+ 
+ 
+●​ SEO Off Page: Estrategias de optimización realizadas fuera de un sitio web, 
+como el linkbuilding y las menciones en redes sociales, para mejorar su 
+posicionamiento. 
+●​ SEO On Page: Conjunto de técnicas de optimización realizadas dentro de un 
+sitio web para mejorar su posicionamiento en los resultados orgánicos de 
+búsqueda. 
+●​ SERP (Search Engine Results Page): Página de resultados que muestra un 
+motor de búsqueda en respuesta a una consulta. 
+●​ Software as a Service (SaaS): Modelo de negocio en el que los usuarios 
+acceden a un software alojado en la nube mediante una suscripción. 
+T 
+●​ Tasa de Conversión (Conversion Rate): Porcentaje de usuarios que 
+completan una acción deseada en un sitio web. 
+●​ Test A/B: Experimento que compara dos versiones de un elemento (como una 
+página, correo o anuncio) para determinar cuál tiene mejor rendimiento. 
+●​ Tiempo de Permanencia (Dwell Time): Tiempo que un usuario pasa en una 
+página web antes de regresar a los resultados de búsqueda. 
+●​ Title Tag: Título de una página web que aparece en los resultados de 
+búsqueda y en la pestaña del navegador. 
+●​ Tráfico de Pago: Visitas generadas por campañas publicitarias pagadas en 
+plataformas como Google Ads, redes sociales u otras. 
+●​ Tráfico Orgánico: Visitas a un sitio web generadas de manera natural a través 
+de los resultados no pagados de los motores de búsqueda. 
+U 
+●​ URL (Uniform Resource Locator): Dirección web que identifica la ubicación 
+de una página en internet. 
+V 
+●​ Velocidad de carga: Tiempo que tarda una página web en mostrarse 
+completamente en el navegador del usuario. Es un factor importante tanto para 
+la experiencia del usuario como para el SEO. 
+●​ Volumen de búsquedas: Cantidad de veces que una palabra clave específica 
+es buscada en un motor de búsqueda durante un período determinado. 
+W 
+●​ Web Crawler: Programa automatizado que los motores de búsqueda utilizan 
+para explorar e indexar páginas web. 
+
+                                                          
+ 
+ 
+●​ White Hat SEO: Estrategias de SEO éticas que siguen las directrices de los 
+motores de búsqueda. 
+ 
+ 
+ 

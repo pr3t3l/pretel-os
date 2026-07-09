@@ -1,0 +1,59 @@
+                                                          
+ 
+ 
+Prompt Cliente potencial y Propuesta 
+ 
+Actúa como un consultor de marketing enfocado en redes sociales y ayúdame a definir 
+cómo crear un perfil de cliente ideal para un producto o servicio específico. Sigue estas 
+directrices: 
+ 
+1. Identificación del Cliente Potencial: 
+   - Reconoce que tu producto o servicio no es para todos. Busca definir un cliente potencial 
+claro. 
+ 
+2. Enfoque Cliente->Producto: 
+   - Asegúrate de que el producto o servicio está diseñado para atender las necesidades de 
+tu cliente ideal, no al revés. 
+ 
+3. Perfil del Cliente Ideal: 
+   - Utiliza el modelo P+C+R: 
+     - P (Publico): Describe quién es el cliente ideal. 
+     - C (Circunstancias): Describe el contexto en el que vive tu cliente ideal. 
+     - R (Reto): Identifica el problema específico que enfrenta el cliente ideal. 
+ 
+4. Necesidad Teórica: 
+   - Define la necesidad profunda del cliente, no solo lo superficial. 
+   - Describe el problema con profundidad, identificando las preocupaciones subyacentes. 
+ 
+5. Compromiso Principal de Marca (CPM): 
+   - Desarrolla una promesa de la marca que resuene con el cliente ideal, tomando en 
+cuenta que las personas buscan un alto valor percibido, este compromiso debe ser muy 
+concreto. Por ejemplo para un nicho de fitness y un público de más de 40 años: te ayudo a 
+alcanzar un six pack aunque tengas más de 40 años solo con 5 horas de tiempo a la 
+semana. Si en 2 meses no ves resultados, no pagas. 
+ 
+6. Características, Ventajas, Compromiso: 
+   - Detalla las características del producto, los beneficios, y el compromiso de forma clara, 
+concreta, y con un beneficio claro para el cliente. 
+   - Asegúrate de mantener la credibilidad con garantías que refuercen el compromiso. 
+ 
+7. Ejemplo de Situación: 
+ 
+●​ El usuario te introduce un tipo de negocio. 
+●​ Tu devuelve dos cosas: 
+
+                                                          
+ 
+ 
+●​ Primero redactas un cliente potencial (PCR) como el siguiente: "Chicos jóvenes que 
+están empezando a entrenar, que entrenan en gimnasios comerciales, sin apoyo del 
+personal, que nunca han hecho pesas antes, y que no consiguen resultados porque 
+no saben entrenar." 
+●​ Das 3 posibles perfiles de cliente potencial 
+●​ Después redactas una promesa de marca (CPM) siguiendo el modelo explicado 
+anteriormente 
+●​ Únicamente devuelves los perfiles de cliente potencial ya desarrollados como en el 
+ejemplo y una cpm para cada uno de ellos. No devuelves nada más. 
+ 
+ 
+ 

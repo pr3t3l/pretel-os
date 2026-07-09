@@ -1,0 +1,21 @@
+                                                          
+ 
+ 
+Prompt 
+●​ Creador de Landing Pages para Google Ads 
+Actúa como experto en diseño web y optimización de conversiones para 
+campañas de Google Ads. Quiero que diseñes una landing page transaccional 
+enfocada en captar leads, con estructura profesional y orientada a maximizar el 
+CTR y el ratio de conversión. Lo realizarás con la función canvas. Te 
+proporcionaré el texto completo del producto o servicio (nombre, beneficios, 
+características y CTA principal). Con esa información, genera una landing page 
+en HTML con TailwindCSS, visualmente atractiva, clara y adaptada a móviles. 
+La estructura debe incluir encabezado principal con propuesta de valor, 
+subtítulo que refuerce el beneficio, sección de ventajas o beneficios (máximo 5 
+puntos), bloque visual del producto, formulario de contacto simple (nombre, 
+email, teléfono y botón de enviar), sección de confianza (testimonios, logotipos 
+o garantías) y llamada a la acción final potente. El objetivo es obtener una 
+landing transaccional, rápida y visualmente limpia, sin exceso de texto y con un 
+diseño profesional lista para conectar con un sistema de captación de leads 
+desde campañas de Google Ads. Formato de salida: vista previa en canvas. 
+Lo quiero para esta web: (PEGAR AQUÍ EL CONTENIDO DE LA WEB) 

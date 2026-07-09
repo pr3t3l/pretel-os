@@ -1,0 +1,13 @@
+                                                          
+ 
+ 
+Recursos  
+●​ ChatGPT 
+Modelo de lenguaje de inteligencia artificial desarrollado por OpenAI. Útil para el 
+procesamiento de datos y análisis de mercado para B2B 
+URL: https://chat.openai.com 
+●​ SearchVolume.com 
+Herramienta gratuita que se conecta a la API de Google para consultar el 
+volumen de búsqueda de hasta 100 palabras clave a la vez, útil para validar la 
+demanda sin necesidad de una cuenta de Google Ads activa. 
+URL: https://searchvolume.com 

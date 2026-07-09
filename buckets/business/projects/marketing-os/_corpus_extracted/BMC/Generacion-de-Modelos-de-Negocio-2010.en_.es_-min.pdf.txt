@@ -1,0 +1,2242 @@
+Tiene un manual para visionarios, revolucionarios y desafiantes que se 
+esfuerzan por desafiar los modelos comerciales pasados   de moda y 
+diseñar las empresas del mañana. Es un libro para ...
+escrito por
+co-creado por
+diseñada por
+Alexander Osterwalder e Yves Pigneur
+Una multitud asombrosa de 470 practicantes de 45 países.
+Alan Smith, El movimiento
+
+Diseñado por
+Alan Smith, El movimiento 
+www.thmvmnt.com
+Fotografía por
+Rannie Turrigan
+Toronto Canada
+www.rannieturrigan.com
+Los valores en euros se calculan a 0,70 euros 
+por dólar estadounidense.
+Ilustrado por
+JAM Pensamiento visual,
+Amsterdam, Holanda
+www.jam-site.nl
+Papel, impresión y acabado: 
+Modderman Drukwerk
+Amsterdam, Holanda
+www.modderman.nl
+© 2009 Alexander Osterwalder e Yves Pigneur
+ilustraciones adicionales de
+XPLANE: El pensamiento visual co. Portland, 
+OR EE. UU.
+www.xplane.com
+El texto se establece en HTF 
+Whitney y HTF Mercury con mucha 
+letra.
+Este libro fue autoeditado ISBN: 
+978-2-8399-0580-0
+
+Negocio
+Modelo
+Generacion
+AHandbook para visionarios, revolucionarios y desafiantes
+Escrito por
+Alexander Osterwalder e Yves Pigneur
+Diseño
+Alan Smith, El movimiento
+Editor y coautor colaborador Tim 
+Clark
+Producción
+Patrick van der Pijl
+Co-creado por una increíble multitud de 
+470 practicantes de 45 países
+
+Co-creado por:
+Ellen Di Resta
+Michael Anton Dila
+Remko Vochteloo
+Victor Lombardi
+Jeremy Hayes
+Alf Rehn
+Jeff De Cagna
+Andrea Mason
+Jan Ondrus
+Simon Evenblij
+Chris Walters
+Caspar van Rijnbach
+Benmlih
+Rodrigo Miranda
+Saul Kaplan
+Lars Geisel
+Simon Scott
+Dimitri Lévita
+Johan √ñrneblad
+Craig Sadler
+Praveen Singh
+Livia Labate
+Kristian Salvesen
+Daniel Egger
+Diogo Carmo
+Marcel Ott
+Guilhem Bertholet
+Thibault Estier
+Stephane Rey
+Chris Peasner
+Jonathan Lin
+Cesar Picos
+Florian
+Armando Maldonado
+Eduardo Míguez
+Anouar Hamidouche
+Francisco perez
+Nicky Smyth
+Bob Dunn
+Carlo Arioli
+Mateo Milán
+Ralf Beuker
+Sander Smit
+Norbert Herman
+Atanas Zaprianov
+Linus Malmberg
+Deborah Mills-Scofield
+Peter Knol
+Jess McMullin
+Marianela Ledezma
+Ray Guyot
+Martín Andrés Giorgetti
+Geert van Vlijmen
+Rasmus Rønholt
+Tim Clark
+Richard Bell
+Erwin Blom
+Frédéric Sidler
+John LMKiggundu
+Robert Elm
+Ziv Baida
+Andra Larin-van der Pijl Eirik V 
+Johnsen
+Boris Fritscher
+Mike Lachapelle
+Albert Meige
+Pablo M. Ramírez
+Jean-Loup
+Colin Pons
+Vacherand
+Guillermo José Aguilar
+Adriel Haeni
+Lukas Prochazka
+Kim Korn
+Abdullah Nadeem
+Rory O'Connor
+Hubert de Candé
+Frans Wittenberg
+Jonas Lindelöf
+Gordon Gray
+Karen Hembrough
+Piloto de Ronald
+Yves Claude Aubert
+Wim Saly
+Woutergort
+Fanco Ivan Santos Negrelli Amee 
+Shah
+Lars Mårtensson
+Kevin Donaldson
+JD Stein
+Ralf de Graaf
+Lars Norrman
+Sergey Trikhachev
+Thomas
+Alfred Herman
+Bert Spangenberg
+Robert van Kooten
+Hans Suter
+Lobo Schumacher
+Bill Welter
+Michele Leidi
+Asim J. Ranjha
+Peter Troxler
+Ola Dagberg
+Wouter van der Burg Artur 
+Schmidt
+Losa
+Peter Jones
+Sebastián Ullrich
+Andrew Pope
+Fredrik Eliasson
+Bruce MacVarish
+Göran Hagert
+Markus Gander
+Marc Castricum
+Nicholas K. Niemann
+Christian Labezin
+Claudio D'Ipolitto
+Aurel Hosennen
+Adrian Zaugg
+Frank Camille Lagerveld
+Andrés Alcalde
+Álvaro Villalobos M
+Bernard Racine
+Pekka Matilainen
+Bas van Oosterhout
+Caza de gillian
+Bart Boone
+Michael Moriarty
+Miguel
+Diseño para la innovación
+Tom Corcoran
+Ari Wurmann
+Antonio Robert
+Wibe van der Pol 
+paola valeri
+Michael Sommers
+Nicolas Fleury
+Gert Steens
+José Sebastián Palazuelos
+Lopez
+jorge zavala
+Harry Heijligers
+Armand Dickey
+Jason King
+Kjartan Mjoesund
+Louis Rosenfeld
+Ivo Georgiev
+Donald Chapin
+Annie Shum
+Valentin Crettaz
+Dave Crowther
+Chris J. Davis
+Frank Della Rosa
+Christian Schüller
+Luis Eduardo de Carvalho Patrik 
+Ekström
+Greg Krauska
+Giorgio Casoni
+Stef Silvis
+Peter Froberg
+Lino Piani
+Eric Jackson
+Indrajit Datta Chaudhuri
+Martin Fanghanel
+Michael Sandfær
+Niall Casey
+John McGuire
+Vivian Vendeirinho
+Martèl Bakker Schut
+Stefano Mastrogiacoo
+Mark Hickman
+Dibrov
+Reinhold König
+Marcel Jaeggi
+John O'Connell
+Javier Ibarra
+Lytton él
+Marije Sluis
+David Edwards
+Martin Kuplens-Ewart
+Jay Goldman
+Isckia
+Nabil Harfoush
+Yannick
+Raoef Hussainali
+ronald van den hoff 
+Melbert Visscher
+Manfred Fischer
+Joe Chao
+Carlos Meca
+Mario Morales
+Paul Johannesson
+Rob Griffitts
+Marc-Antoine Garrigue
+Wassili Bertoen
+Bart Pieper
+Bruce E. Terry
+Michael N. Wilkens
+Himikel -TrebeA
+Jeroen de Jong
+Gertjan Verstoep
+Steven Devijver
+Jana Thiel
+Walter Brand
+Stephan Ziegenhorn
+Frank Meeuwsen
+Colin Henderson
+Danilo Tic
+Marco Raaijmakers
+Marc Sniukas
+Khaled Algasem
+Jan Pelttari
+Yves Sinner
+Michael Kinder
+Vince Kuraitis
+Teófilo Asuan Santiago IV Ray 
+Lai
+Lluvia de ideas semanal
+Huub Raemakers
+Peter Salmon
+Philippe
+Khawaja M.
+Jille Sol
+Renninger, Wolfgang
+Daniel Pandza
+Robin Uchida
+Pius Bienz
+Iván Torreblanca
+Berry Vetjens
+David Crow
+Helge Hannisdal
+Maria Droujkova
+Leonard Belanger
+Fernando Sáenz-Marrero
+Susan Foley
+Vesela Koleva
+Martijn
+Eugen Rodel
+Edward Giesen
+
+Marc Faltheim
+Nicolás De Santis
+Antoine Perruchoud
+Bernd Nurnberger
+Patrick van Abbema
+Arena de Terje
+Leandro Jesús
+Karen Davis
+Tim Turmelle
+Anders Sundelin
+Renata Phillippi
+Martin Kaczynski
+Franco
+Bala Vaddi
+Andrew Jenkins
+Dariush Ghatan
+Marcus Ambrosch
+Jens Hoffmann
+Steve Thomson
+Eduardo MMorgado
+Rafal Dudkowski
+António Lucena de Faria Knut 
+Petter Nor
+Ventenat Vincent
+Peter Eckrich
+Shridhar Lolla
+Jens Larsson
+David Sibbet
+Mihail Krikunov
+Edwin Kruis
+Roberto Ortelli
+Shana Ferrigan Bourcier
+Jeffrey Murphy
+Lonnie Sanders III
+ArnoldWytenburg
+David Hughes
+Paul Ferguson
+Diseño de Servicio Frontier,
+LLC
+Peter Noteboom
+Ricardo Dorado
+John Smith
+varilla
+Eddie
+Jeffrey Huang
+Terrance Moore
+nse_55
+Leif-Arne Bakker
+Edler Herbert
+Björn Kijl
+Chris Finlay
+Philippe Rousselot
+Rob Schokker
+Wouter Verwer
+Jan Schmiedgen
+Ugo Merkli
+Jelle
+Dave Gray
+Rick le Roy
+Ravila Blanca
+David G Luna Arellano Joyce 
+Hostyn
+ThorwaldWestmaas
+Jason Theodor
+Sandra Pickering
+Trond M Fflòvstegaard
+Jeaninne Horowitz Gassol
+Lukas Feuerstein
+Nathalie Magniez
+Giorgio Pauletto
+Martijn Pater
+Gerardo Pagalday Eraña
+Haider Raza
+Ajay Ailawadhi
+Adriana Ieraci
+Daniël Giesen
+Erik Dejonghe
+Tom Winstanley
+Heiner P. Kaufmann
+Edwin Lee Ming Jin
+Stephan Linnenbank
+Liliana
+José Fernando Quintana
+Reinhard Prügl
+Brian Moore
+Gabi
+Marko Seppänen
+Erwin Fielt
+Olivier Glassey
+Francisco Conde
+Fernández
+Valérie Chanal
+Anne McCrossan
+Larsen
+Fred Collopy
+Jana Görs
+Patrick Foran
+Edward Osborn
+Greger Hagström
+Alberto Saavedra
+Remco de Kramer
+Lillian Thompson
+Howard Brown
+Emil Ansarov
+Frank Elbers
+Horacio Alvaro Viana
+Markus Schroll
+Hylke Zeijlstra
+Cheenu Srinivasan
+Cyril Durand
+Jamil Aslam
+Oliver Buecken
+Precio del JohnWesner
+Axel Friese
+Gudmundur Kristjansson
+Rita Shor
+Jesús Villar
+Espen Figenschou-
+Skotterud
+James Clark
+Jose Alfonso Lopez
+Eric Schreurs
+Donielle Buie
+Adilson Chicória
+Asanka Warusevitane
+Jacob Ravn
+Hampus Jakobsson
+Adriaan Kik
+Julián Domínguez Laperal
+MarcoW J Derksen
+Dr. KarstenWillrodt
+Patrick Feiner
+Dave Cutherell
+Di Prisco
+Darlene Goetzman
+Mohan Nadarajah
+Fabrice Delaye
+Sunil Malhotra
+Jasper Bouwsma
+Artes Ouke
+Alexander Troitzsch
+Brett Patching
+Clifford Thompson
+Jorgen Dahlberg
+Christoph Mühlethaler
+Ernest Buise
+Alfonso Mireles
+Richard Zandink
+Fraunhofer IAO
+Tor Rolfsen Grønsund
+David M. Weiss
+Kim Peiter Jørgensen
+Stephanie diamante
+Stefan Olsson
+Anders Stølan
+Edward Koops
+Prasert Thawat-
+chokethawee
+Pablo Azar
+MelissaWithers
+Edwin Beumer
+Dax Denneboom
+Mohammed Mushtaq
+Gaurav Bhalla
+Silvia Adelhelm
+Heather McGowan
+Phil Sang Yim
+Moel Barry
+Vishwanath
+Edavayyanamath
+Rob Manson
+Rafael Figueiredo
+Jeroen Mulder
+Emilio De Giacomo
+Franco Gasperoni
+Michael Weiss
+Francisco Andrade
+Arturo Herrera Sapunar
+Vincent de Jong
+Kees Groeneveld
+Henk Bohlander
+Sushil Chatterji
+Tim Parsey
+Georg EA Stampfl 
+Markus Kreutzer
+Iwan Schneider
+Michael Schuster
+Ingrid Beck
+Antti Äkräs
+EHJ Peet
+Ronald Poulton
+Ralf Weidenhammer
+Craig Rispin
+Nella van Heuven
+Ravi Sodhi
+Dick Rempt
+Rolf Mehnert
+Luis Stabile
+Consultoría empresarial
+Aline Frankfort
+Manuel Toscano
+John Sutherland
+Remo Knops
+Juan marquez
+Chris Hopf
+Marc Faeh
+Madera de Urquhart
+Lise Tormod
+Curtis L. Sippel
+Abdul Razak Manaf
+George B. Steltman
+Karl Madriguera
+Mark McKeever
+Linda Bryant
+Jeroen Hinfelaar
+Dan Keldsen
+Damien
+Roger A. Shepherd
+Morten Povlsen
+Lars Zahl
+Elin Mørch Langlo
+Xuemei Tian
+Harry Verwayen
+Riccardo Bonazzi
+André Johansen
+Colin Bush
+Alexander Korbee
+J Bartels
+Steven Ritchey
+Clark Golestani
+Leslie Cohen
+Amanda Smith
+Benjamin De Pauw
+André Macieira
+Wiebe de Jager
+Raym Cuervo
+Mark Evans DM
+Susan Schaper
+
+¿Tiene espíritu emprendedor?
+si _______ No _______
+¿Está pensando constantemente en cómo crear valor 
+y construir nuevos negocios, o cómo mejorar o 
+transformar su organización?
+si _______ No _______
+¿Está tratando de encontrar formas 
+innovadoras de hacer negocios para 
+reemplazar las viejas y obsoletas?
+si _______ No _______
+
+Si has respondido
+"si" a cualquiera de estas 
+preguntas, bienvenido
+a nuestro grupo!
+Tiene un manual para visionarios, revolucionarios y 
+desafiantes que se esfuerzan por desafiar los modelos 
+comerciales pasados   de moda y diseñar las empresas del 
+mañana. Es un libro para la generación de modelos de negocio.
+
+Siete caras de
+Modelo de negocio
+Innovación
+El ejecutivo senior
+Jean-Pierre Cuoni,
+Presidente / EFG International
+El intraemprendedor
+DagfinnMyhre,
+Responsable de modelos de negocio de I + i / Telenor
+El emprendedor
+Mariëlle Sijgers,
+Emprendedor / CDEF Holding BV
+Enfoque: Establecer un nuevo modelo de negocio en una 
+industria antigua.
+Jean-Pierre Cuoni es presidente de EFG 
+International, un banco privado con lo que puede ser 
+el modelo de negocio más innovador de la industria. 
+Con EFG está transformando profundamente las 
+relaciones tradicionales entre el banco, los clientes y 
+los gerentes de relaciones con los clientes. 
+Visualizar, diseñar y ejecutar un modelo de negocio 
+innovador en una industria conservadora con actores 
+establecidos es un arte, y
+uno que ha colocado a EFG International entre los 
+bancos de más rápido crecimiento en su sector.
+Enfoque: ayudar a explotar los últimos avances 
+tecnológicos con los modelos de negocio adecuados
+Dagfinn dirige una unidad de modelo de negocio en 
+Telenor, uno de los diez operadores de telefonía móvil más 
+grandes del mundo. El sector de las telecomunicaciones 
+exige una innovación continua, y las iniciativas de Dagfinn 
+ayudan a Telenor a identificar y comprender modelos 
+sostenibles que aprovechan el potencial de los últimos 
+desarrollos tecnológicos. Mediante un análisis profundo de 
+las tendencias clave de la industria y mediante el desarrollo 
+y el uso de herramientas analíticas de vanguardia, el equipo 
+de Dagfinn explora nuevos conceptos y oportunidades 
+comerciales.
+Enfoque: abordar las necesidades insatisfechas de los 
+clientes y construir nuevos modelos comerciales a su 
+alrededor
+Marielle Sijgers es una emprendedora de pleno derecho. 
+Junto con su socio comercial, Ronald van den Hoff, está 
+revolucionando la industria de reuniones, congresos y 
+hotelería con modelos comerciales innovadores. 
+Liderados por las necesidades insatisfechas de los 
+clientes, la pareja ha inventado nuevos conceptos como 
+Seats2meet.com, que permite la reserva sobre la marcha 
+de reuniones en ubicaciones no tradicionales. Juntos,
+Sijgers y van den Hoff juegan constantemente con 
+nuevas ideas de modelos de negocio y lanzan los 
+conceptos más prometedores como nuevas 
+empresas.
+
+El inversor
+Gert Steens, Presidente y analista de inversiones / 
+Oblonski BV
+El consultor
+Bas van Oosterhout, mayor
+Consultor / Capgemini Consulting
+El diseñador
+Trish Papadakos,
+Propietario único / The Institute of You
+El emprendedor concienzudo
+Iqbal Quadir, Emprendedor social / Fundador 
+de Grameen Phone
+Enfoque: invertir en empresas con los modelos 
+de negocio más competitivos
+Gert se gana la vida identificando los mejores modelos de 
+negocio. Invertir en la empresa equivocada con el modelo 
+equivocado podría costar a sus clientes millones de euros 
+y a él su reputación. Comprender modelos de negocio 
+nuevos e innovadores se ha convertido en una parte 
+fundamental de su trabajo. Va mucho más allá de los 
+análisis financieros habituales y compara modelos de 
+negocio para detectar diferencias estratégicas que 
+pueden impartir una ventaja competitiva. Gert busca 
+constantemente innovaciones en los modelos de negocio.
+Enfoque: ayudar a los clientes a cuestionar sus 
+modelos de negocio e imaginar y construir nuevos
+Bas es parte del equipo de innovación 
+empresarial de Capgemini. Junto a sus 
+clientes, le apasiona impulsar el rendimiento y 
+renovar la competitividad a través de la 
+innovación.
+La innovación del modelo de negocio es ahora un 
+componente central de su trabajo debido a su gran relevancia 
+para los proyectos de los clientes. Su objetivo es inspirar y 
+ayudar a los clientes con nuevos modelos de negocio, desde 
+la ideación hasta la implementación. Para lograr esto, Bas se 
+basa en su conocimiento de los modelos comerciales más 
+poderosos, independientemente de la industria.
+Enfoque: encontrar el modelo de negocio adecuado para 
+lanzar un producto innovador
+Trish es una joven diseñadora talentosa que es 
+particularmente hábil para captar la esencia de una idea 
+y tejerla en las comunicaciones con el cliente. 
+Actualmente está trabajando en una de sus propias 
+ideas, un servicio que ayuda a las personas que están 
+en transición entre carreras. Después de semanas de 
+investigación en profundidad, ahora está abordando el 
+diseño. Trish sabe que tendrá que encontrar el modelo 
+de negocio adecuado para llevar su servicio al mercado. 
+Ella comprende la parte orientada al cliente, en eso 
+trabaja a diario como diseñadora. Pero, dado que carece 
+de educación empresarial formal, necesita el vocabulario 
+y las herramientas para tener una visión global.
+Enfoque: lograr un cambio social y económico 
+positivo a través de modelos comerciales 
+innovadores
+Iqbal busca constantemente modelos de negocio 
+innovadores con potencial de impacto social 
+profundo. Su modelo transformador llevó el 
+servicio telefónico a más de 100 millones de 
+bangladesíes, utilizando la red de microcréditos del 
+Grameen Bank. Ahora está buscando un nuevo 
+modelo para llevar electricidad asequible a los 
+pobres. Como director del Legatum Center del 
+MIT, promueve el empoderamiento tecnológico a 
+través de
+las empresas como vía de desarrollo 
+económico y social.
+
+Diseño
+Tabla de contenido
+El libro está dividido en cinco secciónes: 1 Business Model Canvas, una 
+herramienta para describir, analizar y diseñar modelos de negocio, 2 Patrones 
+de modelos de negocio, basados   en conceptos de pensadores 
+empresariales líderes, 3 técnicas que le ayudarán a diseñar modelos de 
+negocio, 4 reinterpretar la estrategia a través de la lente del modelo de 
+negocio, y 5 un proceso genérico para ayudarle a diseñar modelos de 
+negocio innovadores, uniendo todos los conceptos, técnicas y 
+herramientas en
+Generación de modelos de negocio. } La última sección ofrece una perspectiva 
+sobre cinco temas de modelos de negocio para exploración futura. 
+Finalmente, el epílogo proporciona un vistazo
+en "el making of" Generación de modelos de negocio.
+Patrones
+Lona
+Estrategia
+Epílogo
+panorama
+Proceso
+
+1 Lona
+2 Patrones
+3 Diseño
+4 Estrategia
+5 Proceso
+14 Definición de una empresa
+Modelo
+56 Desagregación de negocios
+Modelos
+126 Perspectivas del cliente
+200 Modelo de negocio
+Ambiente
+244 Modelo de negocio
+Proceso de diseño
+134 Ideación
+dieciséis 9 bloques de construcción
+66 La cola larga
+212 Evaluación de negocios
+Modelos
+} panorama
+146 Pensamiento visual
+44 El modelo de negocio
+Lona
+76 Plataformas de varios lados
+262 panorama
+160 Creación de prototipos
+226 Modelo de negocio
+Perspectiva sobre el azul
+Estrategia oceánica
+88 GRATIS como modelo de negocio
+Epílogo
+170 Narración
+108 Modelos de negocio abiertos
+274 ¿De dónde salió este libro?
+¿viene de?
+180 Escenarios
+232 Gestión de múltiples
+Modelos de negocio
+276 Referencias
+
+Lona
+
+na
+
+Def_ Modelo de negocio
+Un modelo de negocio describe el 
+fundamento de cómo un
+organización crea, entrega,
+y captura valor
+
+15 }
+El punto de partida para cualquier buen debate, reunión o taller sobre la 
+innovación del modelo empresarial debe ser una comprensión 
+compartida de lo que es realmente un modelo empresarial. 
+Necesitamos un concepto de modelo de negocio que todos 
+comprendan: uno que facilite la descripción y la discusión. Tenemos 
+que empezar desde el mismo punto y hablar de lo mismo. El desafío es 
+que el concepto debe ser simple, relevante e intuitivamente 
+comprensible, sin simplificar demasiado las complejidades del 
+funcionamiento de las empresas.
+Este concepto puede convertirse en un lenguaje compartido que le 
+permite describir y manipular fácilmente modelos de negocio para crear 
+nuevas alternativas estratégicas. Sin un lenguaje tan compartido, es difícil 
+desafiar sistemáticamente los supuestos sobre el modelo de negocio de 
+uno e innovar con éxito.
+Creemos que un modelo de negocio se puede describir mejor a través de nueve 
+bloques de construcción básicos que muestran la lógica de cómo una empresa 
+pretende ganar dinero. Los nueve bloques cubren las cuatro áreas principales 
+de un negocio: clientes, oferta, infraestructura y viabilidad financiera. El modelo 
+de negocio es como un anteproyecto de una estrategia que se implementará a 
+través de estructuras, procesos y sistemas organizacionales.
+En las siguientes páginas ofrecemos un concepto que le permite 
+describir y pensar en el modelo de negocio de su organización, sus 
+competidores o cualquier otra empresa. Este concepto se ha 
+aplicado y probado en todo el mundo y ya se utiliza en 
+organizaciones como IBM, Ericsson, Deloitte, Obras Públicas y 
+Servicios Gubernamentales de Canadá, y muchas más.
+
+[ Los 9 bloques de construcción
+CS
+Vicepresidente
+CH
+CR
+1 Cliente
+Segmentos
+2 Valor
+Proposiciones
+3 Canales
+4 Cliente
+Relaciones
+Propuestas de valor
+se entregan a los clientes a través 
+de la comunicación,
+distribución y ventas
+Canales.
+Una organización sirve
+uno o varios segmentos de 
+clientes.
+Busca solucionar los problemas del 
+cliente y satisfacer
+necesidades del cliente con
+propuestas de valor.
+Relaciones del cliente
+están establecidos y
+mantenido con cada
+Segmento de clientes.
+
+17 }
+R $
+KR
+KA
+KP
+C $
+5 Ingresos
+Corrientes
+6 Llave
+Recursos
+7 Llave
+Ocupaciones
+8 Llave
+Asociaciones
+9 Costo
+Estructura
+Resultado de flujos de ingresos
+de propuestas de valor
+ofrecido con éxito a
+clientes.
+Los recursos clave son los activos 
+necesarios para ofrecer y entregar los 
+elementos descritos anteriormente ...
+… Realizando una serie de 
+actividades clave.
+Algunas actividades son
+subcontratados y algunos
+se adquieren recursos
+fuera de la empresa.
+El modelo de negocio
+elementos resultan en la 
+estructura de costos.
+
+KA
+Actividades clave
+KP
+Socios clave
+KR
+Recursos clave
+C $
+Estructura de costo
+
+CR
+19 }
+Relaciones del cliente
+CS
+Segmentos de clientes
+Vicepresidente
+Propuestas de valor
+CH
+Canales
+R $
+Flujos de ingresos
+
+CS
+1 Segmentos de clientes
+20
+El Bloque de Construcción de Segmentos de Clientes define los diferentes 
+grupos de personas u organizaciones que una empresa pretende alcanzar 
+y servir.
+Los clientes constituyen el corazón de cualquier modelo de negocio. Sin clientes (rentables), ninguna 
+empresa puede sobrevivir por mucho tiempo. Con el fin de satisfacer mejor a los clientes, una 
+empresa puede agruparlos en distintos segmentos con necesidades comunes, comportamientos 
+comunes,
+u otros atributos. Un modelo de negocio puede definir uno o varios Segmentos de clientes 
+grandes o pequeños. Una organización debe tomar una decisión consciente sobre qué 
+segmentos atender y qué segmentos ignorar. Una vez que se toma esta decisión, se puede 
+diseñar cuidadosamente un modelo comercial en torno a una sólida comprensión de las 
+necesidades específicas del cliente.
+Los grupos de clientes representan segmentos separados si:
+• Sus necesidades requieren y justifican una oferta distinta
+• Se llega a través de diferentes canales de distribución.
+• Requieren diferentes tipos de relaciones
+• Tienen rentabilidades sustancialmente diferentes
+• Están dispuestos a pagar por diferentes aspectos de la oferta.
+
+¿Para quién estamos creando valor?
+¿Quiénes son nuestros clientes más importantes?
+21 }
+Diversificado
+Una organización con un modelo de negocio de clientes diversificado atiende a dos 
+segmentos de clientes no relacionados con necesidades y problemas muy 
+diferentes. Por ejemplo, en 2006 Amazon.com decidió diversificar su negocio 
+minorista vendiendo servicios de “computación en la nube”: espacio de 
+almacenamiento en línea y uso de servidores bajo demanda. Por lo tanto, comenzó 
+a atender a un segmento de clientes totalmente diferente, las empresas web, con 
+una propuesta de valor totalmente diferente. La lógica estratégica detrás de esta 
+diversificación se puede encontrar en la poderosa infraestructura de TI de 
+Amazon.com, que puede ser compartida por sus operaciones de ventas minoristas y 
+la nueva unidad de servicios de computación en la nube.
+Hay diferentes tipos de segmentos de clientes. Aquí hay 
+unos ejemplos:
+Segmentario
+Mercado de masas
+Algunos modelos de negocios distinguen entre segmentos de mercado 
+con necesidades y problemas ligeramente diferentes. La rama 
+minorista de un banco como Credit Suisse, por ejemplo, puede 
+distinguir entre un gran grupo de clientes, cada uno de los cuales 
+posee activos de hasta US $ 100.000, y un grupo más pequeño de 
+clientes fluidos, cada uno de cuyos valores netos supera los US $ 
+500.000. Ambos segmentos tienen necesidades y problemas similares 
+pero variados. Esto tiene implicaciones para los demás componentes 
+básicos del modelo de negocio de Credit Suisse, como la propuesta de 
+valor, los canales de distribución, las relaciones con los clientes y los 
+flujos de ingresos. Considere Micro Precision Systems, que se 
+especializa en proporcionar soluciones de fabricación y diseño 
+micromecánico subcontratadas. Atiende a tres segmentos de clientes 
+diferentes: la industria relojera, la industria médica,
+Los modelos comerciales centrados en los mercados masivos no 
+distinguen entre diferentes segmentos de clientes. Las propuestas de 
+valor, los canales de distribución y las relaciones con los clientes se 
+centran en un grupo grande
+de clientes con necesidades y problemas muy similares. Este tipo de modelo de 
+negocio se encuentra a menudo en el sector de la electrónica de consumo.
+Plataformas de varios lados (o mercados de varios lados)
+Algunas organizaciones sirven a dos o más segmentos de clientes 
+interdependientes. Una compañía de tarjetas de crédito, por ejemplo, necesita una 
+gran base de titulares de tarjetas de crédito.
+y una gran base de comerciantes que aceptan esas tarjetas de crédito. Del 
+mismo modo, una empresa que ofrece un periódico gratuito necesita una gran 
+base de lectores para atraer anunciantes. Por otro lado, también necesita 
+anunciantes para financiar la producción y distribución. Ambos segmentos son 
+necesarios para que el modelo de negocio funcione (lea más sobre plataformas 
+de múltiples lados en la p. 76).
+Nicho de mercado
+Los modelos de negocio dirigidos a nichos de mercado se adaptan a segmentos de 
+clientes específicos y especializados. Las propuestas de valor, los canales de 
+distribución y las relaciones con los clientes se adaptan a los requisitos específicos de 
+un nicho de mercado. Estos modelos de negocio se encuentran a menudo en las 
+relaciones entre proveedores y compradores. Por ejemplo, muchos fabricantes de 
+piezas de automóviles dependen en gran medida de las compras de los principales 
+fabricantes de automóviles.
+
+Vicepresidente
+2 Propuestas de valor
+22
+El Building Block de propuestas de valor describe el paquete de 
+productos y servicios que crean valor para un segmento de 
+clientes específico.
+La propuesta de valor es la razón por la que los clientes recurren a una empresa en lugar de 
+otra. Resuelve el problema de un cliente o satisface una necesidad del cliente. Cada propuesta 
+de valor consta de un paquete seleccionado de productos y / o servicios que satisface los 
+requisitos de un segmento de clientes específico. En este sentido, la propuesta de valor es una 
+agregación, o conjunto, de beneficios que una empresa ofrece a sus clientes.
+Algunas propuestas de valor pueden ser innovadoras y representar una oferta nueva o 
+disruptiva. Otros pueden ser similares a las ofertas existentes en el mercado, pero con 
+características y atributos adicionales.
+
+¿Qué valor entregamos al cliente?
+¿Cuál de los problemas de nuestros clientes estamos ayudando 
+a resolver? ¿Qué necesidades del cliente estamos 
+satisfaciendo? ¿Qué paquetes de productos y servicios 
+ofrecemos a cada segmento de clientes?
+23 }
+Una propuesta de valor crea valor para un segmento de clientes a través de una 
+combinación distinta de elementos que satisfacen las necesidades de ese 
+segmento. Los valores pueden ser cuantitativos (por ejemplo, precio, velocidad 
+del servicio) o cualitativos (por ejemplo, diseño, experiencia del cliente).
+Los elementos de la siguiente lista no exhaustiva pueden contribuir a 
+la creación de valor para el cliente.
+por ejemplo, creó una industria completamente nueva en torno a las 
+telecomunicaciones móviles. Por otro lado, productos como los fondos de 
+inversión éticos tienen poco que ver con las nuevas tecnologías.
+Personalización
+Adaptar productos y servicios a las necesidades específicas de 
+clientes individuales o segmentos de clientes crea valor. En los 
+últimos años, los conceptos de personalización masiva y creación 
+conjunta del cliente han ganado importancia. Este enfoque permite 
+productos y servicios personalizados, sin dejar de aprovechar las 
+economías de escala.
+Actuación
+La mejora del rendimiento del producto o servicio ha sido tradicionalmente 
+una forma común de crear valor. El sector de las PC tradicionalmente se ha 
+basado en este factor para llevar al mercado máquinas más potentes. Pero el 
+rendimiento mejorado tiene sus límites. En los últimos años, por ejemplo, las 
+PC más rápidas, más espacio de almacenamiento en disco y mejores 
+gráficos no han logrado producir el crecimiento correspondiente en la 
+demanda de los clientes.
+Novedad
+Algunas propuestas de valor satisfacen un conjunto completamente nuevo de 
+necesidades que los clientes anteriormente no percibían porque no había una 
+oferta similar. Esto a menudo, pero no siempre, está relacionado con la 
+tecnología. Celulares,
+
+2
+24
+"Terminando el trabajo"
+Precio
+Se puede crear valor simplemente ayudando a un cliente a realizar ciertos 
+trabajos. Rolls-Royce entiende esto muy bien: sus clientes de aerolíneas 
+confían completamente en RollsRoyce para fabricar y reparar sus motores a 
+reacción. Este arreglo permite a los clientes concentrarse en el funcionamiento 
+de sus aerolíneas. A cambio, las aerolíneas pagan a Rolls-Royce una tarifa por 
+cada hora en que funciona un motor.
+Ofrecer un valor similar a un precio más bajo es una forma común de satisfacer las 
+necesidades de los segmentos de clientes sensibles al precio. Pero las propuestas 
+de valor de bajo precio tienen implicaciones importantes para el resto de un 
+modelo de negocio. Las aerolíneas sin lujos, como Southwest, easyJet y Ryanair 
+han diseñado modelos comerciales completos específicamente para permitir viajes 
+aéreos de bajo costo. Otro ejemplo de una propuesta de valor basada en el precio 
+se puede ver en el Nano, un nuevo automóvil diseñado y fabricado por el 
+conglomerado indio Tata. Su precio sorprendentemente bajo hace que el 
+automóvil sea asequible para un segmento completamente nuevo de la población 
+india. Cada vez más, las ofertas gratuitas están comenzando a impregnar varias 
+industrias. Las ofertas gratuitas van desde periódicos gratuitos hasta correo 
+electrónico gratuito, servicios gratuitos de telefonía móvil y más (consulte la página 
+88 para obtener más información sobre GRATIS).
+Diseño
+El diseño es un elemento importante pero difícil de medir. Un producto 
+puede destacarse por su diseño superior. En las industrias de la moda y 
+la electrónica de consumo, el diseño puede ser una parte 
+particularmente importante de la propuesta de valor.
+Marca / estado
+Los clientes pueden encontrar valor en el simple hecho de usar y mostrar 
+una marca específica. Llevar un reloj Rolex significa riqueza, por ejemplo. 
+En el otro extremo del espectro, los patinadores pueden usar las últimas 
+marcas "underground" para demostrar que están "de moda".
+
+25 }
+Reducción de costo
+Accesibilidad
+Ayudar a los clientes a reducir costos es una forma importante de crear 
+valor. Salesforce.com, por ejemplo, vende una aplicación de gestión de 
+relaciones con el cliente (CRM) alojada. Esto alivia a los compradores 
+de los gastos y problemas de tener que comprar, instalar y administrar 
+el software CRM ellos mismos.
+Hacer que los productos y servicios estén disponibles para los clientes que 
+anteriormente no tenían acceso a ellos es otra forma de crear valor. Esto 
+puede resultar de la innovación del modelo de negocio, nuevas tecnologías 
+o una combinación de ambos. NetJets, por ejemplo, popularizó el concepto 
+de propiedad fraccionada de un jet privado. Utilizando un modelo de 
+negocio innovador, NetJets ofrece a individuos y corporaciones acceso a 
+jets privados, un servicio que antes no estaba disponible para la mayoría de 
+los clientes. Los fondos mutuos proporcionan otro ejemplo de creación de 
+valor a través de una mayor accesibilidad. Este innovador producto 
+financiero hizo posible, incluso para aquellos con una riqueza modesta, 
+crear carteras de inversión diversificadas.
+La reducción de riesgos
+Los clientes valoran la reducción de los riesgos en los que incurren al comprar 
+productos o servicios. Para el comprador de un automóvil usado, una garantía 
+de servicio de un año reduce el riesgo de averías y reparaciones posteriores a 
+la compra. Una garantía de nivel de servicio reduce parcialmente el riesgo 
+asumido por un comprador de servicios de TI subcontratados.
+Conveniencia / usabilidad
+Hacer las cosas más convenientes o fáciles de usar puede 
+generar un valor sustancial. Con iPod e iTunes, Apple ofreció a 
+los clientes una comodidad sin precedentes para buscar, 
+comprar, descargar y escuchar música digital. Ahora domina el 
+mercado.
+
+CH
+3 Canales
+26
+El Bloque de Construcción de Canales describe cómo una empresa 
+se comunica y llega a sus Segmentos de Clientes para entregar una 
+propuesta de valor.
+Los canales de comunicación, distribución y ventas comprenden la interfaz de una empresa con 
+los clientes. Los canales son puntos de contacto con el cliente que juegan un papel importante en 
+la experiencia del cliente. Los canales cumplen varias funciones, que incluyen:
+• Sensibilizar a los clientes sobre los productos y servicios de una 
+empresa.
+• Ayudar a los clientes a evaluar la propuesta de valor de una empresa
+• Permitir a los clientes comprar productos y servicios específicos.
+• Entrega de una propuesta de valor a los clientes
+• Brindar soporte al cliente después de la compra
+
+¿A través de qué canales quieren llegar nuestros segmentos de 
+clientes? ¿Cómo los estamos alcanzando ahora? ¿Cómo se 
+integran nuestros canales? ¿Cuáles funcionan mejor? ¿Cuáles son 
+más rentables? ¿Cómo los integramos con las rutinas del cliente?
+27 }
+Los canales tienen cinco fases distintas. Cada canal puede cubrir 
+algunas o todas estas fases. Podemos distinguir entre Canales 
+directos e indirectos, así como entre Canales propios y Canales 
+asociados.
+elija entre llegar a sus clientes a través de sus propios canales, a través de canales 
+asociados o mediante una combinación de ambos. Los canales propios pueden ser 
+directos, como una fuerza de ventas interna o un sitio web, o pueden ser indirectos, 
+como las tiendas minoristas que son propiedad de la organización o están operadas 
+por ella. Los canales de socios son indirectos y abarcan una amplia gama de 
+opciones, como distribución mayorista, minorista o sitios web propiedad de socios.
+Los canales de socios generan márgenes más bajos, pero permiten a una 
+organización expandir su alcance y beneficiarse de las fortalezas de los socios. 
+Los canales propios y, en particular, los directos tienen márgenes más altos, pero 
+su instalación y funcionamiento pueden resultar costosos. El truco consiste en 
+encontrar el equilibrio adecuado entre los diferentes tipos de canales, integrarlos 
+de manera que se cree una gran experiencia para el cliente y se maximicen los 
+ingresos.
+Encontrar la combinación adecuada de canales para satisfacer la forma en que 
+los clientes desean ser alcanzados es crucial para llevar una propuesta de valor 
+al mercado. Una organización puede
+Tipos de canales
+Fases del canal
+Fuerza de ventas
+Ventas web
+1. Conciencia
+2. Evaluación
+3. Compra
+4. Entrega
+5. Postventa
+¿Cómo concienciamos?
+acerca de nuestra empresa ers evalúan los productos y servicios de nuestra 
+organización? 
+propuesta de valor?
+¿Cómo ayudamos a la
+¿Cómo permitimos la costumbre? ¿Cómo entregamos un valor? ¿Cómo proporcionamos a los clientes la compra 
+específica? 
+¿Propuesta a los clientes? cliente posterior a la compra
+¿productos y servicios? 
+¿apoyo?
+Tiendas propias
+Compañero
+historias
+Mayorista
+Compañero
+Indirecto
+Propio
+Directo
+
+CR
+4 Relaciones del cliente
+28
+El bloque de construcción de relaciones con los clientes describe 
+los tipos de relaciones que una empresa establece con segmentos 
+de clientes específicos.
+En los primeros días, por ejemplo, las relaciones con los clientes de los operadores de redes 
+móviles se basaban en estrategias de adquisición agresivas que incluían teléfonos móviles 
+gratuitos. Cuando el mercado se saturó, los operadores cambiaron para enfocarse en la 
+retención de clientes y aumentar los ingresos promedio por cliente.
+Las relaciones con los clientes que exige el modelo comercial de una empresa influyen 
+profundamente en la experiencia general del cliente.
+Una empresa debe aclarar el tipo de relación que quiere establecer con cada segmento de 
+clientes. Las relaciones pueden variar de personales a automatizadas. Las relaciones con 
+los clientes pueden estar impulsadas por las siguientes motivaciones:
+• Adquisición de clientes
+• Retención de clientes
+• Impulsar las ventas (upselling)
+
+¿Qué tipo de relación espera que establezcamos y mantengamos 
+cada uno de nuestros Segmentos de Clientes con ellos? ¿Cuáles 
+hemos establecido? ¿Qué tan costosos son?
+¿Cómo se integran con el resto de nuestro modelo de negocio?
+29 }
+Podemos distinguir entre varias categorías de relaciones con los 
+clientes, que pueden coexistir en la relación de una empresa con 
+un segmento de clientes en particular:
+Autoservicio
+resolver los problemas de los demás. Las comunidades también pueden 
+ayudar a las empresas a comprender mejor a sus clientes. El gigante 
+farmacéutico GlaxoSmithKline lanzó una comunidad privada en línea 
+cuando presentó alli, un nuevo producto para bajar de peso sin receta.
+GlaxoSmithKline quería aumentar su comprensión de los desafíos que 
+enfrentan los adultos con sobrepeso y, por lo tanto, aprender a administrar 
+mejor las expectativas de los clientes.
+En este tipo de relación, una empresa no mantiene una relación directa 
+con los clientes. Proporciona todos los medios necesarios para que los 
+clientes se ayuden a sí mismos.
+Asistente personal
+Servicios automatizados
+Esta relación se basa en la interacción humana.
+El cliente puede comunicarse con un representante real del cliente para obtener 
+ayuda durante el proceso de venta o después de que se complete la compra. Esto 
+puede suceder in situ en el punto de venta, a través de centros de atención 
+telefónica, por correo electrónico o por otros medios.
+Este tipo de relación combina una forma más sofisticada de autoservicio del 
+cliente con procesos automatizados. Por ejemplo, los perfiles personales en 
+línea brindan a los clientes acceso a servicios personalizados. Los servicios 
+automatizados pueden reconocer a los clientes individuales y sus 
+características, y ofrecer información relacionada con pedidos o transacciones. 
+En el mejor de los casos, los servicios automatizados pueden estimular una 
+relación personal (por ejemplo, ofrecer recomendaciones de libros o películas).
+Co-creación
+Más empresas van más allá de la relación tradicional cliente-proveedor 
+para co-crear valor con los clientes. Amazon.com invita a los clientes a 
+escribir reseñas y así crear valor para otros amantes de los libros. 
+Algunas empresas contratan a los clientes para que los ayuden con el 
+diseño de productos nuevos e innovadores. Otros, como YouTube.com, 
+solicitan a los clientes que creen contenido para consumo público.
+Asistencia personal dedicada
+Esta relación implica dedicar un representante del cliente específicamente 
+a un cliente individual. Representa el tipo de relación más profunda e 
+íntima y normalmente se desarrolla durante un largo período de tiempo. En 
+los servicios de banca privada, por ejemplo, los banqueros dedicados 
+atienden a personas de alto patrimonio neto. Se pueden encontrar 
+relaciones similares en otras empresas en forma de gerentes de cuentas 
+clave que mantienen relaciones personales con clientes importantes.
+Comunidades
+Cada vez más, las empresas utilizan comunidades de usuarios para 
+involucrarse más con los clientes / prospectos y para facilitar las conexiones 
+entre los miembros de la comunidad. Muchas empresas mantienen 
+comunidades en línea que permiten a los usuarios intercambiar 
+conocimientos y
+
+R $
+5 Flujos de ingresos
+30
+El Building Block Flujos de ingresos representa el efectivo que 
+una empresa genera de cada cliente.
+crear ganancias)
+El modelo de abuso puede involucrar dos tipos diferentes de flujos de ingresos:
+• Ingresos de transacciones resultantes de pagos únicos de clientes
+Segmento (los costos deben restarse de los ingresos • Ingresos recurrentes resultantes de pagos continuos a
+entregar una propuesta de valor a los clientes o brindar soporte al cliente posterior a la 
+compra
+Si los clientes constituyen el corazón de un modelo de negocio, las fuentes de ingresos son sus 
+arterias. Una empresa debe preguntarse: ¿Por qué valor está realmente dispuesto a pagar 
+cada segmento de clientes? Responder con éxito a esa pregunta permite a la empresa generar 
+una o más fuentes de ingresos de cada segmento de clientes. Cada flujo de ingresos puede 
+tener diferentes mecanismos de precios, como precios de lista fijos, negociación, subasta, 
+dependiente del mercado, dependiente del volumen o gestión del rendimiento.
+
+¿Por qué valor están realmente dispuestos a pagar nuestros 
+clientes? ¿Por qué pagan actualmente? ¿Cómo pagan 
+actualmente? ¿Cómo preferirían pagar? ¿En qué medida 
+contribuye cada flujo de ingresos a los ingresos generales?
+31 }
+Hay varias formas de generar fuentes de ingresos:
+Cuota de suscripción
+de propiedad. Zipcar.com ofrece una buena ilustración. La empresa permite a 
+los clientes alquilar automóviles por horas en ciudades de América del Norte. 
+El servicio de Zipcar.com ha llevado a muchas personas a decidir alquilar un 
+automóvil en lugar de comprarlo.
+Este flujo de ingresos se genera mediante la venta de acceso continuo a un 
+servicio. Un gimnasio vende a sus miembros suscripciones mensuales o anuales 
+a cambio de acceso a sus instalaciones de ejercicio. World of Warcraft Online, un 
+juego de computadora basado en Web, permite a los usuarios jugar su juego en 
+línea a cambio de una tarifa de suscripción mensual. El servicio Comes 
+withMusic de Nokia brinda a los usuarios acceso a una biblioteca de música por 
+una tarifa de suscripción.
+Venta de activos
+El flujo de ingresos más ampliamente comprendido se deriva de la venta de 
+derechos de propiedad sobre un producto físico. Amazon.com vende libros, 
+música, electrónica de consumo y más en línea. Fiat vende automóviles, que 
+los compradores pueden conducir, revender o incluso destruir.
+Licencia
+Este flujo de ingresos se genera al otorgar a los clientes permiso para usar 
+propiedad intelectual protegida a cambio de tarifas de licencia. La concesión de 
+licencias permite a los titulares de derechos generar ingresos de su propiedad sin 
+tener que fabricar un producto o comercializar un servicio. La concesión de licencias 
+es común en la industria de los medios, donde los propietarios del contenido 
+conservan los derechos de autor mientras venden licencias de uso a terceros. De 
+manera similar, en los sectores de tecnología, los titulares de patentes otorgan a 
+otras empresas el derecho a utilizar una tecnología patentada a cambio de una tarifa 
+de licencia.
+Tarifa de uso
+Este flujo de ingresos se genera mediante el uso de un servicio en particular. 
+Cuanto más se utiliza un servicio, más paga el cliente. Un operador de 
+telecomunicaciones puede cobrar a los clientes por la cantidad de minutos 
+que pasan en el teléfono. Un hotel cobra a los clientes el número de noches 
+que se utilizan las habitaciones. Un servicio de entrega de paquetes cobra a 
+los clientes por la entrega de un paquete de un lugar a otro.
+Préstamo / Alquiler / Arrendamiento
+Este flujo de ingresos es creado por temporar-
+Otorgando a alguien el derecho exclusivo de usar un activo en particular 
+durante un período fijo a cambio de una tarifa. Para el prestamista, esto 
+proporciona la ventaja de ingresos recurrentes. Los inquilinos o 
+arrendatarios, por otro lado, disfrutan de los beneficios de incurrir en gastos 
+solo por un tiempo limitado en lugar de asumir todos los costos.
+
+5
+32
+Honorarios de corretaje
+Este flujo de ingresos se deriva de los servicios de intermediación realizados en 
+nombre de dos o más partes. Los proveedores de tarjetas de crédito, por 
+ejemplo, obtienen ingresos tomando un porcentaje del valor de cada transacción 
+de ventas ejecutada entre los comerciantes de tarjetas de crédito y los clientes. 
+Los corredores y agentes de bienes raíces ganan una comisión cada vez que 
+logran emparejar con éxito a un comprador y un vendedor.
+Cada flujo de ingresos puede tener diferentes mecanismos de precios. El 
+tipo de mecanismo de precios elegido puede marcar una gran diferencia 
+en términos de ingresos generados. Hay dos tipos principales de 
+mecanismos de precios: precios fijos y dinámicos.
+Publicidad
+Este flujo de ingresos es el resultado de tarifas por anunciar un producto, servicio 
+o marca en particular. Tradicionalmente, la industria de los medios y los 
+organizadores de eventos dependían en gran medida de los ingresos por 
+publicidad. En los últimos años, otros sectores, incluidos el software y los 
+servicios, han comenzado a depender más de los ingresos publicitarios.
+
+33 }
+Mecanismos de precios
+Precio fijo del "menú"
+Los precios predefinidos se basan en variables estáticas
+Precio dinamico
+Los precios cambian según las condiciones del mercado
+Precio de lista
+Precios fijos para productos, servicios u otras propuestas de 
+valor individuales
+Negociación
+(negociación)
+Precio negociado entre dos o más socios dependiendo del poder de 
+negociación y / o habilidades de negociación
+Característica de producto
+dependiente
+El precio depende del número o la calidad de las características de 
+la propuesta de valor
+Gestión de rendimiento
+El precio depende del inventario y el momento de la compra (normalmente se usa 
+para recursos perecederos como habitaciones de hotel o asientos de avión)
+Segmento de clientes
+dependiente
+El precio depende del tipo y la característica de un 
+segmento de clientes
+Mercado en tiempo real
+El precio se establece dinámicamente en función de la oferta y la demanda.
+Depende del volumen
+Precio en función de la cantidad comprada
+Subastas
+Precio determinado por el resultado de una licitación competitiva
+
+KR
+6 Recursos clave
+34
+El bloque de construcción de recursos clave describe los activos más 
+importantes necesarios para que un modelo de negocio funcione.
+Todo modelo de negocio requiere recursos clave. Estos recursos permiten a una empresa 
+crear y ofrecer una propuesta de valor, llegar a los mercados, mantener relaciones con los 
+segmentos de clientes y obtener ingresos. Se necesitan diferentes recursos clave según el tipo 
+de modelo de negocio. El fabricante de microchips requiere instalaciones de producción 
+intensivas en capital, mientras que un diseñador de microchips se centra más en los recursos 
+humanos.
+Los recursos clave pueden ser físicos, financieros, intelectuales o humanos. Los recursos 
+clave pueden ser propiedad o arrendados por la empresa o adquiridos de socios clave.
+
+¿Qué recursos clave requieren nuestras propuestas de valor? 
+¿Nuestros canales de distribución? ¿Relaciones del cliente? 
+¿Flujos de ingresos?
+35 }
+Los recursos clave se pueden clasificar de la siguiente manera:
+totalmente creado puede ofrecer un valor sustancial. Las empresas de bienes de 
+consumo como Nike y Sony dependen en gran medida de la marca como recurso 
+clave. Microsoft y SAP dependen del software y la propiedad intelectual relacionada 
+que se desarrolló durante muchos años. Qualcomm, diseñador y proveedor de 
+conjuntos de chips para dispositivos móviles de banda ancha, construyó su modelo 
+de negocio en torno a diseños de microchips patentados que le hacen ganar a la 
+empresa importantes tarifas de licencia.
+Financiero
+Algunos modelos comerciales requieren recursos financieros y / o garantías financieras, 
+como efectivo, líneas de crédito o un fondo común de opciones sobre acciones para 
+contratar empleados clave. Ericsson, el fabricante de telecomunicaciones, proporciona 
+un ejemplo de apalancamiento de recursos financieros dentro de un modelo comercial. 
+Ericsson puede optar por pedir prestados fondos de bancos y mercados de capitales, 
+luego utilizar una parte de los ingresos para proporcionar financiamiento de 
+proveedores a los clientes de equipos, asegurando así que los pedidos se realicen con 
+Ericsson y no con la competencia.
+Físico
+Esta categoría incluye activos físicos como instalaciones de fabricación, 
+edificios, vehículos, máquinas, sistemas, sistemas de punto de venta y 
+redes de distribución. Minoristas como Wal-Mart y Amazon.com dependen 
+en gran medida de los recursos físicos, que a menudo son intensivos en 
+capital. El primero tiene una enorme red global de tiendas e infraestructura 
+logística relacionada. Este último cuenta con una extensa infraestructura 
+de TI, almacén y logística.
+Humano
+Toda empresa requiere recursos humanos, pero las personas son 
+particularmente prominentes en ciertos modelos comerciales. Por ejemplo, los 
+recursos humanos son cruciales en las industrias creativas e intensivas en 
+conocimiento. Una empresa farmacéutica como Novartis, por ejemplo, depende 
+en gran medida de los recursos humanos: su modelo de negocio se basa en un 
+ejército de científicos experimentados y una fuerza de ventas numerosa y 
+capacitada.
+Intelectual
+Los recursos intelectuales como las marcas, el conocimiento de propiedad, las 
+patentes y los derechos de autor, las asociaciones y las bases de datos de 
+clientes son componentes cada vez más importantes de un modelo comercial 
+sólido. Los recursos intelectuales son difíciles de desarrollar, pero cuando el 
+éxito
+
+KA
+7 Actividades clave
+36
+El Bloque de Construcción de Actividades Clave describe las cosas más 
+importantes que una empresa debe hacer para que su modelo de negocio 
+funcione.
+Cada modelo de negocio requiere una serie de actividades clave. Estas son las acciones más 
+importantes que debe realizar una empresa para operar con éxito. Al igual que los recursos 
+clave, deben crear y ofrecer una propuesta de valor, llegar a los mercados, mantener 
+relaciones con los clientes y obtener ingresos. Y al igual que los recursos clave, las 
+actividades clave varían según el tipo de modelo de negocio. Para el fabricante de software 
+Microsoft, las actividades clave incluyen el desarrollo de software.
+Para el fabricante de PC Dell, las actividades clave incluyen la gestión de la cadena de suministro. 
+Para la consultora McKinsey, las actividades clave incluyen la resolución de problemas.
+
+¿Qué actividades clave requieren nuestras propuestas de 
+valor? ¿Nuestros canales de distribución? ¿Relaciones del 
+cliente? ¿Flujos de ingresos?
+37 }
+Las actividades clave se pueden clasificar de la siguiente manera:
+Plataforma / red
+Producción
+Los modelos de negocio diseñados con una plataforma como recurso clave están 
+dominados por actividades clave relacionadas con la plataforma o la red. Las redes, 
+las plataformas de emparejamiento, el software e incluso las marcas pueden 
+funcionar como una plataforma. El modelo comercial de eBay requiere que la 
+empresa desarrolle y mantenga continuamente su plataforma: el sitio web en 
+eBay.com. El modelo comercial de Visa requiere actividades relacionadas con su 
+plataforma de transacciones de tarjetas de crédito Visa® para comerciantes, 
+clientes y bancos. El modelo comercial de Microsoft requiere administrar la interfaz 
+entre el software de otros proveedores y su plataforma de sistema operativo 
+Windows®. Las actividades clave de esta categoría se relacionan con la gestión de 
+la plataforma, el suministro de servicios y la promoción de la plataforma.
+Estas actividades se relacionan con el diseño, fabricación y entrega de un 
+producto en cantidades sustanciales y / o de calidad superior. La actividad 
+productiva domina los modelos comerciales de las empresas manufactureras.
+Resolución de problemas
+Las actividades clave de este tipo se relacionan con la búsqueda de nuevas 
+soluciones a los problemas individuales de los clientes.
+Las operaciones de consultorías, hospitales y otras organizaciones de 
+servicios suelen estar dominadas por actividades de resolución de 
+problemas. Sus modelos de negocio requieren actividades como la gestión 
+del conocimiento y la formación continua.
+
+KP
+8 Asociaciones clave
+38
+El bloque de construcción de asociaciones clave describe la red de 
+proveedores y socios que hacen que el modelo de negocio funcione.
+Las empresas forjan asociaciones por muchas razones, y las asociaciones se están convirtiendo 
+en la piedra angular de muchos modelos comerciales. Las empresas crean alianzas para optimizar 
+sus modelos de negocio, reducir riesgos o adquirir recursos.
+Podemos distinguir entre cuatro tipos diferentes de asociaciones:
+• Alianzas estratégicas entre no competidores
+• Coopetition: asociaciones estratégicas entre competidores
+• Joint ventures para desarrollar nuevos negocios
+• Relaciones entre comprador y proveedor para asegurar suministros confiables
+
+¿Quiénes son nuestros socios clave? ¿Quiénes son nuestros 
+proveedores clave? ¿Qué recursos clave estamos adquiriendo 
+de nuestros socios? ¿Qué actividades clave realizan los socios?
+39 }
+Puede resultar útil distinguir entre tres motivaciones 
+para crear asociaciones:
+por un grupo de los principales fabricantes mundiales de electrónica de 
+consumo, computadoras personales y medios. El grupo cooperó para llevar 
+la tecnología Blu-ray al mercado, pero los miembros individuales compiten 
+para vender sus propios productos Blu-ray.
+Optimización y economía de escala
+La forma más básica de asociación o relación comprador-proveedor está diseñada 
+para optimizar la asignación de recursos y actividades. Es ilógico que una 
+empresa sea propietaria de todos los recursos o realice todas las actividades por 
+sí misma. Las asociaciones de optimización y economía de escala generalmente 
+se forman para reducir costos y, a menudo, implican la subcontratación o el 
+intercambio de infraestructura.
+Adquisición de recursos y actividades particulares
+Son pocas las empresas que poseen todos los recursos o realizan todas las 
+actividades descritas por sus modelos de negocio. Más bien, amplían sus propias 
+capacidades confiando en otras empresas para que les proporcionen recursos 
+particulares o realicen determinadas actividades. Estas asociaciones pueden estar 
+motivadas por la necesidad de adquirir conocimientos, licencias o acceso a los 
+clientes. El fabricante de teléfonos móviles, por ejemplo, puede licenciar un sistema 
+operativo para sus teléfonos en lugar de desarrollar uno interno. Una aseguradora 
+puede optar por depender de corredores independientes para vender sus pólizas en 
+lugar de desarrollar su propia fuerza de ventas.
+Reducción de riesgo e incertidumbre
+Las asociaciones pueden ayudar a reducir el riesgo en un entorno 
+competitivo caracterizado por la incertidumbre. No es inusual que los 
+competidores formen una alianza estratégica en un área mientras compiten 
+en otra. Blu-ray, por ejemplo, es un formato de disco óptico desarrollado 
+conjuntamente
+
+CS
+9 Estructura de costo
+La estructura de costos describe todos los costos incurridos para operar un 
+modelo comercial
+Este bloque de construcción describe los costos más importantes incurridos al operar bajo un modelo 
+comercial particular. La creación y entrega de valor, el mantenimiento de las relaciones con los clientes y 
+la generación de ingresos generan costos. Dichos costos se pueden calcular con relativa facilidad 
+después de definir los recursos clave, las actividades clave y las asociaciones clave. Sin embargo, 
+algunos modelos comerciales se basan más en los costos que otros. Las llamadas aerolíneas "sin lujos", 
+por ejemplo, han construido modelos de negocios completamente alrededor de Estructuras de bajo 
+costo.
+
+¿Cuáles son los costos más importantes inherentes a nuestro modelo 
+de negocio? ¿Qué recursos clave son más caros? ¿Qué actividades 
+clave son las más caras?
+41 }
+Naturalmente, los costos deben minimizarse en todos los modelos comerciales. 
+Pero las estructuras de bajo costo son más importantes para algunos modelos 
+comerciales que para otros. Por lo tanto, puede ser útil distinguir entre dos clases 
+amplias de estructuras de costos de modelos de negocios: basadas en costos y 
+basadas en valores (muchos modelos de negocios se encuentran entre estos 
+dos extremos):
+Impulsado por valor
+Costos variables
+Algunas empresas están menos preocupadas por las implicaciones de costos de un 
+diseño de modelo de negocio en particular y, en cambio, se enfocan en la creación 
+de valor. Las propuestas de valor premium y un alto grado de servicio 
+personalizado suelen caracterizar los modelos comerciales impulsados   por el 
+valor. Los hoteles de lujo, con sus lujosas instalaciones y servicios exclusivos, 
+entran en esta categoría.
+Costos que varían proporcionalmente con el volumen de bienes o servicios 
+producidos. Algunas empresas, como los festivales de música, se 
+caracterizan por una alta proporción de costos variables.
+Economías de escala
+Ventajas de costos de las que disfruta una empresa a medida que aumenta su 
+producción. Las empresas más grandes, por ejemplo, se benefician de menores tasas 
+de compra a granel. Este y otros factores hacen que el costo promedio por unidad 
+disminuya a medida que aumenta la producción.
+Impulsado por costos
+Los modelos comerciales basados   en costos se enfocan en minimizar los 
+costos siempre que sea posible. Este enfoque tiene como objetivo crear y 
+mantener la estructura de costos más reducida posible, utilizando propuestas de 
+valor de bajo precio, máxima automatización y una amplia subcontratación. Las 
+aerolíneas sencillas, como Southwest, easyJet y Ryanair, tipifican los modelos 
+comerciales basados   en los costos.
+Las estructuras de costos pueden tener las siguientes características:
+Costes fijos
+Costos que permanecen iguales a pesar del volumen de bienes o servicios 
+producidos. Los ejemplos incluyen salarios, alquileres e instalaciones de 
+fabricación física. Algunas empresas, como las empresas manufactureras, 
+se caracterizan por una alta proporción de costos fijos.
+Economías de alcance
+Ventajas de costos de las que disfruta una empresa debido a un mayor alcance 
+de operaciones. En una gran empresa, por ejemplo, las mismas actividades de 
+marketing o canales de distribución pueden admitir varios productos.
+
+} Formulario de los nueve bloques de construcción del modelo de negocio
+Esquema de modelo de negocios.
+la base de una herramienta práctica, que llamamos
+El lienzo BusinessModel
+KP
+KA
+Vicepresidente
+CR
+CS
+KR
+CH
+C $
+R $
+Esta herramienta se asemeja al lienzo de un pintor, preformateado con 
+los nueve bloques, que le permite pintar imágenes de modelos 
+comerciales nuevos o existentes.
+El lienzo del modelo de negocio funciona mejor cuando se imprime en una 
+superficie grande para que grupos de personas puedan comenzar a dibujar y 
+discutir los elementos del modelo de negocio. con notas Post-it® o rotuladores 
+para pizarra. Es una herramienta práctica que fomenta la comprensión, la 
+discusión, la creatividad y el análisis.
+
+43 }
+
+El lienzo BusinessModel
+Llave
+Socios
+Llave
+Ocupaciones
+Valor
+Proposición
+Cliente
+Relaciones
+Cliente
+Segmentos
+Llave
+Recursos
+Canales
+Costo
+Estructura
+Ingresos
+Corrientes
+
+45 }
+
+KP
+KA
+Vicepresidente CR
+CS
+KR
+CH
+C $
+R $
+
+Ejemplo: modelo comercial de Apple iPod / iTunes
+47 }
+En 2001, Apple lanzó su icónica marca iPod de reproductor multimedia 
+portátil. El dispositivo funciona junto con el software iTunes que permite a 
+los usuarios transferir música y otros contenidos del iPod a una 
+computadora. El software también proporciona una conexión perfecta a la 
+tienda en línea de Apple para que los usuarios puedan comprar y descargar 
+contenido.
+¿Cómo logró Apple tal dominio? Porque competía con un mejor modelo de 
+negocio. Por un lado, ofreció a los usuarios una experiencia musical 
+perfecta al combinar sus dispositivos iPod de diseño distintivo con el 
+software iTunes y la tienda en línea iTunes. La propuesta de valor de Apple 
+es permitir a los clientes buscar, comprar y disfrutar música digital 
+fácilmente. Por otro lado, para hacer posible esta propuesta de valor, Apple 
+tuvo que negociar acuerdos con las principales compañías discográficas 
+para crear la biblioteca de música en línea más grande del mundo.
+Esta potente combinación de dispositivo, software y tienda en línea interrumpió 
+rápidamente la industria de la música y le dio a Apple una posición dominante en 
+el mercado. Sin embargo, Apple no fue la primera empresa en lanzar al mercado 
+un reproductor multimedia portátil. Competidores como Diamond Multimedia, con 
+su marca Rio de reproductores multimedia portátiles, tuvieron éxito hasta que 
+fueron superados por Apple.
+¿El giro? Apple obtiene la mayor parte de sus ingresos relacionados con la 
+música de la venta de iPods, mientras utiliza la integración con la tienda de 
+música en línea para protegerse de la competencia.
+
+cerebro izquierdo
+cerebro derecho
+lógica
+emoción
+
+KP
+KA
+VicepresidenteCR
+CS
+KR
+CH
+lienzo izquierdo
+eficiencia
+C $
+R $
+
+CÓMO
+El sector público a menudo se enfrenta al 
+desafío de implementar los principios del 
+sector privado. He utilizado Canvas para 
+ayudar a un departamento a verse a sí 
+mismo como una empresa orientada a servicios,
+Estoy usando Business Model Canvas en 
+Brasil para ayudar a artistas, productores 
+culturales y diseñadores de juegos a visualizar 
+modelos comerciales innovadores para las 
+Industrias Culturales y Creativas. Lo aplico en el
+¡Ojalá hubiera conocido el Canvas hace 
+años! Con un proyecto de impresión a 
+digital particularmente difícil y complicado
+dentro de la industria editorial hubiera sido 
+de gran ayuda
+50
+VOS SI estableciendo
+MBA de Producción Cultural en la FGV y en 
+el Innovation Games Lab de la COPPE / 
+mostrar todo el proyecto
+Incubadora de empresas UFRJ.
+externalizado como está
+y futuros negocios
+miembros en este
+forma visual tanto
+Claudio D'Ipolitto, Brasil
+UTILIZAR EL modelos.
+Cuando normalmente piensas en una empresa el panorama,
+modelo, la conclusión es que se trata de un 
+negocio con fines de lucro. Sin embargo, encontré quesu (importante)
+el Canvas también es muy eficaz en el
+Ha creado una conversación 
+completamente nueva en torno a la 
+descripción e innovación del negocio.
+Mike Lachapelle, Canadá
+¿Lona? Consulté con pequeñas empresas sobre el uso
+al Business Model Canvas, puedo
++ ALINEAR Horas de explicar, discutir y confundir
+programa. El Canvas fue lo suficientemente 
+flexible como para tener en cuenta los 
+objetivos de esta empresa empresarial 
+social y aportar claridad a la verdadera 
+propuesta de valor del negocio y cómo 
+hacerlo sostenible.
+re
+no profesional mi
+secta en forma S
+o. Nosotros yo utilizar GRAMO
+dlo a norte dependencias.
+propios roles en él
+y la inter-
+el modelo de negocio freemium. Este modelo 
+implica regalar productos básicos de forma 
+gratuita, lo que es muy contrario a la intuición 
+para la mayoría de los empresarios. Gracias
+miembros del equipo de liderazgo durante la 
+formación de una nueva organización sin fines de lucro
+el entendimiento podría haberse salvado.
+Jille Sol, Países Bajos
+ilustrar fácilmente
+como hace
+sentido financiero.
+Un amigo cercano estaba buscando un 
+nuevo trabajo. Utilicé el Business Model 
+Canvas para evaluar su modelo de 
+negocio personal.
+Sus competencias centrales y su propuesta 
+de valor fueron sobresalientes, pero no 
+logró aprovechar a sus socios estratégicos y 
+desarrollar relaciones con los clientes 
+adecuadas. Este enfoque ajustado abrió 
+nuevas oportunidades.
+Peter Froberg, Dinamarca
+Kevin Donaldson, Estados Unidos
+Ayudo a los dueños de negocios a planificar 
+su transición y salida de sus empresas. El 
+éxito depende de mantener la viabilidad y el 
+crecimiento de la empresa a largo plazo. La 
+clave para esto es un programa de innovación 
+de modelos de negocio. El Canvas nos ayuda 
+a identificar e innovar sus modelos de negocio.
+Daniel Pandza, México
+Nicholas K. Niemann, Estados Unidos
+
+Imagínese 60 estudiantes de 1er año, sin 
+saber nada sobre emprendimiento. En menos 
+de cinco días, gracias al Business Model 
+Canvas, pudieron lanzar
+una idea viable con convicción y claridad. Lo 
+usaron como una herramienta para cubrir 
+todas las dimensiones de creación de startups.
+Nos pidieron que rediseñáramos el idioma El modelo de negocio
+servicio de una ONG internacional. los
+Business Model Canvas fue especialmente 
+útil para mostrar los vínculos entre las 
+necesidades del trabajo diario de las 
+personas y un servicio eso se sintió 
+demasiado especializado, considerado solo 
+como una ocurrencia tardía, y lejos de sus 
+prioridades.
+Usamos 15,000
+El Business Model Canvas ha demostrado ser 
+una herramienta muy útil para capturar ideas 
+y soluciones para proyectos de comercio 
+electrónico. La mayoría de mis clientes son 
+pymes y Canvas les ayuda a
+Canvas ha permitido
+yo para establecer un 
+lenguaje común
+y marco con papel café
+colegas.
+post-it y
+mas que
+100 metros de
+51
+aclarar su corriente
+modelos de negocio y
+diseñar una estructura organizativa futura en 
+una empresa de fabricación global. Sin 
+embargo, la clave de todas las actividades fue 
+el Business Model Canvas. Nos convenció por 
+su aplicabilidad práctica, simplicidad y 
+relaciones lógicas de causa y efecto.
+Guilhem Bertholet, Francia
+comprender y centrarse en el impacto del 
+comercio electrónico en sus organizaciones.
+He utilizado Canvas para explorar nuevas 
+oportunidades de crecimiento, evaluar usos
+de nuevos modelos de negocio por parte de la 
+competencia, y para comunicarse
+organización cómo podríamos
+acelerar las innovaciones en tecnología, 
+mercado y modelos de negocio.
+Paola Valeri, España
+Utilizo Business Model Canvas para 
+enseñar a los emprendedores en etapa 
+inicial en una amplia gama de industrias 
+como una forma mucho mejor de
+traducir empresas. El lienzo del modelo de negocio
+SU EMPRESA hace un gran trabajo ayudándome a
+Marc Castricum, Países Bajos
+Como coach de startups, apoyo a los 
+equipos para crear nuevos productos y diseñar sus
+Apliqué Canvas para ayudar a una empresa a 
+alinear al personal clave con el fin de 
+determinar objetivos compartidos y 
+prioridades estratégicas, que se utilizaron durante la planificac
+Daniel Egger, Brasil
+PLANES recordar el
+PROCESOS su negocio
+y previene
+ellos de
+quedarse atascado
+Bruce MacVarish, Estados Unidos
+r
+solía mi
+la CA una
+nvas a l hacer un ity proceso e incorporado con el BSC.
+prioridades estratégicas.
+equipos para pensar
+cheque También aseguró que la iniciativa elegida
+para mi nueva startup Mupps, una plataforma 
+donde los artistas pueden crear sus propias 
+aplicaciones de música para teléfonos iPhone y Android
+en minutos. ¿Sabes que? ¡El lienzo me hizo 
+estar aún más seguro del posible éxito! ¡Así 
+que tengo que irme, trabajo por hacer!
+EN EL NEGOCIO holísticamente sobre
+El Business Model Canvas ha ayudado
+holanda a hacer el cambio de una 
+institución gubernamental impulsada por 
+el presupuesto a una organización 
+empresarial de valor agregado.
+tivos fueron claramente impulsados   por el nuevo
+varias organizaciones de salud en el
+Martín Fanghanel, Bolivia
+que (necesitarán) operar sus negocios y 
+asegurarse de que están enfocados 
+adecuadamente en centrarse en el cliente de 
+una manera que haga que el negocio sea lo 
+más rentable posible.
+Huub Raemakers, Países Bajos
+Bob Dunn, Estados Unidos
+Usé el Canvas con altos directivos de una 
+empresa pública para ayudarlos a 
+reestructurar su cadena de valor debido a 
+cambios en la regulación del sector. El factor 
+clave del éxito fue comprender qué nuevas 
+propuestas de valor se podían ofrecer a sus 
+clientes y luego traducirlas en operaciones 
+internas.
+en detalles. Esto ayuda a 
+que su nueva empresa sea un éxito.
+Erwin Blom, Países Bajos
+He usado Canvas con un cofundador para diseñar 
+un plan de negocios
+para un concurso a nivel nacional organizado por
+The Economic Times, India. El Canvas me 
+permitió pensar en todos los aspectos de la 
+puesta en marcha y armar un plan que los VC 
+podrían encontrar bien pensado y atractivo 
+para financiar.
+Christian Schüller, Alemania
+Leandro Jesus, Brasil
+Praveen Singh, India
+
+Patron
+
+nes
+
+"Patrón en arquitectura
+es la idea de capturar ideas de 
+diseño arquitectónico
+como descripciones arquetípicas y 
+reutilizables ".
+Christopher Alexander, arquitecto
+
+Esta sección describe modelos comerciales con características similares, arreglos similares de 
+Building Blocks del modelo comercial o comportamientos similares. A estas similitudes las llamamos 
+patrones de modelos de negocio. Los patrones que se describen en las páginas siguientes deberían 
+ayudarlo a comprender la dinámica del modelo comercial y servir como fuente de inspiración para su 
+propio trabajo con modelos comerciales.
+Patrones
+56 Desagregación de negocios
+Modelos
+Hemos esbozado cinco patrones de modelos de negocio basados   en conceptos 
+importantes de la literatura empresarial. Los hemos “traducido” al lenguaje del Business 
+Model Canvas para que los conceptos sean comparables, fáciles de entender y 
+aplicables. Un solo modelo de negocio puede incorporar varios de estos patrones.
+66 La cola larga
+76 Plataformas de varios lados
+88 GRATIS como modelo de negocio
+108 Modelos de negocio abiertos
+Los conceptos en los que se basan nuestros patrones incluyen desagregación,
+los modelos de negocio Long Tail, Multi-Sided Platforms, FREE y Open. Sin duda, con el tiempo 
+surgirán nuevos patrones basados   en otros conceptos comerciales.
+Nuestro objetivo al definir y describir estos patrones de modelo de negocio es
+para reformular conceptos comerciales bien conocidos en un formato estandarizado, el Business Model 
+Canvas, para que sean inmediatamente útiles en su propio trabajo en torno al diseño o la invención del 
+modelo comercial.
+
+Dise
+
+eño
+
+“Los empresarios no
+solo necesito comprender mejor a 
+los diseñadores; ellos
+necesitan convertirse en diseñadores ".
+Roger Martin, decano, Rotman School of Management
+
+Esta sección describe una serie de técnicas y herramientas del mundo del diseño que pueden ayudarlo a 
+diseñar modelos comerciales mejores y más innovadores. El negocio de un diseñador implica una 
+incesante investigación sobre la mejor manera posible de crear lo nuevo, descubrir lo inexplorado o 
+lograr lo funcional. El trabajo de un diseñador es ampliar los límites del pensamiento, generar nuevas 
+opciones y, en última instancia, crear valor para los usuarios. Esto requiere la capacidad de imaginar "lo 
+que no existe". Estamos convencidos de que las herramientas y la actitud de la profesión del diseño son 
+requisitos previos para el éxito en la generación de modelos de negocio.
+Diseño
+126 Perspectivas del cliente
+134 Ideación
+146 Pensamiento visual
+Los empresarios practican el diseño todos los días sin saberlo. Diseñamos organizaciones, estrategias, 
+modelos de negocio, procesos y proyectos. Para ello, debemos tener en cuenta una compleja red de 
+factores, como la competencia, la tecnología, el entorno legal y más. Cada vez más, debemos hacerlo en 
+un territorio desconocido e inexplorado. De eso se trata precisamente el diseño. Lo que les falta a los 
+empresarios son herramientas de diseño que complementen sus habilidades empresariales.
+160 Creación de prototipos
+170 Narración
+180 Escenarios
+Las siguientes páginas exploran seis técnicas de diseño de modelos de negocio: conocimiento del cliente, 
+ideación, pensamiento visual, creación de prototipos, narración de historias y escenarios. Presentamos cada 
+técnica con una historia y luego demostramos cómo se aplica la técnica al diseño de modelos de negocio. 
+Aquí y allá hemos agregado ejercicios y sugerencias para actividades de taller que le muestran 
+específicamente cómo se puede aplicar la técnica de diseño. Las referencias de libros se proporcionan al final 
+para aquellos interesados   en explorar cada técnica con más profundidad.
+
+Estrat
+
+tegia
+
+“No hay un solo modelo 
+de negocio ...
+Realmente hay muchas 
+oportunidades y muchas 
+opciones y solo tenemos que 
+descubrirlas todas ”.
+TimO'Reilly, director ejecutivo de O'Reilly
+
+En las secciones anteriores le enseñamos un lenguaje para describir, discutir y diseñar modelos de 
+negocios, describir patrones de modelos de negocios y explicar técnicas que facilitan el diseño y la 
+invención de nuevos modelos de negocios. La siguiente sección trata sobre la reinterpretación de la 
+estrategia a través de la lente del Business Model Canvas. Esto lo ayudará a cuestionar de manera 
+constructiva los modelos comerciales establecidos y a examinar estratégicamente el entorno en el 
+que funciona su propio modelo comercial.
+Estrategia
+200 Modelo de negocio
+Ambiente
+Evaluación de negocios
+Modelos
+Modelo de negocio
+Perspectiva sobre el azul
+Estrategia oceánica
+Gestión de múltiples
+Modelos de negocio
+212
+226
+232
+Las siguientes páginas exploran cuatro áreas estratégicas: el entorno del modelo comercial, la evaluación 
+de modelos comerciales, una perspectiva del modelo comercial sobre las estrategias del océano azul y 
+cómo administrar varios modelos comerciales dentro de una empresa.
+
+Proce
+
+ceso
+
+panorama
+
+Esperamos haberle mostrado cómo los visionarios, los que cambian el juego y los desafiantes 
+pueden abordar el problema vital de los modelos comerciales. Esperamos haberle proporcionado el 
+lenguaje, las herramientas y técnicas, y el enfoque dinámico necesario para diseñar nuevos 
+modelos innovadores y competitivos. Pero queda mucho por decir. Así que aquí tocamos cinco 
+temas, cada uno de los cuales bien podría merecer su propio libro.
+El primero examina los modelos comerciales más allá de las ganancias: cómo el Canvas puede impulsar la 
+innovación del modelo comercial en los sectores público y sin fines de lucro. El segundo sugiere cómo el 
+diseño del modelo de negocio asistido por computadora podría aprovechar el enfoque basado en papel y 
+permitir una manipulación compleja de los elementos del modelo de negocio. El tercero analiza la relación 
+entre modelos comerciales y planes comerciales. El cuarto aborda los problemas que surgen al 
+implementar modelos comerciales en organizaciones nuevas o existentes. El tema final examina cómo 
+lograr una mejor alineación del modelo de negocio y la TI.
+
+DÓNDE Contexto: INNOVACIÓN audiencia clave
+2004: Alexander Osterwalder completa un 
+Ph.D. disertación sobre el tema
+el modelo visionario y
+emprendedores /
+consultores /
+ejecutivos
+Alexander e Yves deciden no pueden 
+escribir un libro de forma creíble sobre la 
+innovación del modelo de negocio sin un 
+modelo de negocio innovador. Se 
+deshacen de los editores y lanzan Hub, una 
+plataforma en línea para compartir sus 
+escritos desde el primer día. Cualquiera que 
+esté interesado en el tema puede unirse a la 
+plataforma por una tarifa (inicialmente US $ 
+24, que se aumenta gradualmente a US $ 243 
+para mantener la plataforma exclusiva). Esta 
+y otras fuentes de ingresos innovadoras 
+financian la producción del libro de antemano 
+y también es una innovación. Rompe el 
+formato de los libros de estrategia y gestión 
+convencionales para crear más valor para los 
+lectores: es una creación conjunta muy visual 
+y se complementa con ejercicios y consejos 
+para talleres.
+cambio de juego ...
+HICE ESTO
+de la innovación del modelo de negocio con
+blog, especialmente en empresas como 3M, 
+Ericsson, Deloitte y Telenor. Durante un taller 
+en los Países Bajos, Patrick van der Pijl 
+pregunta "¿Por qué no hay ningún libro que 
+acompañe al método?"
+Alexander e Yves aceptan el desafío. Pero, 
+¿cómo destaca uno en un mercado en el 
+que cada año se publican innumerables 
+libros de estrategia y gestión?
+Profesor Yves Pigneur en HEC Lausanne, 
+Suiza. Avance rápido. 2006: El enfoque 
+descrito en la tesis comienza a aplicarse en 
+todo el mundo según el modelo de negocio de 
+Alexander.
+LIBRO
+274 VEN
+¿DE?
+
+Hecho en… proceso Herramientas utilizadas los números
+Escrito: lausana, CH
+Diseñado: Londres, Reino Unido
+Editado: Portland, EE. UU.
+Fotografiado: Toronto, Ca
+Producido: Amsterdam, Nl
+Eventos: Amsterdam y Toronto
+estrategia:
+9
+1360
+El equipo central, formado por Alexander, Yves y Patrick, inicia el proyecto con varias reuniones para esbozar 
+el modelo de negocio del libro. The Hub se lanza para co-crear el libro con profesionales de la innovación de 
+modelos de negocios en todo el mundo. El director creativo Alan Smith de The Movement se enteró del 
+proyecto y puso a su empresa detrás de él. Finalmente, el miembro de Hub, Tim Clark, se une al equipo 
+central después de reconocer la necesidad de un editor. El grupo lo completa JAM, una empresa que utiliza el 
+pensamiento visual para resolver problemas empresariales. Se inicia un ciclo de participación para bombear 
+nuevos "trozos" de contenido a la comunidad de Hub para recibir comentarios y contribuciones. La escritura 
+del libro se vuelve completamente transparente. El contenido, el diseño, las ilustraciones y la estructura son 
+constantemente compartidos y comentados exhaustivamente por los miembros de Hub en todo el mundo. El 
+equipo principal responde a cada comentario e integra los comentarios en el libro y el diseño. Se organiza un 
+"lanzamiento suave" del libro en Ámsterdam, Países Bajos, para que los miembros del Hub puedan reunirse 
+en persona y compartir sus experiencias con la innovación del modelo de negocio. Esbozar los modelos de 
+negocio de los participantes con JAM se convierte en el ejercicio principal del día. Doscientos prototipos de 
+edición limitada especial del libro (sin terminar) se imprimen y Fisheye Media produce un video del proceso de 
+escritura. Después de varias iteraciones más, se produce la primera tirada. Esbozar los modelos de negocio 
+de los participantes con JAM se convierte en el ejercicio principal del día. Doscientos prototipos de edición 
+limitada especial del libro (sin terminar) se imprimen y Fisheye Media produce un video del proceso de 
+escritura. Después de varias iteraciones más, se produce la primera tirada. Esbozar los modelos de negocio 
+de los participantes con JAM se convierte en el ejercicio principal del día. Doscientos prototipos de edición limitada especial del libro (sin terminar) se imprimen y Fisheye Media produce un video del proceso de escritura. Después de varias iteracio
+• Escaneo del medio ambiente
+• Esquema de modelo de 
+negocios
+• Mapa de empatía del cliente
+años de
+investigación
+comentarios
+y practica 45
+países
+contenidos e i + d:
+470
+19
+• Perspectivas del 
+cliente
+• Estudios de 
+caso
+coautores
+137,757
+vistas del método
+en línea antes
+publicación de libros
+proceso abierto:
+• Plataforma en 
+línea
+• Co-creación
+• Acceso aUnfinishedWork 8
+• Comentarios y 
+retroalimentación
+trozos de libro
+13.18
+200 28.456
+prototipos
+GB de contenido
+diseño:
+copias de un
+desordenado
+• Proceso de diseño 
+abierto
+• Placas del 
+estado de ánimo
+• Maquetas de 
+papel
+• Visualización
+• Ilustración
+• Fotografía
+Notas Post-it ™ utilizadas
+impresión de prueba 4000+
+horas de trabajo
+275
+77
+foro
+discusiones 521
+fotos
+287
+Llamadas de Skype
+
+Producción y Logística
+Todo lo que vaya más allá de la creación de 
+contenido se subcontrata a proveedores de 
+servicios fácilmente disponibles.
+Diferenciación
+Un formato, un modelo de negocio y una historia 
+completamente diferentes para el libro lo hacen 
+destacar en un mercado abarrotado.
+Comunidad
+El libro está co-creado con profesionales de todo el 
+mundo que se sienten dueños gracias a la atribución 
+como coautores contribuyentes.
+Compradores
+Los clientes que pagan no son solo lectores, sino 
+co-creadores y empresas que quieren libros 
+personalizados para sus empleados y clientes.
+KP
+KA
+Vicepresidente
+CR
+CS
+contenido
+producción
+gestión de hub
+marketing de guerrilla y
+boca a boca
+logística y
+Envío
+businessmodelhub
+. com
+evento de modelo de negocio,
+Amsterdam
+el movimiento (diseño)
+plataforma ning
+amazon.com
+visual, práctico y
+hermoso manual
+para el modelo de negocio
+innovadores
+co-creación de un
+bestseller potencial
+libros personalizados para CH
+empresas y sus
+clientes
+visionarios, juego
+cambiadores, y
+retadores
+empresarios,
+ejecutivos,
+consultores,
+académica
+compañías
+Logística de terceros KR
+editores
+empresa
+miembros del hub
+boca a boca
+1) modelo de negocio
+generation.com
+2) amazon.com
+3) librerías
+intermediacion
+mediante
+editores
+blog y visibilidad en
+La web
+hub de modelos de negocio
+metodología poderosa
+280
+C $
+R $
+tarifas de membresía hub
+Ventas anticipadas y posteriores a la publicación 
+Regalar tarifas de sección de lienzo para 
+versiones personalizadas regalías de los 
+editores
+diseño
+producción de contenido
+impresión
+distribución
+LAS CANVAS DE
+modelo de negocio
+Generacion
+Alcanzar
+Una combinación de canales directos e indirectos y un 
+enfoque por fases optimiza el alcance y los márgenes. La 
+historia del libro se presta bien al marketing viral y la 
+promoción de boca en boca.
+Ingresos
+El libro se financió mediante ventas anticipadas y tarifas 
+pagadas por los co-creadores. Los ingresos adicionales 
+provienen de versiones personalizadas para empresas y 
+sus clientes.
+
+Alex Osterwalder, Autor
+El Dr. Osterwalder es autor, conferencista y asesor en el tema de la innovación del modelo de 
+negocio. Su enfoque práctico para diseñar modelos comerciales innovadores, desarrollado junto 
+con el Dr. Yves Pigneur, se practica en múltiples industrias en todo el mundo por compañías como 
+3M, Ericsson, Capgemini, Deloitte, Telenor y muchas otras. Anteriormente ayudó a construir y 
+vender una empresa de consultoría estratégica, participó en el desarrollo de una organización 
+mundial sin fines de lucro con sede en Tailandia que lucha contra el VIH / SIDA y la malaria, e 
+investigó en la Universidad de Lausana, Suiza.
+yves Pigneur, coautor
+El Dr. Pigneur ha sido profesor de sistemas de información gerencial en la Universidad de 
+Lausana desde 1984 y ha sido profesor invitado en la Universidad Estatal de Georgia en Atlanta y 
+en la Universidad de Columbia Británica en Vancouver. Se ha desempeñado como investigador 
+principal de muchos proyectos de investigación relacionados con el diseño de sistemas de 
+información, ingeniería de requisitos, gestión de tecnología de la información, innovación y 
+comercio electrónico.
+Alan Smith, director creativo
+Alan es un pensador a gran escala al que le encantan los detalles. Es cofundador de la agencia de 
+cambio acertadamente llamada: The Movement. Allí trabaja con clientes inspirados para combinar 
+el conocimiento de la comunidad, la lógica empresarial y el pensamiento de diseño. La estrategia, 
+las comunicaciones y los proyectos interactivos resultantes se sienten como artefactos del futuro, 
+pero siempre se conectan con la gente de hoy. ¿Por qué? Porque diseña como si le importara un 
+comino: cada proyecto, todos los días.
+281
+Tim Clark, editor y coautor colaborador
+Profesor, escritor y orador en el campo del espíritu empresarial, la perspectiva de Tim se basa en 
+su experiencia en la fundación y venta de una consultoría de investigación de marketing que sirvió 
+a firmas como Amazon.com, Bertelsmann, General Motors, LVMH y PeopleSoft. El pensamiento 
+del modelo de negocio es clave para su Emprendimiento para todos enfoque del aprendizaje 
+personal y profesional, y fundamental en su trabajo de doctorado sobre portabilidad del modelo de 
+negocio internacional. Generación de modelos de negocio es su cuarto libro.
+Patrick van der Pijl, productor
+Patrick van der Pijl es el fundador de Business Models, Inc., una consultora internacional de 
+modelos de negocios. Patrick ayuda a organizaciones, emprendedores y equipos de gestión a 
+descubrir nuevas formas de hacer negocios imaginando, evaluando e implementando nuevos 
+modelos de negocio. Patrick ayuda a los clientes a tener éxito a través de talleres intensivos, 
+cursos de capacitación y coaching.
+
+Generación de modelos de negocio es un manual práctico e inspirador 
+para cualquiera que se esfuerce por mejorar un modelo de negocio o 
+crear uno nuevo.
+Los nuevos modelos de negocio 
+disruptivos son emblemáticos de nuestra generació
+Sin embargo, siguen siendo poco 
+conocidos, incluso cuando transforman 
+los paisajes competitivos en todas las industrias.
+Generación de modelos de negocio le 
+ofrece herramientas poderosas, simples y 
+probadas para comprender, diseñar, reelaborar,
+e implementación de modelos comerciales.
+cambiar su forma de pensar sobre los modelos de negocio
+Business Model Generation le enseñará técnicas de innovación poderosas 
+y prácticas que utilizan actualmente las empresas líderes en todo el 
+mundo. Aprenderá a comprender, diseñar e implementar sistemáticamente 
+un nuevo modelo de negocio, o analizar y renovar uno antiguo.
+co-creado por 470 practicantes de estrategia
+Business Model Generation practica lo que predica. Coautor de 470 
+profesionales de Business Model Canvas de 45 países, el libro fue 
+financiado y producido independientemente de la industria editorial 
+tradicional. Cuenta con un diseño visualmente integrado, que se recuesta 
+en posición horizontal y permite un uso práctico inmediato.
+diseñado para hacedores
+Business Model Generation es para aquellos que están dispuestos a abandonar el 
+pensamiento anticuado y adoptar modelos nuevos e innovadores de creación de 
+valor: ejecutivos, consultores, emprendedores y líderes de todas las organizaciones.
+negocios y diseño
+BusinessModelGeneration.com
+isbn: 978-2-8399-0580-0

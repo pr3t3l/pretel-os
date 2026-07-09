@@ -1,0 +1,12 @@
+                                                          
+ 
+ 
+Recursos  
+●​ Screaming Frog SEO Spider 
+Es una herramienta de software (crawler o araña web) que imita el 
+comportamiento de los rastreadores de motores de búsqueda como Google. En 
+el video se presenta como una herramienta fundamental para realizar 
+auditorías técnicas de SEO, permitiendo analizar sitios web en bloque para 
+detectar errores como URLs sin H1, contenido duplicado, y otros problemas 
+técnicos. 
+URL: https://www.screamingfrog.co.uk/seo-spider/ 
