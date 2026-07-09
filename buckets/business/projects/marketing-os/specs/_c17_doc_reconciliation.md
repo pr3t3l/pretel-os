@@ -35,11 +35,14 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
       §0/§1/§4/Fuentes renombrados Estudio/Calendario → Ángulos/Media/Agenda. Ya no bloquea la firma.
 - [x] `spec_Phase_2_Contenido.md` ✅ header v2.0 (C17) + nota de doc + banner §8 (el ÁNGULO es la unidad) +
       §0 output («derivatives» como asset muere). (Las §§ de atomización quedan como historia; §7 ya tiene banner.)
-- [ ] `docs/app/ensamblador-de-prompts.md` — arreglar el núcleo del compilador (sigue vivo el derivado):
-      Capa 0 obligatorios (quitar 2.4, línea 28) · Capa 1 (`Target={pillar,hook_id,channel}`, sin
-      `rotateHook`, línea 30) · Capa 2 (`kind` del canal, línea 32) · el fixture §3 (124–130, 282) ·
-      §4 fixes #2/#9 · Anexo A filas 6–10 · Anexo B (420, 452) · Anexo C: borrar §2.4, añadir
-      `anchor`+`ratio_policy_plain` a §2.3. **Preservar** las secciones C17.1 (molde) ya correctas.
+- [x] `docs/app/ensamblador-de-prompts.md` ✅ (2026-07-09) — enfoque de integridad para un snapshot de 1052
+      líneas: **banner de reconciliación C17** arriba (tabla de traducción muerto→vivo) + cirugía en los
+      enunciados CORE (Capa 0 «3 obligatorios 2.0/2.3/2.5», Capa 1 `Target={pillar_id,hook_id,channel}` sin
+      rotación, Capa 2 `kind` del canal, regla de oro sin «rotación», §2.1 clase B sin «derivado») + Anexo C
+      (§2.4 ⚰️ MUERTO con banner, `anchor`+`ratio_policy_plain` añadidos a §2.3, §2.5 = «el gancho ES el
+      ángulo») + nota de cabecera en fixture §3 y Anexo A (filas 6–10 históricas). Fix falso «4 obligatorios»
+      en la nota de pipeline. **Preservadas** las secciones C17.1 (molde) ya correctas. Inventario histórico
+      A/B conservado bajo el banner.
 - [ ] `specs/build_plan_inteligencia_temporal_calendario.md` — quitar «2.4 multiplicación»; nota: la
       superficie calendario (M4) la reemplaza **Agenda/`scheduled_posts`** (conservar el motor temporal).
 - [ ] `spec_Inteligencia_Temporal.md` — remapear §8/§9 (Estudio §6 calendario, Estudio §3.1 pieza,

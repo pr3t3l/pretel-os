@@ -3,6 +3,28 @@
 > Rescatado del workflow `papandi-prompt-assembly-audit` (run `wf_6f254292-5e0`, 2026-07-02T08:44:06.165Z, status: completed).
 > Inventario campo-por-campo de lo que crean las fases 0/1/2 vs lo que consume el ensamblador de prompts (develop) — gaps: creado-sin-usar, usado-débil, faltante, innecesario — y el diseño del ENSAMBLADOR como compilador.
 
+> **⚠️ RECONCILIACIÓN C17 (2026-07-09) — LEER PRIMERO.** Este doc es un **snapshot de auditoría del
+> 2026-07-02**, ANTES de C17 (firmado 2026-07-06) y del swap (2026-07-08). C17 **invirtió el modelo de
+> contenido**: murió la capa de **atomización 2.4 / derivados / rotación de gancho**. Autoridades vigentes:
+> `spec_Modelo_Contenido.md` (C17) + `spec_Superficies_Produccion.md` (Ángulos/Media/Agenda). **Donde este
+> doc dice…, hoy es:**
+>
+> | Este doc (2026-07-02) | Verdad C17 |
+> |---|---|
+> | 4 obligatorios: 2.0 · 2.3 · **2.4** · 2.5 | **3 obligatorios: 2.0 voz · 2.3 pilares · 2.5 ganchos** (el 409 de `produce/route.ts`) |
+> | `derivativeIndex` / «derivado seleccionado» / `atomization_map` | **muerto** — la pieza = **ángulo × canal**; no hay derivados |
+> | gancho **rotado** (`derivativeIndex % n` / `rotateHook`) | el operador **ELIGE** el ángulo (`hook_id`); sin rotación |
+> | `kind` del derivado 2.4 → `channelToContentType` | `kind` sale del **CANAL elegido** → `channelToContentType(channel)` |
+> | `Target` = pilar + derivado | **`Target = { pillar_id, hook_id, channel }`** (`brief.ts`) |
+> | plan finito de ~28 piezas | plan **generativo/infinito** (mismos pilares → años de contenido) |
+> | `ratio_policy_plain` / `anchor` en 2.4 | **migraron a 2.3** (`Pillar.anchor`, `PillarSet.ratio_policy_plain`) |
+>
+> **Lo que SÍ sigue vigente y NO se toca:** la **doctrina del molde C17.1** (§2.1 recuadro + §2.2 fila 4 —
+> «el molde ENMARCA el ángulo, no lo comprime», ya actualizada 2026-07-08), y toda la arquitectura de capas,
+> el presupuesto de atención, la IR-2/dialectos y la tesis del §5. Los **Anexos A/B/C son inventario
+> histórico** (léelos con esta tabla). La lista de fixes §4 sigue casi entera válida; **#2** (nota del
+> derivado) y **#9** (`channel_key` por derivado) quedaron **sin objeto** con C17 (anotados in situ).
+
 ---
 
 # EL ENSAMBLADOR DE PROMPTS (el compilador de Papandi)
@@ -25,11 +47,11 @@ FASES FIRMADAS  ──buildBrief()──▶  BRIEF (IR-1)  ──buildDevelopSys
                                                         FLUX / Kling / Seedance / Veo → media
 ```
 
-**Capa 0 — Fases firmadas = código fuente.** Los artefactos de `project_phase_artifacts` (0.1–2.6) son la única verdad. La firma (`status=signed` + gate) es el *type-check*: nada draft compila. `produce/route.ts` lo hace cumplir con un 409 duro sobre los 4 obligatorios (2.0 voz, 2.3 pilares, 2.4 atomización, 2.5 ganchos) y carga otros 6 en modo tolerante (oferta, statement, demanda, personas, 0.1, matriz 2.2). Regla: **si un dato no viene de un artefacto firmado o de un catálogo curado, no entra al prompt.**
+**Capa 0 — Fases firmadas = código fuente.** Los artefactos de `project_phase_artifacts` (0.1–2.6) son la única verdad. La firma (`status=signed` + gate) es el *type-check*: nada draft compila. `produce/route.ts` lo hace cumplir con un 409 duro sobre los **3 obligatorios (2.0 voz, 2.3 pilares, 2.5 ganchos** — C17: la 2.4 atomización murió) y carga el resto en modo tolerante (oferta, statement, demanda, personas, 0.1, matriz 2.2). Regla: **si un dato no viene de un artefacto firmado o de un catálogo curado, no entra al prompt.**
 
-**Capa 1 — El BRIEF = representación intermedia (IR-1).** `buildBrief()` (`lib/estudio/brief.ts`) es pura y testeable: cruza artefactos y produce el objeto `Brief` de UNA pieza — pilar seleccionado, derivado seleccionado, gancho rotado (`derivativeIndex % n`), voz, keywords top-8, oferta con su **modo** (`reforzar`/`contexto`), esencia 0.1. Aquí vive la **selección**: de todo lo firmado, qué le toca a esta pieza. El brief se persiste con la pieza (`insertPiece`) — es el registro glass-box de qué sabía el compilador.
+**Capa 1 — El BRIEF = representación intermedia (IR-1).** `buildBrief()` (`lib/estudio/brief.ts`) es pura y testeable: cruza artefactos y produce el objeto `Brief` de UNA pieza desde `Target = { pillar_id, hook_id, channel }` (C17: el operador **ELIGE** el ángulo y el canal — sin `derivativeIndex` ni rotación): pilar, gancho elegido, `kind` derivado del canal, voz, keywords top-8, oferta con su **modo** (`reforzar`/`contexto`), esencia 0.1. Aquí vive la **selección**: de todo lo firmado, qué le toca a esta pieza. El brief se persiste con la pieza (`insertPiece`) — es el registro glass-box de qué sabía el compilador.
 
-**Capa 2 — Renderer por formato (backend de destino #1).** `buildDevelopSystem(brief, type, extras)` + `developTypeInstruction(type)` traducen la IR a un system prompt específico del entregable: `blog | linkedin | email | carousel | video | image | text` (clasificado por regex desde el `kind` de 2.4 vía `channelToContentType`). Esta capa decide la **forma**: estructura del guion por clips, tope 15–35s, carrusel 4–6 slides, PAS/AIDA en email. Su salida es doble: la PIEZA (texto) y el **design_spec (IR-2)** — el esquema canónico visual (sujeto/escena/cámara/luz/estilo/paleta/output + `image_prompts[]`/`video_prompts[]` + `hook_text_overlay`).
+**Capa 2 — Renderer por formato (backend de destino #1).** `buildDevelopSystem(brief, type, extras)` + `developTypeInstruction(type)` traducen la IR a un system prompt específico del entregable: `blog | linkedin | email | carousel | video | image | text` (clasificado por regex desde el `kind` del **canal elegido** vía `channelToContentType(channel)` — C17: el canal, no un derivado 2.4). Esta capa decide la **forma**: estructura del guion por clips, tope 15–35s, carrusel 4–6 slides, PAS/AIDA en email. Su salida es doble: la PIEZA (texto) y el **design_spec (IR-2)** — el esquema canónico visual (sujeto/escena/cámara/luz/estilo/paleta/output + `image_prompts[]`/`video_prompts[]` + `hook_text_overlay`).
 
 **Capa 3 — Renderer por modelo (dialectos).** La IR-2 se compila al motor concreto:
 - **Imagen:** `serializeForGateway` (prefiere `image_prompts[0]`, cae a `composeImagePrompt` con orden fijo sujeto→escena→composición→cámara→luz→estilo→mood→paleta) + `brandSuffix` (paleta estricta + Avoid) + enrutado a **FLUX Kontext** si hay `reference_image_url` (~92% fidelidad de identidad).
@@ -40,7 +62,7 @@ FASES FIRMADAS  ──buildBrief()──▶  BRIEF (IR-1)  ──buildDevelopSys
 | Decisión | Capa dueña | Dónde |
 |---|---|---|
 | Qué es verdad (mensaje, voz, audiencia, oferta, doctrina de negocio) | Fases firmadas | artefactos + gates |
-| Qué entra a ESTA pieza (selección, rotación, modo de oferta) | IR-1 | `buildBrief` |
+| Qué entra a ESTA pieza (el ángulo ELEGIDO + canal, modo de oferta) | IR-1 | `buildBrief` |
 | Contexto runtime no-firmado (radar, journey, elecciones del operador) | Ensamblador de extras | `produce/route.ts` |
 | Cómo se estructura por entregable (guion, slides, PAS) | Renderer de formato | `developTypeInstruction` |
 | Qué se ve (escena, cámara, paleta, clips) | IR-2 | `design_spec` del develop |
@@ -61,7 +83,7 @@ El presupuesto de atención del modelo es finito y no es plano: pesa más el **i
 
 **A. SIEMPRE (invariantes del proyecto).** Rol/misión, VOZ (arquetipo+tono+léxico), DOCTRINA (C1/C4/C12), ESENCIA 0.1, IDENTIDAD VISUAL 2.0.5 (si la pieza es visual), y el CONTRATO DE SALIDA (separadores `===SPEC===`/`===TIPS===`/`===QA===`). Porqué: definen de quién es cada token de salida y su legalidad. Sin ellas la pieza es de otra empresa u otra ética. El léxico prohibido y la doctrina son **filtros de emisión**: además de declararse, se re-auditan en `===QA===`.
 
-**B. POR PIEZA (la selección del plan).** PILAR (mensaje+fuerza+modo), GANCHO 2.5 rotado, IDEA del derivado (nota 2.4 — hoy perdida, fix §4.2), PIEZA ANCLA, KEYWORDS. Va **primero tras el rol** (posición 2–4): es el QUÉ decir; el modelo debe leer la misión antes que el contexto. El gancho viaja casi-verbatim ("úsalo o adáptalo") — lo verbatim jamás se resume.
+**B. POR PIEZA (la selección del plan).** PILAR (mensaje+fuerza+modo+ancla), GANCHO 2.5 **elegido** (C17: el gancho ES el ÁNGULO, la unidad — sin rotación ni «derivado»/«pieza ancla» de 2.4), KEYWORDS. Va **primero tras el rol** (posición 2–4): es el QUÉ decir; el modelo debe leer la misión antes que el contexto. El ángulo viaja casi-verbatim ("úsalo o adáptalo") — lo verbatim jamás se resume.
 
 **C. POR FORMATO (contratos de emisión).** `developTypeInstruction(type)` + reglas visuales (espejo del público, texto-nunca-en-imagen, zona limpia, coherencia de personaje, variedad de planos) + schema del SPEC. Va **al final** (recencia): es lo que el modelo ejecuta al emitir, y es lo más largo — ponerlo al inicio ahogaría la misión.
 
@@ -117,6 +139,10 @@ El presupuesto de atención del modelo es finito y no es plano: pesa más el **i
 **Fixture [EJEMPLO — proyecto ficticio con artefactos "firmados" plausibles]:** producto **"Glaze & Grow"** — sistema de marketing semanal para ceramistas que venden en Etsy. Mercado US (inglés). Pre-lanzamiento.
 
 Entradas de esta pieza:
+
+> C17: `derivative_index`, «gancho rotado» y `note` de 2.4 son **históricos** — hoy la pieza se define por
+> `{ pillar_id, hook_id, channel }` ELEGIDOS (ver banner). El resto del ensamblaje (voz, audiencia, identidad,
+> doctrina, contrato de salida) se mantiene idéntico. Las anotaciones ⟵ ya marcan «C17» donde aplica.
 
 | Parámetro | Valor | Origen |
 |---|---|---|
@@ -306,6 +332,7 @@ Criterio de orden: (bugs que rompen confianza del usuario) > (señal ya cargada 
 
 1. **Integridad temporal de punta a punta.** Filtrar `expires_at < hoy` y priorizar seasonal con ventana abierta en la rotación de ganchos (`lib/estudio/brief.ts:62`); emitir SIEMPRE "hoy es {ISO}" con rama else en `produce/route.ts:163` (como ya hace step-proposal); aceptar `publish_date` del slot del calendario como ancla en vez de `todayISO`; backfill de `temporality` en bibliotecas pre-M5 + jubilación/regeneración de vencidos (`buildHookRegenSystem` ya existe). **Impacto:** mata la familia completa del bug "February en junio" — el error más visible y el que más confianza destruye (una pieza fuera de temporada delata al robot).
 2. **Imprimir los huérfanos que el Brief ya carga.** Cuatro líneas en `lib/estudio/prompts.ts`: `IDEA DE LA PIEZA: {derivative.note}` · `GANCHO (molde {hook.template})` · `PIEZA ANCLA: {anchor_title}` · fusionar `channel_template.structure/rules` dentro de `developTypeInstruction(type, template)`. **Impacto:** la pieza desarrolla LA idea planificada en 2.4 (hoy improvisa desde pilar+kind), honra el molde retórico del gancho y cruza CTA con su pieza madre. El fix más barato de toda la lista: los datos ya viajan hasta un milímetro del prompt.
+   > **[C17 — mayormente sin objeto]** `IDEA DE LA PIEZA {derivative.note}` y `PIEZA ANCLA {anchor_title}` eran de 2.4 (muerta): hoy el ÁNGULO 2.5 **ES** la idea, no una nota de derivado. `GANCHO (molde {hook.template})` se probó y se **revirtió** (Anexo B: `template` es el arquetipo, no un molde; el molde real vive en `hooks_catalog`, capa E, ya implementada C17.1). Sobrevive solo la 4ª línea: fusionar `channel_template` en `developTypeInstruction` (un reel y un email no deben recibir la misma instrucción de formato).
 3. **AUDIENCIA estructurada + guard de avatar.** Reemplazar `JSON.stringify(avatar).slice(0,1600)` (`produce/route.ts:130`) por proyección de campos (essence, where_we_meet, 3 ongoing_pains, 2 anxiety, habit — como la `forcesLine` de step-proposal); 409/warn cuando `avatarKey` no matchea en vez de caer a `avatars[0]` en silencio. **Impacto:** el "espejo del público" (principio #1 de la imagen) recibe señal limpia sin llaves ni cortes a mitad de objeto; elimina piezas generadas para el avatar equivocado sin aviso.
 4. **VOZ completa: promesa + reglas testeables.** Añadir `brand_promise_public` a la línea VOZ y `consistency_rules_plain` a la sección `===QA===`. **Impacto:** los cierres rematan en la promesa firmada (hoy salen genéricos) y el QA audita contra reglas verificables por máquina (máx un "!", titulares ≤12 palabras, números con fuente) en vez de solo C4/C12/C1.
 5. **La orden de trabajo de Fase 1 llega a Producción.** Línea nueva: `SUEÑO DEL COMPRADOR: {dream_statement} · OBJECIÓN #1 A ATACAR: {weakestAxisOf} — {rationale}` desde `value_equations` (1.1). **Impacto:** cada pieza conoce su apertura aspiracional y la objeción que la ecuación identificó como cuello de botella — hoy la Fase 1 analítica es casi invisible para el develop; esto la vuelve ejecutable pieza a pieza.
@@ -313,6 +340,7 @@ Criterio de orden: (bugs que rompen confianza del usuario) > (señal ya cargada 
 7. **Números con fuente.** Rotar 2–3 `verified_points` (claim+value+source_name) y los `refuted_assumptions` de 0.2 al develop. **Impacto:** las plantillas `stat_lead`/`contrarian`/`myth_bust` dejan de elegir entre inventar cifras (violación glass-box y de la regla "números con fuente") u omitirlas; contrarianismo con base investigada real.
 8. **Keywords con su medición.** Serializar `"kw" [vol/mes real · KD · intent]` (como ya hace step-proposal en `route.ts:117-125`) y filtrar por afinidad al journey/awareness de la pieza. **Impacto:** lo pagado a DataForSEO por fin llega al redactor; títulos y SEO anclados a demanda medida, no a 8 strings desnudos.
 9. **Plan ejecutable por clave, no por heurística.** Guardar `channel_key` y `awareness_target` en cada derivado al generar 2.4 (validando el reparto contra `content_mix.target_mix` al firmar); matchear la matriz 2.2 por key (loggear cuando no hay match); `channels[].cta_destination` (URL/handle real, consumiendo el dominio elegido en 0.1) inyectado en el cierre. **Impacto:** el journey deja de perderse cuando "Blog/SEO" no comparte token con "artículo"; el mix firmado se vuelve ejecutable pieza a pieza; el CTA pasa de retóricamente específico a operativamente real.
+    > **[C17 — reencuadrado]** «en cada derivado / al generar 2.4» murió (no hay derivados). La necesidad SÍ sobrevive a nivel **ángulo × canal**: matchear la matriz 2.2 por `channel_key` (no por heurística de tokens) y el `cta_destination` real por canal siguen siendo fixes válidos; el `awareness_target` cuelga hoy del ángulo/pilar, no de un derivado.
 10. **Determinismo de la capa media.** `duration_seconds` estructurado por clip en `===SPEC===` (regex de prosa solo como fallback); iterar TODOS los `image_prompts` en la ruta de carrusel (hoy `serializeForGateway` toma solo el primero — los slides 2..6 no se generan por esa vía); derivar `aspect_ratio` del canal del derivado (reel/story=9:16, feed=1:1/4:5) y validarlo en `parseDevelop`; parametrizar `marketIsEnglish` (desde locale canónico del proyecto, fijado al firmar launch_focus/1.4) y `preLaunch` (flag de estado) en hooks-brain; imprimir `psychology` por candidato en el re-rank y rellenar hasta 5 picks. **Impacto:** duración, ratio, idioma y selección de formas dejan de ser suposiciones hardcodeadas del dialecto; el presupuesto D-V4 se vuelve exacto y el sistema sobrevive al primer proyecto hispano o post-lanzamiento sin tocar código.
 
 **Y quitar (higiene del IR):** dejar de generar y marcar deprecated `perceived_value_usd`+`comparable` (doctrina anti-comparación — que ningún prompt futuro los recoja por accidente), `derivatives_count`/`derivatives_summary` y `channels_declared` (derivables — dual-homing interno), `scarcity.type` (campo persuasivo muerto sin candado ético), y las copias embebidas `step_thread.pre.price_research`/`cost_breakdown` (referenciar `product_economics`). Un compilador con campos muertos en la fuente termina compilándolos.
@@ -339,6 +367,10 @@ Criterio de orden: (bugs que rompen confianza del usuario) > (señal ya cargada 
 ---
 
 # Anexo A — Consumo del ensamblador (qué usa hoy el develop)
+
+> C17: «hoy» = 2026-07-02. Las **filas 6–8** (`atomization_map` 2.4) y **9–10** (rotación por
+> `derivativeIndex % n`) son **históricas** — hoy la pieza = **ángulo × canal** (`{pillar_id, hook_id, channel}`;
+> ver banner). El `kind` (fila 6) sale del canal, no del derivado. El resto del consumo se mantiene.
 
 | # | Fuente (artefacto.campo) | Cómo entra | Fuerza |
 |---|---|---|---|
@@ -388,7 +420,7 @@ Criterio de orden: (bugs que rompen confianza del usuario) > (señal ya cargada 
 - suggest-hooks: excludeLanguageBound siempre false y preLaunch siempre true por defaults no parametrizados desde el proyecto; psychology existe en los candidatos pero no se imprime en el system del re-rank.
 - Gateway imagen: serializeForGateway solo toma el primer image_prompt no vacío — la generación por-slide de un carrusel debe iterar por fuera de esta función o los slides 2..6 no se generan.
 - Video: los segundos de cada clip se parsean con regex de la prosa del prompt ('N seconds'); prompt sin duración explícita = 6s asumidos; el radar temporal y el journey son best-effort (nunca bloquean, fallan en silencio).
-- Cadena completa verificada: produce/route.ts carga 10 artefactos (4 obligatorios: 2.0/2.3/2.4/2.5 con 409) → buildBrief (puro) → buildDevelopSystem + extras → 1 llamada LLM (estudio_develop@v2.0.0, maxTokens 4200, temp 0.55) → parseDevelop separa PIEZA/===SPEC===/===TIPS===/===QA=== → insertPiece persiste brief+system+design_spec; la media real va después por serialize.ts/video-routing.ts.
+- Cadena completa verificada: produce/route.ts carga los artefactos (C17: **3 obligatorios 2.0/2.3/2.5 con 409**, sin 2.4) → buildBrief (puro, desde `{pillar_id, hook_id, channel}`) → buildDevelopSystem + extras → 1 llamada LLM (estudio_develop@v2.0.0, maxTokens 4200, temp 0.55) → parseDevelop separa PIEZA/===SPEC===/===TIPS===/===QA=== → insertPiece persiste brief+system+design_spec; la media real va después por serialize.ts/video-routing.ts.
 
 ---
 
@@ -992,10 +1024,20 @@ _creado por: lib/schemas/content-plan.ts (PillarSet + Pillar) · app/api/phase2/
   _valor marketing:_ alto — el brief temático del que salen anclas, derivados y ganchos
 - **pillars[].channels** — Keys de los canales de la matriz donde vive este pilar.  
   _valor marketing:_ medio — mapea territorio→distribución; útil al armar el calendario
+- **pillars[].anchor** `{ title_working, asset_id }` _(C17 — migró de 2.4)_ — La pieza **cornerstone** del pilar: el título/ancla del que cuelgan sus ángulos. Raíz diagnóstica del loop (si TODOS los ángulos de un pilar fallan → se re-planea el ancla; `spec_Superficies §0`).  
+  _valor marketing:_ alto — la raíz temática que ordena el pozo generativo de ángulos del pilar.
+- **ratio_policy_plain** _(C17 — migró de 2.4; vive en el `PillarSet`, no por pilar)_ — La política dar:pedir en llano (Vaynerchuk): de cada N piezas cuántas DAN valor vs cuántas PIDEN; default 3:1, 5:1 si el avatar viene quemado de gurús. La **Agenda** la usa como medidor del mes.  
+  _valor marketing:_ alto — regula la proporción venta/valor de todo el calendario; protege la confianza de la audiencia.
 - **status / signed_at / metadata** — Trío estándar draft/signed + timestamp + bolsa extra.  
   _valor marketing:_ bajo — control de flujo
 
-### 2.4 — `atomization_map`  
+### 2.4 — `atomization_map` · ⚰️ MUERTO (C17)
+
+> **⚰️ Esta capa MURIÓ con C17 (2026-07-06) — inventario histórico, no schema vigente.** `AtomizationMap`/
+> `Atomization`/`atomGateReady` se borraron de `content-plan.ts`. La «multiplicación» 1 ancla→N derivados
+> ya no existe: la unidad de producción es el **ÁNGULO** (2.5) y la pieza = **ángulo × canal** (generativo,
+> no ~28 finitas). Sus dos campos con vida **migraron a 2.3**: `anchor` (`Pillar.anchor`) y `ratio_policy_plain`
+> (`PillarSet.ratio_policy_plain`). Los bullets de abajo describen lo que 2.4 FUE — no firmes derivados.  
 _creado por: lib/schemas/content-plan.ts (AtomizationMap + Atomization) · app/api/phase2/step-proposal/route.ts + components/phase2/phase2-thread.tsx (POR AVATAR)_
 
 - **schema_version** — Versión del schema (default 'v1').  
@@ -1019,6 +1061,10 @@ _creado por: lib/schemas/content-plan.ts (AtomizationMap + Atomization) · app/a
 
 ### 2.5 — `hook_library`  
 _creado por: lib/schemas/content-plan.ts (HookLibrary + Hook) · app/api/phase2/step-proposal/route.ts + components/phase2/phase2-thread.tsx (POR AVATAR; regeneración quirúrgica por gancho vía buildHookRegenSystem)_
+
+> **C17 — la capa clave.** Cada `hooks[]` es un **ÁNGULO** (la unidad de producción, rico y sagrado), no
+> «solo una apertura»: `pieza = ángulo × canal`. El operador ELIGE el ángulo (`hook_id`) y el develop lo
+> usa verbatim. El pozo es generativo (~10/pilar × pilares → años de contenido).
 
 - **schema_version** — Versión del schema (default 'v1').  
   _valor marketing:_ bajo — plomería
