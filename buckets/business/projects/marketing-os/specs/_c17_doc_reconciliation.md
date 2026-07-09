@@ -21,10 +21,11 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
 
 - [x] **`spec_Superficies_Produccion.md`** ✅ (2026-07-08) — Ángulos + Media + Agenda + `scheduled_posts`,
       con la doctrina buena cosechada del Estudio superseded. Es la autoridad nueva a la que apuntan los demás.
-- [ ] **`spec_Campanas.md`** (NUEVO — recordatorio del operador «no lo podemos olvidar»). La capa
-      evento→ventana→piezas con coherencia (R1 `docs/research/campanas-marketing-real.md`), re-expresada
-      sobre C17: `scheduled_posts.campaign_id`, la cascada de override de personaje/set por campaña
-      (Identidad §2.2), la oferta disparada por radar. Diseñada, sin spec, sin construir.
+- [x] **`spec_Campanas.md`** ✅ (2026-07-09) — la capa evento→ventana→arco re-expresada sobre C17: pieza de
+      campaña = ángulo × canal (mismo `/api/estudio/produce`, sin `CampaignPiece`/`kind`), `scheduled_posts.campaign_id`
+      (aditiva), cascada de cast vía `CastOverride`/`resolveCast` (Identidad §2.2, cero código nuevo), oferta que
+      legitima la urgencia C12, arco propuesto (chips fantasma → reales), evergreen generativo intacto. Conserva las
+      decisiones de R1 §2; reemplaza su §3 (modelo muerto).
 
 ## B. P0 — dead model presentado como VIVO (riesgo alto, frenar ya)
 - [x] `spec_Estudio_Produccion_Publicacion.md` — banner SUPERSEDED (2026-07-08).
@@ -45,9 +46,10 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
       «biblioteca») → Agenda/Media/ángulo; el plan es generativo. (El motor radar/temporalidad sobrevive.)
 
 ## C. P1 — referencias muertas de carga / contradicciones
-- [ ] `docs/research/campanas-marketing-real.md` — «plan finito / nada de contenido infinito» (302–303
-      contradice C17), 28 piezas 2.4, «derivados de 2.4» (250, 267), `rotateHook` (306); reconciliar el
-      modelo de campaña con `scheduled_posts`. (Alimenta `spec_Campanas`.)
+- [x] `docs/research/campanas-marketing-real.md` ✅ (2026-07-09) — banner en §3 que la marca SUPERSEDED por
+      `spec_Campanas.md` (ahí se reconcilia `PlanSlot`/`buildCampaignSlots`/`rotateHook`/`kit_variant`/«plan
+      finito»/derivados 2.4 → `scheduled_posts`/ángulo×canal/`CastOverride`/evergreen generativo). §1/§2
+      (hallazgos + decisiones) siguen VÁLIDOS y citados por el spec — se conservan como registro de investigación.
 - [ ] `specs/build_plan_produccion_v3_motor_coherencia.md` — «Gancho por derivado (rotación)» (124);
       «Estudio v2 grid» (60) → Ángulos/Media.
 - [ ] `specs/build_plan_experiencia_canonica.md` — R4 «2.4 atomización» (131), pilar «multiplicador» (110)

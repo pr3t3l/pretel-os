@@ -218,6 +218,14 @@ y "un asset pertenece a una sola campaña".
 
 ## 3. Spec borrador de campañas para Papandi
 
+> **⚠️ SUPERSEDED por `specs/spec_Campanas.md` (2026-07-09).** Esta §3 se escribió ANTES de C17 y quedó
+> sobre el modelo muerto: `buildCampaignSlots`/`mergePlans`/`PlanSlot`, `rotateHook`, `kit_variant jsonb`,
+> `CampaignPiece` con `kind`, «derivados de 2.4», «plan finito». El spec re-expresa TODO esto sobre C17
+> (pieza de campaña = ángulo × canal por el mismo `/api/estudio/produce`; `scheduled_posts.campaign_id`
+> aditiva; cascada de cast vía `CastOverride`/`resolveCast`; el evergreen es GENERATIVO — «finito» aplica
+> solo a la campaña). **§1 (hallazgos) y §2 (tabla de decisiones) SIGUEN VIGENTES** y son la base citada del
+> spec — se conservan como registro de investigación. Lee esta §3 como historia, no como diseño vigente.
+
 ### 3.1 Modelo de datos
 
 ```sql
