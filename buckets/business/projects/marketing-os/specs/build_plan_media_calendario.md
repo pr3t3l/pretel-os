@@ -139,8 +139,13 @@ y el diagnóstico por pilar (C17).
   - **C2+C3 ✅** (sandia `68ea61f`): la página `/agenda` — rejilla del mes (reusa `cal-*` + monthCells)
     con las agendas reales + marcadores de radar + medidor dar:pedir; panel del día con «Agendar aquí»
     (hora + toggle `Sin asignar | Reusar` + piezas verdes → crea `scheduled_posts`).
-  - **C4** — pendiente: pulido del medidor + aviso al agendar fuera de ratio (parte ya en C2).
-  - **SWAP** — pendiente (aprobación): retirar `/calendar`, apuntar el nav a `/agenda`.
+  - **C4 ✅** (sandia `1eeed54`): aviso de ratio en el panel del día al agendar un «pedir» fuera de
+    política (per-proyecto 2.3, default 3:1); las piezas que piden se marcan «⚠ pide». Solo avisa.
+  - **SWAP** — pendiente (aprobación): retirar `/calendar` **y** `/estudio` viejos, apuntar el nav
+    («Producir»→`/angulos`, «Calendario»→`/agenda`). Los dos swaps acumulados, mismo paso.
+
+> **Fase C funcional completa (C1–C4).** Agendar verificado en producción (3 posts, día correcto,
+> zona horaria consistente: se guarda UTC, se lee local). Solo queda el SWAP, a la espera del OK.
 
 ## Decisiones firmadas (2026-07-08)
 
