@@ -31,13 +31,14 @@ en su ángulo      producido        a lo aprobado     sale         de automejora
 1. **Media = por PROYECTO**, con filtro por avatar (no por-avatar). Para reusar «lo de hace un año»
    quieres verlo todo junto. (operador 2026-07-08)
 
-2. **Ratio dar:pedir = política POR PROYECTO**, ya se lee de `ratio_policy_plain`; **no** una
-   constante global. `3:1` es solo el *default* cuando no hay política. No hay verdad universal
-   (la industria cita 3:1, 4:1, 80/20 — heurísticas). Editable. **Adaptativo desde métricas (v2):**
-   si la audiencia tolera más «pedir» sin caer seguidores/engagement, se afloja sola; si castiga,
-   se aprieta. Necesita la conexión de métricas (aún no existe).
+2. **Ratio dar:pedir = política POR PROYECTO** ✅ *FIRMADO 2026-07-08 — ya operativo*. Se lee de
+   `ratio_policy_plain` (2.3, fallback 2.4); **no** una constante global. `3:1` es solo el *default*
+   cuando no hay política. No hay verdad universal (la industria cita 3:1, 4:1, 80/20 — heurísticas).
+   Editable. **Adaptativo desde métricas (v2):** si la audiencia tolera más «pedir» sin caer
+   seguidores/engagement, se afloja sola; si castiga, se aprieta. Necesita la conexión de métricas.
 
-3. **Doctrina de reposteo** (respuesta al «¿algunos canales castigan repostear?» — sí):
+3. **Doctrina de reposteo** ✅ *FIRMADO 2026-07-08* (respuesta al «¿algunos canales castigan
+   repostear?» — sí):
    - **El ÁNGULO se reusa infinito** — es el corazón de C17. Reusar = pieza nueva para otro canal
      (*repurpose*). Siempre bien.
    - **Cross-canal** (mismo mensaje a IG + TikTok + YT) = **piezas distintas** (el blog no es el
