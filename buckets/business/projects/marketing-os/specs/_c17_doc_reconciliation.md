@@ -19,11 +19,8 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
 
 ## A. LOS 2 SPECS QUE FALTAN (el hueco de raíz — esto es lo gordo)
 
-- [ ] **`spec_Superficies_Produccion.md`** (NUEVO) — Ángulos + Media + Agenda + tabla `scheduled_posts`.
-      La re-arquitectura C17 solo vive en build_plans; ningún `spec_` la captura, por eso TODOS los
-      specs apuntan al trío muerto «Estudio/Calendario/Biblioteca». **Cosecha** la doctrina buena de
-      `spec_Estudio_Produccion_Publicacion` (§0 honestidad, §3.2–3.6 calidad/imagen/video, §4 wrapper,
-      §5 biblioteca, §9 pricing). Es la autoridad nueva a la que apuntan los demás.
+- [x] **`spec_Superficies_Produccion.md`** ✅ (2026-07-08) — Ángulos + Media + Agenda + `scheduled_posts`,
+      con la doctrina buena cosechada del Estudio superseded. Es la autoridad nueva a la que apuntan los demás.
 - [ ] **`spec_Campanas.md`** (NUEVO — recordatorio del operador «no lo podemos olvidar»). La capa
       evento→ventana→piezas con coherencia (R1 `docs/research/campanas-marketing-real.md`), re-expresada
       sobre C17: `scheduled_posts.campaign_id`, la cascada de override de personaje/set por campaña
