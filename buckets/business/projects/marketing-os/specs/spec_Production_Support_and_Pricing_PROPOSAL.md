@@ -6,7 +6,10 @@
 **Origen:** sesión sim Papandi (2026-06-27). El operador identificó el hueco más grande del sistema: producimos un *plan* de contenido (Fases 0–2) pero no la *producción/ejecución* real. Sin ejecución no hay publicación; sin publicación no hay dinero (la KPI). Esta propuesta diseña el puente.
 **Cruza con:** `spec_Phase_2_Contenido.md` (la atomización declara el modo por pieza), `spec_Phase_3_Distribucion.md` (ejecuta), `spec_Admin_Cost_Intelligence.md` (Módulo C — dueño de la vista admin/billing; aquí va lo de cara al usuario).
 
----
+> **C17 (2026-07-09):** el modelo sobrevive — solo cambia la unidad: el `production_mode` cuelga de la
+> **pieza = ángulo × canal** (`spec_Superficies_Produccion.md §4`), NO de «un derivado de la atomización 2.4»
+> (murió). «biblioteca» = **Media** (`/media`). Donde el doc diga «pieza de la atomización 2.4», leer «pieza
+> ángulo × canal».
 
 ## 0. El problema (la brecha promesa–realidad)
 
@@ -14,7 +17,7 @@ Papandi promete *"te llega hecho"*. Es **verdad para texto** (artículo, copy, g
 
 ## 1. El modelo: "modo de producción" por entregable
 
-Cada pieza de la atomización (Fase 2.4) lleva un **`production_mode`**. En vez de lógica a medida por canal, un set chico de modos cubre todo:
+Cada **pieza (ángulo × canal, C17; ex «pieza de la atomización 2.4»)** lleva un **`production_mode`**. En vez de lógica a medida por canal, un set chico de modos cubre todo:
 
 | Modo | Quién produce | Costo IA | Ejemplos |
 |---|---|---|---|
@@ -91,7 +94,7 @@ Sandi es el **wrapper en medio**: una capa que abstrae sobre múltiples endpoint
 ## 8. Cruce con specs + pendientes
 
 - **Módulo C (`spec_Admin_Cost_Intelligence.md`)** es el dueño de la vista admin: billing (Stripe, item #8), ledger de créditos + perfiles de pago (#9) — todos marcados "falta". Esta propuesta define el **lado de cara al usuario** que el Módulo C administrará. **No duplicar:** el ledger y el cobro viven en Módulo C; aquí viven los **modos, capacidades, wrapper, biblioteca y precio-por-modo**.
-- **`spec_Phase_2`:** añadir `production_mode` por derivado en la atomización (2.4) + un candado de "producibilidad" (cada pieza vs capacidad del usuario → degradar/soportar/sustituir, nunca dejar trabado).
+- **`spec_Phase_2`:** el `production_mode` cuelga de la **pieza (ángulo × canal, C17)** — no «por derivado de 2.4» (murió) — + un candado de "producibilidad" (cada pieza vs capacidad del usuario → degradar/soportar/sustituir, nunca dejar trabado).
 - **`spec_Phase_3`:** ejecutar respetando el modo (notificación con la guía/asset adentro, no solo el copy).
 
 ## 9. Decisiones abiertas (para sesión dedicada)

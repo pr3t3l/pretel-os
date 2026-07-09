@@ -67,18 +67,21 @@ loop. Superficies: **Ángulos** (`/angulos`, produce, media dentro) · **Media**
 - [x] `docs/app/README.md` ✅ (2026-07-09) — entrada de índice de `pipeline-de-ideas` marcada SUPERSEDED (C17).
 
 ## D. P2 — snapshots, cross-refs, menor
-- [ ] `docs/app/design-audit-2026-07.md` — cubrir `/angulos`, `/media`, `/agenda`; marcar `/estudio` y
-      `/calendar` como fallbacks pre-swap.
-- [ ] `specs/build_plan_modelo_contenido.md` — nota: P3/P4 (`buildPublicationPlan` generativo + calendario
-      auto) lo supera el modelo `scheduled_posts`/Agenda de `build_plan_media_calendario.md`.
-- [ ] `docs/research/doctrina-por-canal.md` — re-apuntar `CHANNEL_MAX_PER_DAY`/`plan.ts` (5, 155, 217)
-      al modelo de cadencia/`scheduled_posts`.
-- [ ] `README.md` (raíz) — añadir `scheduled_posts` a la lista de tablas.
-- [ ] `docs/research/doctrina-video-2026.md` — verificar (no reescribir) que las expectativas por tipo
-      leen contra el **ángulo**; `Overall_WF.md` residuos históricos (no requiere acción).
-- [ ] Cosméticos varios: `spec_AI_Gateway_Wrapper`, `spec_Production_Support_and_Pricing`,
-      `spec_Phase_3_Distribucion`, `spec_Admin_Cost_Intelligence`, `spec_Phase_0_Setup_Agent`
-      (cross-refs «Estudio/Calendario» → superficies nuevas).
+- [x] `docs/app/design-audit-2026-07.md` ✅ (2026-07-09) — nota C17 bajo el scorecard + filas Estudio/Calendar
+      marcadas ⚰️ jubiladas → diseño heredado por `/angulos`+`/media` y `/agenda`. (Audit propio de las 3 nuevas = P2, no bloquea.)
+- [x] `specs/build_plan_modelo_contenido.md` ✅ (2026-07-09) — banner: P3/P4 (`buildGenerativePlan`/`plan.ts` +
+      calendario auto) superados por `scheduled_posts`/Agenda; `plan.ts` borrado; P5 (contracción) HECHO.
+- [x] `docs/research/doctrina-por-canal.md` ✅ (2026-07-09) — 4 refs a `CHANNEL_MAX_PER_DAY`/`plan.ts` (murió con
+      el swap) re-apuntados a la cadencia del lookup + la Agenda; la doctrina (LinkedIn 1/día) intacta.
+- [x] `README.md` (raíz) ✅ N/A (2026-07-09) — la README de sandia es lean (Stack + Architecture Rules), **no
+      tiene lista de tablas**; `scheduled_posts` queda documentado en `spec_Superficies §3` + `spec_Campanas §5` (su hogar correcto).
+- [x] `docs/research/doctrina-video-2026.md` ✅ (2026-07-09) — VERIFICADO: las expectativas por tipo leen contra
+      la pieza=ángulo×canal + gancho + apertura visual (sin refs a 2.4); nota C17 en el footer. `Overall_WF.md` = residuos históricos (sin acción).
+- [x] Cosméticos varios ✅ (2026-07-09): `spec_AI_Gateway_Wrapper_PROPOSAL` (nota: Estudio→develop de Ángulos,
+      biblioteca→Media) · `spec_Production_Support_and_Pricing_PROPOSAL` (nota + `production_mode` por pieza
+      ángulo×canal, no por derivado 2.4) · `spec_Phase_3_Distribucion` (nota: calendario→Agenda; repurpose
+      alinea C17.1) · `spec_Admin_Cost_Intelligence` (pricing del Estudio→de producción ángulo×canal) ·
+      `spec_Phase_0_Setup_Agent` (limpio, 0 refs).
 
 ## D-bis. FASE 2 — el estado REAL capa por capa (auditoría de CÓDIGO, la que faltaba)
 

@@ -5,6 +5,11 @@
 **Decisión de alcance:** spec **APARTE** de `spec_Admin_Cost_Intelligence.md` (Módulo C). El Gateway = **integración** (llamar a los proveedores + el esquema de prompt); el **costo/billing/catálogo-al-día** = Módulo C. Se cruzan, no se duplican.
 **Consumidor:** el Estudio (`spec_Estudio §4/§8`) — al **Desarrollar idea** se produce el `design_spec`; el Gateway es el **P5** del build de producción (ÚLTIMO: tras *desarrollar → aprobar*, "Producir media" llama aquí).
 
+> **C17 (2026-07-09):** «el Estudio» consumidor = hoy el **develop de Ángulos** (`/api/estudio/produce`; el
+> código `lib/estudio/*` conservó el nombre, la superficie no). «biblioteca» = **Media** (`/media`). Las §§ de
+> `spec_Estudio` → `spec_Superficies_Produccion.md`. El **contrato del Gateway no cambia** (design_spec → motor
+> → media); la pieza que lo dispara es `ángulo × canal`.
+
 ---
 
 ## 0. El hallazgo que lo define (investigación 2026-06-30, verificada)

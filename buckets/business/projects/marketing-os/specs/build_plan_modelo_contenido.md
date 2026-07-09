@@ -4,6 +4,13 @@
 **Decide:** el orden de ejecución, tests por fase, la migración, y **cómo el cambio se relaciona con la producción de video** (input-side vs output-side).
 **Fuentes:** `spec_Modelo_Contenido.md` (autoridad) · `_audit_change_ledger.md` C17 · **`docs/app/ensamblador-de-prompts.md`** (el compilador de dos etapas — autoridad de la Capa 2/develop) · `docs/research/doctrina-video-2026.md` (qué espera el modelo de video) · mapa de producción (explorador, esta sesión) · `spec_Estudio_Produccion_Publicacion.md`.
 
+> **⚠️ C17 (2026-07-09) — estado tras el swap.** El modelo (PILAR→ÁNGULO→PIEZA) es LA ley (firmado). Pero
+> **P3** (`buildGenerativePlan`/`buildPublicationPlan` en `plan.ts` — sorteo del pozo con slots ○) y **P4**
+> (calendario auto de slots) los **superó** el modelo `scheduled_posts`/**Agenda** (`build_plan_media_calendario.md`):
+> el operador **agenda** lo producido (no hay plan computado ni slots ○ auto). `plan.ts` se **borró** en el swap.
+> **P5** (contracción: borrar 2.4/atomización + migrar) está **HECHO** (swap 2026-07-08). Autoridad de
+> superficies: `spec_Superficies_Produccion.md`. Lee P3/P4 de abajo como el enfoque intermedio, ya superado.
+
 ---
 
 ## Estado de ejecución — 2026-07-07

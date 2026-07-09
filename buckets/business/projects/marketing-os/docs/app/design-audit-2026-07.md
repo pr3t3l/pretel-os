@@ -10,8 +10,8 @@
 
 | Surface | Score | Verdict |
 |---|---|---|
-| **Estudio** (`/projects/:id/estudio`) | **10/10** | Redesigned today from `Estudio Redesign.html`. Reference implementation. |
-| **Calendar** (`/calendar`) | 9/10 | Ported design (`cal-*`), token-clean. Only the `Sandi` crumb. |
+| **Estudio** (`/estudio`) ⚰️ jubilada (swap C17) | **10/10** | Reference implementation — su diseño migró a **Ángulos** (`/angulos`) + **Media** (`/media`). |
+| **Calendar** (`/calendar`) ⚰️ jubilada (swap C17) | 9/10 | Diseño `cal-*` portado → lo reusa **Agenda** (`/agenda`). |
 | **Landing** (`/`) | 9/10 | Rebuilt on tokens; a few icons outside the canonical set (see icons). |
 | **Dashboard** | 7.5/10 | Pattern ✓, spotlight ✓ — but **fake phase state** (see P0). |
 | **Project hub** (`/projects/:id`) | 8/10 | Header pattern ✓, cards ✓. `Sandi` crumb. |
@@ -22,6 +22,12 @@
 | `dev/ux` | exempt | Demo route; its own comment says delete post-M2. |
 
 **Token compliance is excellent** — only 3 raw hex in all TSX (`#0a0a0a` themeColor in layout — should be `#100F0D`; `#888888` editor default; `#FFFFFF` canvas overlay text) — everything else runs on `var(--token)`.
+
+> **⚠️ C17 (2026-07-09):** este audit es del **2026-07-02**. El swap (2026-07-08) **jubiló `/estudio` y
+> `/calendar`** y estrenó tres superficies (`spec_Superficies_Produccion.md`): **`/angulos`** (el taller) +
+> **`/media`** (biblioteca) heredan el diseño de Estudio; **`/agenda`** hereda el `cal-*` de Calendar. Las
+> filas de Estudio/Calendar de arriba se leen como el **diseño-base** que esas rutas heredan, no como rutas
+> vivas. Falta un audit propio de las 3 nuevas superficies (P2, no bloquea).
 
 ---
 

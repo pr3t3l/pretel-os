@@ -8,6 +8,12 @@
 
 **Reference**: `Overall_WF.md` §"Strategy Lifecycle" + §"Canonical Project Hierarchy". `spec_Phase_2_Contenido.md` §10 (`phase_3_handoff`).
 
+> **C17 (2026-07-09):** la **superficie** de este calendario de distribución = **Agenda** (`/agenda`,
+> `scheduled_posts` — `spec_Superficies_Produccion.md §3`). El modelo «1 asset madre → N filas / `repurpose_format`»
+> **alinea** con la doctrina de reposteo C17.1 (1 **ÁNGULO** → N canales = piezas distintas); el «ratio value:cta
+> sobre filas del calendario» = el medidor dar:pedir de la Agenda. La unidad madre es el **ángulo**, no un
+> derivado de 2.4.
+
 ---
 
 ## 0. Contexto y propósito

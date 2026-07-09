@@ -197,4 +197,4 @@ Notas de diseño del catálogo:
 
 ---
 
-*Documento de investigación — julio 2026. Sin código; el catálogo §2 y los ajustes §3 alimentan el próximo spec del Estudio (F-Video).*
+*Documento de investigación — julio 2026. Sin código; el catálogo §2 y los ajustes §3 alimentan el spec de video (F-Video). (C17: las expectativas por tipo leen contra la **pieza = ángulo × canal** + el gancho + la apertura visual — verificado, sin referencias al derivado 2.4; «Estudio» → Ángulos/`spec_Superficies_Produccion.md`.)*
