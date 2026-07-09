@@ -1,5 +1,11 @@
 # Reconciliación documental C17 — work-order
 
+> **✅ COMPLETADO 2026-07-09.** Todas las secciones (A specs nuevos · B P0 · C P1 · D P2 · E cierre) cerradas.
+> Resultado: 2 specs nuevos (`spec_Superficies_Produccion.md`, `spec_Campanas.md`) + ~18 docs reconciliados a
+> C17 (banner + cirugía CORE, preservando snapshots). Registrado como `C18` en `_audit_change_ledger.md`.
+> Ya se puede construir sobre la doc sin apuntar al modelo muerto. **Producto pendiente** (no doc): Fase
+> Identidad B1b/B2/B3, construcción de campañas (CM1-CM4 de `spec_Campanas`), el loop de medición.
+
 > **Por qué existe:** C17 (firmado 2026-07-06) invirtió el modelo de contenido y **reconstruimos toda
 > la superficie de producción/distribución** (Estudio→Ángulos, Media nueva, Calendario→Agenda, el
 > derivado/28/plan-finito muertos). La doctrina se aplicó limpio solo en 2 sitios; **el resto de la
@@ -109,8 +115,8 @@ La auditoría por-términos no vio esto: **C17 es una migración A MEDIAS**. `co
 **Consecuencia para los docs:** `spec_Phase_2_Contenido` y `Overall_WF.md` no necesitan «arreglar §8» — necesitan **describir el modelo objetivo por capa** (2.3 con ancla+ratio, 2.4 muerta, 2.5 = ángulo) y **marcar honestamente que el contract está pendiente con el swap**. Es más profundo que lo que la auditoría por-términos reportó.
 
 ## E. Cierre
-- [ ] Fila en `_audit_change_ledger.md` que registre la reconciliación (C18: doc-debt C17 saldada).
-- [ ] Ledger C17 row: marcar sus landing-targets como hechos.
+- [x] Fila `C18` en `_audit_change_ledger.md` ✅ (2026-07-09) — doc-debt C17 saldada (2 specs nuevos + ~18 docs).
+- [x] Ledger C17 row ✅ (2026-07-09) — landing-targets marcados hechos + P1-P5 CERRADO + doc-landing saldada.
 
 ---
 
