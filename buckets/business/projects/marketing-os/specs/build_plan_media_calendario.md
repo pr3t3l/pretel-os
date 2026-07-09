@@ -134,7 +134,13 @@ y el diagnóstico por pilar (C17).
 - **Fase B ✅** desplegada (sandia `bbd5dd4`): la página **Media** (`/projects/[id]/media`) —
   biblioteca del proyecto + filtros + franja de métricas apagada; enlaza a la pieza en `/angulos`
   vía `?piece=<id>` (un solo drawer, cero duplicación). Nav «Media» entre Producir y Calendario.
-- **Fase C** — pendiente (el Calendario, el grande).
+- **Fase C** — en marcha (el Calendario, de cero, en `/agenda`; el `/calendar` viejo vive hasta el SWAP):
+  - **C1 ✅** (sandia `d3aec03`): tabla `scheduled_posts` (aplicada a producción) + accesor `lib/api/schedule.ts`.
+  - **C2+C3 ✅** (sandia `68ea61f`): la página `/agenda` — rejilla del mes (reusa `cal-*` + monthCells)
+    con las agendas reales + marcadores de radar + medidor dar:pedir; panel del día con «Agendar aquí»
+    (hora + toggle `Sin asignar | Reusar` + piezas verdes → crea `scheduled_posts`).
+  - **C4** — pendiente: pulido del medidor + aviso al agendar fuera de ratio (parte ya en C2).
+  - **SWAP** — pendiente (aprobación): retirar `/calendar`, apuntar el nav a `/agenda`.
 
 ## Decisiones firmadas (2026-07-08)
 
