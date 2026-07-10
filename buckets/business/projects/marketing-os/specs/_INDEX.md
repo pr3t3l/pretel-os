@@ -97,6 +97,7 @@ commit**. Un doc que no está en el índice no existe.
 | `design-system.md` | Tokens/reglas visuales. ⚠️ dice «Sandi» — pendiente del sweep de renombrado a Papandi. |
 | `design-audit-2026-07.md` | Auditoría de diseño de las 11 rutas (2026-07-02 + nota C17: falta auditar las 3 superficies nuevas). |
 | `model-selection.md` | Ruteo tarea→modelo (multi-proveedor, benchmarks, regla del 95%). |
+| `campanas-qa-plan.md` | Plan de prueba desde la UI del módulo Campañas (CM1-CM5, aceptación paso a paso). |
 | `README.md` | Índice de docs/app. |
 | `mockups/` | Mockups HTML de diseño (pre-build). `campanas-mockup.html` = la cabina de `/campanas` (arco, estados, saltos). |
 | `archive/` | Notas de ejecución históricas (declassified-execution, overnight-progress, pipeline-de-ideas ⚰️). |
