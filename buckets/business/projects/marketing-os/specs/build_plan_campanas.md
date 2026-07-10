@@ -24,7 +24,12 @@ aditivo** (nada rompe el evergreen que ya funciona).
 
 ## 2. Milestones (cada uno cierra verde: `npm run verify` EXIT 0 + e2e del slice)
 
-### CM1 — Datos + el proponer puro (la foundation)
+### CM1 — Datos + el proponer puro (la foundation) — ✅ HECHO (2026-07-09)
+
+> **✅ Aplicado a prod** (`qxhfmsojpjmnlzaduzao`, vía Supabase MCP): `project_campaigns` (4 RLS policies) +
+> `project_pieces.campaign_id/campaign_phase` + `scheduled_posts.campaign_id`. Verificado: las 18 piezas
+> existentes siguen evergreen (`campaign_id NULL`), cero advisories de seguridad nuevos. Código en sandia
+> `5d29761`, `npm run verify` EXIT 0 (371 tests, 10 de `arc.test.ts`).
 1. Migración `supabase/migrations/<ts>_campaigns.sql`:
    - `project_campaigns` (campos de `spec §5`: id, project_id, avatar_key, name, slug, kind, concept, offer,
      event_id, starts_on, peak_on, ends_on, policy_overrides, cast_override, hooks, arco, color, status, signed_at,
