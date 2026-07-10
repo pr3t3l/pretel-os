@@ -3,335 +3,354 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Papandi — Campañas (mockup)</title>
+<title>Papandi — Campañas (mockup, sobre el diseño de /angulos)</title>
 <style>
+  /* ─── tokens REALES de sandia (app/globals.css) ─── */
   :root{
-    --bg:#100F0D; --surface:#1a1816; --surface-2:#252321; --surface-3:#2f2c29;
-    --border:rgba(255,255,255,.09); --border-strong:rgba(255,255,255,.16);
-    --text:#ece8e3; --dim:#9a938a; --faint:#6b655d;
-    --brand:#ff5a6b; --campaign:#E63946; --green:#4ade80; --papaya:#ffb570; --info:#6aa6ff;
-    --r:8px; --rc:12px; --pad:20px;
-    --mono:ui-monospace,"SFMono-Regular","Geist Mono",Menlo,monospace;
-    --sans:system-ui,-apple-system,"Geist","Segoe UI",Roboto,sans-serif;
+    --bg:#100f0d; --surface:#1d1b18; --surface-elevated:#28251f;
+    --border-subtle:#302c27; --border:#423d37; --border-strong:#534d45;
+    --text-primary:#fbfbf8; --text-secondary:#bcb7af; --text-muted:#7a746d;
+    --brand:#ff5a6b; --brand-hover:#ff7280; --brand-fg:#1a0e10; --brand-soft:#2a1518;
+    --secondary:#4ade80; --secondary-soft:#14271c; --accent-warm:#ffb570;
+    --warning:#fb923c; --info:#60a5fa;
+    --phase-pending:#4a453f; --phase-progress:#ffb570; --phase-complete:#4ade80;
+    --radius:11px; --radius-card:18px; --radius-pill:999px;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow-md:0 4px 12px rgba(0,0,0,.36);
+    --glow-soft:0 0 20px -8px rgba(255,90,107,.5);
+    --font-mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --font-sans:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --campaign:#E63946;
+  }
+  :root[data-theme="light"], .light{
+    --bg:#fbf6ee; --surface:#fff; --surface-elevated:#f5f0e7;
+    --border-subtle:#e7e5de; --border:#d6d3cb; --border-strong:#c4c0b6;
+    --text-primary:#1a1816; --text-secondary:#57534e; --text-muted:#92908a;
+    --brand:#e63946; --brand-hover:#c92e3b; --brand-fg:#fff; --brand-soft:#fcebec;
+    --secondary:#2d5f3f; --secondary-soft:#e8f0ea; --accent-warm:#f4a261;
+    --warning:#e07a1f; --info:#2563a3;
+    --phase-pending:#d6d3cb; --phase-progress:#f4a261; --phase-complete:#2d5f3f;
+    --shadow-sm:0 1px 2px rgba(80,58,38,.12); --shadow-md:0 8px 22px rgba(80,58,38,.16);
   }
   @media (prefers-color-scheme:light){
-    :root{--bg:#f7f4f0;--surface:#fff;--surface-2:#f1ece6;--surface-3:#e7e0d8;
-      --border:rgba(0,0,0,.09);--border-strong:rgba(0,0,0,.15);--text:#1c1917;--dim:#6b655d;--faint:#9a938a;}
+    :root:not([data-theme="dark"]){
+      --bg:#fbf6ee; --surface:#fff; --surface-elevated:#f5f0e7;
+      --border-subtle:#e7e5de; --border:#d6d3cb; --border-strong:#c4c0b6;
+      --text-primary:#1a1816; --text-secondary:#57534e; --text-muted:#92908a;
+      --brand:#e63946; --brand-hover:#c92e3b; --brand-fg:#fff; --brand-soft:#fcebec;
+      --secondary:#2d5f3f; --secondary-soft:#e8f0ea; --accent-warm:#f4a261;
+      --warning:#e07a1f; --info:#2563a3;
+      --phase-pending:#d6d3cb; --phase-progress:#f4a261; --phase-complete:#2d5f3f;
+    }
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
-  .mono{font-family:var(--mono)}
-  .muted{color:var(--dim)} .faint{color:var(--faint)}
+  body{margin:0;background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
 
-  /* ---- topbar ---- */
-  .topbar{display:flex;align-items:center;gap:22px;padding:12px 24px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:5}
-  .brand{display:flex;align-items:center;gap:9px;font-weight:650;letter-spacing:.2px}
-  .melon{width:22px;height:22px;border-radius:50%;background:conic-gradient(from 220deg,var(--campaign),#ff8a5b 40%,var(--papaya) 55%,var(--green) 56%,#2f6b3d 62%,var(--campaign));box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
-  .nav{display:flex;gap:4px;margin-left:8px}
-  .nav a{padding:7px 13px;border-radius:var(--r);color:var(--dim);text-decoration:none;font-weight:500}
-  .nav a.on{background:var(--surface-3);color:var(--text)}
-  .nav a:hover:not(.on){color:var(--text)}
-  .proj{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--dim);font-size:13px}
-  .proj .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-  .ribbon{position:fixed;top:10px;right:-42px;transform:rotate(45deg);background:var(--papaya);color:#241a0e;font-weight:700;font-size:11px;letter-spacing:1px;padding:4px 52px;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  /* ─── clases REALES de /angulos ─── */
+  .ds-eyebrow{color:var(--text-muted);font-size:12px;font-weight:600;letter-spacing:.12em;line-height:1;text-transform:uppercase}
+  .ds-h1{margin:0;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:40px}
+  .ds-h2{margin:0;font-size:24px;font-weight:600;letter-spacing:-.01em;line-height:32px}
+  .ds-caption{color:var(--text-muted);font-size:12px;font-weight:500;line-height:16px}
+  .mono{font-family:var(--font-mono)}
+  .content-col{width:100%;max-width:1320px}
+  .card{border:1px solid var(--border-subtle);border-radius:var(--radius-card);background:var(--surface)}
+  .est-fg-label{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .est-chip{border:1px solid var(--border-subtle);border-radius:var(--radius-pill);background:transparent;color:var(--text-secondary);padding:6px 13px;font-size:12.5px;font-weight:500;cursor:pointer}
+  .est-chip[data-active="true"]{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+  .est-group-head{display:flex;align-items:baseline;gap:10px;margin-top:6px}
+  .est-group-head .gt{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .est-group-head .gc{font-family:var(--font-mono);font-size:12px;color:var(--text-muted)}
+  .est-group-head .rule{flex:1;height:1px;background:var(--border-subtle);margin-left:4px}
+  .est-pillar-tag{font-size:11.5px;color:var(--text-muted);display:inline-flex;align-items:center;gap:6px}
+  .est-pillar-tag .pd{width:7px;height:7px;border-radius:2px;flex:none;background:var(--accent)}
+  .est-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:var(--radius-pill);white-space:nowrap;border:1px solid transparent}
+  .est-status .sd{width:6px;height:6px;border-radius:999px;background:currentColor}
+  .est-status[data-s="dar"]{color:var(--secondary);border-color:color-mix(in srgb,var(--secondary) 40%,transparent);background:var(--secondary-soft)}
+  .est-status[data-s="pedir"]{color:var(--brand);border-color:color-mix(in srgb,var(--brand) 40%,transparent);background:var(--brand-soft)}
+  .est-idea-chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:var(--radius-pill);font-size:11px;font-weight:600;border:1px solid var(--border-subtle);color:var(--text-primary)}
+  .est-idea-chip .cd{width:7px;height:7px;border-radius:999px;background:var(--accent)}
+  .est-btn-develop{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;border:0;border-radius:var(--radius);background:var(--brand);color:var(--brand-fg);font-size:13px;font-weight:600;cursor:pointer;padding:0 16px}
+  .est-btn-develop:hover{background:var(--brand-hover);box-shadow:var(--glow-soft)}
+  .est-mini-btn{border:1px solid var(--border-subtle);border-radius:var(--radius);background:transparent;color:var(--text-secondary);padding:7px 11px;font-size:12px;cursor:pointer}
+  .est-mini-btn:hover{border-color:var(--border);color:var(--text-primary)}
+  .est-acard{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface);box-shadow:var(--shadow-sm);overflow:hidden}
+  .est-acard .acard-head{display:flex;align-items:center;gap:8px;padding:13px 15px 0}
+  .est-acard .acard-pain{padding:10px 15px 14px;display:flex;flex-direction:column;gap:5px}
+  .est-acard .acard-pain .p-text{font-size:14.5px;font-weight:600;line-height:20px;letter-spacing:-.01em}
+  .est-acard .acard-pain .p-meta{font-size:11.5px;color:var(--text-muted);margin:0}
+  .est-acard .acard-label{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 
-  /* ---- layout ---- */
-  .wrap{display:flex;gap:20px;padding:20px 24px;max-width:1360px;margin:0 auto;align-items:flex-start}
-  .col-list{width:312px;flex:none}
-  .col-main{flex:1;min-width:0}
-  @media (max-width:940px){.wrap{flex-direction:column}.col-list{width:100%}}
+  /* ─── shell (aprox. app-shell) ─── */
+  .shell{display:grid;grid-template-columns:216px minmax(0,1fr);min-height:100vh}
+  .side{border-right:1px solid var(--border-subtle);background:var(--surface);padding:18px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:650;letter-spacing:.2px;padding:6px 8px 16px}
+  .melon{width:22px;height:22px;border-radius:50%;background:conic-gradient(from 220deg,var(--campaign),#ff8a5b 40%,var(--accent-warm) 55%,var(--secondary) 56%,#2f6b3d 62%,var(--campaign));box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius);color:var(--text-secondary);text-decoration:none;font-size:13.5px;font-weight:500}
+  .navitem:hover{background:var(--surface-elevated);color:var(--text-primary)}
+  .navitem.on{background:var(--brand-soft);color:var(--brand);font-weight:600}
+  .navitem .ic{width:16px;text-align:center;opacity:.85}
+  .side .foot{margin-top:auto;font-size:11px;color:var(--text-muted);padding:8px}
+  .topbar{display:flex;align-items:center;gap:10px;padding:12px 28px;border-bottom:1px solid var(--border-subtle);color:var(--text-muted);font-size:12.5px}
+  .topbar .dot{width:8px;height:8px;border-radius:50%;background:var(--secondary)}
+  .main{min-width:0}
+  .page{padding:26px 28px 60px;display:flex;justify-content:center}
+  .col{display:flex;flex-direction:column;gap:22px}
+  .ribbon{position:fixed;top:12px;right:-40px;transform:rotate(45deg);background:var(--accent-warm);color:#241a0e;font-weight:700;font-size:10.5px;letter-spacing:1px;padding:4px 50px;z-index:20;box-shadow:var(--shadow-md)}
 
-  .btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:var(--r);padding:10px 14px;font-weight:600;font-family:var(--sans);cursor:pointer;font-size:13.5px}
-  .btn-brand{background:var(--brand);color:#2a0a0f}
-  .btn-ghost{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
-  .btn-sm{padding:7px 11px;font-size:12.5px}
-
-  /* ---- evergreen note ---- */
-  .ever{margin:14px 0 16px;padding:12px 14px;border:1px dashed var(--border-strong);border-radius:var(--rc);background:linear-gradient(180deg,transparent,rgba(74,222,128,.04));font-size:12.5px;color:var(--dim)}
-  .ever b{color:var(--green)}
-
-  .lbl{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);margin:0 0 9px;font-weight:600}
-
-  /* ---- campaign cards (list) ---- */
-  .ccard{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--rc);padding:14px 14px 14px 18px;margin-bottom:10px;cursor:pointer;overflow:hidden}
+  /* ─── campaña: lista ─── */
+  .clist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .ccard{position:relative;border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface);box-shadow:var(--shadow-sm);padding:14px 15px 14px 18px;cursor:pointer;overflow:hidden}
   .ccard:hover{border-color:var(--border-strong)}
-  .ccard.sel{border-color:var(--campaign);box-shadow:0 0 0 1px var(--campaign),0 6px 20px rgba(0,0,0,.25)}
+  .ccard.sel{border-color:var(--campaign);box-shadow:0 0 0 1px var(--campaign),var(--shadow-md)}
   .ccard .stripe{position:absolute;left:0;top:0;bottom:0;width:5px}
-  .ccard .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .ccard .name{font-weight:650}
-  .ccard .meta{font-size:12px;color:var(--dim);margin-top:2px}
-  .pill{font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:3px 8px;border-radius:20px;white-space:nowrap}
-  .pill-active{background:rgba(74,222,128,.16);color:var(--green)}
-  .pill-draft{background:rgba(255,181,112,.16);color:var(--papaya)}
-  .pill-done{background:rgba(106,166,255,.15);color:var(--info)}
-  .prog{height:6px;border-radius:4px;background:var(--surface-3);margin-top:11px;overflow:hidden}
-  .prog>i{display:block;height:100%;border-radius:4px}
-  .prog-txt{font-size:11px;color:var(--faint);margin-top:5px}
+  .ccard .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ccard .nm{font-weight:650;font-size:14.5px}
+  .ccard .mt{font-size:11.5px;color:var(--text-muted);margin-top:2px}
+  .ccard .prog{height:6px;border-radius:4px;background:var(--surface-elevated);margin-top:11px;overflow:hidden}
+  .ccard .prog>i{display:block;height:100%;border-radius:4px}
+  .ccard .pt{font-size:11px;color:var(--text-muted);margin-top:5px}
+  .newcard{border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:transparent;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-weight:600;font-size:13.5px;min-height:104px}
+  .newcard:hover{border-color:var(--brand);color:var(--brand)}
 
-  /* ---- cockpit ---- */
-  .cockpit{background:var(--surface);border:1px solid var(--border);border-radius:var(--rc);overflow:hidden}
-  .ck-head{padding:18px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(230,57,70,.07),transparent)}
+  .ever{border:1px solid var(--border-subtle);border-left:3px solid var(--secondary);border-radius:var(--radius);padding:11px 14px;font-size:12.5px;color:var(--text-secondary);background:var(--surface)}
+  .ever b{color:var(--secondary)}
+
+  /* ─── cabina ─── */
+  .cockpit{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface);box-shadow:var(--shadow-sm);overflow:hidden}
+  .ck-head{padding:18px 20px;border-bottom:1px solid var(--border-subtle);background:linear-gradient(180deg,color-mix(in srgb,var(--campaign) 8%,transparent),transparent)}
   .ck-title{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
-  .cdot{width:14px;height:14px;border-radius:50%;background:var(--campaign);box-shadow:0 0 0 3px rgba(230,57,70,.22)}
-  .ck-title h2{margin:0;font-size:19px;font-weight:680}
-  .ck-sub{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--dim);align-items:center}
-  .ck-sub .k{color:var(--faint)}
-  .cast{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--border);border-radius:20px}
+  .cdot{width:13px;height:13px;border-radius:50%;background:var(--campaign);box-shadow:0 0 0 3px color-mix(in srgb,var(--campaign) 22%,transparent)}
+  .ck-sub{display:flex;gap:16px;flex-wrap:wrap;margin-top:11px;font-size:12px;color:var(--text-muted);align-items:center}
+  .ck-sub .k{color:var(--text-muted);opacity:.75}
+  .cast{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--border-subtle);border-radius:var(--radius-pill)}
   .cast .av{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#7a5c3a,#caa07a)}
-  .concept{padding:14px 20px;border-bottom:1px solid var(--border);font-size:14px}
-  .concept .offer{display:inline-flex;align-items:center;gap:7px;margin-top:9px;padding:6px 11px;border-radius:var(--r);background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.28);font-size:12.5px}
-  .concept .offer b{color:var(--brand)}
+  .concept{padding:14px 20px;border-bottom:1px solid var(--border-subtle);font-size:14px;color:var(--text-secondary)}
+  .concept b{color:var(--text-primary)}
+  .offer{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:6px 11px;border-radius:var(--radius);background:var(--brand-soft);border:1px solid color-mix(in srgb,var(--brand) 30%,transparent);font-size:12.5px;color:var(--text-secondary)}
+  .offer b{color:var(--brand)}
 
-  /* ---- arc board ---- */
-  .arc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px 20px}
-  @media (max-width:720px){.arc{grid-template-columns:1fr}}
-  .phase{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--rc);padding:12px}
-  .ph-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-  .ph-name{font-weight:680;font-size:13.5px;display:flex;align-items:center;gap:7px}
-  .ph-name .n{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--surface-3);color:var(--dim)}
-  .ph-date{font-size:11px;color:var(--faint)}
-  .intent{font-size:10px;font-weight:700;letter-spacing:.4px;padding:2px 7px;border-radius:20px}
-  .intent-dar{background:rgba(74,222,128,.14);color:var(--green)}
-  .intent-pedir{background:rgba(255,90,107,.15);color:var(--brand)}
+  .arc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 20px}
+  @media (max-width:820px){.arc{grid-template-columns:1fr}}
+  .phase{background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:12px}
+  .ph-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+  .ph-name{font-weight:650;font-size:13.5px;display:flex;align-items:center;gap:8px}
+  .ph-name .n{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--surface);color:var(--text-muted);border:1px solid var(--border)}
+  .ph-date{font-size:11px;color:var(--text-muted);margin:0 0 10px 28px}
 
-  .piece{display:flex;gap:9px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:9px 10px;margin-bottom:8px}
-  .piece.ghost{border-style:dashed;background:transparent;opacity:.8}
-  .piece .ch{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.3px;padding:3px 6px;border-radius:5px;background:var(--surface-3);color:var(--dim);white-space:nowrap;margin-top:1px}
-  .piece .body{min-width:0;flex:1}
-  .piece .ang{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .piece .st{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:var(--dim)}
-  .sdot{width:9px;height:9px;border-radius:50%;flex:none}
-  .s-todo{background:transparent;border:1.6px solid var(--papaya)}
-  .s-ready{background:var(--green)}
+  .piece{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);margin-bottom:9px;overflow:hidden}
+  .piece.ghost{border-style:dashed;background:transparent;box-shadow:none}
+  .piece .ph1{display:flex;align-items:center;gap:7px;padding:9px 11px 0}
+  .chan{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.3px;padding:3px 7px;border-radius:6px;background:var(--surface-elevated);color:var(--text-secondary);white-space:nowrap;border:1px solid var(--border-subtle)}
+  .piece .ang{padding:8px 11px 11px;font-size:12.5px;line-height:1.4;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .piece .stbar{display:flex;align-items:center;gap:6px;padding:0 11px 10px;font-size:11px;color:var(--text-muted)}
+  .sdot{width:9px;height:9px;border-radius:999px;flex:none}
+  .s-todo{background:transparent;border:1.6px solid var(--phase-progress)}
+  .s-ready{background:var(--phase-complete)}
   .s-pub{background:var(--info)}
-  .addslot{width:100%;border:1px dashed var(--border-strong);background:transparent;color:var(--dim);border-radius:var(--r);padding:8px;cursor:pointer;font-family:var(--sans);font-size:12px}
+  .addslot{width:100%;border:1px dashed var(--border);background:transparent;color:var(--text-muted);border-radius:var(--radius);padding:8px;cursor:pointer;font-family:var(--font-sans);font-size:12px}
+  .addslot:hover{border-color:var(--brand);color:var(--brand)}
 
-  /* ---- ratio + jumps ---- */
-  .footer{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:16px 20px;border-top:1px solid var(--border);background:var(--surface-2)}
-  .ratio{flex:1;min-width:230px}
-  .ratio .bar{height:9px;border-radius:6px;overflow:hidden;display:flex;margin-top:7px;border:1px solid var(--border)}
-  .ratio .bar .give{background:var(--green)}
-  .ratio .bar .ask{background:var(--brand)}
-  .ratio .cap{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin-top:6px}
-  .ratio .ok{color:var(--green);font-weight:600}
+  .foot{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:15px 20px;border-top:1px solid var(--border-subtle);background:var(--surface-elevated)}
+  .ratio{flex:1;min-width:240px}
+  .ratio .bar{height:9px;border-radius:6px;overflow:hidden;display:flex;margin-top:7px;border:1px solid var(--border-subtle)}
+  .ratio .give{background:var(--phase-complete)} .ratio .ask{background:var(--brand)}
+  .ratio .cap{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:6px}
+  .ok{color:var(--secondary);font-weight:600}
   .jumps{display:flex;gap:8px;flex-wrap:wrap}
 
-  /* ---- interaction legend ---- */
-  .legend{margin:22px auto 40px;max-width:1360px;padding:0 24px}
-  .legend .box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rc);padding:16px 18px}
-  .legend h3{margin:0 0 12px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--faint)}
-  .flow{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
-  .mod{flex:1;min-width:150px;border:1px solid var(--border);border-radius:var(--r);padding:11px 13px;background:var(--surface-2)}
-  .mod.hi{border-color:var(--campaign);box-shadow:inset 0 0 0 1px rgba(230,57,70,.3)}
-  .mod .mt{font-weight:680;font-size:13px;margin-bottom:3px}
-  .mod .md{font-size:11.5px;color:var(--dim)}
-  .thread{text-align:center;font-size:12px;color:var(--faint);margin-top:12px}
-  .thread code{color:var(--brand);background:rgba(255,90,107,.1);padding:1px 6px;border-radius:5px;font-family:var(--mono)}
+  .legend{border:1px solid var(--border-subtle);border-radius:var(--radius-card);background:var(--surface);padding:16px 18px}
+  .legend h3{margin:0 0 12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .flow{display:flex;gap:10px;flex-wrap:wrap}
+  .mod{flex:1;min-width:150px;border:1px solid var(--border-subtle);border-radius:var(--radius);padding:11px 13px;background:var(--surface-elevated)}
+  .mod.hi{border-color:var(--campaign)}
+  .mod .mt2{font-weight:650;font-size:13px;margin-bottom:3px}
+  .mod .md{font-size:11.5px;color:var(--text-muted)}
+  .thread{text-align:center;font-size:12px;color:var(--text-muted);margin-top:12px}
+  .thread code{color:var(--brand);background:var(--brand-soft);padding:1px 6px;border-radius:5px;font-family:var(--font-mono)}
 </style>
 </head>
 <body>
   <div class="ribbon">MOCKUP</div>
+  <div class="shell">
+    <!-- sidebar -->
+    <aside class="side">
+      <div class="brand"><span class="melon"></span> Papandi</div>
+      <a class="navitem" href="#"><span class="ic">◑</span> Ángulos</a>
+      <a class="navitem" href="#"><span class="ic">▦</span> Media</a>
+      <a class="navitem" href="#"><span class="ic">▤</span> Agenda</a>
+      <a class="navitem on" href="#"><span class="ic">◈</span> Campañas</a>
+      <div class="foot">Glaze &amp; Grow<br><span class="mono">avatar: mara</span></div>
+    </aside>
 
-  <div class="topbar">
-    <div class="brand"><span class="melon"></span> Papandi</div>
-    <nav class="nav">
-      <a href="#">Ángulos</a>
-      <a href="#">Media</a>
-      <a href="#">Agenda</a>
-      <a href="#" class="on">Campañas</a>
-    </nav>
-    <div class="proj"><span class="dot"></span> Glaze &amp; Grow · <span class="mono">avatar: mara</span></div>
-  </div>
+    <div class="main">
+      <div class="topbar"><span class="dot"></span> Glaze &amp; Grow · <span class="mono">avatar: mara</span> · Fase 2 firmada</div>
 
-  <div class="wrap">
-    <!-- ============ LEFT: lista ============ -->
-    <div class="col-list">
-      <button class="btn btn-brand" style="width:100%;justify-content:center">＋ Nueva campaña</button>
+      <div class="page">
+        <div class="content-col col">
 
-      <div class="ever">Todo lo que <b>no</b> está en una campaña es <b>Evergreen</b> — tu base siempre-activa. Sin fecha, sin caducidad.</div>
-
-      <p class="lbl">Campañas</p>
-
-      <div class="ccard sel">
-        <span class="stripe" style="background:#E63946"></span>
-        <div class="top"><span class="name">4 de Julio 2027</span><span class="pill pill-active">ACTIVA</span></div>
-        <div class="meta">27 jun → 5 jul · <span class="mono">7 piezas</span></div>
-        <div class="prog"><i style="width:57%;background:linear-gradient(90deg,#E63946,#ff8a5b)"></i></div>
-        <div class="prog-txt">4 de 7 listas · 3 por desarrollar</div>
-      </div>
-
-      <div class="ccard">
-        <span class="stripe" style="background:#ffb570"></span>
-        <div class="top"><span class="name">Black Friday 2027</span><span class="pill pill-draft">BORRADOR</span></div>
-        <div class="meta">14 nov → 30 nov · <span class="mono">lanzamiento</span></div>
-        <div class="prog"><i style="width:12%;background:#ffb570"></i></div>
-        <div class="prog-txt">arco propuesto · sin desarrollar</div>
-      </div>
-
-      <div class="ccard">
-        <span class="stripe" style="background:#6aa6ff"></span>
-        <div class="top"><span class="name">Día de la Madre 2027</span><span class="pill pill-done">CERRADA</span></div>
-        <div class="meta">21 abr → 12 may · <span class="mono">cerrada</span></div>
-        <div class="prog"><i style="width:100%;background:#6aa6ff"></i></div>
-        <div class="prog-txt">6 de 6 publicadas</div>
-      </div>
-    </div>
-
-    <!-- ============ RIGHT: cabina ============ -->
-    <div class="col-main">
-      <div class="cockpit">
-        <div class="ck-head">
-          <div class="ck-title">
-            <span class="cdot"></span>
-            <h2>4 de Julio 2027</h2>
-            <span class="pill pill-active">ACTIVA</span>
-            <button class="btn btn-ghost btn-sm" style="margin-left:auto">Editar</button>
-          </div>
-          <div class="ck-sub">
-            <span><span class="k">Ventana:</span> 27 jun → 5 jul (incl. día después)</span>
-            <span><span class="k">Tipo:</span> evento estacional</span>
-            <span class="cast"><span class="av"></span> Personaje: Mara · set “bandera 4-jul”</span>
-          </div>
-        </div>
-
-        <div class="concept">
-          <span class="k faint" style="font-size:11px;letter-spacing:.6px;text-transform:uppercase">Concepto (la big idea)</span><br>
-          “La libertad de <b>no depender del algoritmo</b> — tu tienda, tus reglas, este 4 de Julio.”
-          <div class="offer">🎟 <span><b>Oferta:</b> 20% con código <span class="mono">FREEDOM4</span> · termina el 5 jul (last-call)</span></div>
-        </div>
-
-        <!-- arc board -->
-        <div class="arc">
-          <!-- teaser -->
-          <div class="phase">
-            <div class="ph-head">
-              <span class="ph-name"><span class="n">1</span> Teaser</span>
-              <span class="intent intent-dar">DAR</span>
+          <!-- header (idéntico patrón a /angulos) -->
+          <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span class="ds-eyebrow">El Estudio · Campañas</span>
+              <h1 class="ds-h1">Tus campañas</h1>
+              <p class="ds-caption" style="margin:0;max-width:640px">
+                Un pico con fecha sobre tu base. Todo lo demás es <b style="color:var(--secondary)">Evergreen</b> — se agenda cuando quieras.
+              </p>
             </div>
-            <div class="ph-date" style="margin:-6px 0 10px">27 jun → 2 jul</div>
+            <button class="est-btn-develop">＋ Nueva campaña</button>
+          </header>
 
-            <div class="piece">
-              <span class="ch">REEL</span>
-              <div class="body">
-                <div class="ang">“Tu mejor mes en Etsy no fue suerte — y el peor tampoco.”</div>
-                <div class="st"><span class="sdot s-ready"></span> lista · <span class="mono faint">H_A_02</span></div>
+          <div class="ever">Todo lo que <b>no</b> está en una campaña es <b>Evergreen</b>: tu base siempre-activa, sin fecha ni caducidad.</div>
+
+          <!-- lista de campañas -->
+          <section style="display:flex;flex-direction:column;gap:12px">
+            <div class="est-group-head"><span class="gt">Campañas</span><span class="gc">3</span><span class="rule"></span></div>
+            <div class="clist">
+              <div class="ccard sel">
+                <span class="stripe" style="background:#E63946"></span>
+                <div class="row"><span class="nm">4 de Julio 2027</span><span class="est-status" data-s="pedir"><span class="sd"></span>activa</span></div>
+                <div class="mt">27 jun → 5 jul · <span class="mono">evento</span></div>
+                <div class="prog"><i style="width:57%;background:linear-gradient(90deg,#E63946,#ff8a5b)"></i></div>
+                <div class="pt">4 de 7 listas · 3 por desarrollar</div>
+              </div>
+              <div class="ccard">
+                <span class="stripe" style="background:var(--accent-warm)"></span>
+                <div class="row"><span class="nm">Black Friday 2027</span><span class="est-status" data-s="dar" style="color:var(--accent-warm);border-color:color-mix(in srgb,var(--accent-warm) 40%,transparent);background:transparent"><span class="sd"></span>borrador</span></div>
+                <div class="mt">14 nov → 30 nov · <span class="mono">lanzamiento</span></div>
+                <div class="prog"><i style="width:12%;background:var(--accent-warm)"></i></div>
+                <div class="pt">arco propuesto · sin desarrollar</div>
+              </div>
+              <div class="ccard">
+                <span class="stripe" style="background:var(--info)"></span>
+                <div class="row"><span class="nm">Día de la Madre</span><span class="est-status" data-s="dar" style="color:var(--info);border-color:color-mix(in srgb,var(--info) 40%,transparent);background:transparent"><span class="sd"></span>cerrada</span></div>
+                <div class="mt">21 abr → 12 may · <span class="mono">cerrada</span></div>
+                <div class="prog"><i style="width:100%;background:var(--info)"></i></div>
+                <div class="pt">6 de 6 publicadas</div>
+              </div>
+              <button class="newcard">＋ Nueva campaña</button>
+            </div>
+          </section>
+
+          <!-- cabina de la campaña abierta -->
+          <section style="display:flex;flex-direction:column;gap:12px">
+            <div class="est-group-head"><span class="gt">4 de Julio 2027 — el tablero</span><span class="rule"></span></div>
+
+            <div class="cockpit">
+              <div class="ck-head">
+                <div class="ck-title">
+                  <span class="cdot"></span>
+                  <h2 class="ds-h2">4 de Julio 2027</h2>
+                  <span class="est-status" data-s="pedir"><span class="sd"></span>activa</span>
+                  <button class="est-mini-btn" style="margin-left:auto">Editar</button>
+                </div>
+                <div class="ck-sub">
+                  <span><span class="k">ventana</span> &nbsp;27 jun → 5 jul (incl. día después)</span>
+                  <span><span class="k">tipo</span> &nbsp;evento estacional</span>
+                  <span class="cast"><span class="av"></span> Mara · set “bandera 4-jul”</span>
+                </div>
+              </div>
+
+              <div class="concept">
+                <span class="est-fg-label">Concepto (la big idea)</span><br>
+                “La libertad de <b>no depender del algoritmo</b> — tu tienda, tus reglas, este 4 de Julio.”
+                <div class="offer">🎟 <span><b>Oferta:</b> 20&nbsp;% con código <span class="mono">FREEDOM4</span> · termina el 5 jul (last-call)</span></div>
+              </div>
+
+              <!-- el arco -->
+              <div class="arc">
+                <!-- teaser -->
+                <div class="phase">
+                  <div class="ph-head"><span class="ph-name"><span class="n">1</span> Teaser</span><span class="est-status" data-s="dar"><span class="sd"></span>da valor</span></div>
+                  <p class="ph-date">27 jun → 2 jul</p>
+                  <div class="piece">
+                    <div class="ph1"><span class="chan">REEL</span></div>
+                    <div class="ang">“Tu mejor mes en Etsy no fue suerte — y el peor tampoco.”</div>
+                    <div class="stbar"><span class="sdot s-ready"></span> lista · <span class="mono">H_A_02</span></div>
+                  </div>
+                  <div class="piece">
+                    <div class="ph1"><span class="chan">CARRUSEL</span></div>
+                    <div class="ang">3 señales de que tu tienda ya puede vender sin ti</div>
+                    <div class="stbar"><span class="sdot s-ready"></span> lista</div>
+                  </div>
+                  <button class="addslot">＋ añadir pieza</button>
+                </div>
+                <!-- pico -->
+                <div class="phase">
+                  <div class="ph-head"><span class="ph-name"><span class="n">2</span> Pico</span><span class="est-status" data-s="pedir"><span class="sd"></span>pide</span></div>
+                  <p class="ph-date">4 jul · el día</p>
+                  <div class="piece">
+                    <div class="ph1"><span class="chan">EMAIL</span></div>
+                    <div class="ang">Hoy: 20 % en todo — la venta del 4 de Julio ya abrió</div>
+                    <div class="stbar"><span class="sdot s-ready"></span> lista</div>
+                  </div>
+                  <div class="piece ghost">
+                    <div class="ph1"><span class="chan">REEL</span></div>
+                    <div class="ang">La oferta desde la mesa de empaque (con la bandera)</div>
+                    <div class="stbar"><span class="sdot s-todo"></span> por desarrollar</div>
+                  </div>
+                  <div class="piece ghost">
+                    <div class="ph1"><span class="chan">STORIES</span></div>
+                    <div class="ang">Cuenta regresiva del día — “quedan horas”</div>
+                    <div class="stbar"><span class="sdot s-todo"></span> por desarrollar</div>
+                  </div>
+                  <button class="addslot">＋ añadir pieza</button>
+                </div>
+                <!-- cierre -->
+                <div class="phase">
+                  <div class="ph-head"><span class="ph-name"><span class="n">3</span> Cierre</span><span class="est-status" data-s="pedir"><span class="sd"></span>pide</span></div>
+                  <p class="ph-date">5 jul · día después</p>
+                  <div class="piece">
+                    <div class="ph1"><span class="chan">EMAIL</span></div>
+                    <div class="ang">Últimas horas: <span class="mono">FREEDOM4</span> se apaga esta noche</div>
+                    <div class="stbar"><span class="sdot s-pub"></span> publicada</div>
+                  </div>
+                  <div class="piece ghost">
+                    <div class="ph1"><span class="chan">STORIES</span></div>
+                    <div class="ang">Last call — el recordatorio final del deadline real</div>
+                    <div class="stbar"><span class="sdot s-todo"></span> por desarrollar</div>
+                  </div>
+                  <button class="addslot">＋ añadir pieza</button>
+                </div>
+              </div>
+
+              <!-- ratio + saltos (idéntico patrón al banner de ratio de /angulos) -->
+              <div class="foot">
+                <div class="ratio">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline">
+                    <b style="font-size:12.5px">📊 dar : pedir — julio (evergreen + campaña)</b>
+                    <span class="ok">2.4 : 1 ✓</span>
+                  </div>
+                  <div class="bar"><i class="give" style="width:70%"></i><i class="ask" style="width:30%"></i></div>
+                  <div class="cap"><span>12 dan valor · 5 piden</span><span>política del proyecto 3:1 · la campaña no lo rompe</span></div>
+                </div>
+                <div class="jumps">
+                  <button class="est-btn-develop" style="height:34px">Desarrollar en Ángulos →</button>
+                  <button class="est-mini-btn">Ver en Agenda →</button>
+                  <button class="est-mini-btn">Ver Media →</button>
+                </div>
               </div>
             </div>
-            <div class="piece">
-              <span class="ch">CARRUSEL</span>
-              <div class="body">
-                <div class="ang">3 señales de que tu tienda ya está lista para vender sin ti</div>
-                <div class="st"><span class="sdot s-ready"></span> lista</div>
-              </div>
+
+            <p class="ds-caption" style="margin:2px">
+              <span style="color:var(--phase-progress)">◐</span> por desarrollar &nbsp;·&nbsp;
+              <span style="color:var(--phase-complete)">●</span> lista &nbsp;·&nbsp;
+              <span style="color:var(--info)">✓</span> publicada &nbsp;— los punteados son huecos que el arco propuso pero aún no desarrollas.
+            </p>
+          </section>
+
+          <!-- cómo se conecta -->
+          <div class="legend">
+            <h3>Cómo se conectan los módulos</h3>
+            <div class="flow">
+              <div class="mod hi"><div class="mt2">Campañas · /campanas</div><div class="md">La cabina: concepto, oferta, arco, estado y ratio. No duplica — SALTA a los otros.</div></div>
+              <div class="mod"><div class="mt2">Ángulos · /angulos</div><div class="md">La pieza NACE aquí. Selector <b>Evergreen | Campaña ▾</b> → hereda concepto+oferta+fase.</div></div>
+              <div class="mod"><div class="mt2">Media · /media</div><div class="md">Biblioteca. Filtro por campaña + chip de color. Evergreen sin chip.</div></div>
+              <div class="mod"><div class="mt2">Agenda · /agenda</div><div class="md">Banda de color de la ventana + chips en lo agendado.</div></div>
             </div>
-            <button class="addslot">＋ añadir pieza</button>
+            <div class="thread">El hilo que cose los cuatro = <code>campaign_id</code> en la pieza &nbsp;·&nbsp; <b style="color:var(--secondary)">Evergreen</b> = <code>campaign_id NULL</code> = el default</div>
           </div>
 
-          <!-- pico -->
-          <div class="phase">
-            <div class="ph-head">
-              <span class="ph-name"><span class="n">2</span> Pico</span>
-              <span class="intent intent-pedir">PEDIR</span>
-            </div>
-            <div class="ph-date" style="margin:-6px 0 10px">4 jul · el día</div>
-
-            <div class="piece">
-              <span class="ch">EMAIL</span>
-              <div class="body">
-                <div class="ang">Hoy: 20% en todo — la venta del 4 de Julio ya abrió</div>
-                <div class="st"><span class="sdot s-ready"></span> lista</div>
-              </div>
-            </div>
-            <div class="piece ghost">
-              <span class="ch">REEL</span>
-              <div class="body">
-                <div class="ang">La oferta, contada desde la mesa de empaque (con la bandera)</div>
-                <div class="st"><span class="sdot s-todo"></span> por desarrollar</div>
-              </div>
-            </div>
-            <div class="piece ghost">
-              <span class="ch">STORIES</span>
-              <div class="body">
-                <div class="ang">Cuenta regresiva del día — “quedan horas”</div>
-                <div class="st"><span class="sdot s-todo"></span> por desarrollar</div>
-              </div>
-            </div>
-            <button class="addslot">＋ añadir pieza</button>
-          </div>
-
-          <!-- cierre -->
-          <div class="phase">
-            <div class="ph-head">
-              <span class="ph-name"><span class="n">3</span> Cierre</span>
-              <span class="intent intent-pedir">PEDIR</span>
-            </div>
-            <div class="ph-date" style="margin:-6px 0 10px">5 jul · día después</div>
-
-            <div class="piece">
-              <span class="ch">EMAIL</span>
-              <div class="body">
-                <div class="ang">Últimas horas: <span class="mono">FREEDOM4</span> se apaga esta noche</div>
-                <div class="st"><span class="sdot s-pub"></span> publicada</div>
-              </div>
-            </div>
-            <div class="piece ghost">
-              <span class="ch">STORIES</span>
-              <div class="body">
-                <div class="ang">Last call — el recordatorio final del deadline real</div>
-                <div class="st"><span class="sdot s-todo"></span> por desarrollar</div>
-              </div>
-            </div>
-            <button class="addslot">＋ añadir pieza</button>
-          </div>
-        </div>
-
-        <!-- footer: ratio + jumps -->
-        <div class="footer">
-          <div class="ratio">
-            <div style="display:flex;justify-content:space-between;align-items:baseline">
-              <b style="font-size:13px">Ratio dar : pedir — julio (evergreen + campaña)</b>
-              <span class="ok">2.4 : 1 ✓</span>
-            </div>
-            <div class="bar"><i class="give" style="width:70%"></i><i class="ask" style="width:30%"></i></div>
-            <div class="cap"><span>12 dar · 5 pedir</span><span class="faint">política del proyecto: 3:1 · la campaña no lo rompe</span></div>
-          </div>
-          <div class="jumps">
-            <button class="btn btn-brand btn-sm">Desarrollar en Ángulos →</button>
-            <button class="btn btn-ghost btn-sm">Ver en Agenda →</button>
-            <button class="btn btn-ghost btn-sm">Ver Media →</button>
-          </div>
-        </div>
-      </div>
-
-      <p class="faint" style="font-size:12px;margin:12px 2px 0">
-        ◐ por desarrollar (papaya) &nbsp;·&nbsp; ● lista (verde) &nbsp;·&nbsp; ✓ publicada (azul). Los ghost (borde punteado) son huecos que el arco propuso pero aún no desarrollas.
-      </p>
-    </div>
-  </div>
-
-  <!-- ============ cómo se conecta ============ -->
-  <div class="legend">
-    <div class="box">
-      <h3>Cómo se conectan los módulos</h3>
-      <div class="flow">
-        <div class="mod hi">
-          <div class="mt">Campañas · /campanas</div>
-          <div class="md">La cabina: concepto, oferta, el arco, estado y ratio. No duplica — SALTA a los otros.</div>
-        </div>
-        <div class="mod">
-          <div class="mt">Ángulos · /angulos</div>
-          <div class="md">La pieza NACE aquí. Selector <b>Evergreen (default) | Campaña ▾</b> → hereda concepto+oferta+fase al desarrollar.</div>
-        </div>
-        <div class="mod">
-          <div class="mt">Media · /media</div>
-          <div class="md">Biblioteca. Filtro por campaña + chip de color. Lo evergreen no lleva chip.</div>
-        </div>
-        <div class="mod">
-          <div class="mt">Agenda · /agenda</div>
-          <div class="md">Banda de color de la ventana + chips en lo agendado. «Montar campaña» desde una fecha.</div>
         </div>
       </div>
-      <div class="thread">El hilo que cose los cuatro = <code>campaign_id</code> en la pieza &nbsp;·&nbsp; <b style="color:var(--green)">Evergreen</b> = <code>campaign_id NULL</code> = el default</div>
     </div>
   </div>
 </body>
