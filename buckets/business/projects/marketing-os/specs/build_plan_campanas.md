@@ -1,5 +1,13 @@
 # Build Plan — Campañas (el módulo `/campanas` + el hilo `campaign_id`)
 
+> **✅ MÓDULO COMPLETO (CM1-CM5) — en producción 2026-07-09.** Datos + `proposeCampaignArc` (CM1, migración
+> aplicada) · módulo `/campanas` lista+tablero editable+wizard+custom+des/activar (CM2) · atar desde Ángulos
+> + Media filtro/chip + Agenda banda/chips — las 4 superficies reflejan `campaign_id` (CM3) · develop con
+> inyección de concepto+oferta+deadline real C12 (CM4) · auto-cierre por ventana + expiración de ganchos
+> (CM5). Todo aditivo; Evergreen es el default. `npm run verify` verde por milestone; deploys READY.
+> **Pendiente (v2):** ganchos propios de campaña (≤5) en el wizard · variante temática del cast · persistir
+> el auto-cierre vía cron · «Montar campaña» desde una fecha de la Agenda.
+
 **Estado:** v1 propuesto (2026-07-09) — **para aprobar antes de codear.** Trinity: spec = `spec_Campanas.md` (v1.1) ·
 plan = este doc · tasks = se atomizan en `task_create` al aprobar.
 **Gate de arranque:** `spec_Campanas.md` firmado. Depende de: `project_pieces` + `scheduled_posts` (existen),
@@ -80,7 +88,11 @@ verde (rampa, canales de 2.2, fechas en ventana, intent por fase); `verify` EXIT
 **Done:** desarrollar una pieza eligiendo campaña la pinta en el tablero + con chip en Media + (al agendar) chip+banda
 en Agenda; evergreen por default cuando no se elige; `verify` EXIT 0.
 
-### CM4 — Develop con inyección completa (lo que hace distinta a una campaña)
+### CM4 — Develop con inyección completa (lo que hace distinta a una campaña) — ✅ HECHO (2026-07-09)
+
+> `getCampaignForDevelop` (server, cast) + `produce/route.ts` lee `campaignId`/`campaignPhase` → compone el
+> contexto por fase (teaser da+expectativa · pico/cierre piden con oferta + **deadline real** que legitima
+> C12) → `buildDevelopSystem` extra `campaign`. Best-effort. En prod (build READY).
 1. `app/api/estudio/produce/route.ts`: si la pieza tiene `campaign_id`, cargar la campaña y pasar su contexto a
    `buildBrief`/`buildDevelopSystem`.
 2. `lib/estudio/brief.ts` + `prompts.ts`: **concepto** = capa ESCENA/tema compartida; **oferta** = sustancia del pedir
@@ -90,7 +102,11 @@ en Agenda; evergreen por default cuando no se elige; `verify` EXIT 0.
 **Done:** una pieza de cierre con oferta produce un CTA con la oferta + deadline real, y la guardia NO la marca como
 urgencia fabricada (test); una pieza evergreen (sin campaign) desarrolla igual que hoy (no-regresión); `verify` EXIT 0.
 
-### CM5 — El ciclo (cerrar honesto)
+### CM5 — El ciclo (cerrar honesto) — ✅ HECHO (2026-07-09)
+
+> Estado efectivo por fecha: campaña activa con `ends_on` pasado se muestra CERRADA (auto-cierre display) +
+> el botón activar/desactivar se adapta. `/angulos` excluye campañas cerradas/pasadas del selector (ganchos
+> «expiran»). El ratio del mes vive en la Agenda. (Persistir el status vía cron = v2.)
 1. `status → done` automático al pasar `ends_on` (check al cargar la campaña o job ligero) → los ganchos propios
    (`hooks`) expiran (fuera de la biblioteca evergreen).
 2. Medidor de ratio del mes con desglose evergreen/campaña (reusa la política `ratio_policy_plain` de 2.3, ya en la Agenda).
