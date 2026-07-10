@@ -1,10 +1,14 @@
 # Spec — Campañas (el pico finito sobre el evergreen generativo)
 
-**Estado:** v1 borrador — DISEÑADO, no construido. Para firma del operador antes de construir. Reemplaza
+**Estado:** v1.1 borrador — DISEÑADO, no construido. Para firma del operador antes de construir. Reemplaza
 la §3 borrador de `docs/research/campanas-marketing-real.md` (escrita sobre el modelo MUERTO:
 `buildCampaignSlots`/`mergePlans`/`PlanSlot`/`rotateHook`/`kit_variant`/derivados 2.4). Este spec conserva
 las **decisiones de marketing** de esa investigación (sólidas, con fuentes) y re-expresa el **mecanismo**
 sobre C17.
+**UI/UX (decisión del operador 2026-07-09):** Campañas es un **módulo con ventana propia** (`/campanas`), NO
+un cajón de la Agenda; el **EVERGREEN es el default** (`campaign_id = NULL`); una pieza se **ata desde su
+creación** en Ángulos con **inyección completa** de contexto (concepto + oferta + fase); v1 soporta **ambas**
+formas de llenado — proponer (arriba→abajo) **y** etiquetar (abajo→arriba). Detalle en §6.
 **Trinity:** spec = este doc · plan = `build_plan_campanas.md` (pendiente) · tasks = pendientes.
 **Decide:** qué es una campaña, qué AÑADE que el evergreen no tiene, cómo encaja en el modelo ángulo × canal,
 y cómo se pinta en la Agenda — sin resucitar el plan calculado muerto.
@@ -23,7 +27,7 @@ Media → Agenda) es la base always-on: mismos pilares, años de contenido, sin 
 capas que usa el marketing real: base continua + picos en momentos clave.
 
 **Lo que la campaña AÑADE que el evergreen no tiene** (las cuatro cosas — R1 §1.2/§1.3):
-1. **Una FECHA dura** (un evento del radar, o una fecha propia de lanzamiento) con deadline real.
+1. **Una FECHA dura** (una fecha del calendario — evento comercial o fecha propia de lanzamiento) con deadline real.
 2. **Un CONCEPTO compartido** (la «big idea»): una sola idea creativa que atraviesa canales — la capa
    **ESCENA/tema** del Cerebro de Ganchos, común a todas las piezas de la ventana.
 3. **Una OFERTA** (opcional): la capa que **hoy no existe en el sistema** — es LO que distingue una campaña
@@ -39,7 +43,8 @@ Una campaña sin fecha ni ventana no es una campaña: es contenido evergreen con
 ## 1. Qué es una campaña (2 tipos, una ventana, un concepto, una oferta opcional)
 
 **Dos tipos v1** (R1 §2 — el mismo objeto, distinto origen de la fecha):
-- **Evento / estacional** — nace de una fecha del **radar** (4 de Julio, Black Friday…). Default **2 semanas**.
+- **Evento / estacional** — nace de una **fecha comercial del calendario** (4 de Julio, Black Friday…; el motor
+  radar la calcula, la Agenda la muestra). Default **2 semanas**.
 - **Lanzamiento / promo propia** — nace de una fecha del **usuario** (un `project_event` personal). Default
   **4 semanas**. Editable 1–6 semanas en ambos.
 
@@ -133,7 +138,14 @@ create table project_campaigns (
 );
 -- RLS espejo de scheduled_posts: is_project_member (select) · project_role_for_user in ('owner','editor') (write).
 
--- ADITIVA sobre scheduled_posts (el ENGANCHE — spec_Superficies §7):
+-- ADITIVA sobre project_pieces (el HOGAR de la pieza — la FUENTE DE VERDAD de su campaña):
+--   campaign_id NULL = EVERGREEN (el default). Con valor = la pieza pertenece a esa campaña y HEREDA su
+--   contexto (concepto+oferta+fase) al desarrollarse. Una pieza pertenece a ≤1 campaña (regla HubSpot).
+alter table public.project_pieces
+  add column campaign_id    uuid references public.project_campaigns(id) on delete set null,
+  add column campaign_phase text check (campaign_phase in ('teaser','peak','close'));
+
+-- ADITIVA sobre scheduled_posts (denormalizado para pintar el calendario sin join; deriva de la pieza):
 alter table public.scheduled_posts
   add column campaign_id uuid references public.project_campaigns(id) on delete set null;
 ```
@@ -157,8 +169,12 @@ export type CampaignArcItem = {
 ```
 
 **Reglas del modelo** (espejo de R1 §3.1, re-expresadas):
-- Una pieza pertenece a **UNA** campaña (regla HubSpot). Los ángulos evergreen no se re-etiquetan a campañas;
-  una pieza de campaña nace con su `campaign_id`.
+- **EVERGREEN es el default**: `project_pieces.campaign_id = NULL`. La mayoría de las piezas son evergreen.
+- Una pieza pertenece a **≤1** campaña (regla HubSpot). Se ata de **dos formas** (ambas fijan `campaign_id`):
+  (a) **abajo→arriba** — se desarrolla en Ángulos con la campaña elegida en el selector; (b) **arriba→abajo** —
+  un hueco del `arco` se desarrolla. Re-etiquetar una pieza evergreen a una campaña es válido (solo cambia la
+  membresía/color; no re-desarrolla). El `arco` guarda los huecos **por desarrollar** (sin pieza aún); las
+  piezas reales viven en `project_pieces` con su `campaign_id` — el tablero muestra la UNIÓN de ambos.
 - `slug` único y estable por proyecto: es el futuro `utm_campaign` (no se construyen UTMs en v1).
 - Los `hooks` propios expiran con `ends_on` (temporalidad = ventana).
 - `cast_override.*.aprobado` obligatorio antes de generar video/imagen de campaña (contrato del cast).
@@ -167,24 +183,59 @@ export type CampaignArcItem = {
   fechas explícitas (la campaña NO usa cadencias — cada pieza tiene su fecha). Determinista, testeable.
   **No resucita `buildPublicationPlan`**: no calcula el evergreen, solo el arco finito de ESTA campaña.
 
-## 6. Flujo UI (desde la Agenda)
+## 6. Las superficies y el flujo UI (Campañas = módulo propio)
 
-1. **Entrada A (principal):** clic en un marcador del **radar** en la Agenda → el drawer del día gana
-   **«Montar campaña sobre esta fecha»**. Prefill: `name` = evento + año, `starts_on = fecha − lead_time_days`
-   (`lib/radar/holidays.ts`), `peak_on` = fecha del evento. **Entrada B:** botón **«＋ Campaña»** → fecha
-   propia (crea el `project_event` si no existe).
-2. **Paso 1 — Concepto:** nombre, la big idea (1–2 frases), oferta opcional (texto + si termina con «día
-   después»), ventana editable. Glass-box: se explica qué hará cada fase.
-3. **Paso 2 — Arco:** `proposeCampaignArc` propone el reparto fase × canal (solo canales encendidos, rampa al
-   pico, `intent` marcado): cada item con su ángulo (2.5 estacional primero; opción de generar ≤5 ganchos
-   propios) y su nota accionable. El operador quita/añade/edita. Se muestra el ratio del mes CON la campaña
-   (desglosado evergreen / campaña).
-4. **Paso 3 — Look (opcional):** `CastOverride` — elegir personaje/set del cast, o generar una variante
-   temática (se añade al cast, se aprueba). Si se salta, kit base.
-5. **Firmar:** `status → signed`. La **Agenda** pinta la **banda** del rango con el `color` (patrón
-   CoSchedule/HubSpot) + **chips fantasma** («por desarrollar») de los items del `arco`. Al desarrollar un
-   item → pieza real + fila `scheduled_posts` (campaign_id) → el chip fantasma pasa a **chip real**. Al pasar
-   `ends_on`, `status → done` (automático) y los ganchos propios expiran.
+> **Decisión de UI/UX del operador (2026-07-09).** La campaña **NO vive en el cajón de la Agenda** — tiene su
+> **ventana propia** (`/campanas`) y **orquesta** los otros tres módulos vía `campaign_id`. El «radar» **no es
+> una superficie**: es el motor (`lib/radar`) que calcula las fechas que la Agenda pinta como marcadores
+> (nunca «clic en el radar», siempre «clic en una fecha del calendario»).
+
+**EVERGREEN es el default.** Toda pieza nace evergreen (`campaign_id = NULL`): sin caducidad, sin arco, se
+agenda cuando el operador quiera — la base always-on. Una campaña es un contenedor con fecha que se **ata** a
+una pieza; atarla inyecta su contexto (concepto + oferta + fase).
+
+### 6.1 El módulo Campañas (`/campanas`) — la cabina
+- **Lista:** cada campaña con color, ventana, oferta y progreso (X/Y piezas listas) + estado (borrador ·
+  activa · cerrada). Botón **«＋ Nueva campaña»**. Una nota fija: *«Todo lo que no está en una campaña es
+  Evergreen — tu base siempre-activa.»*
+- **Tablero** (abrir una): concepto · oferta · la ventana con el **arco teaser → pico → cierre** · las piezas
+  por fase con su estado (◐ por desarrollar → ● lista → ✓ publicada) · el **medidor de ratio** del mes. **No
+  se desarrolla ni se agenda aquí**: el tablero **SALTA** a Ángulos (desarrollar), a Agenda (agendar) o a Media
+  (ver). Un solo lugar de detalle por cosa.
+
+### 6.2 Qué gana cada superficie existente (cambio mínimo — `campaign_id` hace el trabajo)
+- **Ángulos** (`/angulos`): al desarrollar, un **selector de contexto `Evergreen (default) | Campaña ▾`**. Si
+  se elige campaña, el develop **ya inyecta** su concepto/oferta/fase (glass-box: se ve qué contexto entra). Las
+  piezas que pertenecen a una campaña llevan un **chip de color** en su tarjeta. → la pieza se ata **desde su
+  creación** (la decisión del operador).
+- **Media** (`/media`): **filtro por campaña** + **chip de color** por pieza. Lo evergreen no lleva chip.
+- **Agenda** (`/agenda`): **banda de color** de la ventana (patrón CoSchedule/HubSpot) + **chips** en las piezas
+  agendadas de la campaña. Los marcadores de fecha del calendario (que el motor radar calcula) siguen ahí.
+
+### 6.3 Las DOS formas de atar una pieza (ambas en v1)
+1. **Abajo→arriba (etiquetar):** en Ángulos desarrollas y eliges la campaña en el selector → `piece.campaign_id`
+   se fija y la pieza aparece en el tablero bajo su fase.
+2. **Arriba→abajo (proponer):** en el tablero, `proposeCampaignArc` propone un hueco (fase × canal × ángulo) →
+   clic → saltas a Ángulos con todo pre-elegido → desarrollas → el hueco fantasma pasa a pieza real.
+
+### 6.4 Crear una campaña — 2 entradas, 1 wizard
+- **Entrada A (principal):** `/campanas` → **«＋ Nueva campaña»**.
+- **Entrada B (atajo):** en la Agenda, clic en una **fecha del calendario** → **«Montar campaña sobre esta
+  fecha»** → prefill (`name` = evento + año, `starts_on = fecha − lead_time_days` vía `lib/radar/holidays.ts`,
+  `peak_on` = la fecha).
+
+**El wizard (3 pasos, igual desde A o B):**
+1. **Concepto:** nombre · la big idea (1–2 frases) · oferta opcional (+ si termina con «día después») · ventana
+   editable (default 2 sem evento / 4 sem lanzamiento). Glass-box: qué hará cada fase.
+2. **Arco:** `proposeCampaignArc` propone el reparto fase × canal (canales de 2.2, rampa al pico, `intent`
+   marcado) con su ángulo (2.5 estacional primero; opción de ≤5 ganchos propios) y su nota accionable. El
+   operador quita/añade/edita. Se muestra el ratio del mes CON la campaña, desglosado.
+3. **Look (opcional):** `CastOverride` — elegir personaje/set del cast o generar una variante temática (se
+   añade al cast, se aprueba). Si se salta, kit base.
+
+Al **firmar** → `status → activa`: la Agenda pinta la banda + los **chips fantasma** del arco; al desarrollar un
+hueco → pieza real (con `campaign_id`) → chip real; al agendarla → fila `scheduled_posts` con `campaign_id`. Al
+pasar `ends_on` → `status → done` (automático) y los ganchos propios expiran.
 
 ## 7. Convivencia con el evergreen (los slots)
 
@@ -201,19 +252,28 @@ export type CampaignArcItem = {
 
 ## 8. Implementación (fases del build, tras la firma)
 
-1. **CM1** — Migración `project_campaigns` + `scheduled_posts.campaign_id` (aditiva) + RLS espejo + accesor
-   `lib/api/campaigns.ts`. `proposeCampaignArc` puro + tests.
-2. **CM2** — Flujo de creación (Agenda drawer → «Montar campaña» + «＋ Campaña») + wizard 3 pasos (concepto →
-   arco → look). El look reusa `CastOverride`/`resolveCast` (cero código de resolución nuevo).
-3. **CM3** — Develop de campaña: el MISMO `/api/estudio/produce` con contexto de campaña (concepto = capa
-   ESCENA; oferta = pedir de pico/cierre con deadline real para la guardia C12). `arco.piece_id` ↔ pieza real.
-4. **CM4** — Agenda: banda + chips fantasma/reales + medidor de ratio del mes con desglose. `status → done`
-   automático al pasar `ends_on`.
-5. UX bajo `spec_UX_Experience` (P1 una cosa a la vez · P5 glass-box · P6 co-creación con autoría).
+1. **CM1 — Datos.** Migración `project_campaigns` + `project_pieces.campaign_id`/`campaign_phase` +
+   `scheduled_posts.campaign_id` (todo aditivo) + RLS espejo + accesor `lib/api/campaigns.ts`.
+   `proposeCampaignArc` puro + tests.
+2. **CM2 — El módulo `/campanas`.** Lista + tablero (arco por fase, estados, medidor de ratio, saltos a
+   Ángulos/Agenda/Media) + wizard de creación (concepto → arco → look) desde «＋ Nueva campaña». El look reusa
+   `CastOverride`/`resolveCast` (cero código de resolución nuevo).
+3. **CM3 — Atar desde las superficies.** (a) Ángulos: selector `Evergreen | Campaña ▾` al desarrollar + chip de
+   campaña en las tarjetas (fija `piece.campaign_id`). (b) Media: filtro + chip por campaña. (c) Agenda: banda de
+   ventana + chips + atajo «Montar campaña sobre esta fecha».
+4. **CM4 — Develop con contexto (inyección completa).** El MISMO `/api/estudio/produce` recibe el contexto de la
+   campaña de la pieza: concepto = capa ESCENA/tema; oferta = pedir de pico/cierre con **deadline real** para la
+   guardia C12; `campaign_phase` marca el intent. `arco.piece_id` ↔ pieza real; el chip fantasma pasa a real.
+5. **CM5 — Ciclo.** `status → done` automático al pasar `ends_on`; ganchos propios expiran; medidor de ratio del
+   mes con desglose evergreen/campaña.
+6. UX bajo `spec_UX_Experience` (P1 una cosa a la vez · P5 glass-box · P6 co-creación con autoría).
 
 ## 9. Verificación
 
-- Crear campaña desde un evento del radar → prefill correcto (`starts_on = fecha − lead_time_days`).
+- Crear campaña desde `/campanas` («＋ Nueva») y desde una fecha del calendario en la Agenda → prefill correcto
+  (`starts_on = fecha − lead_time_days`).
+- Atar una pieza en Ángulos (selector `Campaña ▾`) → `piece.campaign_id` fijado; aparece en el tablero y con chip
+  en Media/Agenda. Evergreen por default cuando no se elige campaña.
 - `proposeCampaignArc`: reparto por fase con rampa, solo canales de 2.2, fechas dentro de la ventana (test puro).
 - Cascada de cast: pieza de campaña sin override de pieza usa el `cast_override` de la campaña; sin él, el
   default de marca (test puro contra `resolveCast`).
