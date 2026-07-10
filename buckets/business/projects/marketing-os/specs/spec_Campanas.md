@@ -48,11 +48,16 @@ Una campaña sin fecha ni ventana no es una campaña: es contenido evergreen con
 - **Lanzamiento / promo propia** — nace de una fecha del **usuario** (un `project_event` personal). Default
   **4 semanas**. Editable 1–6 semanas en ambos.
 
-**NO se soporta v1**: awareness siempre-on como campaña, presupuesto/atribución, A/B, multi-avatar por
-campaña, fases custom, amplificación pagada (R1 §2 «Qué NO hacer v1» — sobredimensionado para solopreneur).
+**NO se soporta v1**: awareness siempre-on como campaña, presupuesto/atribución, A/B, fases custom,
+amplificación pagada (R1 §2 «Qué NO hacer v1» — sobredimensionado para solopreneur).
 
-**Una campaña = UN avatar** (C15): hereda sus canales encendidos (2.2), sus pilares con ancla (2.3), y sus
-ángulos (2.5). No cruza avatares en v1.
+**Una campaña se asigna a 1..N avatares** (revisión del operador 2026-07-10 — el borrador original decía «UN
+avatar»; en el testeo el operador pidió multi-avatar: «una campaña como 4-Jul es un momento del PROYECTO, no
+de un avatar»). El **SHELL es compartido** (nombre, concepto, oferta, ventana, color, `avatar_keys`); el **ARCO
+y las PIEZAS son POR-AVATAR** — `arcos = { avatarKey: CampaignArcItem[] }` — porque los ángulos 2.5 son
+por-avatar, así la diferencia por avatar se mantiene. `avatar_keys` (lista; `[]` = toda la marca). Desarrollar
+una campaña de N avatares = desarrollar sus piezas por cada avatar (en Ángulos la campaña aparece para
+cualquiera de sus avatares; el tablero tiene un selector de avatar). CONSTRUIDO (migración `20260710120000`).
 
 ## 2. El arco: tres fases con rampa
 
