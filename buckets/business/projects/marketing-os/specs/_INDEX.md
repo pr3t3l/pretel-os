@@ -71,7 +71,7 @@ commit**. Un doc que no está en el índice no existe.
 | `build_plan_inteligencia_temporal_calendario.md` | ✅ M1-M5 ejecutados (M4 superficie jubilada por Agenda — banner). |
 | `build_plan_phase0_wizard.md` | ✅ ejecutado — el wizard de Fase 0. |
 | `build_plan_produccion_v3_motor_coherencia.md` | 🟡 F1 ✅ (StyleID+Gateway); F2+ pendiente. Banner C17. |
-| `build_plan_campanas.md` | 🟡 EN CURSO — **CM1 ✅** (datos aplicados a prod + 371 tests); CM2-CM5 pendientes. |
+| `build_plan_campanas.md` | 🟡 EN CURSO — **CM1-CM3 ✅** (datos + módulo `/campanas` + las 4 superficies, en prod); CM4-CM5 pendientes. |
 | `build_plan_fase_identidad.md` | ⏳ pendiente (B1a `cast.ts` hecho; B1b/B2/B3 tras la firma del spec). |
 | `build_plan_etapa_G_video.md` | ⏳ backlog output-side (8 botones + post-producción; aprobado 2026-07-06). |
 | `build_plan_experiencia_canonica.md` | 📚 doctrina de interacción del wizard (v2, del transcript CAG) — base del build actual. |

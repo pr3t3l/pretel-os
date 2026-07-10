@@ -49,7 +49,10 @@ aditivo** (nada rompe el evergreen que ya funciona).
 **Done:** migración aplicada (branch→prod); evergreen intacto (piezas viejas siguen con `campaign_id NULL`); `arc.test.ts`
 verde (rampa, canales de 2.2, fechas en ventana, intent por fase); `verify` EXIT 0.
 
-### CM2 — El módulo `/campanas` (la cabina)
+### CM2 — El módulo `/campanas` (la cabina) — ✅ HECHO (2026-07-09)
+
+> Lista + tablero (arco 3 fases EDITABLE: canal/ángulo/quitar/añadir por hueco, persiste `arco`) + medidor de
+> ratio + saltos + wizard de creación (evento/lanzamiento/**custom**) + activar↔desactivar. En prod.
 1. `app/projects/[projectId]/campanas/page.tsx` — **lista**: cards (color, ventana, oferta, progreso X/Y, estado) +
    nota fija «Evergreen es tu base» + «＋ Nueva campaña».
 2. **Tablero** (abrir una): header (color·nombre·estado·ventana·editar) + concepto + oferta + el **arco** (3 columnas
@@ -61,7 +64,12 @@ verde (rampa, canales de 2.2, fechas en ventana, intent por fase); `verify` EXIT
 **Done:** crear una campaña completa desde el wizard; el tablero muestra su arco con chips fantasma; los saltos abren
 Ángulos/Agenda/Media; `verify` EXIT 0; verificación visual del operador.
 
-### CM3 — Atar desde las superficies (el hilo se vuelve visible)
+### CM3 — Atar desde las superficies (el hilo se vuelve visible) — ✅ HECHO (2026-07-09)
+
+> (a) **Ángulos**: selector `Evergreen | Campaña ▾` al desarrollar → `tagPieceCampaign` (fase inferida del
+> intent) + chip de campaña en la tarjeta; redesarrollo preserva la campaña. (b) **Media**: filtro
+> Todas/Evergreen/campaña + chip. (c) **Agenda**: `schedulePiece` propaga `campaign_id`; banda de la ventana
+> (inset box-shadow) + chips en pills/panel + leyenda del mes. Las 4 superficies reflejan `campaign_id`. En prod.
 1. **Ángulos** (`app/projects/[projectId]/angulos/page.tsx`): al desarrollar, selector `Evergreen (default) | Campaña ▾`
    → fija `piece.campaign_id` + `campaign_phase` vía `tagPiece`. Chip de color de campaña en las tarjetas de piezas ya
    atadas. Re-etiquetar permitido (solo membresía; no re-desarrolla).
