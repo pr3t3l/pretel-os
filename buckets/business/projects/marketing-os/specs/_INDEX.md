@@ -71,6 +71,7 @@ commit**. Un doc que no está en el índice no existe.
 | `build_plan_inteligencia_temporal_calendario.md` | ✅ M1-M5 ejecutados (M4 superficie jubilada por Agenda — banner). |
 | `build_plan_phase0_wizard.md` | ✅ ejecutado — el wizard de Fase 0. |
 | `build_plan_produccion_v3_motor_coherencia.md` | 🟡 F1 ✅ (StyleID+Gateway); F2+ pendiente. Banner C17. |
+| `build_plan_campanas.md` | ⏳ propuesto — el módulo `/campanas` + `campaign_id` (CM1-CM5); espera firma de `spec_Campanas`. |
 | `build_plan_fase_identidad.md` | ⏳ pendiente (B1a `cast.ts` hecho; B1b/B2/B3 tras la firma del spec). |
 | `build_plan_etapa_G_video.md` | ⏳ backlog output-side (8 botones + post-producción; aprobado 2026-07-06). |
 | `build_plan_experiencia_canonica.md` | 📚 doctrina de interacción del wizard (v2, del transcript CAG) — base del build actual. |
@@ -97,6 +98,7 @@ commit**. Un doc que no está en el índice no existe.
 | `design-audit-2026-07.md` | Auditoría de diseño de las 11 rutas (2026-07-02 + nota C17: falta auditar las 3 superficies nuevas). |
 | `model-selection.md` | Ruteo tarea→modelo (multi-proveedor, benchmarks, regla del 95%). |
 | `README.md` | Índice de docs/app. |
+| `mockups/` | Mockups HTML de diseño (pre-build). `campanas-mockup.html` = la cabina de `/campanas` (arco, estados, saltos). |
 | `archive/` | Notas de ejecución históricas (declassified-execution, overnight-progress, pipeline-de-ideas ⚰️). |
 
 ## 8. docs/research — INVESTIGACIONES con fuentes (5)
