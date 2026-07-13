@@ -17,22 +17,23 @@ E1 timeline+medios (dolor) → E2 captions+música al timeline → E3 clips+tran
 
 ## Fase E1 — El timeline + la pista de MEDIOS (arregla lo mal pensado)
 
-- [ ] E1.1 `components/estudio/timeline/` (NUEVO): componente `Timeline` puro-presentacional —
-      regla de segundos, zoom (±), playhead, y `Track`/`Block` genéricos con **arrastre para mover**
-      y **arrastre de extremos para recortar** (pointer events; clamp a [0, reelSec]; snapping a
-      inicios de clip / al playhead / a inicios de palabra). Sin lógica de negocio (props + eventos).
-- [ ] E1.2 Modelo `design_spec.timeline.media[]` = `{id, src, kind, startSec, durSec, xPct, yPct,
-      wPx, anim?}` + coerción tolerante (patrón `coerceScenes`) + persistencia en la pieza
-      (`setPieceDesignSpec`) — el trabajo NO se pierde al recargar (hoy es efímero).
-- [ ] E1.3 Reescribir el módulo de imágenes del ensamblador: fuera el «modo tiempo/palabra +
-      desde el segundo X»; entra la **pista de MEDIOS** (bloques con thumbnail, drag-time + trim) +
-      manipulación en el CANVAS (mover + **handles de resize**, reemplaza el selector `wPct`).
-      «＋ Medio» = Subir / De este reel (keyframes) / De la marca — sin jerga ni «keyframe» a secas.
-- [ ] E1.4 El quemado consume `timeline.media` (ya soporta overlay por ventana con `scale` a px
-      absoluto; solo cambia la FUENTE de los `{startSec,durSec,x,y,wPx}`). Snap-a-palabra OPCIONAL
-      (al soltar cerca del inicio de una palabra, engancha y marca «entra con ‹palabra›»).
-- [ ] E1.5 `verify` + push · **criterio:** agregar una imagen, ARRASTRAR su bloque en el tiempo,
-      redimensionarla en el canvas, quemar → aparece exactamente ahí. Cero campos numéricos.
+- [x] E1.1 `components/estudio/timeline/timeline.tsx`: componente `Timeline` puro-presentacional —
+      regla de segundos, zoom (±), playhead, bloques con **arrastre para mover** y **extremos para
+      recortar** (pointer events; snapping a junturas de clip / inicios de beat / playhead). Sin
+      lógica de negocio. **En prod 2026-07-13** (`1aa5050`).
+- [x] E1.2 Modelo `design_spec.timeline.media[]` + coerción tolerante + ops puras
+      (`lib/video/timeline.ts`, 10 tests) + persistencia debounced en la pieza. **En prod** (`9d9aa05`).
+- [x] E1.3 (v1) El EDITOR (`components/estudio/editor/video-editor.tsx`): lienzo 9:16 con capas DOM
+      (mover + handle de resize en el canvas) + 4 pistas (Clips/Subtítulos/Medios/Música — Medios
+      interactiva, el resto referencia) + «＋ Imagen» abre la Biblioteca (B3). El módulo numérico
+      quedó COLAPSADO como «modo anterior» (retirarlo del todo cuando el operador valide). **En
+      prod** (`1aa5050`+`d2e58fc`). **+ ③④⑤ como PANTALLAS navegables del Director** (indicador
+      clicable, ⑤ a lo ancho 1280px, layout lienzo-izquierda/panel-derecha) — pedido explícito del
+      operador 2026-07-13 (`7e48143`).
+- [x] E1.4 El quemado consume `timeline.media` (imágenes de storage propio → overlays por ventana).
+      Snap-a-palabra opcional PENDIENTE (los inicios de beat ya son puntos de imán del timeline).
+- [ ] E1.5 **criterio de cierre (falta la prueba del operador):** agregar una imagen, ARRASTRAR su
+      bloque en el tiempo, redimensionarla en el canvas, quemar → aparece exactamente ahí.
 
 ## Fase E2 — Subtítulos y Música como PISTAS del timeline
 
