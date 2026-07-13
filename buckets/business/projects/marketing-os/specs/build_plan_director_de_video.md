@@ -65,21 +65,35 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
 
 ## Etapa 3 — Edición enriquecida (música + elementos nombrados + feedback + referencia)
 
-- [ ] 3.1 Música: script de subida (562 pistas → bucket global `music-library`, TUS) + índice
-      `music_tracks` (filename, duración, mood del nombre) + README de licencia (respuesta del correo del
-      operador) + selector con preview en ⑤ + compose con track de audio (volumen ~20-25%, fade-out;
-      verificar param `volume` del schema — fallback pre-procesar mp3).
+- [x] 3.1 Música — CONSTRUIDO 2026-07-13 (licencia confirmada por correo → quemar SÍ está permitido).
+      Diseño final MÁS SIMPLE que el planeado: sin bucket nuevo ni tabla `music_tracks` — las pistas
+      viven en `brand-assets/_music/` + `index.json` (id/nombre/mood, el mood sale de la carpeta madre
+      del pack). `scripts/upload-music.mjs "<carpeta>"` sube todo (idempotente, `--dry` disponible).
+      Selector con filtro de mood + preview `<audio>` en ⑤; el QUEMADOR PROPIO (video-burn) mezcla la
+      pista BAJO la voz con `filter_complex` (volume 0.22 + fade-out 1.5s + amix duration=first +
+      stream_loop si la pista es corta) — no fal compose (concat-only). Solo acepta URLs del catálogo
+      propio. **PENDIENTE del operador: la ruta de la carpeta con las 562 pistas** para correr el script.
 - [ ] 3.2 Elementos nombrados: UI asignar imagen→palabra (del transcript ya alineado) + compose overlays
       `{timestamp, duration, x, y}`. (Insumo pendiente: los 2 transcripts de YouTube del operador.)
-- [ ] 3.3 Feedback capa 1+2: tabla `piece_events` (migración, LA ÚNICA del plan — con OK del operador) +
-      eventos (diff de cajas al aprobar, keyframe regen, variante elegida, funnel, música) + 👍/👎 al
-      terminar el reel.
-- [ ] 3.4 Referencia visual: `api/estudio/reference-decompose` (visión → 6C) + campo en ① + pre-llenado.
-- [ ] 3.4b Personas UGC ↔ Identidad (pedido del operador 2026-07-13): «Guardar esta persona en
-      Identidad» desde la galería (promueve una UGC generada al cast, con su ancla) + selector inverso
-      («usar una persona del cast») en el tipo UGC — para reviews que repiten actriz a propósito.
-- [ ] 3.5 `verify` · push · criterio: un reel suena con música bajo la voz + un overlay aparece en el
-      segundo exacto de su palabra.
+- [x] 3.3 Feedback capa 1+2 — CONSTRUIDO 2026-07-13. Tabla `piece_events` (migración
+      20260713120000, aplicada en prod con el OK del operador; admin-only como project_api_calls, RLS
+      sin policies) + `logPieceEvent` best-effort. Server: develop/keyframes/clips/burn (con costo,
+      regen, new_person, ugc_cast, estilo de captions elegido y música). Cliente vía
+      `/api/estudio/event` (whitelist + pertenencia por RLS): scenes_approved (con `edited`),
+      keyframes_approved, cast_saved, reel_feedback. UI 👍/👎 + nota opcional al pie del ensamblador
+      cuando existe el Reel final. (El diff caja-por-caja al aprobar queda para capa 2 fina.)
+- [ ] 3.4 Referencia visual — BLOQUEADO 2026-07-13: el wrapper LLM (`lib/api/llm`) es SOLO texto
+      (`LlmContentBlock` no tiene bloque de imagen) → `reference-decompose` necesita extender el
+      wrapper a visión (Anthropic image blocks) primero. Se hace en su propia tanda.
+- [x] 3.4b Personas UGC ↔ Identidad — CONSTRUIDO 2026-07-13. «💾 Guardar esta persona en Identidad»
+      en la galería ③ (solo piezas de persona generada; promueve el primer keyframe CON persona al
+      cast como personaje aprobado, idempotente por URL, con su prompt glass-box). Selector inverso en
+      ① (tipo UGC, foto-chips): 🎲 nueva o una del elenco → `ugc_cast_id` viaja en el design_spec; el
+      develop cambia el sujeto a imagen-de-referencia (sin re-describir la cara), keyframes la usa de
+      ancla y video-generate la refuerza vía elements (sin el set de marca, que pelearía con el UGC).
+- [~] 3.5 `verify` EXIT 0 (404 tests) · push (deploy a01f9a1) · criterio música PENDIENTE DE PRUEBA
+      REAL: falta subir las pistas (ruta de la carpeta) y quemar un reel con música bajo la voz. El
+      criterio de overlays pertenece a 3.2 (no construido).
 
 ## Etapa 4 — «Traigo mi video» (modo D)
 
