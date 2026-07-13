@@ -1,6 +1,6 @@
 # build_plan_director_de_video — Plan de construcción (las 4 etapas)
 
-> **Estado: 🟡 EN CONSTRUCCIÓN — Etapa 1 SHIPPEADA (2026-07-12, decisión: PANTALLA COMPLETA). Falta la prueba del criterio DONE por el operador.** Spec madre: `spec_Director_de_Video.md` (pre-check
+> **Estado: 🟡 EN CONSTRUCCIÓN — Etapas 1+2 SHIPPEADAS (2026-07-13, pantalla completa). Etapa 1 probada por el operador (2 rondas, guion aprobado). Sigue: PRUEBA REAL 2.6 (~$6).** Spec madre: `spec_Director_de_Video.md` (pre-check
 > completo). Patrón de entrega: igual que G1/G2a/G2b — cada etapa se construye, `npm run verify` EXIT 0,
 > commit+push (Vercel deploya), prueba real, y SOLO entonces la siguiente. Repo: `sandia-marketing`.
 >
@@ -43,21 +43,21 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
 
 **Entrega:** pantalla ③ (galería) + ④ (clips encadenados). El reel de prueba sale CONTINUO.
 
-- [ ] 2.1 `lib/gateway/video-routing.ts`: `falImageToVideoBody` acepta `endImageUrl` → `end_image_url`;
+- [~] 2.1 (end_image_url + modo escenas ✅; sora-2/veo-flf al catálogo PENDIENTE de verificar sus schemas — 2.1b) `lib/gateway/video-routing.ts`: `falImageToVideoBody` acepta `endImageUrl` → `end_image_url`;
       `VIDEO_MODELS` gana `sora-2` (i2v pro, $0.30-0.70/s) y `veo-3.1-flf` (first-last-frame, $0.40/s);
       `planGeneration` modo escenas: 1 clip = 1 job (sin packing; `multi_prompt` muere con el legacy).
-- [ ] 2.2 `app/api/estudio/keyframes/route.ts` (NUEVO): genera el set de keyframes vía
+- [x] 2.2 `app/api/estudio/keyframes/route.ts` (NUEVO): genera el set de keyframes vía
       `fal-ai/nano-banana-pro` (primera imagen desde el retrato del cast si tipo=Presentadora; siguientes
       vía `/edit` "keep identical, change…"), **frontera compartida** (end N = start N+1, misma URL),
       re-host a brand-assets, guarda `design_spec.keyframes[]` {scene, role, url, prompt, approved};
       soporta regenerar UNO y subir propia. Costo al ledger ($0.15/img).
-- [ ] 2.3 `components/estudio/keyframe-gallery.tsx` (NUEVO): galería con prompt visible por imagen +
+- [x] 2.3 `components/estudio/keyframe-gallery.tsx` (NUEVO): galería con prompt visible por imagen +
       regenerar/editar prompt/subir + la frontera se muestra UNA vez (glass-box del encadenado) +
       «Aprobar imágenes →» (compuerta 2).
-- [ ] 2.4 `app/api/estudio/video-generate/route.ts`: modo encadenado — por escena
+- [x] 2.4 `app/api/estudio/video-generate/route.ts`: modo encadenado — por escena
       `{start_image_url, end_image_url, prompt: composeMotionPrompt, elements: cast}` en PARALELO;
       presupuesto incluye imágenes ya gastadas; variantes/cola/anti-doble-click intactos.
-- [ ] 2.5 `verify` EXIT 0 · commit+push · **criterio DONE:** el frame de la frontera N/N+1 es la MISMA
+- [x] 2.5 `verify` EXIT 0 · commit+push · **criterio DONE:** el frame de la frontera N/N+1 es la MISMA
       imagen y la cara es consistente en los 5 clips.
 - [ ] 2.6 **PRUEBA REAL con el operador** (~$6): re-desarrollar «Someone Else's Decision» → cajas →
       keyframes → 5 clips → armar+captions. Checklist doctrina-video-2026 §1 + continuidad. El resultado
