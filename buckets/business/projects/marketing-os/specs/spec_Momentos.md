@@ -55,9 +55,13 @@ CAPTURA → INVESTIGACIÓN (citada) → CONEXIÓN CON LA MARCA → ÁNGULOS EFÍ
 1. **CAPTURA — el asistente global (el icono de Papandi):** un botón flotante en toda la app:
    *«¿Qué está pasando en tu mundo? Cuéntamelo o pídeme investigarlo.»* Acepta: texto libre («hay ola de
    calor esta semana»), un link de noticia, o una petición de investigación («¿qué cambió en la ley
-   laboral de Florida?»). **Guardrail:** no es un chat general — todo lo que entra desemboca en UN momento
-   de contenido (investigación acotada al marketing del proyecto); si la petición no es convertible en
-   contenido, el asistente lo dice.
+   laboral de Florida?»).
+   **Alcance ampliado (nota del operador 2026-07-12, se diseña EN OTRO MOMENTO — no bloquea nada de este
+   spec):** el asistente global además responderá CUALQUIER pregunta del usuario — «¿qué es dar vs
+   pedir?», «¿cómo uso X de la app?», «¿por qué 3:1?», consejos de marca — con la doctrina de Papandi y el
+   contexto del proyecto como fuente. Requiere diseñar QUÉ información se le manda y cuál no (doctrina +
+   docs de ayuda + artefactos del proyecto; jamás datos de otros proyectos). Los MOMENTOS son una de sus
+   capacidades, no la única.
 2. **INVESTIGACIÓN:** research web con citas (la misma capacidad del wizard de Fase 0) → informe corto
    glass-box: qué pasó, a quién afecta, datos duros CON FUENTE, ventana temporal estimada (¿cuánto dura
    este momento?). C4-compatible por construcción (todo citado, nada inventado).

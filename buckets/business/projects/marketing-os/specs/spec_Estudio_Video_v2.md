@@ -75,9 +75,10 @@ Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se int
 - **Tipo de reel:** Presentadora de marca (default, usa tu cast) · UGC persona real · Animado (elige estilo:
   Apple realista / Pixar / …) · Traigo mi video (→ modo D, mismas pantallas con ③④ distintas).
 - **Cámara** (punch-ins/handheld/fija — G1) · **Ritmo · Duración · Loop · CTA** (G1) · **Ambiente/Set**
-  (del cast o describir uno).
-- **Referencia visual opcional:** sube un screenshot (TikTok/Pinterest/foto tuya) → se descompone en las
-  6C y pre-llena cajas del paso ②.
+  (del cast o describir uno). **Nota de UI: los 5 botones G1 se MUDAN de la tarjeta de /angulos al paso ①**
+  (una sola casa; la tarjeta queda solo con gancho visual + estilo de apertura + campaña).
+- **Referencia visual opcional [entra en V2.c, no en el quick win]:** sube un screenshot
+  (TikTok/Pinterest/foto tuya) → se descompone en las 6C (llamada de visión) y pre-llena cajas del paso ②.
 - **CONCEPTO (el paso que faltaba — qué TIPO de contenido es): CATÁLOGO DETERMINÍSTICO, sin llamada extra
   al LLM.** (Decisión razonada 2026-07-12 — pregunta abierta del operador, mi recomendación:)
   - **Por qué determinístico:** ①es el patrón de la casa que ya funciona (los 16 ganchos visuales de
@@ -119,6 +120,13 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
 
 - El usuario **edita cualquier caja** (o ninguna) → «Aprobar guion y prompts →» (compuerta 1).
 - El prompt final de cada etapa se COMPONE de las cajas — no hay un segundo prompt oculto.
+- **Contador de voz EN VIVO por clip:** la caja «Lo que DICE a cámara» muestra el presupuesto de palabras
+  (el guard `over`/`under` que ya existe, ahora mientras editas: "14 palabras / 3s — saldrá acelerado").
+  **Esto RESUELVE la tensión del opener sagrado:** la sugerencia llega íntegra (el opener no se mutila por
+  defecto), el contador avisa si no cabe, y el USUARIO recorta en la caja — la palabra final es suya.
+- **Mapeos que el build no debe perder:** la caja «Lo que DICE a cámara» ES `clip_narrations` (la fuente
+  literal del karaoke de ⑤) y el conjunto de cajas reemplaza a `video_prompts` (el prompt de movimiento se
+  compone de encuadre+cámara+acción; los frames alimentan ③).
 - Los presets por tipo son solo CONTENIDO pre-llenado (el flujo y el esquema no cambian): UGC pre-llena
   cámara/audio con los bloques de realismo (micro-shake, grip fix, raw mic); Animado añade el STYLE LOCK
   y transiciones por estilo; Presentadora fija el sujeto al cast.
@@ -141,8 +149,12 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
 - Por clip: `start_image + end_image` (keyframes aprobados) + prompt de MOVIMIENTO (cajas cámara/acción) +
   narración entre comillas + `elements` (identidad del cast si aplica) → **Kling v3** (default).
 - El tipo solo cambia el MOTOR si conviene: UGC one-take corto puede ir a **Sora 2** (un solo clip 12-16s);
-  premium a **Veo 3.1 first-last-frame**. Misma cola, mismo presupuesto, mismas variantes (todo ya existe).
+  premium a **Veo 3.1 first-last-frame**. ⚠️ Ninguno de los dos está hoy en `VIDEO_MODELS` — **añadirlos al
+  catálogo es parte de V2.b** (dos endpoints nuevos verificados: `fal-ai/sora-2/image-to-video/pro` y
+  `fal-ai/veo3.1/first-last-frame-to-video`). Misma cola, mismo presupuesto, mismas variantes.
 - Los clips se generan **en paralelo** (la continuidad ya viene de las imágenes, no del orden).
+- **El empaque `multi_prompt` de Kling queda SOLO para el camino legacy** (piezas viejas sin keyframes):
+  en modo encadenado cada clip es SU job con su par de imágenes — no hay packing.
 
 ### ⑤ Edición — EL STACK COMPLETO (con qué se hace cada cosa)
 
@@ -296,14 +308,19 @@ Mismo flow y pantallas ①②⑤⑥; solo cambian ③ y ④:
 
 ## 5 · Cambios de código (etapas — cada una shippeable, verify EXIT 0, push inmediato)
 
-| Etapa | Qué entrega | Toca |
-|---|---|---|
-| **V2.a — Cajas + Ajustes** | ① selector de tipo/ambiente/referencia + ② develop devuelve el prompt ESTRUCTURADO por cajas (schema `scenes[]` en design_spec) + UI de tarjetas editables + indicador de pasos | `prompts.ts` (instrucción → scenes[]), `parse.ts`, `produce/route.ts` (nuevos extras), drawer→flow UI |
-| **V2.b — Keyframes + encadenado** | ③ galería Nano Banana Pro (generar/regenerar/editar/subir, cadena de consistencia) + ④ `end_image_url` en Kling; los 3 tipos A/B/C funcionan aquí (los presets son config, no código) | `video-routing.ts` (+endImageUrl), `api/estudio/keyframes` (nuevo), `keyframe-gallery.tsx` (nuevo), `video-generate` (modo encadenado), ledger (+costo imagen) |
-| **V2.c — Edición enriquecida** | ⑤ música de biblioteca (storage + selector + compose con audio) + elementos nombrados (overlays en timestamps) | `video-compose` (audio track + image overlays), UI en ReelAssembler, storage de pistas |
-| **V2.d — Modo D** | ③④ de footage propio (upload video + plan de cortes editable + trims) | upload video, `api/estudio/edit-plan` (nuevo), compose con trims |
+| Etapa | Qué entrega | Toca | Criterio de éxito (DONE cuando…) |
+|---|---|---|---|
+| **V2.a — Cajas + Ajustes** | ① selector tipo/concepto/ambiente (G1 se muda aquí) + ② develop devuelve `scenes[]` (cajas por clip, incl. «Tu producto en esta pieza») + **intent dar/pedir EXPLÍCITO al develop** + **offer_statement ESTRUCTURADO en piezas que piden** + contador de voz en vivo + UI de tarjetas editables + indicador de pasos | `prompts.ts` (instrucción → scenes[] + intent + offer estructurado), `parse.ts` (parsear scenes[] + `clipWordBudget` lee scenes[] Y el formato viejo), `produce/route.ts`, UI del Director | re-desarrollar «Someone Else's Decision» produce cajas editables; editar una caja cambia el prompt compuesto; el contador avisa over/under en vivo |
+| **V2.b — Keyframes + encadenado** | ③ galería Nano Banana Pro (generar/regenerar/editar/subir, cadena de consistencia) + ④ `end_image_url` en Kling + **sora-2 i2v y veo3.1 first-last-frame ENTRAN a `VIDEO_MODELS`** + ledger registra costo de imagen | `video-routing.ts` (+endImageUrl +2 modelos), `api/estudio/keyframes` (nuevo), `keyframe-gallery.tsx` (nuevo), `video-generate` (modo encadenado, paralelo, sin packing), `media-ledger` | el reel de prueba sale con **continuidad visible** (el frame de la frontera N/N+1 es la MISMA imagen) y la cara consistente en los 5 clips |
+| **V2.c — Edición enriquecida** | ⑤ música de biblioteca (bucket global + selector con preview + compose con audio) + elementos nombrados (overlays en timestamps de palabra) + referencia visual 6C en ① (visión) | `video-compose` (audio track + image overlays), ReelAssembler UI, script de subida de pistas, `api/estudio/reference-decompose` (nuevo) | un reel suena con música de la biblioteca bajo la voz + un overlay aparece en el segundo exacto de su palabra |
+| **V2.d — Modo D** | ③④ de footage propio (upload directo TUS + transcript + plan de cortes editable + trims) | upload de video (browser→storage), `api/estudio/edit-plan` (nuevo), compose con trims | un mp4 de 3-5 min del operador sale como reel corto con captions de marca |
 
-Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + brand-assets).
+**Compatibilidad (regla dura del build):** las piezas EXISTENTES (design_spec con `video_prompts` sin
+`scenes[]`) siguen funcionando con el drawer/flujo actual — el Director aplica a piezas nuevas o
+re-desarrolladas. Nada se rompe hacia atrás; `clipWordBudget` y el karaoke aceptan ambos formatos.
+
+Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + brand-assets). La única
+tabla nueva de todo el spec es `piece_events` (§3.7) — puede esperar a V2.c.
 
 ## 6 · Costos típicos (ledger registra los reales)
 
@@ -316,31 +333,30 @@ Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + bra
 
 ⚠️ `MEDIA_BUDGET_USD=20/mes` da ~3 reels de presentadora. Decisión pendiente: subirlo/configurable.
 
-## 7 · Decisiones del operador (para firmar)
+## 7 · Decisiones — estado tras el pre-check (2026-07-12)
 
-1. **¿V2.a + V2.b primero** y probamos con «Someone Else's Decision» re-desarrollada? (recomendado)
-2. **El Director**: ¿pantalla completa (flow tipo wizard de fases) o el drawer actual expandido? Mi
-   recomendación: pantalla completa — la galería de keyframes + cajas no caben cómodas en el drawer.
-3. **Concepto = catálogo determinístico** (12 formatos + «Papandi decide», el develop adapta el elegido):
-   ¿confirmas? (Recomendado en §3① con las razones; el botón «Sugerir 3» queda para después si hace falta.)
-4. **Música — licencia:** pistas del curso, "declaradas de libre uso" (suenan a librería de sonidos
-   creados). **El operador envía correo al curso pidiendo confirmación explícita por escrito (2026-07-12)
-   — pendiente respuesta.** Esa respuesta va al README del bucket como procedencia. Mientras llega:
-   música quemada solo en proyectos del operador; fallback = catálogo de la plataforma al publicar.
-5. **Modo D:** ¿OK los límites v1 (≤10 min, ≤1 GB, 3 archivos/pieza) y la retención propuesta (original se
-   conserva; limpieza solo con aviso)?
-6. **Presupuesto:** ¿subir `MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto?
-7. La tensión **opener sagrado × duración** sigue abierta: ¿el asistente puede PROPONERTE recortes del
-   opener en ② (tú decides caja por caja)?
-8. **Firma de datos:** ¿persistimos la firma en `status='signed'` (hallazgo §⓪: hoy todo es draft y el
-   código no la exige)? ¿Y llenamos `distinct_because` (1.4, hoy NULL)?
-9. **Sí — pásame el transcript completo del video de YouTube** (y el segundo si lo tienes): alimenta el
-   diseño de elementos nombrados (V2.c). Déjalos en `specs/AvatarHype Classes/` o pégalos en el chat.
-10. **Tendencias:** ¿apruebas la pestaña semanal global con las 3 condiciones de §3.6 (accionable +
-    glass-box + filtro de doctrina)? ¿Y el loop de feedback de §3.7 (eventos implícitos + 1 pregunta por
-    pieza + rendimiento manual a 7 días)?
-11. **Proveedores:** ¿incluimos kie.ai (Veo Fast $0.05/s) y apimart en el bake-off con el checklist de
-    riesgo de §3.8? (fal sigue primario; el registry multi-proveedor ya lo soporta.)
+**✅ Resueltas en conversación (registradas, no re-preguntar):**
+- **V2.a+b primero, prueba con «Someone Else's Decision»** — el operador pidió enfocarse en video y pasar
+  al build plan.
+- **Concepto = catálogo determinístico + «Otro»** — aceptado (pidió añadir «Otro» y Tendencias).
+- **Feedback (§3.7) y Tendencias (§3.6)** — aprobados explícitamente ("me parece perfecta" / "buena
+  propuesta"). Momentos aprobado conceptualmente (su spec tiene sus propias decisiones).
+- **Opener sagrado × duración** — RESUELTA POR DISEÑO: la sugerencia llega íntegra, el contador de voz en
+  vivo avisa si no cabe, y el usuario recorta en la caja (la palabra final es suya). Cerrada.
+- **Música** — diseño aprobado; licencia EN CURSO (el operador envió correo al curso pidiendo confirmación
+  escrita). Mientras llega: quemada solo en proyectos del operador; fallback catálogo de plataforma.
+
+**🔓 Abiertas — SOLO una bloquea el build de V2.a:**
+1. **[BLOQUEA V2.a] El Director: ¿pantalla completa o drawer expandido?** Mi recomendación: **pantalla
+   completa** (flow tipo wizard de fases) — la galería de keyframes + cajas por clip no caben cómodas en
+   el drawer, y el indicador de pasos pide espacio.
+2. Presupuesto: ¿`MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto? (No bloquea V2.a; sí conviene
+   antes de V2.b — recomiendo $50 fijo ahora, configurable cuando llegue Cost Intelligence.)
+3. Modo D: límites v1 (≤10 min, ≤1 GB, 3 archivos) y retención propuesta — confirmar antes de V2.d.
+4. Firma de datos: ¿persistir `status='signed'` + llenar `distinct_because`? (No bloquea; V2.a lee lo que
+   hay. Recomiendo hacerlo como tarea suelta pronto — es el contrato del producto.)
+5. Los 2 transcripts de YouTube (folders + café) — para afinar elementos nombrados en V2.c.
+6. Proveedores: kie.ai/apimart al bake-off con checklist §3.8 — el bake-off es posterior a V2.b.
 
 ## 8 · Qué NO haremos
 
