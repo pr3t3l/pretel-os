@@ -75,6 +75,9 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
       eventos (diff de cajas al aprobar, keyframe regen, variante elegida, funnel, música) + 👍/👎 al
       terminar el reel.
 - [ ] 3.4 Referencia visual: `api/estudio/reference-decompose` (visión → 6C) + campo en ① + pre-llenado.
+- [ ] 3.4b Personas UGC ↔ Identidad (pedido del operador 2026-07-13): «Guardar esta persona en
+      Identidad» desde la galería (promueve una UGC generada al cast, con su ancla) + selector inverso
+      («usar una persona del cast») en el tipo UGC — para reviews que repiten actriz a propósito.
 - [ ] 3.5 `verify` · push · criterio: un reel suena con música bajo la voz + un overlay aparece en el
       segundo exacto de su palabra.
 
