@@ -147,9 +147,11 @@ contenidos temporizados). Va Fase A + B.
       de overrides al re-armar. VALIDADO end-to-end con libass (dos estilos distintos + caja +
       karaoke mid-word en el mismo reel). +2 tests. Reemplaza las palabras-gigantes-manuales como
       flujo primario de captions (las palabras gigantes quedan como opción de énfasis).
-- [ ] 5A.2 Contenido temporizado: imagen (u otro) de t=X a t=Y de primera clase (hoy los
-      «elementos nombrados» van atados a una palabra; agregar modo «por tiempo» con rango). El
-      motor de overlay-con-ventana ya existe — es UI.
+- [x] 5A.2 Contenido temporizado — CONSTRUIDO 2026-07-13 (commit 00db552). El Elem gana
+      mode "time"|"word": "time" (default) = imagen del segundo X por N segundos, SIN alinear la
+      voz; "word" = en el segundo exacto de una palabra. Panel «Imágenes en el reel» con selector
+      de modo + input de segundo de inicio (acotado al reel). Mismo overlay ffmpeg (con el -t de
+      salida del fix adversarial). Responde directo al «¿es posible una imagen del seg 2 al 5?».
 - [ ] 5B Transiciones entre los 3 clips (xfade fade/slide/wipe/zoom + acrossfade de audio) —
       mover el armado de fal-concat a NUESTRO ffmpeg (ya existe el patrón en video-edit) + preview
       + UI de elegir transición por juntura.
