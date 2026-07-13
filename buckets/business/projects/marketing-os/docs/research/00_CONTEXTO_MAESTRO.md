@@ -327,6 +327,23 @@ la descompone en las 6C → UNA pregunta de confirmación → devuelve UN prompt
 Si pides cambiar UN elemento, mantiene todo lo demás idéntico.
 
 ### 6.2 El workflow del anuncio animado (8 pasos — el corazón del método)
+
+> **⚠️ Qué es esta sección (aclaración 2026-07-12):** esto documenta FIELMENTE cómo el CURSO hace un anuncio
+> **A MANO**, con sus herramientas sueltas: ChatGPT (los prompts numerados), **NotebookLM** (herramienta
+> gratuita de Google de research: le cargas fuentes/artículos y responde SOLO con ellas — ellos la usan para
+> sacar datos duros con cita), NanoBanana (imágenes) y Kling/Veo (video). **NO es nuestro diseño** — es la
+> materia prima. En Papandi la mayoría de estos pasos YA EXISTEN automatizados:
+>
+> | Paso del curso (manual) | En Papandi (ya existe) |
+> |---|---|
+> | 1. Avatar hiper-específico | Fase 0.3 (avatares firmados con dolores/miedos/deseos) |
+> | 1-2. Research de datos duros (NotebookLM) | Fase 0.2 (demanda/keywords DataForSEO) + esencia 0.1 — con C4: datos reales o marcados |
+> | 3. Ángulos | Fase 2.5 (biblioteca de ángulos firmada) — el usuario ELIGE en /angulos |
+> | 4. Guion | El develop (se enriquece con los 9 patrones para modo animado) |
+> | 5-8. Storyboard → keyframes → auditoría → producto real | **LO NUEVO que adoptamos** → `spec_Estudio_Video_v2` |
+>
+> Lo que importa del método: la TÉCNICA de continuidad (keyframes primer/último frame encadenados) y el
+> nivel de exigencia visual (plan visual, money shot, pares encadenables). El resto ya lo teníamos.
 1. **Avatar + research** — input: producto (3-4 frases), mercado, ESTILO (Pixar 3D / Apple realista /
    Sci-fi / Claymation / Wes Anderson). Output: avatar HIPER-específico (3 dolores OBSERVABLES —
    "se despierta con la boca seca", no "duerme mal" —, lo que ya probó y por qué falló, el miedo profundo
