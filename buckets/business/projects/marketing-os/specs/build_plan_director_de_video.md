@@ -1,6 +1,6 @@
 # build_plan_director_de_video — Plan de construcción (las 4 etapas)
 
-> **Estado: 🟡 EN CONSTRUCCIÓN — Etapas 1+2 SHIPPEADAS (2026-07-13, pantalla completa). Etapa 1 probada por el operador (2 rondas, guion aprobado). Sigue: PRUEBA REAL 2.6 (~$6).** Spec madre: `spec_Director_de_Video.md` (pre-check
+> **Estado: 🟢 ETAPAS 1+2 CERRADAS CON ÉXITO (2026-07-13) — primer reel end-to-end de Papandi producido y quemado. Sigue: Etapa 3.** Spec madre: `spec_Director_de_Video.md` (pre-check
 > completo). Patrón de entrega: igual que G1/G2a/G2b — cada etapa se construye, `npm run verify` EXIT 0,
 > commit+push (Vercel deploya), prueba real, y SOLO entonces la siguiente. Repo: `sandia-marketing`.
 >
