@@ -215,6 +215,9 @@ distintos se leen igual). Clasifica la **misión del CUERPO** de la pieza:
   (semana, items jsonb con fuentes) o artefacto global.
 - **Bonus de aprendizaje:** el mismo job semanal procesa los `concept_custom` de la semana (lo que los
   usuarios pidieron en «Otro») → los candidatos a catálogo salen de tendencia EXTERNA + demanda INTERNA.
+- **Conexión con MOMENTOS (`spec_Momentos.md`):** cada card de tendencia lleva «Desarrollar con tu marca»
+  → crea un MOMENTO (investigación citada + ángulos efímeros con ventana). Tendencias es una de las TRES
+  fuentes de momentos (usuario · tendencias · radar) — misma mecánica, ver ese spec.
 
 ## 3.7 · El loop de FEEDBACK — cómo aprendemos del usuario en todo el proceso (propuesta)
 
@@ -320,13 +323,10 @@ Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + bra
    recomendación: pantalla completa — la galería de keyframes + cajas no caben cómodas en el drawer.
 3. **Concepto = catálogo determinístico** (12 formatos + «Papandi decide», el develop adapta el elegido):
    ¿confirmas? (Recomendado en §3① con las razones; el botón «Sugerir 3» queda para después si hace falta.)
-4. **Música — licencia (respuesta del operador registrada + nota honesta):** las pistas vienen DEL CURSO,
-   "declaradas de libre uso". Eso NO es una licencia verificable — "el curso lo dijo" no nos protege si una
-   pista resulta con Content-ID. Mitigación (propuesta, no bloquea): ①README del bucket documenta la
-   procedencia exacta ②verificar una MUESTRA (10-15 pistas: buscar por nombre — la mayoría de packs de
-   curso vienen de YouTube Audio Library/Pixabay/Mixkit, reconocibles) ③mientras no esté verificado, la
-   música quemada se usa en TUS proyectos (operador) y no se expone como feature a clientes ④el fallback
-   siempre existe (catálogo de la plataforma al publicar).
+4. **Música — licencia:** pistas del curso, "declaradas de libre uso" (suenan a librería de sonidos
+   creados). **El operador envía correo al curso pidiendo confirmación explícita por escrito (2026-07-12)
+   — pendiente respuesta.** Esa respuesta va al README del bucket como procedencia. Mientras llega:
+   música quemada solo en proyectos del operador; fallback = catálogo de la plataforma al publicar.
 5. **Modo D:** ¿OK los límites v1 (≤10 min, ≤1 GB, 3 archivos/pieza) y la retención propuesta (original se
    conserva; limpieza solo con aviso)?
 6. **Presupuesto:** ¿subir `MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto?
