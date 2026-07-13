@@ -131,6 +131,31 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
       −6 dB; reference-decompose sin gate de pertenencia; keyframes con el mismo fallback de cara;
       edit-plan duplicaba 0.25s en cortes por longitud. Todos con test/validación local.
 
+## Etapa 5 — EDITOR ONLINE (pedido del operador 2026-07-13, screenshots de CapCut)
+
+Doctrina: el navegador PREVISUALIZA (DOM/CSS, liviano); el render sigue en NUESTRO ffmpeg ($0,
+sin WASM — sería lento/frágil aun en desktop). Solo-desktop (el operador confirmó). El karaoke
+palabra-por-palabra (`\k`) SE CONSERVA siempre. Estructura acordada: renombrar el ⑤ y agrupar
+③ Creación de imágenes + ④ Creación de videos, luego ⑤ Edición (transiciones + subtítulos +
+contenidos temporizados). Va Fase A + B.
+
+- [x] 5A.1 Subtítulos por-bloque (galería de presets estilo CapCut) — CONSTRUIDO 2026-07-13
+      (commit 258f508). `CAPTION_PRESETS` (11: 8 color + 3 caja) + `assFromBeats` con `beatStyles[]`
+      (un Style del .ass por combinación distinta, deduplicado; caja vía BorderStyle 3; `\k`
+      intacto; retrocompatible) + panel en ⑤: galería «Aa» + «Aplicar a todos» + chips de los
+      bloques del karaoke (toca uno → pínta​lo distinto) + preview por-palabra con la caja. Reset
+      de overrides al re-armar. VALIDADO end-to-end con libass (dos estilos distintos + caja +
+      karaoke mid-word en el mismo reel). +2 tests. Reemplaza las palabras-gigantes-manuales como
+      flujo primario de captions (las palabras gigantes quedan como opción de énfasis).
+- [ ] 5A.2 Contenido temporizado: imagen (u otro) de t=X a t=Y de primera clase (hoy los
+      «elementos nombrados» van atados a una palabra; agregar modo «por tiempo» con rango). El
+      motor de overlay-con-ventana ya existe — es UI.
+- [ ] 5B Transiciones entre los 3 clips (xfade fade/slide/wipe/zoom + acrossfade de audio) —
+      mover el armado de fal-concat a NUESTRO ffmpeg (ya existe el patrón en video-edit) + preview
+      + UI de elegir transición por juntura.
+- [ ] 5.rename Renombrar ⑤ «Edición» y reagrupar los pasos del Director según la estructura de
+      arriba (Creación de Contenido + Edición).
+
 ## Etapa 4 — «Traigo mi video» (modo D)
 
 - [x] 4.1 — CONSTRUIDO 2026-07-13 (noche). Subida DIRECTA navegador→storage vía TUS resumable
