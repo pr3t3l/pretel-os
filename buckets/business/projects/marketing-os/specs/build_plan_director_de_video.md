@@ -147,6 +147,11 @@ contenidos temporizados). Va Fase A + B.
       de overrides al re-armar. VALIDADO end-to-end con libass (dos estilos distintos + caja +
       karaoke mid-word en el mismo reel). +2 tests. Reemplaza las palabras-gigantes-manuales como
       flujo primario de captions (las palabras gigantes quedan como opción de énfasis).
+      **+ Ajustes finos (commit 0a2c750, a pedido del operador):** encima del preset — borde
+      (grosor + color), sombra, caja (on/off + color), colores libres de resalte y texto.
+      `FullCaptionStyle` (el preset SIEMBRA, los finos refinan). FIX cazado con frames: en libass
+      BorderStyle 3 el RELLENO de la caja es OutlineColour, no BackColour (la caja de color salía
+      negra). Validado end-to-end (borde coral + sombra; cajas coral/verde).
 - [x] 5A.2 Contenido temporizado — CONSTRUIDO 2026-07-13 (commit 00db552). El Elem gana
       mode "time"|"word": "time" (default) = imagen del segundo X por N segundos, SIN alinear la
       voz; "word" = en el segundo exacto de una palabra. Panel «Imágenes en el reel» con selector
