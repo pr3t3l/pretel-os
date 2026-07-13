@@ -78,14 +78,23 @@ Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se int
   (del cast o describir uno).
 - **Referencia visual opcional:** sube un screenshot (TikTok/Pinterest/foto tuya) → se descompone en las
   6C y pre-llena cajas del paso ②.
-- **CONCEPTO (el paso que faltaba — qué TIPO de contenido es):** con el tipo elegido, **Papandi PROPONE
-  3 CONCEPTOS** (patrón del copywriter del curso: concepto + micro-momento + cómo juega tu ángulo + por qué
-  funciona) y el usuario elige uno o pide otros 3. Catálogo inicial de FORMATOS (de la biblioteca del
-  curso): presentadora a cámara · street interview (entrevistador off-camera) · selfie caminando ·
-  micro-momento cotidiano (cocina/baño/carro/escritorio) · podcast 2 personas · voz en off sobre b-roll ·
-  producto en manos. Ej.: para el ángulo del "ciclo roto" → (1) street interview "¿tu opinión impopular de
-  vender online?" · (2) selfie caminando post-feria "acabo de darme cuenta de algo" · (3) presentadora con
-  paquetes en la cocina. **El concepto elegido pre-llena las cajas de ②.**
+- **CONCEPTO (el paso que faltaba — qué TIPO de contenido es): CATÁLOGO DETERMINÍSTICO, sin llamada extra
+  al LLM.** (Decisión razonada 2026-07-12 — pregunta abierta del operador, mi recomendación:)
+  - **Por qué determinístico:** ①es el patrón de la casa que ya funciona (los 16 ganchos visuales de
+    `visual-hooks.ts`, los 5 botones G1, el catálogo de 4.550 formas — MENÚ fijo, el LLM solo RELLENA)
+    ②$0 y 0 segundos de latencia extra ③glass-box: un menú estable se aprende; una propuesta generada
+    cada vez no ④la personalización NO se pierde: **la misma llamada del develop (que ya hacemos) adapta
+    el formato elegido al proyecto** — el micro-momento concreto ("ceramista empacando pedidos") lo escribe
+    el develop dentro de las cajas de ②, con la audiencia/ángulo que ya recibe.
+  - **El catálogo v1 (12 formatos, de la biblioteca del curso + estándar UGC), cada uno con nombre + 1 línea
+    + mini-ejemplo de cómo se vería + para qué sirve (dar/pedir, canal):** presentadora a cámara · street
+    interview (entrevistador off-camera) · selfie caminando · confesión en el carro · espejo del baño ·
+    micro-momento cocina/mesa de trabajo · escritorio/oficina · producto en manos (unboxing) · podcast 2
+    personas · voz en off sobre b-roll · noche/luz de pantalla · actividad (gym/parque/feria). Default =
+    «Papandi decide» (elige por ángulo+canal con reglas simples: pedir→presentadora o producto en manos;
+    dar+TikTok→micro-momento o street interview).
+  - (Futuro opcional, NO v1: botón «Sugerir 3 para este ángulo» — una llamada barata que RANKEA el catálogo;
+    solo si el menú resulta difícil de elegir en la práctica.)
 Todo esto viaja EN la llamada de desarrollo (hoy G1 ya viaja; se suman tipo/concepto/ambiente/referencia).
 
 ### ② Guion y prompt estructurado (UNA llamada al develop — la actual, extendida)
@@ -118,23 +127,47 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
   cuesta $0.15, no $1.
 
 ### ④ Clips
+- **DIÁLOGO NATIVO es el default (no narración):** la persona HABLA a cámara con labios sincronizados —
+  el modelo genera voz + labios JUNTOS (Kling `generate_audio` / Sora 2), porque la línea va como diálogo
+  entre comillas dentro del prompt, en inglés (EN-first). No hay post-sync de audio: el lip-sync nace en la
+  generación (por eso el operador veía "voz de fondo" en ES — no existe lip-sync nativo barato en español).
+  La "voz en off" es UN formato del catálogo (b-roll + VO), no el default. En la UI la caja se llama
+  **"Lo que DICE a cámara"**, no "narración".
 - Por clip: `start_image + end_image` (keyframes aprobados) + prompt de MOVIMIENTO (cajas cámara/acción) +
   narración entre comillas + `elements` (identidad del cast si aplica) → **Kling v3** (default).
 - El tipo solo cambia el MOTOR si conviene: UGC one-take corto puede ir a **Sora 2** (un solo clip 12-16s);
   premium a **Veo 3.1 first-last-frame**. Misma cola, mismo presupuesto, mismas variantes (todo ya existe).
 - Los clips se generan **en paralelo** (la continuidad ya viene de las imágenes, no del orden).
 
-### ⑤ Edición (lo ya construido + 2 extras)
-- Armar (concat) + captions karaoke + gancho (G2 vigente).
-- **Elementos nombrados** (nuevo, barato): overlays (producto/iconos/gráficos) que aparecen EXACTO cuando la
-  narración los dice — ya tenemos timestamps por palabra + compose con keyframes. (Patrón video-use /
-  los videos de YouTube: Hyperframe = gráficas por código → nuestro equivalente hoy = PNGs canvas + compose;
-  ffmpeg une y renderiza; Scribe/whisper = timestamps por palabra para cortes precisos.)
-- **🎵 Música de TU biblioteca (nuevo):** el operador tiene **562 pistas royalty-free (1.92 GB)**. Se pueden
-  QUEMAR en el compose (el ffmpeg-api ya soporta pista de audio — `withAudioTrack` está cableado): selector
-  de pista (o sugerencia por mood) + volumen bajo la voz. **Candado:** solo pistas con licencia verificada
-  del operador; la doctrina "música comercial de plataforma se añade al publicar" sigue para las demás;
-  label IA ON no cambia. (Pendiente: dónde viven — subir a storage por proyecto o biblioteca global.)
+### ⑤ Edición — EL STACK COMPLETO (con qué se hace cada cosa)
+
+**Toda la post-edición corre por fal con la MISMA llave y la MISMA cola async** (cero infra nueva, cero
+apps externas). La tabla función-por-función:
+
+| Función | Con qué se hace | Estado |
+|---|---|---|
+| Unir clips en orden (armar el reel) | `fal-ai/ffmpeg-api/compose` — track de video, keyframes secuenciales | ✅ construido (G2) |
+| Sincronizar TEXTO con el audio | `fal-ai/whisper` `chunk_level=word` → timestamps POR PALABRA del reel armado (fallback determinista proporcional) | ✅ construido |
+| Captions karaoke (palabra a palabra, resaltado) | beats 1-3 palabras (`captions.ts`) → PNGs transparentes client-side canvas ($0) → compose los quema como overlays con timing | ✅ construido |
+| Gancho de texto (frame 1) | PNG canvas bajo el 14% superior → overlay | ✅ construido |
+| Adjuntar MÚSICA | compose con **track de audio** (la pista entra como input más; `withAudioTrack` ya cableado) — volumen bajo la voz + fade-out final (verificar param `volume` del schema al construir; fallback: pre-procesar el mp3 al volumen deseado) | 🔜 V2.c |
+| Elementos nombrados (el folder/el café aparece cuando lo DICE) | overlays de imagen (producto/iconos) posicionados en el timestamp de la PALABRA — compose keyframes `{timestamp, duration, x, y}` | 🔜 V2.c |
+| Cortes/trims (modo D) | compose con offsets de entrada/salida por segmento | 🔜 V2.d |
+| Transiciones entre clips | v1 = **corte duro** (doctrina 2026: el corte retiene; los punch-ins vienen DENTRO del clip generado). Crossfade solo si el schema de compose lo permite (opacity keyframes — verificar al construir). Transición GENERATIVA (estilo Pixar/Apple del curso) = un clip puente Kling start+end en modo animado | v1 corte · resto 🔜 |
+| Efectos/gráficas en movimiento estilo Hyperframe (código→video) | **NO v1** — nuestra vía hoy son PNGs+keyframes; si un caso lo exige, evaluar Remotion self-hosted en fase posterior | ⏳ futuro |
+| Export/re-host durable | el reel final se re-sube a brand-assets (mp4) — sobrevive a la expiración de fal | ✅ construido |
+
+**🎵 La biblioteca de música (562 pistas royalty-free, 1.92 GB) — dónde y cómo:**
+- **Dónde:** bucket **global** `music-library` en el MISMO Supabase de sandia (no por-proyecto — es un activo
+  de Papandi para todos los usuarios). Cabe de sobra: el plan Pro incluye 100 GB ($0.021/GB/mes el exceso);
+  1.92 GB ≈ $0 real. Subida una vez por script (resumable TUS). Junto al bucket: `music_tracks` (tabla o
+  índice JSON): filename, duración, tags de mood/energía (v1: derivados del nombre del archivo + curación
+  manual; v2: análisis de audio), y un README con el ORIGEN/licencia de las pistas (candado legal).
+- **Cómo se usa:** en ⑤, selector con preview (`<audio>` del bucket público) + filtro por mood; Papandi
+  SUGIERE una pista desde el `mood` del design_spec. Al armar: compose añade el track de audio recortado a
+  la duración del reel, volumen de fondo (~20-25% bajo la voz), fade-out en el último segundo. La música
+  queda QUEMADA en el mp4 final — legal porque la licencia es nuestra; la doctrina "música del catálogo de
+  la plataforma al publicar" queda para quien NO use la biblioteca. Label IA ON no cambia.
 
 ### ⑥ Publicar (sin cambios)
 Agenda/campaña, música de catálogo si no se quemó una propia, label IA.
@@ -170,6 +203,24 @@ Mismo flow y pantallas ①②⑤⑥; solo cambian ③ y ④:
 - ⑤ y ⑥ idénticas (captions karaoke con SU marca, música, publicar). Referencia técnica: video-use (MIT):
   "lee el transcript, no mira frames"; FFmpeg procesa/une/renderiza; Scribe da la palabra exacta.
 
+**Límites, subida y costos del modo D (pensado contra números reales, 2026-07-12):**
+- **Límite v1: ≤10 minutos y ≤1 GB por archivo, hasta 3 archivos por pieza.** ¿Un video de 5 min para
+  partirlo en clips? **SÍ se acepta y es BARATO de procesar:** whisper ~centavos + plan de edición (1
+  llamada LLM sobre el transcript, ~$0.03-0.08) + compose de trims ~$0.10-0.35 → **<$1 por video**. El
+  límite no es el costo de proceso: es storage/egress y UX de espera.
+- **Subida DIRECTA navegador → Supabase Storage (resumable/TUS), JAMÁS por nuestra API:** Vercel corta el
+  body en ~4.5 MB — un mp4 no pasa. TUS soporta hasta 50 GB/archivo en el plan Pro con progreso y reintentos
+  (red del usuario inestable = no se pierde la subida). El API solo firma la subida y registra el asset.
+- **Storage — la cuenta real:** un 1080p de 5 min ≈ 150-400 MB. Plan Pro: 100 GB incluidos, exceso
+  $0.021/GB/mes; egress $0.09/GB sobre cuota (fal descarga el video ~2-3 veces: whisper + compose ≈ <1 GB
+  por pieza). Con SOLO el operador: irrelevante. Con 100 usuarios × 3 videos × 300 MB = ~90 GB = el borde
+  del plan → **la retención es una política de producto, no un detalle técnico**.
+- **Retención (propuesta):** el ORIGINAL se conserva (doctrina: nunca destructivo) mientras la pieza viva;
+  los reels FINALES re-hosteados se conservan siempre (livianos); limpieza de originales solo con aviso y
+  a decisión del usuario (y a futuro, cuota por plan — hueco para `spec_Admin_Cost_Intelligence`).
+- **Un video largo NO es un reel:** el plan de edición propone 1-N reels cortos DESDE el largo (los mejores
+  momentos del transcript); cada reel es una pieza normal de Papandi (con su ángulo, sus captions, su CTA).
+
 ## 5 · Cambios de código (etapas — cada una shippeable, verify EXIT 0, push inmediato)
 
 | Etapa | Qué entrega | Toca |
@@ -197,12 +248,18 @@ Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + bra
 1. **¿V2.a + V2.b primero** y probamos con «Someone Else's Decision» re-desarrollada? (recomendado)
 2. **El Director**: ¿pantalla completa (flow tipo wizard de fases) o el drawer actual expandido? Mi
    recomendación: pantalla completa — la galería de keyframes + cajas no caben cómodas en el drawer.
-3. **Música:** ¿de dónde salen las 562 pistas (origen/licencia) y las subimos a storage del proyecto o
-   biblioteca global de Papandi?
-4. **Presupuesto:** ¿subir `MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto?
-5. La tensión **opener sagrado × duración** sigue abierta: ¿el asistente puede PROPONERTE recortes del
+3. **Concepto = catálogo determinístico** (12 formatos + «Papandi decide», el develop adapta el elegido):
+   ¿confirmas? (Recomendado en §3① con las razones; el botón «Sugerir 3» queda para después si hace falta.)
+4. **Música:** confirma el ORIGEN/licencia de las 562 pistas (¿pack comprado? ¿de dónde?) — va al README
+   del bucket `music-library` (global). El diseño de uso ya está en ⑤.
+5. **Modo D:** ¿OK los límites v1 (≤10 min, ≤1 GB, 3 archivos/pieza) y la retención propuesta (original se
+   conserva; limpieza solo con aviso)?
+6. **Presupuesto:** ¿subir `MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto?
+7. La tensión **opener sagrado × duración** sigue abierta: ¿el asistente puede PROPONERTE recortes del
    opener en ② (tú decides caja por caja)?
-6. **Sí — pásame el transcript completo del video de YouTube** (y el segundo si lo tienes): alimenta el
+8. **Firma de datos:** ¿persistimos la firma en `status='signed'` (hallazgo §⓪: hoy todo es draft y el
+   código no la exige)? ¿Y llenamos `distinct_because` (1.4, hoy NULL)?
+9. **Sí — pásame el transcript completo del video de YouTube** (y el segundo si lo tienes): alimenta el
    diseño de elementos nombrados (V2.c). Déjalos en `specs/AvatarHype Classes/` o pégalos en el chat.
 
 ## 8 · Qué NO haremos
