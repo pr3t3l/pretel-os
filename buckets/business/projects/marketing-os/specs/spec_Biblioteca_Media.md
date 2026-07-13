@@ -1,6 +1,6 @@
 # spec_Biblioteca_Media — La Biblioteca de Media unificada
 
-> **Estado: BORRADOR PARA FIRMA (2026-07-13).** Nace del feedback del operador al escribir
+> **Estado: 🖋 FIRMADO 2026-07-13.** Nace del feedback del operador al escribir
 > `spec_Editor_Video`: el editor necesita un «agregar media», pero HOY la media está regada
 > (Identidad, /media, keyframes, subidas…) y el usuario no sabe dónde está nada. Este spec define
 > UNA biblioteca unificada — que sirve de **sección** Y de **selector del editor** — construida como
@@ -142,12 +142,14 @@ construyen coordinados: la biblioteca (o al menos su capa de lectura `lib/media/
 prerequisito del selector de medios del editor.
 
 ## 9. Plan de construcción (fases)
-- **B1** `lib/media/library.ts` — el proyector de solo-lectura (Opción A): agrega los 5 bloques desde
-  las fuentes existentes, con tipos `{id, kind, origin, url, thumbUrl, pieceId?, campaignId?, avatarKey?, createdAt}`. Puro + tests. Cero BD.
-- **B2** `/biblioteca` (o re-propósito de `/media`): la sección con rail de bloques + filtro + búsqueda
-  con chips + favoritos. El bloque ④ read-only con «editar en Identidad →».
-- **B3** El drawer selector: el mismo módulo como picker, integrado al editor / `/angulos`.
+- ✅ **B1** `lib/media/library.ts` — el proyector de solo-lectura (Opción A): agrega los 5 bloques desde
+  las fuentes existentes (`MediaItem[]`, `groupByBlock`). Puro + 10 tests. Cero BD. **EN PROD 2026-07-13** (commit `d0fc274`).
+- ✅ **B2** `/projects/[id]/biblioteca` — sección nueva (aditiva, `/media` intacto) con filtros de bloque/tipo/campaña
+  + búsqueda; bloque ④ read-only con «editar en Identidad →»; nav «Biblioteca» en AppShell. **EN PROD 2026-07-13** (commit `b4b3776`).
+- **B3** El drawer selector: el mismo módulo como picker, integrado al editor / `/angulos`. *(prerequisito de `spec_Editor_Video` §5).*
 - **B4** Facetas glass-box (campaña/avatar/costo) — el moat.
 - **B5** (opcional/futuro) Opción B `media_index` si se exige búsqueda server-side; visibilidad de
   huérfanos (SIN borrar).
-- Cada fase: `verify` EXIT 0, push, prueba. **No construir hasta firma de este spec.**
+- **Re-propósito de `/media`** — pendiente de decisión del operador: ¿colapsar `/media` (hoy muestra piezas)
+  en `/biblioteca`, o dejar ambas? Hasta decidir, ambas coexisten (transición segura).
+- Cada fase: `verify` EXIT 0, push, prueba.
