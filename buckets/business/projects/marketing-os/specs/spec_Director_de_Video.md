@@ -1,6 +1,9 @@
-# spec_Estudio_Video_v2 — El Director de Video: UN solo flujo guiado
+# spec_Director_de_Video — UN solo flujo guiado (antes spec_Estudio_Video_v2)
 
-> **Estado: ✍️ PARA FIRMA · v2 (2026-07-12, reescrito tras revisión del operador). NO construir hasta firma.**
+> **Estado: ✍️ PARA FIRMA (2026-07-12). NO construir hasta firma.**
+> **UN SOLO SPEC:** este documento es el único del Director. Las «Etapas 1-4» de §5 NO son specs ni
+> versiones aparte — son el ORDEN DE CONSTRUCCIÓN del mismo documento (como G1/G2a/G2b en su momento),
+> cada una shippeable. Nada que recordar fuera de aquí.
 > Contexto completo: `docs/research/00_CONTEXTO_MAESTRO.md`. Cambios vs v1 de este spec:
 > **UN solo pipeline para TODOS los tipos de reel** (no tres), prompt estructurado en **cajas editables**
 > (el usuario edita cada parte), UI de **workflow con indicador de pasos** (se siente un flow), música de
@@ -45,9 +48,20 @@ iluminación · audio · guion con timing · primer frame · último frame.
 
 ## 3 · El flujo — pantalla por pantalla
 
-**Entrada:** /angulos → click en la tarjeta del canal (IG Reel, TikTok…) → se abre **el Director**
-(la ventana actual, expandida a flow). Indicador de pasos:
+**Qué es «el Director» (aclaración del operador 2026-07-12):** NO es un botón nuevo — es el NOMBRE del
+flujo guiado. Se entra por el **mismo botón de siempre**: «Desarrollar para IG Reel →» en la tarjeta del
+ángulo en /angulos. La diferencia: hoy ese click dispara el develop a ciegas y abre el drawer; con este
+spec, ese click **abre el flujo** empezando por ① Ajustes (la llamada al LLM ocurre DESPUÉS de tus
+elecciones, no antes). El indicador de pasos siempre visible te dice dónde estás:
 `① Ajustes → ② Guion y prompt → ③ Imágenes → ④ Clips → ⑤ Edición → ⑥ Publicar`
+
+**El canal manda desde el paso cero (pregunta del operador — respuesta: SÍ, ya construido y se conserva):**
+la pieza nace ángulo × CANAL, y el develop ya recibe la doctrina POR CANAL (`channelDoctrine`): TikTok ≠
+Instagram — en TikTok la caja «Lo que DICE a cámara» debe DECIR las keywords en voz alta (el ASR indexa el
+audio), en Instagram el diseño apunta a sends-per-reach, YouTube Shorts pide el final que fluye al inicio
+(loop), etc. **La estructura de cajas es la MISMA para todos los canales; el CONTENIDO sugerido llega
+pulido por canal** — misma regla que los tipos de reel: presets, no pipelines. (Las duraciones default
+también: TikTok viral 11-18s · Reels 7-15s · Shorts 20-45s.)
 
 ### ⓪ La fuente: la información de la EMPRESA (lo que alimenta TODO el flujo)
 
@@ -77,7 +91,7 @@ Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se int
 - **Cámara** (punch-ins/handheld/fija — G1) · **Ritmo · Duración · Loop · CTA** (G1) · **Ambiente/Set**
   (del cast o describir uno). **Nota de UI: los 5 botones G1 se MUDAN de la tarjeta de /angulos al paso ①**
   (una sola casa; la tarjeta queda solo con gancho visual + estilo de apertura + campaña).
-- **Referencia visual opcional [entra en V2.c, no en el quick win]:** sube un screenshot
+- **Referencia visual opcional [entra en Etapa 3, no en el quick win]:** sube un screenshot
   (TikTok/Pinterest/foto tuya) → se descompone en las 6C (llamada de visión) y pre-llena cajas del paso ②.
 - **CONCEPTO (el paso que faltaba — qué TIPO de contenido es): CATÁLOGO DETERMINÍSTICO, sin llamada extra
   al LLM.** (Decisión razonada 2026-07-12 — pregunta abierta del operador, mi recomendación:)
@@ -150,7 +164,7 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
   narración entre comillas + `elements` (identidad del cast si aplica) → **Kling v3** (default).
 - El tipo solo cambia el MOTOR si conviene: UGC one-take corto puede ir a **Sora 2** (un solo clip 12-16s);
   premium a **Veo 3.1 first-last-frame**. ⚠️ Ninguno de los dos está hoy en `VIDEO_MODELS` — **añadirlos al
-  catálogo es parte de V2.b** (dos endpoints nuevos verificados: `fal-ai/sora-2/image-to-video/pro` y
+  catálogo es parte de Etapa 2** (dos endpoints nuevos verificados: `fal-ai/sora-2/image-to-video/pro` y
   `fal-ai/veo3.1/first-last-frame-to-video`). Misma cola, mismo presupuesto, mismas variantes.
 - Los clips se generan **en paralelo** (la continuidad ya viene de las imágenes, no del orden).
 - **El empaque `multi_prompt` de Kling queda SOLO para el camino legacy** (piezas viejas sin keyframes):
@@ -167,9 +181,9 @@ apps externas). La tabla función-por-función:
 | Sincronizar TEXTO con el audio | `fal-ai/whisper` `chunk_level=word` → timestamps POR PALABRA del reel armado (fallback determinista proporcional) | ✅ construido |
 | Captions karaoke (palabra a palabra, resaltado) | beats 1-3 palabras (`captions.ts`) → PNGs transparentes client-side canvas ($0) → compose los quema como overlays con timing | ✅ construido |
 | Gancho de texto (frame 1) | PNG canvas bajo el 14% superior → overlay | ✅ construido |
-| Adjuntar MÚSICA | compose con **track de audio** (la pista entra como input más; `withAudioTrack` ya cableado) — volumen bajo la voz + fade-out final (verificar param `volume` del schema al construir; fallback: pre-procesar el mp3 al volumen deseado) | 🔜 V2.c |
-| Elementos nombrados (el folder/el café aparece cuando lo DICE) | overlays de imagen (producto/iconos) posicionados en el timestamp de la PALABRA — compose keyframes `{timestamp, duration, x, y}` | 🔜 V2.c |
-| Cortes/trims (modo D) | compose con offsets de entrada/salida por segmento | 🔜 V2.d |
+| Adjuntar MÚSICA | compose con **track de audio** (la pista entra como input más; `withAudioTrack` ya cableado) — volumen bajo la voz + fade-out final (verificar param `volume` del schema al construir; fallback: pre-procesar el mp3 al volumen deseado) | 🔜 Etapa 3 |
+| Elementos nombrados (el folder/el café aparece cuando lo DICE) | overlays de imagen (producto/iconos) posicionados en el timestamp de la PALABRA — compose keyframes `{timestamp, duration, x, y}` | 🔜 Etapa 3 |
+| Cortes/trims (modo D) | compose con offsets de entrada/salida por segmento | 🔜 Etapa 4 |
 | Transiciones entre clips | v1 = **corte duro** (doctrina 2026: el corte retiene; los punch-ins vienen DENTRO del clip generado). Crossfade solo si el schema de compose lo permite (opacity keyframes — verificar al construir). Transición GENERATIVA (estilo Pixar/Apple del curso) = un clip puente Kling start+end en modo animado | v1 corte · resto 🔜 |
 | Efectos/gráficas en movimiento estilo Hyperframe (código→video) | **NO v1** — nuestra vía hoy son PNGs+keyframes; si un caso lo exige, evaluar Remotion self-hosted en fase posterior | ⏳ futuro |
 | Export/re-host durable | el reel final se re-sube a brand-assets (mp4) — sobrevive a la expiración de fal | ✅ construido |
@@ -310,17 +324,19 @@ Mismo flow y pantallas ①②⑤⑥; solo cambian ③ y ④:
 
 | Etapa | Qué entrega | Toca | Criterio de éxito (DONE cuando…) |
 |---|---|---|---|
-| **V2.a — Cajas + Ajustes** | ① selector tipo/concepto/ambiente (G1 se muda aquí) + ② develop devuelve `scenes[]` (cajas por clip, incl. «Tu producto en esta pieza») + **intent dar/pedir EXPLÍCITO al develop** + **offer_statement ESTRUCTURADO en piezas que piden** + contador de voz en vivo + UI de tarjetas editables + indicador de pasos | `prompts.ts` (instrucción → scenes[] + intent + offer estructurado), `parse.ts` (parsear scenes[] + `clipWordBudget` lee scenes[] Y el formato viejo), `produce/route.ts`, UI del Director | re-desarrollar «Someone Else's Decision» produce cajas editables; editar una caja cambia el prompt compuesto; el contador avisa over/under en vivo |
-| **V2.b — Keyframes + encadenado** | ③ galería Nano Banana Pro (generar/regenerar/editar/subir, cadena de consistencia) + ④ `end_image_url` en Kling + **sora-2 i2v y veo3.1 first-last-frame ENTRAN a `VIDEO_MODELS`** + ledger registra costo de imagen | `video-routing.ts` (+endImageUrl +2 modelos), `api/estudio/keyframes` (nuevo), `keyframe-gallery.tsx` (nuevo), `video-generate` (modo encadenado, paralelo, sin packing), `media-ledger` | el reel de prueba sale con **continuidad visible** (el frame de la frontera N/N+1 es la MISMA imagen) y la cara consistente en los 5 clips |
-| **V2.c — Edición enriquecida** | ⑤ música de biblioteca (bucket global + selector con preview + compose con audio) + elementos nombrados (overlays en timestamps de palabra) + referencia visual 6C en ① (visión) | `video-compose` (audio track + image overlays), ReelAssembler UI, script de subida de pistas, `api/estudio/reference-decompose` (nuevo) | un reel suena con música de la biblioteca bajo la voz + un overlay aparece en el segundo exacto de su palabra |
-| **V2.d — Modo D** | ③④ de footage propio (upload directo TUS + transcript + plan de cortes editable + trims) | upload de video (browser→storage), `api/estudio/edit-plan` (nuevo), compose con trims | un mp4 de 3-5 min del operador sale como reel corto con captions de marca |
+| **Etapa 1 — Cajas + Ajustes** | ① selector tipo/concepto/ambiente (G1 se muda aquí) + ② develop devuelve `scenes[]` (cajas por clip, incl. «Tu producto en esta pieza») + **intent dar/pedir EXPLÍCITO al develop** + **offer_statement ESTRUCTURADO en piezas que piden** + contador de voz en vivo + UI de tarjetas editables + indicador de pasos | `prompts.ts` (instrucción → scenes[] + intent + offer estructurado), `parse.ts` (parsear scenes[] + `clipWordBudget` lee scenes[] Y el formato viejo), `produce/route.ts`, UI del Director | re-desarrollar «Someone Else's Decision» produce cajas editables; editar una caja cambia el prompt compuesto; el contador avisa over/under en vivo |
+| **Etapa 2 — Keyframes + encadenado** | ③ galería Nano Banana Pro (generar/regenerar/editar/subir, cadena de consistencia) + ④ `end_image_url` en Kling + **sora-2 i2v y veo3.1 first-last-frame ENTRAN a `VIDEO_MODELS`** + ledger registra costo de imagen | `video-routing.ts` (+endImageUrl +2 modelos), `api/estudio/keyframes` (nuevo), `keyframe-gallery.tsx` (nuevo), `video-generate` (modo encadenado, paralelo, sin packing), `media-ledger` | el reel de prueba sale con **continuidad visible** (el frame de la frontera N/N+1 es la MISMA imagen) y la cara consistente en los 5 clips |
+| **Etapa 3 — Edición enriquecida** | ⑤ música de biblioteca (bucket global + selector con preview + compose con audio) + elementos nombrados (overlays en timestamps de palabra) + referencia visual 6C en ① (visión) | `video-compose` (audio track + image overlays), ReelAssembler UI, script de subida de pistas, `api/estudio/reference-decompose` (nuevo) | un reel suena con música de la biblioteca bajo la voz + un overlay aparece en el segundo exacto de su palabra |
+| **Etapa 4 — Modo D** | ③④ de footage propio (upload directo TUS + transcript + plan de cortes editable + trims) | upload de video (browser→storage), `api/estudio/edit-plan` (nuevo), compose con trims | un mp4 de 3-5 min del operador sale como reel corto con captions de marca |
 
-**Compatibilidad (regla dura del build):** las piezas EXISTENTES (design_spec con `video_prompts` sin
-`scenes[]`) siguen funcionando con el drawer/flujo actual — el Director aplica a piezas nuevas o
-re-desarrolladas. Nada se rompe hacia atrás; `clipWordBudget` y el karaoke aceptan ambos formatos.
+**Compatibilidad — SIMPLIFICADA (decisión del operador 2026-07-12: «borramos todas las piezas; solo
+tenemos lo que hemos estado jugando»):** NO se mantiene camino legacy. Antes de shippear la Etapa 1 se
+borran las piezas de prueba y todo nace con `scenes[]`. Único guard mínimo: si apareciera una pieza sin
+`scenes[]`, la UI muestra «Rehacer con el flujo nuevo» en vez de romperse. Esto QUITA trabajo del build
+(un solo formato, un solo render).
 
-Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + brand-assets). La única
-tabla nueva de todo el spec es `piece_events` (§3.7) — puede esperar a V2.c.
+Cero migraciones de BD en Etapas 1/2 (todo vive en `design_spec`/`asset` JSONB + brand-assets). La única
+tabla nueva de todo el spec es `piece_events` (§3.7) — puede esperar a Etapa 3.
 
 ## 6 · Costos típicos (ledger registra los reales)
 
@@ -336,7 +352,7 @@ tabla nueva de todo el spec es `piece_events` (§3.7) — puede esperar a V2.c.
 ## 7 · Decisiones — estado tras el pre-check (2026-07-12)
 
 **✅ Resueltas en conversación (registradas, no re-preguntar):**
-- **V2.a+b primero, prueba con «Someone Else's Decision»** — el operador pidió enfocarse en video y pasar
+- **Etapas 1+2 primero, prueba con «Someone Else's Decision»** — el operador pidió enfocarse en video y pasar
   al build plan.
 - **Concepto = catálogo determinístico + «Otro»** — aceptado (pidió añadir «Otro» y Tendencias).
 - **Feedback (§3.7) y Tendencias (§3.6)** — aprobados explícitamente ("me parece perfecta" / "buena
@@ -346,21 +362,21 @@ tabla nueva de todo el spec es `piece_events` (§3.7) — puede esperar a V2.c.
 - **Música** — diseño aprobado; licencia EN CURSO (el operador envió correo al curso pidiendo confirmación
   escrita). Mientras llega: quemada solo en proyectos del operador; fallback catálogo de plataforma.
 
-**🔓 Abiertas — SOLO una bloquea el build de V2.a:**
-1. **[BLOQUEA V2.a] El Director: ¿pantalla completa o drawer expandido?** Mi recomendación: **pantalla
+**🔓 Abiertas — SOLO una bloquea el build de Etapa 1:**
+1. **[BLOQUEA Etapa 1] El Director: ¿pantalla completa o drawer expandido?** Mi recomendación: **pantalla
    completa** (flow tipo wizard de fases) — la galería de keyframes + cajas por clip no caben cómodas en
    el drawer, y el indicador de pasos pide espacio.
-2. Presupuesto: ¿`MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto? (No bloquea V2.a; sí conviene
-   antes de V2.b — recomiendo $50 fijo ahora, configurable cuando llegue Cost Intelligence.)
-3. Modo D: límites v1 (≤10 min, ≤1 GB, 3 archivos) y retención propuesta — confirmar antes de V2.d.
-4. Firma de datos: ¿persistir `status='signed'` + llenar `distinct_because`? (No bloquea; V2.a lee lo que
+2. Presupuesto: ¿`MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto? (No bloquea Etapa 1; sí conviene
+   antes de Etapa 2 — recomiendo $50 fijo ahora, configurable cuando llegue Cost Intelligence.)
+3. Modo D: límites v1 (≤10 min, ≤1 GB, 3 archivos) y retención propuesta — confirmar antes de Etapa 4.
+4. Firma de datos: ¿persistir `status='signed'` + llenar `distinct_because`? (No bloquea; Etapa 1 lee lo que
    hay. Recomiendo hacerlo como tarea suelta pronto — es el contrato del producto.)
-5. Los 2 transcripts de YouTube (folders + café) — para afinar elementos nombrados en V2.c.
-6. Proveedores: kie.ai/apimart al bake-off con checklist §3.8 — el bake-off es posterior a V2.b.
+5. Los 2 transcripts de YouTube (folders + café) — para afinar elementos nombrados en Etapa 3.
+6. Proveedores: kie.ai/apimart al bake-off con checklist §3.8 — el bake-off es posterior a Etapa 2.
 
 ## 8 · Qué NO haremos
 
 - Pipelines distintos por tipo (este spec los mata — un flujo, presets).
 - Clonar caras/voces de personas reales sin consentimiento. Testimonios falsos (C4). Música sin licencia.
 - Auto-publicar. Cobrar regeneraciones como créditos.
-- Construir V2.c/d antes de que V2.a+b prueben el encadenado en un reel real.
+- Construir Etapas 3/4 antes de que Etapas 1+2 prueben el encadenado en un reel real.

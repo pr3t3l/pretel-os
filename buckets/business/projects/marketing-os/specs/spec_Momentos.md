@@ -3,7 +3,7 @@
 > **Estado: 💡 PROPUESTA PARA DISCUSIÓN (2026-07-12).** Nace de la idea del operador al revisar
 > Tendencias: el usuario del pasto y la ola de calor · el abogado y el cambio de ley laboral · el cambio
 > de algoritmo para el propio Papandi. Contexto: `docs/research/00_CONTEXTO_MAESTRO.md` +
-> `spec_Estudio_Video_v2.md` (§3.6 Tendencias) + `spec_Campanas.md` + `spec_Inteligencia_Temporal.md`.
+> `spec_Director_de_Video.md` (§3.6 Tendencias) + `spec_Campanas.md` + `spec_Inteligencia_Temporal.md`.
 
 ---
 

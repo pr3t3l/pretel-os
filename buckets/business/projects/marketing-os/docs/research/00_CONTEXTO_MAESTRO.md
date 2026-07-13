@@ -340,7 +340,7 @@ Si pides cambiar UN elemento, mantiene todo lo demás idéntico.
 > | 1-2. Research de datos duros (NotebookLM) | Fase 0.2 (demanda/keywords DataForSEO) + esencia 0.1 — con C4: datos reales o marcados |
 > | 3. Ángulos | Fase 2.5 (biblioteca de ángulos firmada) — el usuario ELIGE en /angulos |
 > | 4. Guion | El develop (se enriquece con los 9 patrones para modo animado) |
-> | 5-8. Storyboard → keyframes → auditoría → producto real | **LO NUEVO que adoptamos** → `spec_Estudio_Video_v2` |
+> | 5-8. Storyboard → keyframes → auditoría → producto real | **LO NUEVO que adoptamos** → `spec_Director_de_Video` |
 >
 > Lo que importa del método: la TÉCNICA de continuidad (keyframes primer/último frame encadenados) y el
 > nivel de exigencia visual (plan visual, money shot, pares encadenables). El resto ya lo teníamos.
@@ -581,4 +581,4 @@ clip = caro), y en Camino B aprueba el plan de edición. El asistente acompaña 
 | §5 estrategia/scope | `docs/research/2026-07-01_market_strategy_scope.md` + `2026-07-01_video_field_of_action.md` (+ raw JSONs) |
 | §6 AvatarHype | `specs/AvatarHype Classes/` — `Planificacion.txt` (workflow 8 pasos + transiciones), `Metodo 6C…`, `prompts-metodo-6c Engine.md`, `UGC PROMPT ENGINE.md`, `Prompts VEO3-1.md`, `Prompts Video Samples.md` (el `.txt` es duplicado), `Referencia Visual…`, `ADS IMAGEN.md`, `copywriter especializado….md`, `Ads Visual Architect Engine.md` |
 | §7 APIs | verificación web 2026-07-12 (fal endpoints + github.com/browser-use/video-use) |
-| Plan de construcción | `specs/spec_Estudio_Video_v2.md` (el plan completo, mismo día) |
+| Plan de construcción | `specs/spec_Director_de_Video.md` (el plan completo, mismo día) |
