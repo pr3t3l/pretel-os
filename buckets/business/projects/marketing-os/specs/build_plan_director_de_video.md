@@ -105,10 +105,23 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
       ① (tipo UGC, foto-chips): 🎲 nueva o una del elenco → `ugc_cast_id` viaja en el design_spec; el
       develop cambia el sujeto a imagen-de-referencia (sin re-describir la cara), keyframes la usa de
       ancla y video-generate la refuerza vía elements (sin el set de marca, que pelearía con el UGC).
-- [~] 3.5 `verify` EXIT 0 (411 tests) · push (50154fa) · **ETAPA 3 COMPLETA en código**; el criterio
-      («un reel suena con música bajo la voz + un overlay aparece en el segundo exacto de su
-      palabra») está validado LOCAL con los args exactos de la ruta — falta la corrida REAL del
-      operador sobre su reel en prod.
+- [x] 3.5b Palabras gigantes (hooks tipográficos estilo CapCut) — CONSTRUIDO 2026-07-13 (noche),
+      pedido del operador con screenshots de referencia («hook one», «ESTO es un VISUAL HOOK»).
+      `lib/video/word-sticker.ts`: cada palabra es un STICKER independiente renderizado EN CANVAS
+      en el navegador (WYSIWYG, $0) con 5 efectos (impacto 3D / neón / sticker / glitch / cómic) +
+      color/fuente/tamaño/rotación (horneada en el PNG vía bbox rotado). Panel «Palabras gigantes»
+      en el preview de estilo del ensamblador: arrastre libre X+Y, entrada desde el inicio o CON su
+      palabra alineada, duración. Al quemar: se renderiza en alta res (2× el ancho final, tope
+      2000px) → sube vía element-upload → entra como overlay con `xPct` (CENTRO libre) en video-burn
+      (expresión `overlay=x=W*xPct-w/2:y=H*yPct-h/2` validada LOCAL con frame extraído). Tope
+      combinado 6 imágenes (elementos + palabras). Los 5 renders validados en navegador (dimensiones
+      reales + fuentes cargadas). Commit 3833d79.
+- [~] 3.5 `verify` EXIT 0 (411 tests) + build de producción EXIT 0 · push (3833d79) · **ETAPA 3
+      COMPLETA en código** (música + elementos + feedback + referencia + personas + palabras
+      gigantes); el criterio («un reel suena con música bajo la voz + un overlay/palabra aparece en
+      el segundo exacto de su palabra») está validado LOCAL con los args exactos de la ruta — falta
+      la corrida REAL del operador sobre su reel en prod. Revisión adversarial multi-agente del
+      diff completo de la noche EN CURSO (2026-07-13).
 
 ## Etapa 4 — «Traigo mi video» (modo D)
 
