@@ -59,7 +59,7 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
       presupuesto incluye imágenes ya gastadas; variantes/cola/anti-doble-click intactos.
 - [x] 2.5 `verify` EXIT 0 · commit+push · **criterio DONE:** el frame de la frontera N/N+1 es la MISMA
       imagen y la cara es consistente en los 5 clips.
-- [ ] 2.6 **PRUEBA REAL con el operador** (~$6): re-desarrollar «Someone Else's Decision» → cajas →
+- [~] 2.6 **PRUEBA REAL con el operador** — clip 1 encadenado: «salió excelente» (2026-07-13). Falta: clips 2-3 + armar+captions + checklist doctrina: re-desarrollar «Someone Else's Decision» → cajas →
       keyframes → 5 clips → armar+captions. Checklist doctrina-video-2026 §1 + continuidad. El resultado
       decide ajustes antes de Etapa 3.
 
