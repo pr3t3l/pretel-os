@@ -1,6 +1,6 @@
 # build_plan_director_de_video — Plan de construcción (las 4 etapas)
 
-> **Estado: ⏳ LISTO PARA ARRANCAR (2026-07-12).** Spec madre: `spec_Director_de_Video.md` (pre-check
+> **Estado: 🟡 EN CONSTRUCCIÓN — Etapa 1 SHIPPEADA (2026-07-12, decisión: PANTALLA COMPLETA). Falta la prueba del criterio DONE por el operador.** Spec madre: `spec_Director_de_Video.md` (pre-check
 > completo). Patrón de entrega: igual que G1/G2a/G2b — cada etapa se construye, `npm run verify` EXIT 0,
 > commit+push (Vercel deploya), prueba real, y SOLO entonces la siguiente. Repo: `sandia-marketing`.
 >
@@ -14,29 +14,29 @@
 **Entrega:** el botón «Desarrollar para X» abre el flujo ①→②; el develop devuelve `scenes[]` (cajas
 editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada LLM de siempre).
 
-- [ ] 1.1 `lib/estudio/scenes.ts` (NUEVO, puro+tests): tipos `Scene` (cajas: guion, producto, encuadre,
+- [x] 1.1 `lib/estudio/scenes.ts` (NUEVO, puro+tests): tipos `Scene` (cajas: guion, producto, encuadre,
       sujeto, camara, iluminacion, audio, primer_frame, ultimo_frame, seconds, block) + `coerceScenes()`
       (tolerante) + `composeMotionPrompt(scene)` (encuadre+cámara+acción+`"guion"` — SOLO movimiento) +
       `composeKeyframePrompt(scene, "start"|"end")` (sujeto+iluminación+frame+estilo) + `sceneBudget(scene)`
       (palabras/seg over/under — reusa la lógica de `clipWordBudget`).
-- [ ] 1.2 `lib/estudio/concepts.ts` (NUEVO, puro+tests): el catálogo determinístico de 12 formatos
+- [x] 1.2 `lib/estudio/concepts.ts` (NUEVO, puro+tests): el catálogo determinístico de 12 formatos
       {key, nombre, línea, ejemplo, sirve_para, escena_base} + «Papandi decide» (reglas por intent+canal)
       + «Otro» (texto libre).
-- [ ] 1.3 `lib/estudio/prompts.ts`: la instrucción de video emite `scenes[]` en ===SPEC=== (reemplaza
+- [x] 1.3 `lib/estudio/prompts.ts`: la instrucción de video emite `scenes[]` en ===SPEC=== (reemplaza
       `video_prompts`/`clip_narrations` — la caja guion ES la narración) + recibe TIPO de reel + CONCEPTO
       + AMBIENTE + **intent dar/pedir EXPLÍCITO con sus 2 reglas** + presets por tipo (UGC realismo /
       Animado style-lock / Presentadora cast). La doctrina existente (arco, movimiento, safe zones,
       canal) NO cambia — cambia el FORMATO de salida.
-- [ ] 1.4 `app/api/estudio/produce/route.ts`: body gana `{tipoReel, concepto, conceptoCustom, ambiente}`;
+- [x] 1.4 `app/api/estudio/produce/route.ts`: body gana `{tipoReel, concepto, conceptoCustom, ambiente}`;
       **offer_statement ESTRUCTURADO** (is_for_you_if + what_you_get bullets) cuando intent=pedir;
       registra `concept_custom` en qa_flags (el evento formal llega en Etapa 3).
-- [ ] 1.5 `lib/estudio/parse.ts`: parsea `scenes[]`; `clipWordBudget` lee scenes (el formato viejo ya no
+- [x] 1.5 `lib/estudio/parse.ts`: parsea `scenes[]`; `clipWordBudget` lee scenes (el formato viejo ya no
       existe — piezas borradas); guard mínimo anti-crash.
-- [ ] 1.6 UI del Director (decisión de ubicación del operador): indicador de pasos ①-⑥ + pantalla ①
+- [x] 1.6 UI del Director (decisión de ubicación del operador): indicador de pasos ①-⑥ + pantalla ①
       (chips tipo/concepto/ambiente + los 5 botones G1 SE MUDAN aquí) + pantalla ② (tarjetas por clip,
       cajas editables colapsables, **contador de voz EN VIVO**, caja «Tu producto en esta pieza» ⭐,
       «Aprobar guion y prompts →»). La tarjeta de /angulos pierde los botones G1.
-- [ ] 1.7 `verify` EXIT 0 · commit+push · **criterio DONE:** re-desarrollar «Someone Else's Decision»
+- [x] 1.7 `verify` EXIT 0 · commit+push · **criterio DONE:** re-desarrollar «Someone Else's Decision»
       produce cajas; editar una caja cambia el prompt compuesto; el contador avisa over/under en vivo.
 
 ## Etapa 2 — Keyframes + encadenado (la continuidad — resuelve la queja original)
