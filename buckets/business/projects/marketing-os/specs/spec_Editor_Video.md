@@ -99,8 +99,10 @@ Muere el modelo numérico. Nace el bloque en la pista de MEDIOS:
 - **Ubicar en el tiempo** = arrastrar el bloque por la pista. **Recortar** = arrastrar sus extremos.
   Se VE exactamente dónde cae respecto al reel y a las palabras.
 - **Posición/tamaño** = arrastrar y handles EN el canvas (WYSIWYG).
-- **Fuente del medio**: «Subir» (imagen o video corto) o «De este reel» (los keyframes/fotogramas ya
-  generados) o «De la marca» (brand-assets). Sin jerga.
+- **Fuente del medio**: el «＋ Medio» NO inventa su propio picker — abre **La Biblioteca de Media**
+  (`spec_Biblioteca_Media.md`): media subida, creada por IA (keyframes/clips), avatars+sets del cast
+  (read-only), etc., por bloques y sin jerga. El editor CONSUME; la biblioteca PROVEE. La capa de
+  lectura de la biblioteca (`lib/media/library.ts`) es prerequisito de este selector.
 - El modo «con una palabra» NO desaparece pero deja de ser el default: se ofrece como **snap
   opcional** — al arrastrar un bloque cerca del inicio de una palabra, hace snap y muestra «entra con
   ‹palabra›». Lo mejor de ambos: control visual + la magia de sincronizar a la voz cuando conviene.
