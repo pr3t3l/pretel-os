@@ -93,6 +93,11 @@ Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se int
     personas · voz en off sobre b-roll · noche/luz de pantalla · actividad (gym/parque/feria). Default =
     «Papandi decide» (elige por ángulo+canal con reglas simples: pedir→presentadora o producto en manos;
     dar+TikTok→micro-momento o street interview).
+  - **+ «Otro (descríbelo)»** (pedido del operador 2026-07-12): caja de texto libre — lo que el usuario
+    escriba viaja al develop como el concepto Y **se registra** (evento `concept_custom`) para aprender:
+    un job semanal agrupa lo que los usuarios piden y propone candidatos a entrar al catálogo. Así el
+    catálogo crece de la demanda real, no de nuestra imaginación.
+  - **+ pestaña «Tendencias»** (global de Papandi, se actualiza 1×/semana): ver §3.6.
   - (Futuro opcional, NO v1: botón «Sugerir 3 para este ángulo» — una llamada barata que RANKEA el catálogo;
     solo si el menú resulta difícil de elegir en la práctica.)
 Todo esto viaja EN la llamada de desarrollo (hoy G1 ya viaja; se suman tipo/concepto/ambiente/referencia).
@@ -192,6 +197,71 @@ distintos se leen igual). Clasifica la **misión del CUERPO** de la pieza:
 - **Fix de este spec:** el develop recibe el `intent` EXPLÍCITO con sus dos reglas (hoy le llega implícito
   vía `offer_mode`) y la caja "Tu producto en esta pieza" lo materializa editable.
 
+## 3.6 · «Tendencias» — investigación semanal global (propuesta, con mi opinión)
+
+**Veredicto: sí, y encaja barato — con tres condiciones para que no sea humo.**
+- **Qué es:** un job semanal (Vercel Cron) a nivel PAPANDI (no por proyecto) que investiga qué está
+  funcionando en short-form esa semana (formatos, mecánicas de gancho, estilos de audio/edición) y publica
+  un reporte global → pestaña «Tendencias» junto al catálogo de conceptos en ①.
+- **Las 3 condiciones:**
+  1. **Accionable, no noticia:** cada tendencia se mapea a NUESTRO lenguaje — {qué es, por qué funciona,
+     a qué FORMATO del catálogo se parece, ejemplo de cómo se vería con TU ángulo} + botón «Probar este»
+     que pre-llena el concepto (o la caja «Otro»). Una tendencia que no se puede ejecutar no se publica.
+  2. **Glass-box:** cada ítem con fuente + fecha; el reporte muestra "investigado el {fecha}" (una
+     tendencia de hace 3 semanas ya no lo es).
+  3. **Filtro de doctrina:** lo que viole candados (engagement bait, urgencia fabricada, testimonios
+     falsos) se publica como "tendencia que NO usamos y por qué" — eso también enseña (y es diferenciador).
+- **Costo:** una corrida semanal de research (~$0.50-2) — trivial. Storage: tabla `trend_reports`
+  (semana, items jsonb con fuentes) o artefacto global.
+- **Bonus de aprendizaje:** el mismo job semanal procesa los `concept_custom` de la semana (lo que los
+  usuarios pidieron en «Otro») → los candidatos a catálogo salen de tendencia EXTERNA + demanda INTERNA.
+
+## 3.7 · El loop de FEEDBACK — cómo aprendemos del usuario en todo el proceso (propuesta)
+
+**Principio: el mejor feedback es el que el usuario ya da usando el producto — lo explícito se pide POCO
+y en momentos de verdad.** Tres capas:
+
+**Capa 1 — IMPLÍCITA (cero fricción, la más rica):** eventos append-only en una tabla `piece_events`
+(`event, piece_id, project_id, payload, ts`):
+- ②: **el diff entre lo sugerido y lo aprobado en cada caja** (qué corrige la gente = dónde falla el
+  develop — la señal #1); qué conceptos se eligen (y qué escriben en «Otro»).
+- ③: keyframes regenerados vs aceptados a la primera (qué prompts de imagen fallan); imágenes subidas a
+  mano (= el generador no dio lo que quería).
+- ④: variante elegida («Usar esta») vs descartadas; Rehacer por pieza; modelo elegido.
+- ⑤/⑥: pieza que llega a agendarse/publicarse (= éxito del flujo) vs pieza abandonada (¿en qué paso murió?
+  — el funnel del Director); pista de música elegida vs sugerida.
+**Capa 2 — EXPLÍCITA (máximo UNA pregunta por pieza):** al terminar el reel (después de «Usar esta»):
+👍/👎 + un "¿qué le faltó?" opcional de una línea. Nada de encuestas.
+**Capa 3 — RENDIMIENTO REAL (cierra el ciclo con Fase 4/Medir):** "¿cómo le fue?" — v1 manual (el usuario
+pega views/saves a los 7 días, la Agenda se lo recuerda); futuro APIs de plataformas. Es el único feedback
+que valida DOCTRINA, no solo UX.
+
+**A quién alimenta cada cosa (para que no sea data muerta):** diffs de cajas → mejorar las instrucciones
+del develop y los defaults «Papandi decide» · keyframes fallidos → plantillas de prompt de imagen ·
+funnel del Director → UX · «Otro» + tendencias → catálogo · piezas 👍 con buen rendimiento → **few-shot
+del develop** (ejemplos aprobados del MISMO proyecto en el prompt — el "profiler" que el audit del
+ensamblador marcó como faltante) · todo agregado → lecciones globales de Papandi (el data flywheel del
+research de mercado). Privacidad: los agregados globales son de PATRONES, jamás contenido identificable
+de un cliente.
+
+## 3.8 · Proveedores: fal vs revendedores (kie.ai / apimart.ai — revisados 2026-07-12)
+
+Precios verificados: **kie.ai** vende Veo 3 Fast a **$0.40 por video de 8s (= $0.05/s, ~87% menos que
+Veo en fal)** y Veo 3 Quality $2.00/8s (=$0.25/s); Nano Banana ~$0.02/img; créditos desde $5; claims de
+30-70% de ahorro. **apimart.ai**: ~20% bajo el precio oficial en todo; Nano Banana Pro $0.107 (vs $0.15
+fal); tiene Kling 3.0 Turbo/V3 Omni y Sora 2/Pro (precios exactos requieren cuenta).
+
+**Mi veredicto: fal sigue PRIMARIO; los revendedores entran al bake-off como tier de ahorro, no como base.**
+- Por qué fal primario: schemas verificados + cola async + webhooks que YA usamos en prod; 1.000+ modelos;
+  es infraestructura oficial-partner, no pool gris de cuotas.
+- Por qué SÍ probarlos: si el Veo Fast de kie.ai a $0.05/s da lip-sync usable, **Veo pasa de "premium
+  carísimo" a competidor del default** — eso cambia la tabla de enrutamiento. El ahorro real se decide con
+  el bake-off ($10-15: mismo brief en fal-Kling vs kie-Veo-Fast vs apimart), midiendo yield/latencia/calidad.
+- **Checklist de riesgo ANTES de producción con un revendedor:** leer ToS/privacidad (¿dónde van los prompts
+  e imágenes de NUESTROS usuarios? ¿retención?) · medir uptime/latencia 1 semana · confirmar que no es
+  pooling de cuotas revocable · fallback a fal cableado (el registry multi-proveedor ya existe) · ningún
+  modelo >X% del valor (regla del research de mercado).
+
 ## 4 · Modo D — «Traigo mi video» (misma esencia, dos pantallas distintas)
 
 Mismo flow y pantallas ①②⑤⑥; solo cambian ③ y ④:
@@ -250,8 +320,13 @@ Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + bra
    recomendación: pantalla completa — la galería de keyframes + cajas no caben cómodas en el drawer.
 3. **Concepto = catálogo determinístico** (12 formatos + «Papandi decide», el develop adapta el elegido):
    ¿confirmas? (Recomendado en §3① con las razones; el botón «Sugerir 3» queda para después si hace falta.)
-4. **Música:** confirma el ORIGEN/licencia de las 562 pistas (¿pack comprado? ¿de dónde?) — va al README
-   del bucket `music-library` (global). El diseño de uso ya está en ⑤.
+4. **Música — licencia (respuesta del operador registrada + nota honesta):** las pistas vienen DEL CURSO,
+   "declaradas de libre uso". Eso NO es una licencia verificable — "el curso lo dijo" no nos protege si una
+   pista resulta con Content-ID. Mitigación (propuesta, no bloquea): ①README del bucket documenta la
+   procedencia exacta ②verificar una MUESTRA (10-15 pistas: buscar por nombre — la mayoría de packs de
+   curso vienen de YouTube Audio Library/Pixabay/Mixkit, reconocibles) ③mientras no esté verificado, la
+   música quemada se usa en TUS proyectos (operador) y no se expone como feature a clientes ④el fallback
+   siempre existe (catálogo de la plataforma al publicar).
 5. **Modo D:** ¿OK los límites v1 (≤10 min, ≤1 GB, 3 archivos/pieza) y la retención propuesta (original se
    conserva; limpieza solo con aviso)?
 6. **Presupuesto:** ¿subir `MEDIA_BUDGET_USD` a $50/mes o configurable por proyecto?
@@ -261,6 +336,11 @@ Cero migraciones de BD en V2.a/b (todo vive en `design_spec`/`asset` JSONB + bra
    código no la exige)? ¿Y llenamos `distinct_because` (1.4, hoy NULL)?
 9. **Sí — pásame el transcript completo del video de YouTube** (y el segundo si lo tienes): alimenta el
    diseño de elementos nombrados (V2.c). Déjalos en `specs/AvatarHype Classes/` o pégalos en el chat.
+10. **Tendencias:** ¿apruebas la pestaña semanal global con las 3 condiciones de §3.6 (accionable +
+    glass-box + filtro de doctrina)? ¿Y el loop de feedback de §3.7 (eventos implícitos + 1 pregunta por
+    pieza + rendimiento manual a 7 días)?
+11. **Proveedores:** ¿incluimos kie.ai (Veo Fast $0.05/s) y apimart en el bake-off con el checklist de
+    riesgo de §3.8? (fal sigue primario; el registry multi-proveedor ya lo soporta.)
 
 ## 8 · Qué NO haremos
 
