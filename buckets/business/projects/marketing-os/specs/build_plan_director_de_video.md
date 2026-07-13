@@ -133,6 +133,14 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
 
 ## Etapa 5 — EDITOR ONLINE (pedido del operador 2026-07-13, screenshots de CapCut)
 
+> **PIVOTE 2026-07-13 (noche):** tras 5A.1 (subtítulos por-bloque ✓) el operador cazó que el
+> módulo de imágenes 5A.2 está «muy mal pensado» (tiempo numérico «desde el segundo X» — no es
+> estándar) y pidió PARAR de improvisar y hacer un editor de línea de tiempo de verdad, con
+> investigación de la industria + spec + plan. **Ese trabajo se movió a `spec_Editor_Video.md` +
+> `build_plan_editor_video.md` (Trinity, PARA FIRMA).** El editor UNIFICA 5A (captions/medios/música)
+> + 5B (transiciones) en UN timeline. Lo de abajo (5A.1/5A.2/5B) queda como historial; la
+> redesign real vive en el spec del editor. NO seguir construyendo el ⑤ ad-hoc hasta firmar.
+
 Doctrina: el navegador PREVISUALIZA (DOM/CSS, liviano); el render sigue en NUESTRO ffmpeg ($0,
 sin WASM — sería lento/frágil aun en desktop). Solo-desktop (el operador confirmó). El karaoke
 palabra-por-palabra (`\k`) SE CONSERVA siempre. Estructura acordada: renombrar el ⑤ y agrupar
