@@ -49,6 +49,27 @@ iluminación · audio · guion con timing · primer frame · último frame.
 (la ventana actual, expandida a flow). Indicador de pasos:
 `① Ajustes → ② Guion y prompt → ③ Imágenes → ④ Clips → ⑤ Edición → ⑥ Publicar`
 
+### ⓪ La fuente: la información de la EMPRESA (lo que alimenta TODO el flujo)
+
+El usuario de Papandi ya le contó su negocio en las fases 0-2; el Director **compila eso** — jamás pide
+re-escribirlo. Qué entra y de dónde (auditado contra la BD real del proyecto Papandi, 2026-07-12):
+
+| Qué | De dónde | Estado real |
+|---|---|---|
+| Qué ES el negocio y por qué ahora | 0.1 `refined_idea` + `why_now` | ✅ existe y está bien escrito |
+| Lo único (diferenciadores) | 0.1 `differentiators` | ✅ 4 aceptados |
+| QUÉ VENDE y qué recibe el cliente | 1.4 `offer_statement` ("is for you if…" + "what you get") | ✅ existe — ⚠️ pero hoy solo fluyen 300-400 chars al develop (los bullets "what you get" se cortan) |
+| Por qué es distinto | 1.4 `distinct_because` | ❌ NULL en la BD — hueco de dato |
+| A quién le habla | 0.3 avatar (dolores/miedos/deseos) | ✅ |
+| Dolor→ángulo | 2.3 pilares (con `mode`) + 2.5 ganchos | ✅ |
+
+**Fixes de fuente (parte de este spec):** ①fluir el `offer_statement` ESTRUCTURADO (is_for_you_if +
+what_you_get como bullets, no un slice de 400 chars) a las piezas que PIDEN; ②exponer/llenar
+`distinct_because`; ③**hallazgo de integridad:** TODOS los artefactos están `status='draft'` en la BD y
+`getArtifactContent` no exige firma — el contrato "solo lo firmado entra a producción" hoy no se cumple a
+nivel de dato (funciona porque lee el draft más reciente). Decidir: persistir la firma en `status` y/o
+documentar que draft-vigente es la fuente.
+
 ### ① Ajustes (ANTES de cualquier llamada al LLM)
 Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se integra aquí):
 - **Tipo de reel:** Presentadora de marca (default, usa tu cast) · UGC persona real · Animado (elige estilo:
@@ -57,7 +78,15 @@ Selecciones rápidas (chips/botones, mismo patrón G1 — que ya existe y se int
   (del cast o describir uno).
 - **Referencia visual opcional:** sube un screenshot (TikTok/Pinterest/foto tuya) → se descompone en las
   6C y pre-llena cajas del paso ②.
-Todo esto viaja EN la llamada de desarrollo (hoy G1 ya viaja; se suman tipo/ambiente/referencia).
+- **CONCEPTO (el paso que faltaba — qué TIPO de contenido es):** con el tipo elegido, **Papandi PROPONE
+  3 CONCEPTOS** (patrón del copywriter del curso: concepto + micro-momento + cómo juega tu ángulo + por qué
+  funciona) y el usuario elige uno o pide otros 3. Catálogo inicial de FORMATOS (de la biblioteca del
+  curso): presentadora a cámara · street interview (entrevistador off-camera) · selfie caminando ·
+  micro-momento cotidiano (cocina/baño/carro/escritorio) · podcast 2 personas · voz en off sobre b-roll ·
+  producto en manos. Ej.: para el ángulo del "ciclo roto" → (1) street interview "¿tu opinión impopular de
+  vender online?" · (2) selfie caminando post-feria "acabo de darme cuenta de algo" · (3) presentadora con
+  paquetes en la cocina. **El concepto elegido pre-llena las cajas de ②.**
+Todo esto viaja EN la llamada de desarrollo (hoy G1 ya viaja; se suman tipo/concepto/ambiente/referencia).
 
 ### ② Guion y prompt estructurado (UNA llamada al develop — la actual, extendida)
 El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un text box con sugerencia):
@@ -65,6 +94,7 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
 | Caja | Contenido sugerido según el tipo elegido |
 |---|---|
 | **Guion** (con timing) | la narración exacta del clip (arco que vende) |
+| **Tu producto en esta pieza** ⭐ | CÓMO entra tu empresa/oferta en ESTE reel, según su intención: si la pieza **DA valor** → una puerta suave desde la esencia ("Papandi builds that plan with you"); si **PIDE** → la oferta con tus palabras de 1.4 (what you get + CTA directo + deadline real si hay campaña). Editable — aquí VES exactamente qué se dice de tu negocio |
 | **Encuadre visual** | plano/composición del clip |
 | **Sujeto** | Presentadora → "tu personaje del cast" (bloqueado a la imagen aprobada) · UGC → persona inventada creíble (edad, imperfecciones) · Animado → personaje del estilo |
 | **Cámara** | movimiento/energía (de tus ajustes ①) |
@@ -108,6 +138,26 @@ El develop devuelve, **por clip**, una tarjeta con CAJAS EDITABLES (cada una un 
 
 ### ⑥ Publicar (sin cambios)
 Agenda/campaña, música de catálogo si no se quemó una propia, label IA.
+
+## 3.5 · DAR vs PEDIR — la doctrina en cristiano (aclaración pedida por el operador 2026-07-12)
+
+El chip **no clasifica el gancho** (el gancho SIEMPRE abre por el dolor — por eso dos ángulos con chips
+distintos se leen igual). Clasifica la **misión del CUERPO** de la pieza:
+
+- **DA VALOR** (pilares `resolve/agitate/educate` — hoy A, B, C): la pieza es ÚTIL por sí misma — enseña,
+  nombra el dolor con precisión, da el cómo. Tu producto aparece como la **puerta** al final (CTA suave
+  desde la esencia). En video: el arco igual EXPLICA qué es el producto (decisión 2026-07-11), pero NO
+  empuja oferta/precio/deadline. **Cómo "da" valor:** el espectador se lleva algo aunque jamás compre
+  (un reframe, un error nombrado, un cómo).
+- **PIDE** (pilar `reinforce` — hoy D — o estilo con goal `get_sales`, o fase pico/cierre de campaña): la
+  pieza PRESENTA la oferta — qué recibe, con las palabras de la Fase 1 (what you get), garantía, y si hay
+  campaña su deadline REAL — y cierra pidiendo la acción directa.
+- **De dónde sale el chip (glass-box, ya en código):** 1º el `goal` del estilo elegido (táctico); si no,
+  el `mode` del pilar (estratégico). La política 3:1 se mide sobre el MES (campañas la reordenan por fase).
+- **Fix aplicado hoy (sandia, pusheado):** leyenda visible en la barra del ratio + tooltips concretos en
+  cada chip ("el cuerpo de esta pieza presentará tu oferta…" / "enseña y abre la puerta…").
+- **Fix de este spec:** el develop recibe el `intent` EXPLÍCITO con sus dos reglas (hoy le llega implícito
+  vía `offer_mode`) y la caja "Tu producto en esta pieza" lo materializa editable.
 
 ## 4 · Modo D — «Traigo mi video» (misma esencia, dos pantallas distintas)
 
