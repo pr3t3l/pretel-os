@@ -120,8 +120,16 @@ editables por clip); el usuario edita y aprueba. Cero costo nuevo (misma llamada
       COMPLETA en código** (música + elementos + feedback + referencia + personas + palabras
       gigantes); el criterio («un reel suena con música bajo la voz + un overlay/palabra aparece en
       el segundo exacto de su palabra») está validado LOCAL con los args exactos de la ruta — falta
-      la corrida REAL del operador sobre su reel en prod. Revisión adversarial multi-agente del
-      diff completo de la noche EN CURSO (2026-07-13).
+      la corrida REAL del operador sobre su reel en prod.
+- [x] 3.6 Revisión adversarial multi-agente del diff completo de la noche (5 dimensiones × find →
+      verify independiente) — HECHA 2026-07-13. 7 hallazgos confirmados y CORREGIDOS (commit beae936),
+      3 refutados como falsos positivos. El **ALTO** era real y peligroso: un elemento/palabra cerca
+      del final de un reel corto alargaba el entregable (frame congelado + silencio) porque los
+      inputs `-loop 1`/`-stream_loop` no estaban acotados en la salida → fix = `probeDurationSec` +
+      `-t <reelSec>`. Medios: re-armar dejaba índices de palabra viejos (overlays mal ubicados);
+      UGC no-encadenado metía el set de marca + caía a la cara de marca. Bajos: amix bajaba la voz
+      −6 dB; reference-decompose sin gate de pertenencia; keyframes con el mismo fallback de cara;
+      edit-plan duplicaba 0.25s en cortes por longitud. Todos con test/validación local.
 
 ## Etapa 4 — «Traigo mi video» (modo D)
 
