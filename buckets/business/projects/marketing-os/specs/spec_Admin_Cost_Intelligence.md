@@ -2,8 +2,8 @@
 
 **Project**: business/marketing-os
 **Module ID**: module-c-admin
-**Status**: spec v0.1 (requisitos del operador capturados + brainstorm inicial; PENDIENTE: lluvia de ideas dedicada + investigación de mercado + trinity propia antes de codear)
-**Last updated**: 2026-06-11
+**Status**: spec v0.2 — **Fase A CONSTRUIDA en prod (2026-07-17)**: el Admin Console del diseño (handoff `Admin Console.html`) con telemetría REAL (13 vistas), captura de payloads LLM (system+mensajes+respuesta, admin-only) y admin_audit_log. Plan de fases B–E en `build_plan_admin_console.md` (para firma). Capacidades cubiertas hoy: #1 #2(v1) #5 #6 + §3 + §4(v1: limpieza) + auditoría base de §5.
+**Last updated**: 2026-07-17
 **Origen:** mandato del operador en sesión 3 (sim Phase 1), al converger el modelo de costo de IA: "necesitamos un perfil de administrador… esto vendría siendo todo un spec completo… este módulo de los costos de Sandi no lo hemos tocado y me parece fundamental." Tema cargado por el operador desde antes, abierto formalmente aquí (D-033).
 
 ---
