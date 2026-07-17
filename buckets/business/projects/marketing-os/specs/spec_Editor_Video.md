@@ -1,6 +1,6 @@
 # spec_Editor_Video — El Editor (Etapa 5 del Director, unificada)
 
-> **Estado: BORRADOR PARA FIRMA (2026-07-13).** Reemplaza el diseño ad-hoc actual del ⑤ (paneles
+> **Estado: 🖋 FIRMADO 2026-07-13.** Reemplaza el diseño ad-hoc actual del ⑤ (paneles
 > sueltos de captions / música / imágenes con tiempo NUMÉRICO) por UN editor de línea de tiempo
 > estándar de la industria. Une en UNA sola etapa: subtítulos + medios (imágenes/stickers) +
 > **transiciones** entre clips + música. Nace del feedback del operador (2026-07-13): «ese módulo de

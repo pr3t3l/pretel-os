@@ -2,7 +2,7 @@
 
 **Project**: business/marketing-os
 **Module ID**: module-c-admin
-**Status**: spec v0.2 — **Fase A CONSTRUIDA en prod (2026-07-17)**: el Admin Console del diseño (handoff `Admin Console.html`) con telemetría REAL (13 vistas), captura de payloads LLM (system+mensajes+respuesta, admin-only) y admin_audit_log. Plan de fases B–E en `build_plan_admin_console.md` (para firma). Capacidades cubiertas hoy: #1 #2(v1) #5 #6 + §3 + §4(v1: limpieza) + auditoría base de §5.
+**Status**: spec v0.3 — **Fases A+B+C CONSTRUIDAS en prod (2026-07-17)**: Console con telemetría real + payloads LLM (A) · señal revelada acepta/ajusta/descarta del estudio + costo por run + alertas con memoria + storage medido + system_lessons (B) · roles en BD + modo soporte auditado visible al titular + pausar/GDPR (C). Detalle as-built en `build_plan_admin_console.md`. Faltan: D (planes+créditos+Stripe — decisiones R3/R4 del operador) y E (router dinámico+evals). Capacidades: #1 #2 #4 #5 #6 #7 #10 #12 cubiertas; #3 read-only; #8 #9 #11(parcial) #13(margen) = Fase D.
 **Last updated**: 2026-07-17
 **Origen:** mandato del operador en sesión 3 (sim Phase 1), al converger el modelo de costo de IA: "necesitamos un perfil de administrador… esto vendría siendo todo un spec completo… este módulo de los costos de Sandi no lo hemos tocado y me parece fundamental." Tema cargado por el operador desde antes, abierto formalmente aquí (D-033).
 

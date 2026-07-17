@@ -35,27 +35,24 @@ Registro as-built:
 
 ---
 
-## Fase B — Señal de calidad + alertas (siguiente natural)
+## Fase B — Señal de calidad + alertas ✅ CONSTRUIDA (2026-07-17, sandia `1abd277`)
 
-Objetivo: que Costo×Calidad mida calidad PERCIBIDA (no limpieza técnica) y que el sistema avise solo.
+- [x] B1. `card_feedback` — señal REVELADA vía dual-write en `/api/estudio/event` (mapeo puro `lib/admin/feedback.ts` + tests): scenes_approved sin ediciones=accept / con ediciones=adjust; keyframes_approved=accept; variant_kept=accept; reel_feedback 👍/👎=accept/reject. Unidades: estudio_develop/keyframes/clips/reel.
+  - **Pendiente honesto**: las tarjetas del wizard F0–F2 (cada flujo persiste su aceptación distinto) — la vista Calidad lo declara.
+- [x] B2. El 👎 del reel viaja con su nota (meta.note). El 👍/👎 de research/statements queda con el wizard (mismo pendiente).
+- [x] B3. Vista Calidad: tabla acepta/ajusta/descarta REAL por unidad + lecturas (≥90% accept = candidato + barato; ≥30% adjust = prompt flojo). El scatter mantiene y=limpieza (el join unidad↔prompt_version llega vía run_id cuando haya volumen).
+- [x] B4. Storage real SIN job: función `admin_storage_stats()` (security definer sobre storage.objects, service-role-only) → COGS pinta peso por tipo/proyecto + $/mes a tarifa etiquetada (`STORAGE_USD_PER_GB_MONTH`, default 0.021). Medido el día 1: 2.2 GB, 1.9 GB en música (556 mp3).
+- [x] B5. `run_id` en project_llm_calls; produce estampa un run (develop+continuity+auditor+boss) → Costos gana «costo por EJECUCIÓN COMPLETA» (min/avg/p95/max por run) — la base del precio por acción (D1).
+- [x] B6. `admin_alerts` persistentes con dedupe_key: se evalúan en cada carga de telemetría («cron sin cron» a esta escala — un cron real llega cuando haya tráfico sin admin mirando), atender/silenciar con memoria, atendida que re-aparece se reabre; badge del sidebar = solo abiertas.
+- [x] B7. `system_lessons` (kind lesson|decision|best_practice + next_time + tags) sembrada con C-D1…C-D5; vista Aprendizajes viva con «+ Nueva entrada» (auditada).
 
-- [ ] B1. Telemetría de tarjetas: tabla `card_feedback` (project_id, phase, prompt_version, card_kind, action accept|adjust|reject, created_at) + hook en el wizard donde ya existe ✓/✏️/✕. Sin UI nueva de usuario.
-- [ ] B2. 👍/👎 explícito en outputs largos (research/statements) → misma tabla, card_kind='thumb'.
-- [ ] B3. `statsByPromptVersion` gana acceptRate real; el scatter cambia y = aceptación; la vista Calidad retira el disclaimer v1.
-- [ ] B4. Storage real: job que recorre buckets de Supabase Storage (bytes por tipo de asset y proyecto) → tabla `storage_ledger`; la tarjeta de COGS pinta asumido vs real + factor.
-- [ ] B5. Agrupación por ejecución completa (runs): conversation_id o run_id en las llamadas → costo por fase POR RUN (lo que el diseño ya dibuja).
-- [ ] B6. Motor de alertas persistente: reglas de computeAlerts + margen (cuando D exista) evaluadas por cron; tabla `admin_alerts` con estado atendida/silenciada; badge del sidebar sale de ahí.
-- [ ] B7. Aprendizajes: tablas `system_lessons/decisions/best_practices` a nivel Papandi + sembrar C-D1…C-D5; la vista deja el estado vacío.
+## Fase C — Cuentas de cliente ✅ CONSTRUIDA (2026-07-17, sandia `1abd277`)
 
-## Fase C — Cuentas de cliente (multi-tenant operable)
-
-Objetivo: recibir clientes de verdad con soporte seguro.
-
-- [ ] C1. Roles en BD: `profiles.role` (user|support|admin) — ADMIN_EMAILS queda como bootstrap; requireAdmin lee rol.
-- [ ] C2. Modo soporte (§5, no negociable): drawer del diseño (razón OBLIGATORIA + duración) → sesión read-only sobre la cuenta objetivo; todo acceso a `admin_audit_log` con `support.enter/exit` + visible al titular en su panel.
-- [ ] C3. Pausar cuenta (detiene facturación cuando exista) + flujo GDPR de borrado: export → purga programada (nunca DELETE inmediato).
-- [ ] C4. Onboarding de clientes: invitaciones/registro abierto controlado por platform_settings (`signups_open`).
-- [ ] C5. Botones «Soporte»/«Gestionar» de la vista Usuarios se activan (hoy disabled con honestidad).
+- [x] C1. `profiles.role` (user|support|admin) + `profiles.status` (active|paused); requireAdmin/isCurrentUserAdmin aceptan rol de BD; ADMIN_EMAILS queda como bootstrap.
+- [x] C2. Modo soporte (§5): drawer con razón OBLIGATORIA + duración 15/30/60 → `support_sessions` (expirable) + `admin_audit_log` support.enter/exit; el detalle es read-only POR CONSTRUCCIÓN (solo lecturas agregadas: proyectos, gasto del mes, últimas 10 llamadas). **Visible al titular**: RLS «owner reads own support sessions» + tarjeta en su Dashboard (solo se pinta si hubo accesos).
+- [x] C3. Pausar/reanudar (ban de login 100 años reversible + status) + GDPR: `account_deletions` (pausa + purga programada +30 días + cancelable en ventana) + export JSON descargable (perfil+proyectos+piezas). Todo auditado.
+- [~] C4. Registro de clientes: **n/a hoy** — el producto no tiene flujo de signup (cuentas se crean manual). El gate `signups_open` se construye JUNTO con el signup (probablemente Fase D, al abrir la puerta de pago).
+- [x] C5. «Soporte» y «Gestionar» activos en la vista Usuarios (estado real: activa / en pausa / borrado programado).
 
 ## Fase D — Cobrar (el sistema que se puede pagar)
 

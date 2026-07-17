@@ -194,6 +194,19 @@ export type CampaignArcItem = {
 > **ventana propia** (`/campanas`) y **orquesta** los otros tres módulos vía `campaign_id`. El «radar» **no es
 > una superficie**: es el motor (`lib/radar`) que calcula las fechas que la Agenda pinta como marcadores
 > (nunca «clic en el radar», siempre «clic en una fecha del calendario»).
+>
+> **Refinamiento del operador (2026-07-10) — el modelo TALLER / PLAN / CALENDARIO (CONSTRUIDO).** Tras testear,
+> las superficies se separan nítido: **Ángulos = el TALLER** (el ÚNICO sitio donde se desarrolla — ahí viven el
+> estilo de apertura + la apertura visual + la apertura APROBADA, y ahí se elige el **canal**; no se duplica en el
+> tablero). **Campañas = el PLAN** (NO se desarrolla aquí): cada hueco del arco es **ÁNGULO + FECHA** (sin canal);
+> se ve el arco por fase, ordenado por fecha. **Agenda = el CALENDARIO** (cuándo se postea; pinta la banda). El
+> **puente** es la fecha del hueco: «Desarrollar en Ángulos» **abre y RESALTA ese ángulo** (lleva
+> avatar+hook+arc+fecha+fase); al **generar**, la pieza (a) **llena el hueco** — se escribe su `piece_id` en el
+> arco (lazo REAL, no la coincidencia frágil canal+hook) — y (b) **se agenda sola** en la fecha del plan
+> (`scheduled_post` con `campaign_id`) → sale en Campañas por fecha **y en el Calendario**. La **FASE**: **da valor
+> → teaser** (auto); **pide → toggle Pico|Cierre** (se hereda del salto). El **selector de campaña es POR TARJETA**
+> en Ángulos (default Evergreen). El botón **«Programar»** del tablero queda solo para piezas **fuera del plan**
+> (evergreen suelto). Esto AJUSTA §6.1-6.3.
 
 **EVERGREEN es el default.** Toda pieza nace evergreen (`campaign_id = NULL`): sin caducidad, sin arco, se
 agenda cuando el operador quiera — la base always-on. Una campaña es un contenedor con fecha que se **ata** a
